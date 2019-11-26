@@ -3,12 +3,12 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: Hexo
-subtitle: ''
-description: ''
+title: WangXue
+subtitle: '快乐学习，慢慢赚钱'
+description: '本科重庆大学CS，研究生南京大学MS，主要研究AIOps，机器学习等，语言Python&C++'
 keywords:
-author: John Doe
-language: en
+author: WangXue
+language: zh-CN
 timezone: ''
 
 # URL
@@ -90,7 +90,8 @@ ignore:
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: landscape
+# theme: landscape
+theme: next
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
