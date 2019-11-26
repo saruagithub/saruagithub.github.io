@@ -233,31 +233,25 @@
 
       
           <h4 id="1-Numenta的HTM简介"><a href="#1-Numenta的HTM简介" class="headerlink" title="1, Numenta的HTM简介"></a>1, Numenta的HTM简介</h4><p>Hierarchical Temporal Memeory(HTM,层级时间记忆，皮质学习) 是一种基于脑神经科学来模拟大脑进行学习和信息处理的神经网络。新皮质就是大脑里褶皱的皮层部分（图1），这只有哺乳动物有。将皮层纵向切开，不论是视觉还是听觉部分，切开后的结构是相似的（图2），很有可能大脑处理不同信息的方法是类似的。</p>
-<img src="/images/20191125head.png" width="250"/>    
-<img src="/images/20191125cells.png" width="200"/> 
-
-
+<p><img src="/images/20191125head.png" width="250"/><br><img src="/images/20191125cells.png" width="200"/> </p>
 <center>图1 大脑皮层，图2 细胞图</center>
 
 <p>新皮质分化为很多个区域（region，图3），这些区域通过神经纤维连接。这些区域以层次结构的方式连接在一起。低层级信息收集基础信号，经过不同层级逐渐加工，提取并理解更抽象信息，更高级的话或许可以关联到想法、事物活动等信息。这个有点类似卷积神经网络，低层级的网络提取图像边界等信息，高层级的网络识别物体类型等等。</p>
-<img src="/images/20191125HierarchicalMode1.png" alt="20191125HierarchicalMode1" style="zoom:50%;" />
-
+<p><img src="/images/20191125HierarchicalMode1.png" alt="20191125HierarchicalMode1" style="zoom:50%;" /></p>
 <center> 图 3 HTM分层示意图</center>
 
 <p>目前，<strong>Numenta的HTM设计介绍讲解主要针对一个区域，即一层（图3，如黄色层），说明其数据输入方式，数据表征方式，神经元激活，以及时间记忆表示方式</strong>。HTM大概的原理是，首先将输入的数据编码为0、1稀疏数组，将这些稀疏数组经过空间池化转换为稀疏分布表征（SDR），然后时序记忆，建立突触，存储信息，进行预测等。</p>
 <h4 id="2-数据输入"><a href="#2-数据输入" class="headerlink" title="2, 数据输入"></a>2, 数据输入</h4><p>数据输入一般有数字，日期，温度等，将这些数据编码为01稀疏数组（bit数组）。这在计算机领域十分常见，如一个字符的ASCⅡ表示，使用8bit表示的。n个bit可以表示$2^n$容量（capacity）的信息，bit数组可以有许多运算，与或非与异或等等。</p>
-<img src="/images/20191125featureRepresentation1.png" alt="1125featureRepresentation1" style="zoom:50%;" />
-
+<p><img src="/images/20191125featureRepresentation1.png" alt="1125featureRepresentation1" style="zoom:50%;" /></p>
 <p>在HTM里，稀疏的每一个1可能表示了一个信息。在通过稀疏bit数组的压缩存储（只存1的下标位置），可以表示非常多的数据信息了。</p>
-<h4 id="3-空间池化Spatial-Pooler"><a href="#3-空间池化Spatial-Pooler" class="headerlink" title="3, 空间池化Spatial Pooler"></a>3, 空间池化Spatial Pooler</h4><h5 id="3-1-稀疏分布表征-SDR"><a href="#3-1-稀疏分布表征-SDR" class="headerlink" title="3.1 稀疏分布表征 SDR"></a>3.1 稀疏分布表征 SDR</h5><p>稀疏分布表征（SDR）是空间池化的结果，通俗来看有点像大脑的数据结构，我们先看看SDR的一些特性，如图。计算SDR的容量:<br>$$capacity = \left( \begin{array} { c } { n } \ { w } \end{array} \right) = \frac { n! } { w! ( n - w )! }$$<br>也就是说可以表示这么多的信息量。</p>
-<img src="/images/20191125SDR_Define.png" alt="20191125SDR_Define" style="zoom:50%;" />
-
+<h4 id="3-空间池化Spatial-Pooler"><a href="#3-空间池化Spatial-Pooler" class="headerlink" title="3, 空间池化Spatial Pooler"></a>3, 空间池化Spatial Pooler</h4><h5 id="3-1-稀疏分布表征-SDR"><a href="#3-1-稀疏分布表征-SDR" class="headerlink" title="3.1 稀疏分布表征 SDR"></a>3.1 稀疏分布表征 SDR</h5><p>稀疏分布表征（SDR）是空间池化的结果，通俗来看有点像大脑的数据结构，我们先看看SDR的一些特性，如图。计算SDR的容量:</p>
+<script type="math/tex; mode=display">capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac { n! } { w! ( n - w )! }</script><p>也就是说可以表示这么多的信息量。</p>
+<p><img src="/images/20191125SDR_Define.png" alt="20191125SDR_Define" style="zoom:50%;" /></p>
 <p>1，SDR的一些基本运算。overlap交集，两个SDR交起来，相同的激活的bit越多，表明这俩SDR越相似。判断俩SDR是否匹配，可以设置一定的阈值。当俩SDR overlap之后，交集bit  $&gt;=\theta$ (阈值)，则俩SDR匹配。</p>
 <p>2，SDR的噪声容忍度（noise tolerant）强。在下图中，选取29%的比例翻转bit的值，对比两个SDR，重叠分数为30。当30大于等于$\theta=30$ 则匹配。意思是说如果俩SDR是原本一致，就算其中一个SDR不完全准确有噪声，则还是会匹配上的。当然也有可能确实两SDR不一致，但又因为噪声导致其匹配上了，这样的误报可能有，但是概率很低 $FP = 交集的基数 / 原始SDR的n w的组合数 $ </p>
-<img src="images/20191125NoiseTolerant.png" alt="20191125NoiseTolerant" style="zoom:50%;" />
-
+<p><img src="images/20191125NoiseTolerant.png" alt="20191125NoiseTolerant" style="zoom:50%;" /></p>
 <p>3，SDR的重叠集</p>
-<h4 id="5-时序记忆-Temporal-Memory"><a href="#5-时序记忆-Temporal-Memory" class="headerlink" title="5, 时序记忆 Temporal Memory"></a>5, 时序记忆 Temporal Memory</h4><h4 id="6-总结"><a href="#6-总结" class="headerlink" title="6, 总结"></a>6, 总结</h4><h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><p>1，<a href="https://www.bilibili.com/video/av35735228?from=search&seid=7001690129614399170" target="_blank" rel="noopener">bilibili的翻译HTM school</a></p>
+<h4 id="5-时序记忆-Temporal-Memory"><a href="#5-时序记忆-Temporal-Memory" class="headerlink" title="5, 时序记忆 Temporal Memory"></a>5, 时序记忆 Temporal Memory</h4><h4 id="6-总结"><a href="#6-总结" class="headerlink" title="6, 总结"></a>6, 总结</h4><h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><p>1，<a href="https://www.bilibili.com/video/av35735228?from=search&amp;seid=7001690129614399170" target="_blank" rel="noopener">bilibili的翻译HTM school</a></p>
 <p>2，<a href="https://numenta.org/htm-school/" target="_blank" rel="noopener">numenta的YouTube视频</a></p>
 <p>3， Ahmad S, Lavin A, Purdy S, et al. Unsupervised real-time anomaly detection for streaming data[J]. Neurocomputing, 2017, 262: 134-147.</p>
 
@@ -409,8 +403,7 @@
 
       
           <h3 id="1、准备"><a href="#1、准备" class="headerlink" title="1、准备"></a>1、准备</h3><ol>
-<li><p>请先看好各种软件的版本对应要求，这仨一定要对应好。<br>  <a href="https://blog.csdn.net/omodao1/article/details/83241074" target="_blank" rel="noopener">Tensorflow不同版本要求与CUDA及CUDNN版本对应关系</a></p>
-</li>
+<li>请先看好各种软件的版本对应要求，这仨一定要对应好。<br>  <a href="https://blog.csdn.net/omodao1/article/details/83241074" target="_blank" rel="noopener">Tensorflow不同版本要求与CUDA及CUDNN版本对应关系</a></li>
 <li><p>知道要下哪些版本了，就预先做好各种软件下载工作。<br> 首先下载好英伟达的驱动 <a href="https://www.nvidia.cn/Download/index.aspx?lang=cn" target="_blank" rel="noopener">NVIDIA驱动下载</a><br> 注意！！！下载好跟自己显卡对应的驱动。显卡的产品类型、系列那些如果之前已经装好了驱动，则可以通过命令 nvidia-smi查询到。没有装刚买来就自己查。<br><img src="https://img-blog.csdnimg.cn/20190519153242367.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNjczNDUz,size_1,color_FFFFFF,t_70" alt="我的显卡驱动"><br>即使你的机器之前已经装过驱动，那也最好重新装一遍驱动，因为那个CUDA一定要对应起来。不然后面有坑！</p>
 <p>下载CUDA，链接 <a href="https://developer.nvidia.com/cuda-toolkit-archive" target="_blank" rel="noopener">cuda-toolkit-archive</a><br><img src="https://img-blog.csdnimg.cn/20190519154540803.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNjczNDUz,size_1,color_FFFFFF,t_70" alt="下载CUDA9.0版本"><br>请注意这里一定要选择下载runfilw文件，不是deb！，不然会覆盖之前的显卡驱动带来问题。<br><img src="https://img-blog.csdnimg.cn/20190519154709423.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNjczNDUz,size_1,color_FFFFFF,t_70" alt="对应操作系统下载CUDA"><br>最后下载cuDNN，<a href="https://developer.nvidia.com/rdp/cudnn-archive" target="_blank" rel="noopener">cuDNN下载地址</a>，我下的7.0.5版本<br><img src="https://img-blog.csdnimg.cn/20190519160003336.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNjczNDUz,size_1,color_FFFFFF,t_70" alt="cuDNN下载"></p>
 <h3 id="2、安装驱动"><a href="#2、安装驱动" class="headerlink" title="2、安装驱动"></a>2、安装驱动</h3><h4 id="2-1、正常装驱动。"><a href="#2-1、正常装驱动。" class="headerlink" title="2.1、正常装驱动。"></a>2.1、正常装驱动。</h4><p>按ctrl+alt+f2（有的是f1）进入字符界面命令行，先删除以前的驱动：</p>
@@ -437,19 +430,16 @@
 </li>
 </ol>
 <h4 id="2-2、意外情况"><a href="#2-2、意外情况" class="headerlink" title="2.2、意外情况"></a>2.2、意外情况</h4><p>当然我装的时候是遇到了个大坑的。我看到之前机器上装好了驱动就没管，然后开始装后面的CUDA，结果下的CUDA又是deb的包，导致安装中覆盖了之前的驱动，然后ubuntu打开正确输入密码也无法进入桌面了。</p>
-<h5 id="2-2-1-安装libelf-dev"><a href="#2-2-1-安装libelf-dev" class="headerlink" title="2.2.1 安装libelf-dev"></a>2.2.1 安装libelf-dev</h5><p>于是我又修复，倒回到2.1开始，清理驱动，重装。中间在执行sudo sh NVIDIA-Linux-x86_64-XXX.run  –-no-opengl-files的时候还遇到了build出错，如图：<br><img src="https://img-blog.csdnimg.cn/20190519162933827.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNjczNDUz,size_1,color_FFFFFF,t_70" alt="驱动编译出错"><br>打开他提示的nvidia-installer.log看，里面提示了很多<br><img src="https://img-blog.csdnimg.cn/20190519163249938.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNjczNDUz,size_1,color_FFFFFF,t_70" alt="问题提示"><br>这里还挺好的提示了请安装libelf-dev这种信息，于是我又去下载 <a href="https://pkgs.org/download/libelf-dev" target="_blank" rel="noopener">libelf-dex安装包</a>。本来我只下了1那个，然后输入命令安装：<br><img src="https://img-blog.csdnimg.cn/20190519163856594.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNjczNDUz,size_1,color_FFFFFF,t_70" alt="libelf的版本"></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo dpkg -i libelf-dev_0.165-3ubuntu1_amd64.deb</span><br></pre></td></tr></table></figure>
-<p>很无情的又报了个错，提示amd64 system is ….ubuntu1.1，于是我又下了2那个更新包，再dpkg安装。<br><img src="https://img-blog.csdnimg.cn/20190519164151594.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNjczNDUz,size_1,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>终于顺利给装上了，没有报错了。</p>
+<h5 id="2-2-1-安装libelf-dev"><a href="#2-2-1-安装libelf-dev" class="headerlink" title="2.2.1 安装libelf-dev"></a>2.2.1 安装libelf-dev</h5><p>于是我又修复，倒回到2.1开始，清理驱动，重装。中间在执行sudo sh NVIDIA-Linux-x86_64-XXX.run  –-no-opengl-files的时候还遇到了build出错，如图：<br><img src="https://img-blog.csdnimg.cn/20190519162933827.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNjczNDUz,size_1,color_FFFFFF,t_70" alt="驱动编译出错"><br>打开他提示的nvidia-installer.log看，里面提示了很多<br><img src="https://img-blog.csdnimg.cn/20190519163249938.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNjczNDUz,size_1,color_FFFFFF,t_70" alt="问题提示"><br>这里还挺好的提示了请安装libelf-dev这种信息，于是我又去下载 <a href="https://pkgs.org/download/libelf-dev" target="_blank" rel="noopener">libelf-dex安装包</a>。本来我只下了1那个，然后输入命令安装：<br><img src="https://img-blog.csdnimg.cn/20190519163856594.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNjczNDUz,size_1,color_FFFFFF,t_70" alt="libelf的版本"><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo dpkg -i libelf-dev_0.165-3ubuntu1_amd64.deb</span><br></pre></td></tr></table></figure><br>很无情的又报了个错，提示amd64 system is ….ubuntu1.1，于是我又下了2那个更新包，再dpkg安装。<br><img src="https://img-blog.csdnimg.cn/20190519164151594.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNjczNDUz,size_1,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>终于顺利给装上了，没有报错了。</p>
 <h5 id="2-2-2-gcc和g-版本问题"><a href="#2-2-2-gcc和g-版本问题" class="headerlink" title="2.2.2 gcc和g++版本问题"></a>2.2.2 gcc和g++版本问题</h5><p>前面的装好了，我又准备执行sudo sh NVIDIA-Linux-x86_64-XXX.run  –-no-opengl-files 来着，然而还有问题，又通过命令查看log信息，sudo vim nvidia-installer.log。<br><img src="https://img-blog.csdnimg.cn/20190519164725139.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNjczNDUz,size_1,color_FFFFFF,t_70" alt="不识别Command line"><br>这个问题就是由于gcc和g++版本太低编译不过导致的，因为我看之前有个教程是将这个版本降低了方便CUDA编译来着。但其实我这是CUDA9.0，CUDA9要求GCC版本是5.x或者6.x，其他版本不可以，需要自己进行配置。我之前就是5.5的版本，就不该降级。好的现在再根据那篇博文给换回来。<br><a href="https://blog.csdn.net/u011784994/article/details/80080938" target="_blank" rel="noopener">ubuntu 16.04 LTS 降级安装gcc 4.8
 </a></p>
 <h5 id="2-2-3-装好驱动"><a href="#2-2-3-装好驱动" class="headerlink" title="2.2.3 装好驱动"></a>2.2.3 装好驱动</h5><p>在sh NVIDIA-Linux-x86_64-XXX.run安装就可以了，哎哟喂真是不容易啊。。。<br>然后我再重启，输入密码，终于可以进入桌面了呀，感动到哭。。。</p>
 <h3 id="3、安装CUDA"><a href="#3、安装CUDA" class="headerlink" title="3、安装CUDA"></a>3、安装CUDA</h3><ol>
 <li>安装CUDA<br>打开终端，执行命令，运行run文件：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo sh cuda_9.0.176_384.81_linux.run</span><br></pre></td></tr></table></figure>
 注意提示，前面是一些法律信息啥的，enter过去就好。到后面提示是否安装图像驱动的时候，一定选择no ！！！<br><img src="https://img-blog.csdnimg.cn/20190519165519471.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNjczNDUz,size_4,color_FFFFFF,t_70" alt="no Driver"><br>后面的一些提示选择y就行。出现下图，就表示安装完成。<br><img src="https://img-blog.csdnimg.cn/20190519165702507.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNjczNDUz,size_1,color_FFFFFF,t_70" alt="CUDA安装"><br>如果出现其他问题，可能是某些依赖库没装好，反正我是没遇到。可以试试安装依赖，然后重启再试试。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install libprotobuf-dev libleveldb-dev libsnappy-dev libopencv-dev libhdf5-serial-dev protobuf-compiler</span><br><span class="line">sudo apt-get install --no-install-recommends libboost-all-dev</span><br><span class="line">sudo apt-get install libopenblas-dev liblapack-dev libatlas-base-dev</span><br><span class="line">sudo apt-get install libgflags-dev libgoogle-glog-dev liblmdb-dev</span><br></pre></td></tr></table></figure>
-
 </li>
 </ol>
-<ol start="2">
+<ol>
 <li><p>配置环境变量</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo gedit ~/.bashrc</span><br></pre></td></tr></table></figure>
 <p>打开文件后在最后写入：</p>
@@ -462,14 +452,8 @@
 <p>有提示GPU信息，就表示可以了。</p>
 </li>
 </ol>
-<h3 id="4、安装cuDNN"><a href="#4、安装cuDNN" class="headerlink" title="4、安装cuDNN"></a>4、安装cuDNN</h3><p>安装命令：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo dpkg -i libcudnn7_7.0.5.15-1+cuda9.0_amd64.deb</span><br><span class="line">sudo dpkg -i libcudnn7-dev_7.0.5.11-1+cuda9.0_amd64.deb</span><br><span class="line">sudo dpkg -i libcudnn7-doc_7.0.5.11-1+cuda9.0_amd64.deb</span><br></pre></td></tr></table></figure>
-<p>安装完以后需要进行测试是否安装成功，出现了“Test passed! ”，这几步我都没啥问题：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cp -r /usr/src/cudnn_samples_v7/ $HOME</span><br><span class="line">cd $HOME/cudnn_samples_v7/mnistCUDNN</span><br><span class="line">make clean &amp;&amp; make</span><br><span class="line">./mnistCUDNN</span><br></pre></td></tr></table></figure>
-
-<h3 id="5、安装TensorFlow-gpu"><a href="#5、安装TensorFlow-gpu" class="headerlink" title="5、安装TensorFlow-gpu"></a>5、安装TensorFlow-gpu</h3><p>卸载以前的TensorFlow，我的python环境是3.6</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 uninstall tensorflow</span><br></pre></td></tr></table></figure>
-<p>然后重新装gpu版本就可以，注意我要用的是TensorFlow-gpu1.7版本，这个跟前面的都是对应的！</p>
+<h3 id="4、安装cuDNN"><a href="#4、安装cuDNN" class="headerlink" title="4、安装cuDNN"></a>4、安装cuDNN</h3><p>安装命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo dpkg -i libcudnn7_7.0.5.15-1+cuda9.0_amd64.deb</span><br><span class="line">sudo dpkg -i libcudnn7-dev_7.0.5.11-1+cuda9.0_amd64.deb</span><br><span class="line">sudo dpkg -i libcudnn7-doc_7.0.5.11-1+cuda9.0_amd64.deb</span><br></pre></td></tr></table></figure><br>安装完以后需要进行测试是否安装成功，出现了“Test passed! ”，这几步我都没啥问题：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cp -r /usr/src/cudnn_samples_v7/ $HOME</span><br><span class="line">cd $HOME/cudnn_samples_v7/mnistCUDNN</span><br><span class="line">make clean &amp;&amp; make</span><br><span class="line">./mnistCUDNN</span><br></pre></td></tr></table></figure></p>
+<h3 id="5、安装TensorFlow-gpu"><a href="#5、安装TensorFlow-gpu" class="headerlink" title="5、安装TensorFlow-gpu"></a>5、安装TensorFlow-gpu</h3><p>卸载以前的TensorFlow，我的python环境是3.6<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 uninstall tensorflow</span><br></pre></td></tr></table></figure><br>然后重新装gpu版本就可以，注意我要用的是TensorFlow-gpu1.7版本，这个跟前面的都是对应的！</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 -i https://pypi.tuna.tsinghua.edu.cn/simple/ install tensorflow-gpu==1.7.0</span><br></pre></td></tr></table></figure>
 <p>跑程序的时候，自动就调用了gpu进行计算，学习起来快了6、7倍，真的是开心啊~</p>
 <h3 id="6、总结"><a href="#6、总结" class="headerlink" title="6、总结"></a>6、总结</h3><ol>
@@ -557,7 +541,7 @@
 <h3 id="装windows10"><a href="#装windows10" class="headerlink" title="装windows10"></a>装windows10</h3><ol>
 <li>首先下载好win10的系统镜像ISO文件，由于我不咋用win10就装了家庭版<br>链接: <a href="http://pan.baidu.com/s/1sj3JNRJ" target="_blank" rel="noopener">http://pan.baidu.com/s/1sj3JNRJ</a> 密码: z49r</li>
 </ol>
-<ol start="2">
+<ol>
 <li><p>准备好空的U盘，准备做系统启动盘。<br>下载安装好UltraISO，插入U盘。<br>点击打开，选择ISO文件<br>点击启动 - 写入硬盘映像<br>写入方式选择的是USB-HDD，USB-HDD+，一般默认就好<br>在点击写入，就等着他默默写好就好了<br><img src="https://img-blog.csdnimg.cn/20190422141325858.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNjczNDUz,size_16,color_FFFFFF,t_70" alt="ULtraISO刻录系统启动盘"></p>
 </li>
 <li><p>制作好的系统启动U盘插入要装系统的电脑。开启电脑，一直按 F2或在F12等（这个键根据电脑确定，可以查查，但一般就是这个），进入电脑的Bios设置。<br>选择usb storage device，放到最前面，表示系统启动优先从USB开始。点击apply，再点exit。</p>
@@ -650,7 +634,7 @@
 
       
           <p>创业之路，记录我们一路走来~<br>（我的最后一期了，前几期请关注公众号“笑递代送平台”，服务号“笑递物品代送平台”）</p>
-<img src="http://mmbiz.qpic.cn/mmbiz_jpg/xoDHJj3mofuVibiaF8JE57ficqzeMSEhW6Iqd3GuZH7Qp6FzJS1QcibngYO4vLwgcTicEyMZq3hnzxyAAo6W6rJoiaoA/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" width = "200" height = "200" alt="笑递微信号" align=center/>
+<p><img src="http://mmbiz.qpic.cn/mmbiz_jpg/xoDHJj3mofuVibiaF8JE57ficqzeMSEhW6Iqd3GuZH7Qp6FzJS1QcibngYO4vLwgcTicEyMZq3hnzxyAAo6W6rJoiaoA/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" width = "200" height = "200" alt="笑递微信号" align=center/></p>
 <center>笑递微信号</center>
 
 <p>我在产品方面我尽自己全力的思考迭代，尽力完成工作。但是还是有很多地方值得改进。比如，做事要有细节更要有远见，考虑周到。创业有小步快跑的思想，先做简单的版本。都是十分宝贵的经验呀！最好的是这种团队的温馨感，真的让我十分具有归属感。能在大学有这样一个归属感是很不容易的，有这么群伙伴也是十分不容易的，真的很幸运，我有笑递。</p>
@@ -744,9 +728,7 @@
 <center>笑递简介</center>
 
 <p> 其实昨天晚上，我们和重庆大学小薇（重庆大学的官方微博）一起合作办了场“线上抢苹果”的活动，其实大家都知道，办活动不是那么简单的当天“上”就是，需要前期的各种准备，比如活动策划，活动分工，物资准备，功能流程确定，开发准备等等。做这个抢的大活动，还是很考验我们自己的能力的，毕竟这是第一次。何况还是和重庆大学官方一起做，肯定得做好准备，别出bug啊！（喔，原谅我是一位计算机学院的）</p>
- <img src="/images/ActivityPub.jpg" width = "200" height = "200" alt="活动群宣传" align=center />
- <center>活动宣传</center>
-
+<p> <img src="/images/ActivityPub.jpg" width = "200" height = "200" alt="活动群宣传" align=center /><br> <center>活动宣传</center></p>
 <p> 其实，我刚说的是我预想中的繁忙的活动准备过程，实际是遇到了很多问题的，来看一看，避免广大同胞们以后掉坑。</p>
 <p>1、前期团队沟通不足，对活动的目标定位不充分。导致了活动开始的前一天我和团队另一位负责人起了争执。因为团队完全没有准备宣传材料，没有进行自我宣传，我着急了下。因为自己对这个活动的定义根本就不是帮小薇办活动，而是借助小薇宣传我们自己，也借助小薇的苹果给用户们一点圣诞福利。早点宣传自己是希望传播更远，获取更多用户，让用户体验整个代送的流程知道“笑递” how to use！</p>
 <p>2、活动宣传里对自身的宣传要充分。尽管是活动前一天开始我们自己的宣传的，临时做了推文，活动图片，然后在QQ群和空间进行短语宣传，希望能尽快传播出去。</p>
@@ -756,11 +738,13 @@
 
 <p>3、活动开始了，最最最可怕的是服务器hold不住。请记住做活动要注意CPU，升级服务器，增大带宽😊。</p>
 <p>4、客服得及时解决回复。</p>
-<pre><code>我们中间遇到了很多来咨询的。我表示我的电话呗打爆了，第一次这么频繁的做了个温馨的客服。</code></pre><p>“我打不开。。。。”，“我注册不了”，“页面怎么没有抢了，啊啊啊，为什么啊”</p>
+<pre><code>     我们中间遇到了很多来咨询的。我表示我的电话呗打爆了，第一次这么频繁的做了个温馨的客服。
+</code></pre><p>“我打不开。。。。”，“我注册不了”，“页面怎么没有抢了，啊啊啊，为什么啊”</p>
 <p>“您好，这里是笑递客服中心，请问遇到什么问题了吗？”</p>
 <p>及时做好客服也很重要啊，特别是在这种关键时刻。</p>
 <p>5、线上活动做完了，配送工作继续，这才是重头戏。终于是线下直面用户了，活动还在继续，此文还待更新</p>
 <p>最后看看我们昨儿+今儿的数据情况吧！开心的是，有人夸我们呢(^o^)/</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -772,7 +756,8 @@
 <th>访问次数</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>today</td>
 <td>1489</td>
 <td>449</td>
@@ -788,7 +773,9 @@
 <td>1005</td>
 <td>4414</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 
       
     </div>
