@@ -61,7 +61,7 @@
 <meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20191125featureRepresentation1.png">
 <meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20191125SDR_Define.png">
 <meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;11&#x2F;25&#x2F;Numenta%E7%9A%84HTM%E7%AE%80%E4%BB%8B&#x2F;images&#x2F;20191125NoiseTolerant.png">
-<meta property="og:updated_time" content="2019-11-25T13:27:30.426Z">
+<meta property="og:updated_time" content="2019-11-26T03:34:14.738Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20191125head.png">
 
@@ -213,10 +213,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2019-11-25 16:26:49 / 修改时间：21:27:30" itemprop="dateCreated datePublished" datetime="2019-11-25T16:26:49+08:00">2019-11-25</time>
+              <time title="创建时间：2019-11-25 16:26:49" itemprop="dateCreated datePublished" datetime="2019-11-25T16:26:49+08:00">2019-11-25</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-11-26 11:34:14" itemprop="dateModified" datetime="2019-11-26T11:34:14+08:00">2019-11-26</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -253,7 +259,8 @@
 <p><img src="/images/20191125featureRepresentation1.png" alt="1125featureRepresentation1" style="zoom:50%;" /></p>
 <p>在HTM里，稀疏的每一个1可能表示了一个信息。在通过稀疏bit数组的压缩存储（只存1的下标位置），可以表示非常多的数据信息了。</p>
 <h4 id="3-空间池化Spatial-Pooler"><a href="#3-空间池化Spatial-Pooler" class="headerlink" title="3, 空间池化Spatial Pooler"></a>3, 空间池化Spatial Pooler</h4><h5 id="3-1-稀疏分布表征-SDR"><a href="#3-1-稀疏分布表征-SDR" class="headerlink" title="3.1 稀疏分布表征 SDR"></a>3.1 稀疏分布表征 SDR</h5><p>稀疏分布表征（SDR）是空间池化的结果，通俗来看有点像大脑的数据结构，我们先看看SDR的一些特性，如图。计算SDR的容量:</p>
-<script type="math/tex; mode=display">capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac { n! } { w! ( n - w )! }</script><p>也就是说可以表示这么多的信息量。</p>
+<script type="math/tex; mode=display">
+capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac { n! } { w! ( n - w )! }</script><p>也就是说可以表示这么多的信息量。</p>
 <p><img src="/images/20191125SDR_Define.png" alt="20191125SDR_Define" style="zoom:50%;" /></p>
 <p>1，SDR的一些基本运算。overlap交集，两个SDR交起来，相同的激活的bit越多，表明这俩SDR越相似。判断俩SDR是否匹配，可以设置一定的阈值。当俩SDR overlap之后，交集bit  $&gt;=\theta$ (阈值)，则俩SDR匹配。</p>
 <p>2，SDR的噪声容忍度（noise tolerant）强。在下图中，选取29%的比例翻转bit的值，对比两个SDR，重叠分数为30。当30大于等于$\theta=30$ 则匹配。意思是说如果俩SDR是原本一致，就算其中一个SDR不完全准确有噪声，则还是会匹配上的。当然也有可能确实两SDR不一致，但又因为噪声导致其匹配上了，这样的误报可能有，但是概率很低 $FP = 交集的基数 / 原始SDR的n w的组合数 $ </p>
@@ -495,6 +502,56 @@ window.addEventListener('pjax:success', () => {
     <div id="pjax">
 
   
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
 
   
 
