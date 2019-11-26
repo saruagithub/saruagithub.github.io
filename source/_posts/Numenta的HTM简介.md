@@ -44,7 +44,9 @@ Hierarchical Temporal Memeory(HTM,层级时间记忆，皮质学习) 是一种�
 ##### 3.1 稀疏分布表征 SDR
 
 稀疏分布表征（SDR）是空间池化的结果，通俗来看有点像大脑的数据结构，我们先看看SDR的一些特性，如图。计算SDR的容量:
-$$capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac { n! } { w! ( n - w )! }$$ 
+$$
+capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac { n! } { w! ( n - w )! }
+$$ 
 也就是说可以表示这么多的信息量。
 
 <img src="/images/20191125SDR_Define.png" alt="20191125SDR_Define" style="zoom:50%;" />

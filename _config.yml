@@ -99,3 +99,6 @@ deploy:
   type: git
   repo: git@github.com:saruagithub/saruagithub.github.io.git
   branch: master
+
+mathjax:
+  enable:true
