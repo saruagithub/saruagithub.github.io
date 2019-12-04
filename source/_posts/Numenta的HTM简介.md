@@ -12,19 +12,17 @@ categories:
 
 Hierarchical Temporal Memeory(HTM,层级时间记忆，皮质学习) 是一种基于脑神经科学来模拟大脑进行学习和信息处理的神经网络。新皮质就是大脑里褶皱的皮层部分（图1），这只有哺乳动物有。将皮层纵向切开，不论是视觉还是听觉部分，切开后的结构是相似的（图2），很有可能大脑处理不同信息的方法是类似的。
 
-  
+
 <img src="/images/20191125head.png" width="250"/>    
 <img src="/images/20191125cells.png" width="200"/> 
 
 
 <center>图1 大脑皮层，图2 细胞图</center>
-
 新皮质分化为很多个区域（region，图3），这些区域通过神经纤维连接。这些区域以层次结构的方式连接在一起。低层级信息收集基础信号，经过不同层级逐渐加工，提取并理解更抽象信息，更高级的话或许可以关联到想法、事物活动等信息。这个有点类似卷积神经网络，低层级的网络提取图像边界等信息，高层级的网络识别物体类型等等。
 
 <img src="/images/20191125HierarchicalMode1.png" alt="20191125HierarchicalMode1" style="zoom:50%;" />
 
 <center> 图 3 HTM分层示意图</center>
-
 目前，**Numenta的HTM设计介绍讲解主要针对一个区域，即一层（图3，如黄色层），说明其数据输入方式，数据表征方式，神经元激活，以及时间记忆表示方式**。HTM大概的原理是，首先将输入的数据编码为0、1稀疏数组，将这些稀疏数组经过空间池化转换为稀疏分布表征（SDR），然后时序记忆，建立突触，存储信息，进行预测等。
 
 
@@ -45,8 +43,8 @@ Hierarchical Temporal Memeory(HTM,层级时间记忆，皮质学习) 是一种�
 
 稀疏分布表征（SDR）是空间池化的结果，通俗来看有点像大脑的数据结构，我们先看看SDR的一些特性，如图。计算SDR的容量:
 $$
-capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac { n! } { w! ( n - w )! }
-$$ 
+capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac { n! } { w! ( n - w )! } = C_n^w （组合数）
+$$
 也就是说可以表示这么多的信息量。
 
 <img src="/images/20191125SDR_Define.png" alt="20191125SDR_Define" style="zoom:50%;" />
@@ -57,7 +55,23 @@ $$
 
 <img src="images/20191125NoiseTolerant.png" alt="20191125NoiseTolerant" style="zoom:50%;" />
 
-3，SDR的重叠集
+##### 3.2 SDR的重叠集
+
+如果俩同样大小的SDR（即$n,w$ 分别相等），所有bit匹配，则匹配的SDR必然跟原SDR一模一样，就只有一个。那如果降低匹配阈值 $\theta$ ，当相同激活的bit数目为$\theta$时，可以有多少个SDR与原SDR相匹配呢？ 这是个排列组合问题。
+
+$$\left|\Omega(n, w, \theta)\right|=\left(\begin{array}{c}{w} \\ {\theta}\end{array}\right) \times\left(\begin{array}{l}{n-w} \\ {w-\theta}\end{array}\right)$$
+
+相匹配的SDR，左边从原SDR里$w$里选出$\theta$个bit来激活，这是俩SDR相同激活的bit。右边从原SDR里没有激活的$n-w$ 个bit里选出 $w-\theta$ 来激活即可。若 $n=600, w=40, \theta = 39$，算一算可以有 $40 * 560$个不同的SDR与原SDR匹配，是不是很多呀。
+
+这有个好处就是，SDR可以表示很多相似的信息，而且可以直接通过俩SDR的交集来判断是否相似，误报率也很低。
+
+##### 3.3 SDR栈
+
+随着时间序列值逐步产生，即SDR也逐步产生。我们模拟看到SDR进行匹配的过程。new SDR与栈里的SDRs匹配，看看之前是不是见到过。匹配的SDR会有很多重叠的bit。
+
+![20191204SDR_Stack](/Users/wangxue/gitpro/20191105MyBlog/saruagithub/source/images/20191204SDR_Stack.png)
+
+为了加快计算，之前的所有SDR采用Union合并到一起进行匹配。其实由于$n$很大，错误匹配的概率还是很小的。
 
 
 
