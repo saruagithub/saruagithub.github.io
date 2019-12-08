@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2019-12-04T02:04:59.419Z</updated>
+  <updated>2019-12-08T03:45:40.256Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>20191208LR原理</title>
+    <link href="http://yoursite.com/2019/12/08/20191208LR%E5%8E%9F%E7%90%86/"/>
+    <id>http://yoursite.com/2019/12/08/20191208LR%E5%8E%9F%E7%90%86/</id>
+    <published>2019-12-08T02:59:11.000Z</published>
+    <updated>2019-12-08T03:45:40.256Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="1、线性回归"><a href="#1、线性回归" class="headerlink" title="1、线性回归"></a>1、线性回归</h3><p>单变量线性回归：x ——&gt; hypothesis（假设）——&gt; y，此处假设为线性函数，y输出为数值（若是分类则为0或1）</p><script type="math/tex; mode=display">h_{\theta}{(x)} = \theta^Tx</script><p>为了让hypothesis尽量根据数据拟合好曲线，需要设计损失函数，并对此损失函数优化。损失函数是参数$\theta$ 的 Cost function: </p><script type="math/tex; mode=display">J(\theta)=\min \frac{1}{m} \sum_{i=1}^{m}\left(h_{\theta}(x)-y\right)^{2}</script><p>梯度下降，为了 $min J(\theta)$，我们采用随机梯度下降方法。（其实也可以用一些矩阵直接计算的方法，最优化里的牛顿法、BFGS等等）</p><p>repeat until convergence{</p><script type="math/tex; mode=display">\left.\theta_{j}=\theta_{j}-\alpha \frac{\partial}{\partial \theta_{j}} J(\theta) \quad(for j=0 \cdots)\right\}</script><p>}</p><p><strong>注意</strong>：</p><p>1，学习率影响了梯度下降的步长，一般越大下降越快（但如果最初就在靠近局部最优处，则容易震荡发散），一般设置在0.001~0.003, 取比最大值稍小一点的值即可。</p><p>2，不同的初始$\theta$ 可能下降到不同的局部最优点（因此，我们希望损失函数最好是凸函数，线性回归的$J$就是凸函数，是碗面）。</p><p>3，数据处理的小技巧，将特征归一化到0-1或者-1-1可以避免量纲影响 x- mean / std。</p><p>4，<strong>特征工程非常重要</strong>，特征组合，平方，开根号等等。</p><h3 id="2，逻辑回归LR"><a href="#2，逻辑回归LR" class="headerlink" title="2，逻辑回归LR"></a>2，逻辑回归LR</h3><p>逻辑回归中，x ——&gt; hypothesis（假设）——&gt; y，sigmoid函数将预测值转换为0-1之间的概率。</p><script type="math/tex; mode=display">0 \leq h_{\theta}(x) \leqslant 1</script><script type="math/tex; mode=display">h_{\theta}(x)=g\left(\theta^{\top} x\right)</script><script type="math/tex; mode=display">g(z)=\frac{1}{1+e^{-z}}</script><p>解释：$h_{\theta}(x)$ 是对输入x，y=1的概率估计，$h_{\theta}(x)=P(y=1 / x ; \theta)$ 给定特征x与参数$\theta$时，y=1的概率。</p><p>cost function这里有所不同，因为sigmoid函数代入到平方误差中得到$J$ 是非凸函数，所以cost function用的就是</p><script type="math/tex; mode=display">J\left(h_{0}(x), y\right)=-y \log \left(h_{\theta}(x)\right)-(1-y) \log \left(1-h_{\theta}(x)\right)</script><h3 id="3，优化方法复习"><a href="#3，优化方法复习" class="headerlink" title="3，优化方法复习"></a>3，优化方法复习</h3><p>SGD</p><p>牛顿法</p><p>BFGS</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h3 id=&quot;1、线性回归&quot;&gt;&lt;a href=&quot;#1、线性回归&quot; class=&quot;headerlink&quot; title=&quot;1、线性回归&quot;&gt;&lt;/a&gt;1、线性回归&lt;/h3&gt;&lt;p&gt;单变量线性回归：x ——&amp;gt; hypothesis（假设）——&amp;gt; y，此处假设为线性函数，y输出为
+      
+    
+    </summary>
+    
+    
+      <category term="机器学习" scheme="http://yoursite.com/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+      <category term="机器学习" scheme="http://yoursite.com/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
+    
+  </entry>
   
   <entry>
     <title>NAB源码阅读系列1</title>
