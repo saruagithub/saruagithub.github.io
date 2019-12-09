@@ -56,7 +56,7 @@
 <meta property="og:description" content="1、线性回归单变量线性回归：x ——&amp;gt; hypothesis（假设）——&amp;gt; y，此处假设为线性函数，y输出为数值（若是分类则为0或1） h_{\theta}{(x)} = \theta^Tx为了让hypothesis尽量根据数据拟合好曲线，需要设计损失函数，并对此损失函数优化。损失函数是参数$\theta$ 的 Cost function:  J(\theta)=\min \frac{">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20191209overfit.jpg">
-<meta property="og:updated_time" content="2019-12-09T09:42:27.662Z">
+<meta property="og:updated_time" content="2019-12-09T11:09:04.982Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20191209overfit.jpg">
 
@@ -216,7 +216,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-12-09 17:42:27" itemprop="dateModified" datetime="2019-12-09T17:42:27+08:00">2019-12-09</time>
+                <time title="修改时间：2019-12-09 19:09:04" itemprop="dateModified" datetime="2019-12-09T19:09:04+08:00">2019-12-09</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -264,7 +264,7 @@
 <p>线性回归的损失函数：</p>
 <script type="math/tex; mode=display">J(\theta) = \frac{1}{2m}[\sum_{i=1}^{m}(h_\theta(x^{(i)}) - y^{(i)} )^2 + \lambda \sum_{i=1}^{n} \theta_j^2]</script><p>逻辑回归的损失函数</p>
 <script type="math/tex; mode=display">J(\theta)=-\left[\frac{1}{m} \sum_{i=1}^{m} y^{(i)} \log \left(h_{\theta}(x^{(i)}\right)+\left(1-y^{(i)}\right) \log \left(1-h_{\theta}\left(x^{(i)}\right)\right)\right] + \frac{\lambda}{2m} \sum_{j=1}^n\theta_j^2</script><h3 id="4，优化方法复习"><a href="#4，优化方法复习" class="headerlink" title="4，优化方法复习"></a>4，优化方法复习</h3><p>1，最速下降即负梯度方向：</p>
-<script type="math/tex; mode=display">f(x_k+\alpha \vec P) = f(x_k) + \alpha P^T \nabla f(x_k) + o(\alpha)</script><p>需要 $min{f(x_k+\alpha \vec P)}$，则$min{P^T \nabla f(x_k)}$：</p>
+<script type="math/tex; mode=display">f(x_k+\alpha \vec P) = f(x_k) + \alpha P^T \nabla f(x_k) + o(\alpha)</script><script type="math/tex; mode=display">min{f(x_k+\alpha \vec P)}</script><p>则需要$min{P^T \nabla f(x_k)}$</p>
 <script type="math/tex; mode=display">P = -\frac{\nabla f(x_k)}{||\nabla f(x_k)||}</script><p>此处$\alpha$是学习率</p>
 <p>一般来说，损失函数偏碗状的时候，比较圆的时候，下降比较快。如果，函数形状椭圆形，会来回震荡着走。</p>
 <p>2，牛顿法：牛顿法考虑二阶导信息</p>
@@ -508,6 +508,54 @@ window.addEventListener('pjax:success', () => {
   
 
   
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
 
   
 
