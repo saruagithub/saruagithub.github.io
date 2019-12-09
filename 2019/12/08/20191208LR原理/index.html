@@ -55,8 +55,10 @@
 <meta property="og:site_name" content="WangXue">
 <meta property="og:description" content="1、线性回归单变量线性回归：x ——&amp;gt; hypothesis（假设）——&amp;gt; y，此处假设为线性函数，y输出为数值（若是分类则为0或1） h_{\theta}{(x)} = \theta^Tx为了让hypothesis尽量根据数据拟合好曲线，需要设计损失函数，并对此损失函数优化。损失函数是参数$\theta$ 的 Cost function:  J(\theta)=\min \frac{">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-12-08T03:45:40.256Z">
+<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20191209overfit.png">
+<meta property="og:updated_time" content="2019-12-09T05:44:20.917Z">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20191209overfit.png">
 
 <link rel="canonical" href="http://yoursite.com/2019/12/08/20191208LR%E5%8E%9F%E7%90%86/">
 
@@ -206,10 +208,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2019-12-08 10:59:11 / 修改时间：11:45:40" itemprop="dateCreated datePublished" datetime="2019-12-08T10:59:11+08:00">2019-12-08</time>
+              <time title="创建时间：2019-12-08 10:59:11" itemprop="dateCreated datePublished" datetime="2019-12-08T10:59:11+08:00">2019-12-08</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-12-09 13:44:20" itemprop="dateModified" datetime="2019-12-09T13:44:20+08:00">2019-12-09</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -246,7 +254,14 @@
 <h3 id="2，逻辑回归LR"><a href="#2，逻辑回归LR" class="headerlink" title="2，逻辑回归LR"></a>2，逻辑回归LR</h3><p>逻辑回归中，x ——&gt; hypothesis（假设）——&gt; y，sigmoid函数将预测值转换为0-1之间的概率。</p>
 <script type="math/tex; mode=display">0 \leq h_{\theta}(x) \leqslant 1</script><script type="math/tex; mode=display">h_{\theta}(x)=g\left(\theta^{\top} x\right)</script><script type="math/tex; mode=display">g(z)=\frac{1}{1+e^{-z}}</script><p>解释：$h_{\theta}(x)$ 是对输入x，y=1的概率估计，$h_{\theta}(x)=P(y=1 / x ; \theta)$ 给定特征x与参数$\theta$时，y=1的概率。</p>
 <p>cost function这里有所不同，因为sigmoid函数代入到平方误差中得到$J$ 是非凸函数，所以cost function用的就是</p>
-<script type="math/tex; mode=display">J\left(h_{0}(x), y\right)=-y \log \left(h_{\theta}(x)\right)-(1-y) \log \left(1-h_{\theta}(x)\right)</script><h3 id="3，优化方法复习"><a href="#3，优化方法复习" class="headerlink" title="3，优化方法复习"></a>3，优化方法复习</h3><p>SGD</p>
+<script type="math/tex; mode=display">J\left(h_{0}(x), y\right)=-y \log \left(h_{\theta}(x)\right)-(1-y) \log \left(1-h_{\theta}(x)\right)</script><p>这个非常像似然函数。</p>
+<p>其实逻辑回归还可以用于多分类问题上，分别拟合三个分类器$h_{\theta}^{(i)}(x)$，选择 $max {h_{\theta}^{(i)}(x)}$的类i。</p>
+<h3 id="3，过拟合与正则化"><a href="#3，过拟合与正则化" class="headerlink" title="3，过拟合与正则化"></a>3，过拟合与正则化</h3><h4 id="3-1-欠拟合与过拟合"><a href="#3-1-欠拟合与过拟合" class="headerlink" title="3.1 欠拟合与过拟合"></a>3.1 欠拟合与过拟合</h4><p>欠拟合：模型过于简单，underfit，带来高偏差high bias，就是说模型偏见很强；</p>
+<p>过拟合：模型复杂，overfit，太过于拟合训练数据，经验误差虽小但结构误差大，无法拟合新数据。</p>
+<p><img src="/images/20191209overfit.png" alt="20191209overfit"></p>
+<p>避免过拟合的方法：数据增强more data，简化模型（早停，限制权值正则化，多种模型Bagging，Boosting），增加噪声，集成ensemble，贝叶斯等。</p>
+<h4 id="3-2-正则化"><a href="#3-2-正则化" class="headerlink" title="3.2 正则化"></a>3.2 正则化</h4><p>正则化</p>
+<h3 id="4，优化方法复习"><a href="#4，优化方法复习" class="headerlink" title="4，优化方法复习"></a>4，优化方法复习</h3><p>SGD</p>
 <p>牛顿法</p>
 <p>BFGS</p>
 
@@ -308,7 +323,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、线性回归"><span class="nav-number">1.</span> <span class="nav-text">1、线性回归</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2，逻辑回归LR"><span class="nav-number">2.</span> <span class="nav-text">2，逻辑回归LR</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3，优化方法复习"><span class="nav-number">3.</span> <span class="nav-text">3，优化方法复习</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、线性回归"><span class="nav-number">1.</span> <span class="nav-text">1、线性回归</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2，逻辑回归LR"><span class="nav-number">2.</span> <span class="nav-text">2，逻辑回归LR</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3，过拟合与正则化"><span class="nav-number">3.</span> <span class="nav-text">3，过拟合与正则化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-欠拟合与过拟合"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 欠拟合与过拟合</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-正则化"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 正则化</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4，优化方法复习"><span class="nav-number">4.</span> <span class="nav-text">4，优化方法复习</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
