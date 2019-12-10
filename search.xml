@@ -1,0 +1,463 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>20190507paper-the-Numenta-Anomaly-Benchmark</title>
+    <url>/2019/12/09/20190507paper-the-Numenta-Anomaly-Benchmark/</url>
+    <content><![CDATA[<h3 id="1-ABS-amp-Introduction"><a href="#1-ABS-amp-Introduction" class="headerlink" title="1 ABS &amp; Introduction"></a>1 ABS &amp; Introduction</h3><h4 id="1-1-Abstract"><a href="#1-1-Abstract" class="headerlink" title="1.1 Abstract"></a>1.1 Abstract</h4><p>对象：streams, time-series data, sequence</p>
+<p>异常检测难点：real-time processing</p>
+<p>NAB是一个测试评估针对流数据的异常检测算法的开源工具。</p>
+<p>理想的异常检测器 </p>
+<ol>
+<li><p>检测到所有出现的异常 </p>
+</li>
+<li><p>尽早检测出异常，最好在人们看到异常之前 </p>
+</li>
+<li><p>no FP 不误报 </p>
+</li>
+<li><p>实时检测、没有前瞻（不看前面的数据） </p>
+</li>
+<li><p>自动化检测、无人工调节</p>
+</li>
+<li>适用性广泛，具有泛化性</li>
+</ol>
+<h4 id="1-2-Intro"><a href="#1-2-Intro" class="headerlink" title="1.2 Intro"></a>1.2 Intro</h4><p>静态基准不适合用于实时性算法。Precision和Recall无法反应出早检测这个效果。人工划分训练集测试集不适合流场景。NAB设计了新的评价标准，整合了各类数据集。其他数据集还有the UC- Irvine dataset ，Yahoo Labs。本论文比较了HTM、Skyline、与Twitter的两种方法<a href="https://blog.twitter.com/engineering/en_us/a/2015/introducing-practical-and-robust-anomaly-detection-in-a-time-series.html" target="_blank" rel="noopener">Twitter 方法，翻</a> （AnomalyDetectionTs and AnomalyDetectionVec. ）。</p>
+<h3 id="2，NAB-scoring"><a href="#2，NAB-scoring" class="headerlink" title="2，NAB scoring"></a>2，NAB scoring</h3><h4 id="2-1-基础"><a href="#2-1-基础" class="headerlink" title="2.1 基础"></a>2.1 基础</h4><p>异常定义：We define anomalies in a data stream to be patterns that do not conform to past patterns of behavior for the stream. 包括空间异常和时间异常。</p>
+<p><img src="/images/20191210anomaly.jpg" alt="20191210anomaly"></p>
+<p>Dataset：范围从IT指标（例如网络利用率）到工业机器上的传感器再到社交媒体聊天。我们还包括一些人工生成的数据文件，用于测试尚未在语料库的真实数据中表示的异常行为，以及几个没有任何异常的数据文件。当前的NAB数据集包含58个数据文件，每个文件具有1000-22,000个数据实例（github里有）</p>
+<p>标记异常：按一定规则，标记ground truth label</p>
+<h4 id="2-2-算法"><a href="#2-2-算法" class="headerlink" title="2.2 算法"></a>2.2 算法</h4><p>算法核心三个方面：anomaly Window，the scoring function，application Profiles（配置文件）</p>
+<h5 id="2-2-1-异常窗口"><a href="#2-2-1-异常窗口" class="headerlink" title="2.2.1 异常窗口"></a>2.2.1 异常窗口</h5><p>异常窗口是代表一系列以真实异常标签（ a ground truth anomaly label ）为中心的数据点。</p>
+<p>异常窗口的作用是判断真假检测，检测在窗外的话是FP。</p>
+<p>评分函数基于窗口识别、加权TP，FP，FN。前面紫色部分只用来初始学习，不需测试。</p>
+<p>1，窗口内最早的TP检测被计分，其他忽略。</p>
+<p>2，sigmoidal scoring function 给早检测的TP高分。给FP负分数。</p>
+<p>3，窗口大小 = 10%*总数据长度/异常数量。实验测试了5% - 20%，由于缩放评分函数，这个百分比对最后结果不敏感。</p>
+<p><img src="/images/20191210AnomalyWindow.jpg" alt="20191210AnomalyWindow"></p>
+<p>application profile配置：FN对工业机器来说会造成损失，FP要求技术人员查看。（对监视数据中心中各个服务器状态的应用程序可能对误报的数量敏感，并且由于大多数服务器群集都相对容错，因此偶尔会遗漏异常情况很好。）因此配置文件用于：对于TP，FP，FN和TN，NAB应用与每个配置文件相关的不同相对权重以获得每个配置文件的单独分数。</p>
+<h5 id="2-2-2-计算过程"><a href="#2-2-2-计算过程" class="headerlink" title="2.2.2 计算过程"></a>2.2.2 计算过程</h5><p>1，配置权重$A$</p>
+<script type="math/tex; mode=display">A_{T P}, A_{F P}, A_{F N}, A_{T N}, 0 \leq A_{TP},A_{TN} \leq 1, -1 \leq A_{FP},A_{FN} \leq 0</script><p>$D$ 是数据集，$Y_d$是数据 $d$ 中被检测出来的异常。$f_d$表示没有检测到任何异常的窗口数量，</p>
+<p><img src="/images/20191210NABScoring.jpg" alt="20191210NABScoring"></p>
+<p>2，单个窗口的得分计算</p>
+<p>图中TP：早检测则，增加NAB score；点2：早检测的TP，贡献+0.999 。</p>
+<p>FP：减分（窗外后面的FP的减分更大）；点1：FP，贡献-1，点4：权重为-0.8093是根据$\sigma^{A}(y)$得到的。5：5更有害，因此5贡献-1。</p>
+<p>FN：完全没有检测到，减分。</p>
+<p>总的来看这个窗口的得分就是：$−1.0A_{FP} + 0.9999A_{TP} −0.8093A_{FP} − 1.0A_{FP} $ ，公式是：</p>
+<script type="math/tex; mode=display">\sigma^{A}(y)=\left(A_{T P}-A_{F P}\right)\left(\frac{1}{1+e^{5 y}}\right)-1</script><p>$\sigma^{A}(y)$中，y表示是检测在异常检测窗的相对位置，参数被设置为窗口右侧，$\sigma ( y = 0.0 ) = 0$。 </p>
+<p>3，一个数据文件的得分计算</p>
+<p>得分是每个检测的得分+错过的Window</p>
+<script type="math/tex; mode=display">S_{d}^{A}=\left(\sum_{y \in Y_{d}} \sigma^{A}(y)\right)+A_{F N} f_{d}</script><p>4，一个异常检测算法对所有数据集的得分</p>
+<script type="math/tex; mode=display">S ^ { A } = \sum _ { d \in D } S _ { d } ^ { A }</script><p>5，归一化这个算法的分数，normalized NAB score</p>
+<script type="math/tex; mode=display">S _ { N A B } ^ { A } = 100 \cdot \frac { S ^ { A } - S _ { \text {null} } ^ { A } } { S _ { \text {perfect} } ^ { A } - S _ { \text {null} } ^ { A } }</script><p>完美检测器检测到所有TP，无FP。NULL检测器就是没有检测到任何异常。</p>
+<h5 id="2-2-3-其他"><a href="#2-2-3-其他" class="headerlink" title="2.2.3 其他"></a>2.2.3 其他</h5><p>HTM算法，Skyline统计算法，Twitter统计算法等</p>
+<p>每个异常检测器输出是0-1之间的分数，使用固定阈值对分数进行阈值处理，以检测异常。 NAB包括自动爬坡搜索，用于为每种算法选择最佳阈值。其中要最大化的目标函数是NAB评分函数。一个阈值针对所有的数据集dataset（The detection threshold is thus tuned based on the full NAB dataset）。</p>
+<h3 id="3-result"><a href="#3-result" class="headerlink" title="3 result"></a>3 result</h3><p>见github首页</p>
+<p>一些小结论</p>
+<p>1，HTM和Skyline对漂移适应得更快</p>
+<p>2，HTM和Skyline各自也有误报但HTM可以早检测（3h，机器温度传感器数据）</p>
+<p>3，行为的时间变化通常先于容易检测到的大变化（做提前检测）。 </p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，Lavin A, Ahmad S. Evaluating Real-Time Anomaly Detection Algorithms—The Numenta Anomaly Benchmark[C]//2015 IEEE 14th International Conference on Machine Learning and Applications (ICMLA). IEEE, 2015: 38-44.</p>
+<p>2, <a href="https://github.com/numenta/NAB" target="_blank" rel="noopener">https://github.com/numenta/NAB</a> 很好的学习项目</p>
+]]></content>
+      <categories>
+        <category>AIOPs</category>
+      </categories>
+      <tags>
+        <tag>AIOPs</tag>
+        <tag>时间序列</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>NAB源码阅读系列1</title>
+    <url>/2019/12/04/NAB%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E7%B3%BB%E5%88%971/</url>
+    <content><![CDATA[<h3 id="1-NAB的基本框架"><a href="#1-NAB的基本框架" class="headerlink" title="1 NAB的基本框架"></a>1 NAB的基本框架</h3><p>NAB里包括了几个在线时间序列异常检测器，包括了几组异常检测数据集，包括了阈值优化，评分算法，归一化检测器分数等内容，包括了NAB结果及可视化等内容。</p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1, Ahmad S, Lavin A, Purdy S, et al. Unsupervised real-time anomaly detection for streaming data[J]. Neurocomputing, 2017, 262: 134-147.</p>
+<p>2, Lavin A, Ahmad S. Evaluating Real-Time Anomaly Detection Algorithms—The Numenta Anomaly Benchmark[C]//2015 IEEE 14th International Conference on Machine Learning and Applications (ICMLA). IEEE, 2015: 38-44.</p>
+<p>3, <a href="https://github.com/numenta/NAB" target="_blank" rel="noopener">https://github.com/numenta/NAB</a> NAB的开源库里有很多说明，以及白皮书</p>
+]]></content>
+      <categories>
+        <category>AIOps</category>
+      </categories>
+      <tags>
+        <tag>时间序列</tag>
+        <tag>智能运维</tag>
+        <tag>异常检测</tag>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>mac上hexo的mathjax配置</title>
+    <url>/2019/11/26/mac%E4%B8%8Ahexo%E7%9A%84mathjax%E9%85%8D%E7%BD%AE/</url>
+    <content><![CDATA[<p>博文中要写公式是难免的，因为配置hexo支持数学公式是必要的。 Next 主题提供了两个渲染引擎，分别是 mathjax 和 katex，后者相对前者来说渲染速度更快，而且支持更丰富的公式。我这里hexo是4.0版本了，因此又折腾了下。</p>
+<h6 id="1，更改next下的config"><a href="#1，更改next下的config" class="headerlink" title="1，更改next下的config"></a>1，更改next下的config</h6><p>配置next主题里的_config如下，只需要改一个地方就是mathjax的enable为true。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># Math Formulas Render Support</span><br><span class="line">math:</span><br><span class="line">  # Default (true) will load mathjax / katex script on demand.</span><br><span class="line">  # That is it only render those page which has `mathjax: true` in Front-matter.</span><br><span class="line">  # If you set it to false, it will load mathjax / katex srcipt EVERY PAGE.</span><br><span class="line">  per_page: true</span><br><span class="line"></span><br><span class="line">  # hexo-renderer-pandoc (or hexo-renderer-kramed) required for full MathJax support.</span><br><span class="line">  mathjax:</span><br><span class="line">    enable: true</span><br><span class="line">    # See: https://mhchem.github.io/MathJax-mhchem/</span><br><span class="line">    mhchem: false</span><br></pre></td></tr></table></figure>
+<h6 id="2-去掉hexo自带的数学渲染"><a href="#2-去掉hexo自带的数学渲染" class="headerlink" title="2, 去掉hexo自带的数学渲染"></a>2, 去掉hexo自带的数学渲染</h6><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">npm uninstall hexo-renderer-marked --save</span><br><span class="line">npm install hexo-renderer-kramed --save</span><br></pre></td></tr></table></figure>
+<p>在修改下源文件。打开<code>node_modules/hexo-renderer-kramed/lib/renderer.js</code>，将</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">// Change inline math rule</span><br><span class="line">function formatText(text) &#123;</span><br><span class="line">    // Fit kramed&apos;s rule: $$ + \1 + $$</span><br><span class="line">    return text.replace(/`\$(.*?)\$`/g, &apos;$$$$$1$$$$&apos;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>改为：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">// Change inline math rule</span><br><span class="line">function formatText(text) &#123;</span><br><span class="line">    return text;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>卸载hexo-math，安装新的。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">npm uninstall hexo-math --save</span><br><span class="line">npm install hexo-renderer-mathjax --save</span><br></pre></td></tr></table></figure>
+<p>在修改源文件，打开<code>node_modules/hexo-renderer-mathjax/mathjax.html</code>，将最后一句script改为：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML&quot;&gt;&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<p>打开<code>node_modules/kramed/lib/rules/inline.js</code> : </p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">// escape: /^\\([\\`*&#123;&#125;\[\]()#$+\-.!_&gt;])/,  注释掉改为下面一句</span><br><span class="line">escape: /^\\([`*\[\]()# +\-.!_&gt;])/,</span><br></pre></td></tr></table></figure>
+<p>下面的em渲染也改了:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">// em: /^\b_((?:__|[\s\S])+?)_\b|^\*((?:\*\*|[\s\S])+?)\*(?!\*)/, 注释掉改为下面一句</span><br><span class="line">em: /^\*((?:\*\*|[\s\S])+?)\*(?!\*)/,</span><br></pre></td></tr></table></figure>
+<h6 id="3，开启bolg下的config支持"><a href="#3，开启bolg下的config支持" class="headerlink" title="3，开启bolg下的config支持"></a>3，开启bolg下的config支持</h6><p>在末尾添加内容。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mathjax:</span><br><span class="line">    enable: true</span><br></pre></td></tr></table></figure>
+<p>就可以了，鉴于之前的博客可能有些老了，配置了半天就记录下。</p>
+<h6 id="4，最后自己在写bolg的时候头部加上mathjax-true，表示本文要数学公式渲染。"><a href="#4，最后自己在写bolg的时候头部加上mathjax-true，表示本文要数学公式渲染。" class="headerlink" title="4，最后自己在写bolg的时候头部加上mathjax: true，表示本文要数学公式渲染。"></a>4，最后自己在写bolg的时候头部加上mathjax: true，表示本文要数学公式渲染。</h6>]]></content>
+      <categories>
+        <category>配置</category>
+      </categories>
+      <tags>
+        <tag>配置</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Numenta的HTM简介</title>
+    <url>/2019/11/25/Numenta%E7%9A%84HTM%E7%AE%80%E4%BB%8B/</url>
+    <content><![CDATA[<h4 id="1-Numenta的HTM简介"><a href="#1-Numenta的HTM简介" class="headerlink" title="1, Numenta的HTM简介"></a>1, Numenta的HTM简介</h4><p>Hierarchical Temporal Memeory(HTM,层级时间记忆，皮质学习) 是一种基于脑神经科学来模拟大脑进行学习和信息处理的神经网络。新皮质就是大脑里褶皱的皮层部分（图1），这只有哺乳动物有。将皮层纵向切开，不论是视觉还是听觉部分，切开后的结构是相似的（图2），很有可能大脑处理不同信息的方法是类似的。</p>
+<p><img src="/images/20191125head.jpg" width="250"/><br><img src="/images/20191125cells.png" width="200"/> </p>
+<p><center>图1 大脑皮层，图2 细胞图</center><br>新皮质分化为很多个区域（region，图3），这些区域通过神经纤维连接。这些区域以层次结构的方式连接在一起。低层级信息收集基础信号，经过不同层级逐渐加工，提取并理解更抽象信息，更高级的话或许可以关联到想法、事物活动等信息。这个有点类似卷积神经网络，低层级的网络提取图像边界等信息，高层级的网络识别物体类型等等。</p>
+<p><img src="/images/20191125HierarchicalMode1.png" width="400"/></p>
+<p><center> 图 3 HTM分层示意图</center><br>目前，<strong>Numenta的HTM设计介绍讲解主要针对一个区域，即一层（图3，如黄色层），说明其数据输入方式，数据表征方式，神经元激活，以及时间记忆表示方式</strong>。HTM大概的原理是，首先将输入的数据编码为0、1稀疏数组，将这些稀疏数组经过空间池化转换为稀疏分布表征（SDR），然后时序记忆，建立突触，存储信息，进行预测等。</p>
+<h4 id="2-数据输入"><a href="#2-数据输入" class="headerlink" title="2, 数据输入"></a>2, 数据输入</h4><p>数据输入一般有数字，日期，温度等，将这些数据编码为01稀疏数组（bit数组）。这在计算机领域十分常见，如一个字符的ASCⅡ表示，使用8bit表示的。n个bit可以表示$2^n$容量（capacity）的信息，bit数组可以有许多运算，与或非与异或等等。</p>
+<p><img src="/images/20191125featureRepresentation1.png" width="400"/></p>
+<p>在HTM里，稀疏的每一个1可能表示了一个信息。在通过稀疏bit数组的压缩存储（只存1的下标位置），可以表示非常多的数据信息了。</p>
+<h4 id="3-空间池化Spatial-Pooler"><a href="#3-空间池化Spatial-Pooler" class="headerlink" title="3, 空间池化Spatial Pooler"></a>3, 空间池化Spatial Pooler</h4><h5 id="3-1-稀疏分布表征-SDR"><a href="#3-1-稀疏分布表征-SDR" class="headerlink" title="3.1 稀疏分布表征 SDR"></a>3.1 稀疏分布表征 SDR</h5><p>稀疏分布表征（SDR）是空间池化的结果，通俗来看有点像大脑的数据结构，我们先看看SDR的一些特性，如图。计算SDR的容量:</p>
+<script type="math/tex; mode=display">
+capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac { n! } { w! ( n - w )! } = C_n^w （组合数）</script><p>也就是说可以表示这么多的信息量。</p>
+<p><img src="/images/20191125SDR_Define.png" width="400"/></p>
+<p>1，SDR的一些基本运算。overlap交集，两个SDR交起来，相同的激活的bit越多，表明这俩SDR越相似。判断俩SDR是否匹配，可以设置一定的阈值。当俩SDR overlap之后，交集bit  $&gt;=\theta$ (阈值)，则俩SDR匹配。</p>
+<p>2，SDR的噪声容忍度（noise tolerant）强。在下图中，选取29%的比例翻转bit的值，对比两个SDR，重叠分数为30。当30大于等于$\theta=30$ 则匹配。意思是说如果俩SDR是原本一致，就算其中一个SDR不完全准确有噪声，则还是会匹配上的。当然也有可能确实两SDR不一致，但又因为噪声导致其匹配上了，这样的误报可能有，但是概率很低 $FP = 交集的基数 / 原始SDR的n w的组合数 $ </p>
+<p><img src="/images/20191125NoiseTolerant.jpg" width="400"/></p>
+<h5 id="3-2-SDR的重叠集"><a href="#3-2-SDR的重叠集" class="headerlink" title="3.2 SDR的重叠集"></a>3.2 SDR的重叠集</h5><p>如果俩同样大小的SDR（即$n,w$ 分别相等），所有bit匹配，则匹配的SDR必然跟原SDR一模一样，就只有一个。那如果降低匹配阈值 $\theta$ ，当相同激活的bit数目为$\theta$时，可以有多少个SDR与原SDR相匹配呢？ 这是个排列组合问题。</p>
+<script type="math/tex; mode=display">\left|\Omega(n, w, \theta)\right|=\left(\begin{array}{c}{w} \\ {\theta}\end{array}\right) \times\left(\begin{array}{l}{n-w} \\ {w-\theta}\end{array}\right)</script><p>相匹配的SDR，左边从原SDR里$w$里选出$\theta$个bit来激活，这是俩SDR相同激活的bit。右边从原SDR里没有激活的$n-w$ 个bit里选出 $w-\theta$ 来激活即可。若 $n=600, w=40, \theta = 39$，算一算可以有 $40 * 560$个不同的SDR与原SDR匹配，是不是很多呀。</p>
+<p>这有个好处就是，SDR可以表示很多相似的信息，而且可以直接通过俩SDR的交集来判断是否相似，误报率也很低。</p>
+<h5 id="3-3-SDR栈"><a href="#3-3-SDR栈" class="headerlink" title="3.3 SDR栈"></a>3.3 SDR栈</h5><p>随着时间序列值逐步产生，即SDR也逐步产生。我们模拟看到SDR进行匹配的过程。new SDR与栈里的SDRs匹配，看看之前是不是见到过。匹配的SDR会有很多重叠的bit。</p>
+<p><img src="/images/20191204SDR_Stack.jpg" width="400"/></p>
+<p>为了加快计算，之前的所有SDR采用Union合并到一起进行匹配。其实由于$n$很大，错误匹配的概率还是很小的。</p>
+<h4 id="5-时序记忆-Temporal-Memory"><a href="#5-时序记忆-Temporal-Memory" class="headerlink" title="5, 时序记忆 Temporal Memory"></a>5, 时序记忆 Temporal Memory</h4><h4 id="6-总结"><a href="#6-总结" class="headerlink" title="6, 总结"></a>6, 总结</h4><h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><p>1，<a href="https://www.bilibili.com/video/av35735228?from=search&amp;seid=7001690129614399170" target="_blank" rel="noopener">bilibili的翻译HTM school</a></p>
+<p>2，<a href="https://numenta.org/htm-school/" target="_blank" rel="noopener">numenta的YouTube视频</a></p>
+<p>3， Ahmad S, Lavin A, Purdy S, et al. Unsupervised real-time anomaly detection for streaming data[J]. Neurocomputing, 2017, 262: 134-147.</p>
+]]></content>
+      <categories>
+        <category>AIOps</category>
+      </categories>
+      <tags>
+        <tag>AIOps</tag>
+        <tag>神经网络</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>[paper]2019/11/06AIOps: Real-World Challenges and Research Innovations</title>
+    <url>/2019/11/06/paper-2019-11-06AIOps-Real-World-Challenges-and-Research-Innovations/</url>
+    <content><![CDATA[<h3 id="论文信息"><a href="#论文信息" class="headerlink" title="论文信息"></a>论文信息</h3><p>论文名字：AIOps: Real-World Challenges and Research Innovations<br>引用：Dang Y, Lin Q, Huang P. AIOps: real-world challenges and research innovations[C]//Proceedings of the 41st International Conference on Software Engineering: Companion Proceedings. IEEE Press, 2019: 4-5.</p>
+<h3 id="AIOps定义"><a href="#AIOps定义" class="headerlink" title="AIOps定义"></a>AIOps定义</h3><p>智能运维的定义：通过AI与ML有效构建运维应用 AIOps is about empowering software and service engineers (e.g., developers, program managers, support engineers, site reliability engineers) to efficiently and effectively build and operate online services and applications at scale with artificial intelligence (AI) and machine learning (ML) techniques. </p>
+<p>DevOps 连续开发部署应用（来源于 G. Kim, P. Debois, et al, “The DevOps Handbook: How to Create World- Class Agility, Reliability, and Security in Technology Organizations”, IT Revolution Press, Oct. 2016）</p>
+<h3 id="AIOps的三个目标"><a href="#AIOps的三个目标" class="headerlink" title="AIOps的三个目标"></a>AIOps的三个目标</h3><p>1，服务智能化<br>及时观察多方面变化，质量下降，成本增加，工作量增加等，基于AIOps的服务还可以根据其历史行为，工作量模式和基础来预测其未来状态。根据状态自我调整，trigger self-adaption or auto-healing behaviors of a service, with low human intervention.</p>
+<p>思考：要监控性能，监控反应时间，问题调整策略（自动化调整）</p>
+<p>2，较高的客户满意度<br>具有内置智能的服务可以了解客户的使用行为，并采取积极的行动来提高客户满意度。 例如，服务可以自动向客户推荐调整建议，以使其获得最佳性能（例如，调整配置，冗余级别，资源分配）</p>
+<p>思考：网络不好的话如何自动调整？</p>
+<p>3，高工程生产率<br> 工程师和操作员免于繁琐的工作，例如（1）从各种来源手动收集信息以调查问题； （2）解决重复出现的问题。 工程师和操作人员还可以使用AI / ML技术来学习系统行为的模式，预测服务行为和客户活动的未来，以进行必要的体系结构更改和服务适应策略更改等。</p>
+<h3 id="challenges"><a href="#challenges" class="headerlink" title="challenges"></a>challenges</h3><p>整体思考，充足理解系统<br>工程架构转变 the AIOps engineering principles should include data/label quality monitoring and assurances, continuous model-quality validation, and actionability of insights.<br>缺乏label，极端失衡，数量太少，噪声程度高等，监督或半监督模型<br>组件服务之间的复杂依存关系</p>
+<p>思考：还有服务变更带来的问题，新学习吗？<br>实时数据大量产生，怎么利用?</p>
+]]></content>
+      <categories>
+        <category>AIOps</category>
+      </categories>
+      <tags>
+        <tag>AIOps</tag>
+        <tag>论文综述</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ubuntu16配置GPU深度学习环境、CUDA、cuNDD等</title>
+    <url>/2019/11/06/ubuntu16%E9%85%8D%E7%BD%AEGPU%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%8E%AF%E5%A2%83%E3%80%81CUDA%E3%80%81cuNDD%E7%AD%89/</url>
+    <content><![CDATA[<h3 id="1、准备"><a href="#1、准备" class="headerlink" title="1、准备"></a>1、准备</h3><ol>
+<li>请先看好各种软件的版本对应要求，这仨一定要对应好。<br>  <a href="https://blog.csdn.net/omodao1/article/details/83241074" target="_blank" rel="noopener">Tensorflow不同版本要求与CUDA及CUDNN版本对应关系</a></li>
+<li><p>知道要下哪些版本了，就预先做好各种软件下载工作。<br> 首先下载好英伟达的驱动 <a href="https://www.nvidia.cn/Download/index.aspx?lang=cn" target="_blank" rel="noopener">NVIDIA驱动下载</a><br> 注意！！！下载好跟自己显卡对应的驱动。显卡的产品类型、系列那些如果之前已经装好了驱动，则可以通过命令 nvidia-smi查询到。没有装刚买来就自己查。<br><img src="https://img-blog.csdnimg.cn/20190519153242367.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNjczNDUz,size_1,color_FFFFFF,t_70" alt="我的显卡驱动"><br>即使你的机器之前已经装过驱动，那也最好重新装一遍驱动，因为那个CUDA一定要对应起来。不然后面有坑！</p>
+<p>下载CUDA，链接 <a href="https://developer.nvidia.com/cuda-toolkit-archive" target="_blank" rel="noopener">cuda-toolkit-archive</a><br><img src="https://img-blog.csdnimg.cn/20190519154540803.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNjczNDUz,size_1,color_FFFFFF,t_70" alt="下载CUDA9.0版本"><br>请注意这里一定要选择下载runfilw文件，不是deb！，不然会覆盖之前的显卡驱动带来问题。<br><img src="https://img-blog.csdnimg.cn/20190519154709423.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNjczNDUz,size_1,color_FFFFFF,t_70" alt="对应操作系统下载CUDA"><br>最后下载cuDNN，<a href="https://developer.nvidia.com/rdp/cudnn-archive" target="_blank" rel="noopener">cuDNN下载地址</a>，我下的7.0.5版本<br><img src="https://img-blog.csdnimg.cn/20190519160003336.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNjczNDUz,size_1,color_FFFFFF,t_70" alt="cuDNN下载"></p>
+<h3 id="2、安装驱动"><a href="#2、安装驱动" class="headerlink" title="2、安装驱动"></a>2、安装驱动</h3><h4 id="2-1、正常装驱动。"><a href="#2-1、正常装驱动。" class="headerlink" title="2.1、正常装驱动。"></a>2.1、正常装驱动。</h4><p>按ctrl+alt+f2（有的是f1）进入字符界面命令行，先删除以前的驱动：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo apt-get purge nvidia*</span><br><span class="line">sudo apt-get autoremove</span><br></pre></td></tr></table></figure>
+<p>禁止自带的nouveau nvidia驱动：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 打开配置文件</span><br><span class="line">sudo vim /etc/modprobe.d/blacklist-nouveau.conf</span><br></pre></td></tr></table></figure>
+<p>添加以下内容：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">blacklist nouveau</span><br><span class="line">options nouveau modeset=0</span><br></pre></td></tr></table></figure>
+<p>再更新一下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo update-initramfs -u</span><br></pre></td></tr></table></figure>
+<p>最后需要进行重启。查看下Nouveau是否已经禁止，无输出则为成功：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">lsmod | grep nouveau</span><br></pre></td></tr></table></figure>
+<p>按ctrl+alt+f2，接着关闭图形化界面：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo service lightdm stop</span><br></pre></td></tr></table></figure>
+<p>然后准备开始装驱动了。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo sh NVIDIA-Linux-x86_64-XXX.run  –-no-opengl-files</span><br></pre></td></tr></table></figure>
+<p>然后重新打开图形界面：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo service lightdm start</span><br></pre></td></tr></table></figure>
+<p>再ctrl+alt+f7进入图形界面，再测试下驱动是否装好：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">nvidia-smi</span><br></pre></td></tr></table></figure>
+<p>安装完成后，重启:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo reboot</span><br></pre></td></tr></table></figure>
+<p>在命令行通过nvidia-smi还可以查看到驱动的话就没有问题了，以上皆为顺利的过程。</p>
+</li>
+</ol>
+<h4 id="2-2、意外情况"><a href="#2-2、意外情况" class="headerlink" title="2.2、意外情况"></a>2.2、意外情况</h4><p>当然我装的时候是遇到了个大坑的。我看到之前机器上装好了驱动就没管，然后开始装后面的CUDA，结果下的CUDA又是deb的包，导致安装中覆盖了之前的驱动，然后ubuntu打开正确输入密码也无法进入桌面了。</p>
+<h5 id="2-2-1-安装libelf-dev"><a href="#2-2-1-安装libelf-dev" class="headerlink" title="2.2.1 安装libelf-dev"></a>2.2.1 安装libelf-dev</h5><p>于是我又修复，倒回到2.1开始，清理驱动，重装。中间在执行sudo sh NVIDIA-Linux-x86_64-XXX.run  –-no-opengl-files的时候还遇到了build出错，如图：<br><img src="https://img-blog.csdnimg.cn/20190519162933827.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNjczNDUz,size_1,color_FFFFFF,t_70" alt="驱动编译出错"><br>打开他提示的nvidia-installer.log看，里面提示了很多<br><img src="https://img-blog.csdnimg.cn/20190519163249938.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNjczNDUz,size_1,color_FFFFFF,t_70" alt="问题提示"><br>这里还挺好的提示了请安装libelf-dev这种信息，于是我又去下载 <a href="https://pkgs.org/download/libelf-dev" target="_blank" rel="noopener">libelf-dex安装包</a>。本来我只下了1那个，然后输入命令安装：<br><img src="https://img-blog.csdnimg.cn/20190519163856594.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNjczNDUz,size_1,color_FFFFFF,t_70" alt="libelf的版本"><br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo dpkg -i libelf-dev_0.165-3ubuntu1_amd64.deb</span><br></pre></td></tr></table></figure><br>很无情的又报了个错，提示amd64 system is ….ubuntu1.1，于是我又下了2那个更新包，再dpkg安装。<br><img src="https://img-blog.csdnimg.cn/20190519164151594.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNjczNDUz,size_1,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>终于顺利给装上了，没有报错了。</p>
+<h5 id="2-2-2-gcc和g-版本问题"><a href="#2-2-2-gcc和g-版本问题" class="headerlink" title="2.2.2 gcc和g++版本问题"></a>2.2.2 gcc和g++版本问题</h5><p>前面的装好了，我又准备执行sudo sh NVIDIA-Linux-x86_64-XXX.run  –-no-opengl-files 来着，然而还有问题，又通过命令查看log信息，sudo vim nvidia-installer.log。<br><img src="https://img-blog.csdnimg.cn/20190519164725139.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNjczNDUz,size_1,color_FFFFFF,t_70" alt="不识别Command line"><br>这个问题就是由于gcc和g++版本太低编译不过导致的，因为我看之前有个教程是将这个版本降低了方便CUDA编译来着。但其实我这是CUDA9.0，CUDA9要求GCC版本是5.x或者6.x，其他版本不可以，需要自己进行配置。我之前就是5.5的版本，就不该降级。好的现在再根据那篇博文给换回来。<br><a href="https://blog.csdn.net/u011784994/article/details/80080938" target="_blank" rel="noopener">ubuntu 16.04 LTS 降级安装gcc 4.8
+</a></p>
+<h5 id="2-2-3-装好驱动"><a href="#2-2-3-装好驱动" class="headerlink" title="2.2.3 装好驱动"></a>2.2.3 装好驱动</h5><p>在sh NVIDIA-Linux-x86_64-XXX.run安装就可以了，哎哟喂真是不容易啊。。。<br>然后我再重启，输入密码，终于可以进入桌面了呀，感动到哭。。。</p>
+<h3 id="3、安装CUDA"><a href="#3、安装CUDA" class="headerlink" title="3、安装CUDA"></a>3、安装CUDA</h3><ol>
+<li>安装CUDA<br>打开终端，执行命令，运行run文件：<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo sh cuda_9.0.176_384.81_linux.run</span><br></pre></td></tr></table></figure>
+注意提示，前面是一些法律信息啥的，enter过去就好。到后面提示是否安装图像驱动的时候，一定选择no ！！！<br><img src="https://img-blog.csdnimg.cn/20190519165519471.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNjczNDUz,size_4,color_FFFFFF,t_70" alt="no Driver"><br>后面的一些提示选择y就行。出现下图，就表示安装完成。<br><img src="https://img-blog.csdnimg.cn/20190519165702507.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNjczNDUz,size_1,color_FFFFFF,t_70" alt="CUDA安装"><br>如果出现其他问题，可能是某些依赖库没装好，反正我是没遇到。可以试试安装依赖，然后重启再试试。<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo apt-get install libprotobuf-dev libleveldb-dev libsnappy-dev libopencv-dev libhdf5-serial-dev protobuf-compiler</span><br><span class="line">sudo apt-get install --no-install-recommends libboost-all-dev</span><br><span class="line">sudo apt-get install libopenblas-dev liblapack-dev libatlas-base-dev</span><br><span class="line">sudo apt-get install libgflags-dev libgoogle-glog-dev liblmdb-dev</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<ol>
+<li><p>配置环境变量</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo gedit ~/.bashrc</span><br></pre></td></tr></table></figure>
+<p>打开文件后在最后写入：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export PATH=/usr/local/cuda-9.0/bin$&#123;PATH:+:$&#123;PATH&#125;&#125;  </span><br><span class="line">export LD_LIBRARY_PATH=/usr/local/cuda-9.0/lib64$&#123;LD_LIBRARY_PATH:+:$&#123;LD_LIBRARY_PATH&#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>然后点save后关闭在source一下生效：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">source ~/.bashrc</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>测试一下CUDA是否安装成功</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 第一步，进入例子文件</span><br><span class="line">cd /usr/local/cuda-8.0/samples/1_Utilities/deviceQuery</span><br><span class="line"># 第二步，执行make命令</span><br><span class="line">sudo make</span><br><span class="line"># 第三步</span><br><span class="line">./deviceQuery</span><br></pre></td></tr></table></figure>
+<p>有提示GPU信息，就表示可以了。</p>
+</li>
+</ol>
+<h3 id="4、安装cuDNN"><a href="#4、安装cuDNN" class="headerlink" title="4、安装cuDNN"></a>4、安装cuDNN</h3><p>安装命令：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo dpkg -i libcudnn7_7.0.5.15-1+cuda9.0_amd64.deb</span><br><span class="line">sudo dpkg -i libcudnn7-dev_7.0.5.11-1+cuda9.0_amd64.deb</span><br><span class="line">sudo dpkg -i libcudnn7-doc_7.0.5.11-1+cuda9.0_amd64.deb</span><br></pre></td></tr></table></figure><br>安装完以后需要进行测试是否安装成功，出现了“Test passed! ”，这几步我都没啥问题：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cp -r /usr/src/cudnn_samples_v7/ $HOME</span><br><span class="line">cd $HOME/cudnn_samples_v7/mnistCUDNN</span><br><span class="line">make clean &amp;&amp; make</span><br><span class="line">./mnistCUDNN</span><br></pre></td></tr></table></figure></p>
+<h3 id="5、安装TensorFlow-gpu"><a href="#5、安装TensorFlow-gpu" class="headerlink" title="5、安装TensorFlow-gpu"></a>5、安装TensorFlow-gpu</h3><p>卸载以前的TensorFlow，我的python环境是3.6<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pip3 uninstall tensorflow</span><br></pre></td></tr></table></figure><br>然后重新装gpu版本就可以，注意我要用的是TensorFlow-gpu1.7版本，这个跟前面的都是对应的！</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pip3 -i https://pypi.tuna.tsinghua.edu.cn/simple/ install tensorflow-gpu==1.7.0</span><br></pre></td></tr></table></figure>
+<p>跑程序的时候，自动就调用了gpu进行计算，学习起来快了6、7倍，真的是开心啊~</p>
+<h3 id="6、总结"><a href="#6、总结" class="headerlink" title="6、总结"></a>6、总结</h3><ol>
+<li>最关键的问题就是软件各个版本要对应好</li>
+<li>注意先装驱动再CUDA再cuDNN，总之就是驱动要先搞好，不然就会有我那种意外。</li>
+<li>CUDA一定下载runfile文件。</li>
+</ol>
+<h3 id="7、reference"><a href="#7、reference" class="headerlink" title="7、reference"></a>7、reference</h3><p><a href="https://blog.csdn.net/weixin_41863685/article/details/80303963" target="_blank" rel="noopener">Ubuntu18.04深度学习GPU环境配置</a><br>我进不了桌面，也连不了网，所以都是自己拿另外的电脑下了U盘弄过去的。<br><a href="https://blog.csdn.net/hhhhh89/article/details/54311161" target="_blank" rel="noopener">ubuntu中使用终端查看U盘里的内容</a><br><a href="https://blog.csdn.net/u011784994/article/details/80080938" target="_blank" rel="noopener">ubuntu 16.04 LTS 降级安装gcc 4.8</a><br><a href="https://blog.csdn.net/omodao1/article/details/83241074" target="_blank" rel="noopener">Tensorflow不同版本要求与CUDA及CUDNN版本对应关系</a><br>最后感谢各个外援~</p>
+]]></content>
+      <categories>
+        <category>深度学习DL</category>
+      </categories>
+      <tags>
+        <tag>配置</tag>
+        <tag>深度学习</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>装window、ubuntu双系统</title>
+    <url>/2019/04/24/%E8%A3%85window%E3%80%81ubuntu%E5%8F%8C%E7%B3%BB%E7%BB%9F/</url>
+    <content><![CDATA[<h2 id="装window10、ubuntu16-04双系统"><a href="#装window10、ubuntu16-04双系统" class="headerlink" title="装window10、ubuntu16.04双系统"></a>装window10、ubuntu16.04双系统</h2><p>周末趁空装了个双系统，记录记录过程吧。</p>
+<h3 id="装windows10"><a href="#装windows10" class="headerlink" title="装windows10"></a>装windows10</h3><ol>
+<li>首先下载好win10的系统镜像ISO文件，由于我不咋用win10就装了家庭版<br>链接: <a href="http://pan.baidu.com/s/1sj3JNRJ" target="_blank" rel="noopener">http://pan.baidu.com/s/1sj3JNRJ</a> 密码: z49r</li>
+</ol>
+<ol>
+<li><p>准备好空的U盘，准备做系统启动盘。<br>下载安装好UltraISO，插入U盘。<br>点击打开，选择ISO文件<br>点击启动 - 写入硬盘映像<br>写入方式选择的是USB-HDD，USB-HDD+，一般默认就好<br>在点击写入，就等着他默默写好就好了<br><img src="https://img-blog.csdnimg.cn/20190422141325858.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNjczNDUz,size_16,color_FFFFFF,t_70" alt="ULtraISO刻录系统启动盘"></p>
+</li>
+<li><p>制作好的系统启动U盘插入要装系统的电脑。开启电脑，一直按 F2或在F12等（这个键根据电脑确定，可以查查，但一般就是这个），进入电脑的Bios设置。<br>选择usb storage device，放到最前面，表示系统启动优先从USB开始。点击apply，再点exit。</p>
+</li>
+<li><p>之后电脑自动重启，然后进入windows10的安装。<br>默认简体中文，下一步<br>哪种类型的安装：选择自定义，以前windows的东西会变成windows.old<br>输入产品密钥那里跳过。<br>你想将windows安装在哪？ 选择分区，选择之前C盘所在分区位置。我这选择的是分区1，476G的盘。<br>后面就等着自己装就好了。</p>
+</li>
+<li><p>装完后注意，系统会重新启动。此时要拔掉U盘。产品密钥那个后面可以去找破解工具破解。暂时不管，然后设置用户密码进入就好。</p>
+</li>
+</ol>
+<h3 id="装ubuntu16-04"><a href="#装ubuntu16-04" class="headerlink" title="装ubuntu16.04"></a>装ubuntu16.04</h3><ol>
+<li>同理下载好U盘，将ubuntu的系统镜像刻录到U盘里。</li>
+<li>设置好bios优先从U盘启动。</li>
+<li>preparing to install Ubuntu: 这里可以选择第二项（Erase disk and install Ubuntu 单独装个Ubuntu系统）或者something else（我这装双系统，本来电脑里分区比较多，因此要选择之前从window划分出来的空闲空间）</li>
+<li>挂载分区到根路径 / ,如果空间足够大，就只挂载这个，剩下的Ubuntu自己会分。如果不够，可以单独跟/home , /boot那些单独分。<br><img src="https://img-blog.csdnimg.cn/2019042409082143.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNjczNDUz,size_16,color_FFFFFF,t_70" alt="挂载"></li>
+<li>继续时区，创建用户，后面就会重启了。重启的时候，注意拔掉U盘。</li>
+</ol>
+]]></content>
+      <categories>
+        <category>配置</category>
+      </categories>
+      <tags>
+        <tag>配置</tag>
+        <tag>装系统</tag>
+        <tag>ubuntu</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>20191208LR原理</title>
+    <url>/2018/12/08/20191208LR%E5%8E%9F%E7%90%86/</url>
+    <content><![CDATA[<h3 id="1、线性回归"><a href="#1、线性回归" class="headerlink" title="1、线性回归"></a>1、线性回归</h3><h4 id="1-1-单变量线性回归"><a href="#1-1-单变量线性回归" class="headerlink" title="1.1 单变量线性回归"></a>1.1 单变量线性回归</h4><p>x ——&gt; hypothesis（假设）——&gt; y，此处假设为线性函数，y输出为数值（若是分类则为0或1）</p>
+<script type="math/tex; mode=display">h_{\theta}{(x)} = \theta^Tx</script><p>为了让hypothesis尽量根据数据拟合好曲线，需要设计损失函数，并对此损失函数优化。损失函数是参数$\theta$ 的 Cost function: </p>
+<script type="math/tex; mode=display">J(\theta)=\min \frac{1}{m} \sum_{i=1}^{m}\left(h_{\theta}(x)-y\right)^{2}</script><p>优化损失函数用到梯度下降法：</p>
+<p>为了 $min J(\theta)$，我们采用随机梯度下降方法。（其实也可以用一些矩阵直接计算的方法，最优化里的牛顿法、BFGS等等）</p>
+<p>repeat until convergence{</p>
+<script type="math/tex; mode=display">\theta_{j}=\theta_{j}-\alpha \frac{\partial}{\partial \theta_{j}} J(\theta) \quad(for j=0 \cdots)</script><p>}</p>
+<p><strong>注意</strong>：</p>
+<p>1，学习率影响了梯度下降的步长，一般越大下降越快（但如果最初就在靠近局部最优处，则容易震荡发散），一般设置在0.001~0.003, 取比最大值稍小一点的值即可。</p>
+<p>2，不同的初始$\theta$ 可能下降到不同的局部最优点（因此，我们希望损失函数最好是凸函数，线性回归的$J$就是凸函数，是碗面）。</p>
+<p>3，数据处理的小技巧，将特征归一化到0-1或者-1-1可以避免量纲影响 x- mean / std。</p>
+<p>4，<strong>特征工程非常重要</strong>，特征组合，平方，开根号等等。</p>
+<h3 id="2，逻辑回归LR"><a href="#2，逻辑回归LR" class="headerlink" title="2，逻辑回归LR"></a>2，逻辑回归LR</h3><p>逻辑回归中x ——&gt; hypothesis（假设）——&gt; y，sigmoid函数将预测值转换为0-1之间的值。</p>
+<script type="math/tex; mode=display">0 \leq h_{\theta}(x) \leqslant 1</script><script type="math/tex; mode=display">h_{\theta}(x)=g\left(\theta^{\top} x\right)</script><script type="math/tex; mode=display">g(z)=\frac{1}{1+e^{-z}}</script><p>解释：$h_{\theta}(x)$ 是对输入x，y=1的概率估计，$h_{\theta}(x)=P(y=1 / x ; \theta)$ 给定特征x与参数$\theta$时，y=1的概率。也可以这样理解，一个事件的发生几率指的是该事件发生的概率p与该事件不发生的概率1-p的比值。</p>
+<script type="math/tex; mode=display">logit(p) = \log{p}/{1-p}</script><script type="math/tex; mode=display">\log \frac{P(Y=1|x)}{1-P(Y=1|x)} = \theta^T x</script><p>LR中，输出Y=1的对数几率是输入x的线性函数。</p>
+<p>cost function这里有所不同，因为sigmoid函数代入到平方误差中得到$J$ 是非凸函数，所以cost function用的就是</p>
+<script type="math/tex; mode=display">J\left(h_{0}(x), y\right)=-y \log \left(h_{\theta}(x)\right)-(1-y) \log \left(1-h_{\theta}(x)\right)</script><p>这个非常像似然函数。</p>
+<p>LR的梯度下降公式是，因为sigmoid函数求导特殊g(z)’ = g(z) (1-g(z))’。</p>
+<script type="math/tex; mode=display">\theta_{j}=\theta_j-\alpha\frac{1}{m} \sum_{i=1}^{m}\left(h_{\theta}\left(x^{(i)}\right)-y^{(i)}\right) x_{j}^{(i)}</script><p>其实逻辑回归还可以用于多分类问题上，分别拟合三个分类器$h_{\theta}^{(i)}(x)$，选择 $max {h_{\theta}^{(i)}(x)}$的类i。</p>
+<h3 id="3，过拟合与正则化"><a href="#3，过拟合与正则化" class="headerlink" title="3，过拟合与正则化"></a>3，过拟合与正则化</h3><h4 id="3-1-欠拟合与过拟合"><a href="#3-1-欠拟合与过拟合" class="headerlink" title="3.1 欠拟合与过拟合"></a>3.1 欠拟合与过拟合</h4><p>欠拟合：模型过于简单，underfit，带来高偏差high bias，就是说模型偏见很强；</p>
+<p>过拟合：模型复杂，overfit，太过于拟合训练数据，经验误差虽小但结构误差大，无法拟合新数据。</p>
+<p><img src="/images/20191209overfit.jpg" alt="20191209overfit"></p>
+<p>避免过拟合的方法：数据增强more data，简化模型（早停，限制权值正则化，多种模型Bagging，Boosting），增加噪声，集成ensemble，贝叶斯等。</p>
+<h4 id="3-2-正则化"><a href="#3-2-正则化" class="headerlink" title="3.2 正则化"></a>3.2 正则化</h4><p>正则化，损失部分尽量拟合数据，后面部分尽量保持参数较小，起到正则化作用。</p>
+<p>线性回归的损失函数：</p>
+<script type="math/tex; mode=display">J(\theta) = \frac{1}{2m}[\sum_{i=1}^{m}(h_\theta(x^{(i)}) - y^{(i)} )^2 + \lambda \sum_{i=1}^{n} \theta_j^2]</script><p>逻辑回归的损失函数</p>
+<script type="math/tex; mode=display">J(\theta)=-\left[\frac{1}{m} \sum_{i=1}^{m} y^{(i)} \log \left(h_{\theta}(x^{(i)}\right)+\left(1-y^{(i)}\right) \log \left(1-h_{\theta}\left(x^{(i)}\right)\right)\right] + \frac{\lambda}{2m} \sum_{j=1}^n\theta_j^2</script><h3 id="4，优化方法复习"><a href="#4，优化方法复习" class="headerlink" title="4，优化方法复习"></a>4，优化方法复习</h3><h4 id="4-1-最速下降法即负梯度方向"><a href="#4-1-最速下降法即负梯度方向" class="headerlink" title="4.1 最速下降法即负梯度方向"></a>4.1 最速下降法即负梯度方向</h4><script type="math/tex; mode=display">f(x_k+\alpha \vec P) = f(x_k) + \alpha P^T \nabla f(x_k) + o(\alpha)</script><script type="math/tex; mode=display">min{f(x_k+\alpha \vec P)}</script><p>则需要$min{P^T \nabla f(x_k)}$</p>
+<script type="math/tex; mode=display">P = -\frac{\nabla f(x_k)}{||\nabla f(x_k)||}</script><p>此处$\alpha$是学习率</p>
+<p>一般来说，损失函数偏碗状的时候，比较圆的时候，下降比较快。如果，函数形状椭圆形，会来回震荡着走。</p>
+<h4 id="4-2-牛顿法"><a href="#4-2-牛顿法" class="headerlink" title="4.2 牛顿法"></a>4.2 牛顿法</h4><p>牛顿法考虑二阶导信息</p>
+<script type="math/tex; mode=display">f\left(x_{k} + P\right)=f\left(x_{k}\right)+p^T \nabla f_{k}+\frac{1}{2} p^{T} \nabla^{2} f_{k} P</script><p>则$P = - \nabla^2 f(x_k)^{-1} \nabla f(x_k)$</p>
+<p>此处二阶导大于0，即要求$\nabla^2 f(x_k)$ 正定。</p>
+<p>总结：逻辑回归主要是增加了一个sigmoid函数，将预测值映射为概率。为了避免损失函数变为非凸函数，损失函数变为对数损失函数。</p>
+]]></content>
+      <categories>
+        <category>机器学习</category>
+      </categories>
+      <tags>
+        <tag>机器学习</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>我的创新创业“笑递”行（四）</title>
+    <url>/2017/06/20/%E6%88%91%E7%9A%84%E5%88%9B%E6%96%B0%E5%88%9B%E4%B8%9A%E2%80%9C%E7%AC%91%E9%80%92%E2%80%9D%E8%A1%8C%EF%BC%88%E5%9B%9B%EF%BC%89/</url>
+    <content><![CDATA[<p>创业之路，记录我们一路走来~<br>（我的最后一期了，前几期请关注公众号“笑递代送平台”，服务号“笑递物品代送平台”）</p>
+<p><img src="http://mmbiz.qpic.cn/mmbiz_jpg/xoDHJj3mofuVibiaF8JE57ficqzeMSEhW6Iqd3GuZH7Qp6FzJS1QcibngYO4vLwgcTicEyMZq3hnzxyAAo6W6rJoiaoA/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" width = "200" height = "200" alt="笑递微信号" align=center/></p>
+<center>笑递微信号</center>
+
+<p>我在产品方面我尽自己全力的思考迭代，尽力完成工作。但是还是有很多地方值得改进。比如，做事要有细节更要有远见，考虑周到。创业有小步快跑的思想，先做简单的版本。都是十分宝贵的经验呀！最好的是这种团队的温馨感，真的让我十分具有归属感。能在大学有这样一个归属感是很不容易的，有这么群伙伴也是十分不容易的，真的很幸运，我有笑递。</p>
+<p>不知不觉，国创项目也快完了。笑递在这一年的发展挺快的，其实已经超过了我们当初制定的目标——种子用户500人。这个过程中，我们有过很多争执，也有过心酸，有过劳累，也有过快乐，五味陈杂皆遍尝。我不知道该说是我们丰富了笑递，还是笑递丰富了我们的生活，总之一切都是充实的。</p>
+<p>青涩的我们开始年幼的笑递。前期，暑假我们一起留校设计开发笑递，这个过程其实感觉有点闭门造车了，我们没有数据没有太多参考就上路了。分析设计了几个基本的功能后，就经过一次评审就开始了安卓的开发。其实我们没有深思过更远，于是就这样青涩的开始了。但是创业其实就是要快速开始。暑期我们争执过功能设计，争执过界面设计，也探讨了笑点的设置，我们都在为笑递贡献自己的一份心力。毕竟，没有经验，我们开发了一个原型demo，安卓应用开发的进度不如我们想象的那么容易…… 暑期是充实的，我们一边开发，一边玩“三国杀”，阿伟是老手了，说的头头是道，敢杀敢恨的样子印在我深深的脑海里。还有培宇坐对面开发，一会又叫“XX，过来~”，一会又叫，惹得我这个产品经理十分无奈，深刻感受到了什么叫开发人员的地位高于产品了。</p>
+<p>上线前夕，开学了笑递还没有做好上线的准备，连要先上哪个平台微信还是APP都还很争执，我们其实蛮急的。培宇去跟老师交流了，极力觉得要改变方向，上线微信。现在其实是一个重要的决策时间点，静最后选择了微信。其实我本身不愿意放弃安卓app的，原生的有原生的好处，但是其实从后期迭代更新，用户的获取，的确是微信快。但是如果更远来看的话，想要持续运营做大还是会归到安卓上，不过作为创业者，从微信开始小步快跑绝对是正确的。</p>
+<p>官霸被关在实验室408，国庆熬开发。这段时间，相信是官霸最辛苦的日子了，从10月1日后开发任务一下子全落在了他的头上。而且静也提前联系了微软在“百团纳新”的时候进行上线宣传，这让压力更大了。这个时候，其实学生团队的缺点就暴露无遗了，学生团队没法一起上班，没法一起交流立刻解决问题，这些其实是创业的大忌。百团纳新虎溪宣传，我们没能上线，只能宣传微信了。我劝静延迟宣传，到上线后，去虎溪宣传的时候就可以立即体验使用。不过，静的作风一直是执行派，说了什么时候做就要去做。虎溪宣传获得了300的微信关注，也是进步。这件事，真正让我们体会到了创业的瞬息万变，想要把握局势，做出战略决策真是很重要的。</p>
+<p>开发完了不是就可以上线了，我组织了我们班级的人去协助做测试。第一次看到笑递在不同的手机上运行。当时，同学们按照写好的测试流程进行测试，中间意外百出。用户一会问我这是怎么回事，这个怎么这样了，这不能用了。我真是尴尬的记下这些bug，然后去找官霸，再面面相觑，缓缓而笑…… 这给我最大的提醒就是，做前端一定别忘了苹果这个机型呀。</p>
+<p>测试完了基本bug也改完了，我们启动上线。一开始，我们拉好友来注册使用，差不多没大问题了我们就开始策划更大的活动了。此时，临近双11，对以快递切入的我们来说这是最好的机会了。但，真正的宣传开始于双11过去的5、6天后。我可能是比较急，问了静，一坤的方案出来了吗，双11要怎么做。忘了是什么原因延迟了会，然后开始了快递点的连续三天蹲点宣传，全体出动去地推，连快递点都贴着我们的海报。当时去拔牙的我做了幕后工作者。双11的订单是比之前可观的，而且有了第一笔充值费，这让我很兴奋。</p>
+<p>很快12月了，郭老师发来了一条邀约消息，我们开始了和新闻网合作。新闻网给我们讲了关于我们项目的建议，也承诺我们后期我们可以一起办活动并且给予我们部分支持。我是很开心的，毕竟有了学校的支持，我们的发展会更好。果然圣诞节，我们和新闻网一起联合举办了圣诞节送苹果的活动，这个活动是小薇和我们在微信上开通抢苹果的功能，用户抢到苹果在笑递平台下单并且由我们进行派送到寝室。这个活动其实是打响我们名号非常重要的一战，我非常重视，我们可以借此大力宣传我们自身，可以让用户体验笑递的便捷。但是，这个活动被静和一坤定义为了“给新闻网做苦力办活动”，方向跟我预想的不一样了，活动举行的前天我和赵静吵起来了，因为我们自己没有做宣传的问题，我气愤的在qq上质问了赵静。我想这件事的问题是出在我们团队的沟通上，我们的沟通很多时候是在qq上，其实我非常摒弃qq来讨论这些大事。</p>
+<p>一，没有充分的沟通交流，讨论活动的举办细节，导致了我们想法不一。二，qq沟通效率低，没有情感表情的传达容易引起误解。 吃一堑长一智吧，我们在后面开展女生节活动的时候，就开会讨论了，这就是我们的团队，成长非常快。</p>
+<p>圣诞一过，我们的首届年会开始了。热闹的节日氛围，年终奖，游戏，火锅，三国杀，这种团队的温馨感真的让我十分具有归属感。能在大学有这样一个归属感是很不容易的，有这么群伙伴也是十分不容易的，真的很幸运，我有笑递。<br>17年是新的一年了，笑递在3月开展了女生节活动。这次活动是我们自己主办的，我们做了展板海报在虎溪宣传。这次其实也是一个很重要的活动，这算是笑递盈利试探的第一步，这次是线上抢购我们派送。毕竟要花钱购买产品与服务了，用户不一定能接受。不过，最后效果还是比较好的，我们有了100的流水，虽然不多，但可见笑递的增值服务是可以盈利的。<br>时间流逝得很快，我们大三了，是要抉择学业与创业了。笑递这一年，我们经历了很多，也学会了很多，团队的故事还在继续……<br>我总结下自己的工作吧，在产品方面我尽自己全力的思考迭代，尽力完成工作。但是还是有很多地方值得改进。比如，做事要有细节更要有远见，考虑周到。自己还有个坏习惯是说好了变了，信任是来源于说一是一，承诺必做，这方面我的确没有做好，要改变。另外不要在做完之后抱怨，而要积极在做前去完善，做后反思。做之前多问为什么，说服自己才能说服别人。创业有小步快跑的思想，先做简单的版本。都是十分宝贵的经验呀！</p>
+]]></content>
+      <categories>
+        <category>经历</category>
+      </categories>
+      <tags>
+        <tag>创新创业</tag>
+        <tag>经历</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>我的创新创业“笑递”行（三）</title>
+    <url>/2016/12/12/%E6%88%91%E7%9A%84%E5%88%9B%E6%96%B0%E5%88%9B%E4%B8%9A%E2%80%9C%E7%AC%91%E9%80%92%E2%80%9D%E8%A1%8C%EF%BC%88%E4%B8%89%EF%BC%89/</url>
+    <content><![CDATA[<p> 猜猜今天笑递团队在干什么呢？小提示：结合最近有啥新鲜事啊~</p>
+<p>当然，就属于“圣诞节.平安夜”的事情了！<br>“笑递”say：<br>圣诞节来了，也快到新年了，笑递要给大家准备个什么礼物呢？应广大人民呼声，当然还是免费送苹果啦！！!是不是很吃吃啊~</p>
+<p>你还记得笑递么？<br><img src="/images/XDintro.png" alt="笑递简介"></p>
+<center>笑递简介</center>
+
+<p> 其实昨天晚上，我们和重庆大学小薇（重庆大学的官方微博）一起合作办了场“线上抢苹果”的活动，其实大家都知道，办活动不是那么简单的当天“上”就是，需要前期的各种准备，比如活动策划，活动分工，物资准备，功能流程确定，开发准备等等。做这个抢的大活动，还是很考验我们自己的能力的，毕竟这是第一次。何况还是和重庆大学官方一起做，肯定得做好准备，别出bug啊！（喔，原谅我是一位计算机学院的）</p>
+<p> <img src="/images/ActivityPub.jpg" width = "200" height = "200" alt="活动群宣传" align=center /><br> <center>活动宣传</center></p>
+<p> 其实，我刚说的是我预想中的繁忙的活动准备过程，实际是遇到了很多问题的，来看一看，避免广大同胞们以后掉坑。</p>
+<p>1、前期团队沟通不足，对活动的目标定位不充分。导致了活动开始的前一天我和团队另一位负责人起了争执。因为团队完全没有准备宣传材料，没有进行自我宣传，我着急了下。因为自己对这个活动的定义根本就不是帮小薇办活动，而是借助小薇宣传我们自己，也借助小薇的苹果给用户们一点圣诞福利。早点宣传自己是希望传播更远，获取更多用户，让用户体验整个代送的流程知道“笑递” how to use！</p>
+<p>2、活动宣传里对自身的宣传要充分。尽管是活动前一天开始我们自己的宣传的，临时做了推文，活动图片，然后在QQ群和空间进行短语宣传，希望能尽快传播出去。</p>
+<p>当然，还是重大小薇对我们的宣传是最官方，在活动开始的前一秒的推文中一段是介绍笑递的，很高兴我们笑递得到了学校的鼓励和支持！所以我们微信平台（笑递代送平台）的关注量也蹭蹭上涨了~</p>
+<p><img src="/images/ActivityMetric.png" alt="活动数据"></p>
+<center>微信后台关注量</center>
+
+<p>3、活动开始了，最最最可怕的是服务器hold不住。请记住做活动要注意CPU，升级服务器，增大带宽😊。</p>
+<p>4、客服得及时解决回复。</p>
+<pre><code>     我们中间遇到了很多来咨询的。我表示我的电话呗打爆了，第一次这么频繁的做了个温馨的客服。
+</code></pre><p>“我打不开。。。。”，“我注册不了”，“页面怎么没有抢了，啊啊啊，为什么啊”</p>
+<p>“您好，这里是笑递客服中心，请问遇到什么问题了吗？”</p>
+<p>及时做好客服也很重要啊，特别是在这种关键时刻。</p>
+<p>5、线上活动做完了，配送工作继续，这才是重头戏。终于是线下直面用户了，活动还在继续，此文还待更新</p>
+<p>最后看看我们昨儿+今儿的数据情况吧！开心的是，有人夸我们呢(^o^)/</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>日期</th>
+<th>流量次数PV</th>
+<th>独立访客UV</th>
+<th>IP</th>
+<th>新独立访客</th>
+<th>访问次数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>today</td>
+<td>1489</td>
+<td>449</td>
+<td>351</td>
+<td>258</td>
+<td>834</td>
+</tr>
+<tr>
+<td>yesterday</td>
+<td>7590</td>
+<td>1005</td>
+<td>740</td>
+<td>1005</td>
+<td>4414</td>
+</tr>
+</tbody>
+</table>
+</div>
+]]></content>
+      <categories>
+        <category>经历</category>
+      </categories>
+      <tags>
+        <tag>创新创业</tag>
+        <tag>经历</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>我的创新创业“笑递”行（二）</title>
+    <url>/2016/12/05/%E6%88%91%E7%9A%84%E5%88%9B%E6%96%B0%E5%88%9B%E4%B8%9A%E2%80%9C%E7%AC%91%E9%80%92%E2%80%9D%E8%A1%8C%EF%BC%88%E4%BA%8C%EF%BC%89/</url>
+    <content><![CDATA[<p>现在我大三上，还在做着笑递（服务于高校师生的物品互助代送信息平台）的事业。但大三，学业繁忙，作业项目颇多，自然笑递运营迭代的压力就来了。</p>
+<p><img src="/images/XDlogo.png" alt="笑递logo"></p>
+<p><center>笑递logo</center><br>阿伟说想退了，一段时间里，也在团队里静默下来了。因为和团队里另外一位技术大神无法合作，因为对团队不再有归属感和主人感，没能参与产品的构建；在团队里没有成就感逐渐有了落差，不想继续创业.这确实出乎意料，他是最初创意的提出者，最早的创始人。我以为会没什么事情，不过一些小的情绪，因为我那么信任他。</p>
+<p>我不能去用道德或者自己的想法去约束他，一个人只有真心留下继续才是真正的留下的，心不在了做什么都没有动力也不会认真。所以我们三剑客找了时间，去柏树林餐厅就谈谈心，聊聊天。</p>
+<p><img src="/images/TreeHall.jpg" alt="柏树林餐厅"></p>
+<p><center>柏树林餐厅</center><br>每个人能做的其实很少，而且难免有不足。静有，阿伟有，我也有。几乎所有人都吐槽过我，比如宇会说我思考过于局限，想的简单；坤会说这里设计不好，比如淘宝会怎样怎样；官会说设计稿没有及时更新；赵静会说这里文档不行那里不行……我也会有挫败感甚至觉得在团队不被认可，自己辛苦做的仿佛都被否决，那种感觉是很伤心失望。但我得撑着，因为TYB，try your best。不足我尽量慢慢改进。</p>
+<p>也许团队的确缺了一些鼓励和赞扬，缺了点包容和承担。大家相互去期望对方做的更好更专业，因而自然压力大，压力大可能会促进团队前进，但太多了也会有负担，所以得合理调整自己的心态，调整生活节奏。</p>
+<p>我觉得说笑递是创业项目，可以；不过简单一点，其实就是一个国创，不过像真的创业一样更认真了。我是这样说服自己的，为什么一定要背负这么重的包袱，不过就是认真做国创，让笑递逐渐用起来而已。我把很多想得简单，是因为我很多时候信淘宝的一句话叫“简单源于信任”。当初说创业失败也没什么亏了，不过长经验学习新东西而已。</p>
+<p>前面一周，我们去快递点做了很多宣传，现在笑递的用户量有100，微信关注量有600了。这是我们的小起步，挺开心的，终于踏出这一步了。大家付出的一点一点，积累起来到现在，过程是艰辛而快乐了。双11过去了，接下来是圣诞节和新年，我们准备和学校合作策划下一次的大型活动，总是充满着期待的。我们团队只要坚持着，一人做一点点事情，慢慢的总会变好。</p>
+<p><img src="/images/11poster.png" alt="双11海报"></p>
+<p><center>笑递“双11”代送到寝海报</center><br>小总结：<br>1、有些琐事得放开，有些看似不能做的事情其实你也可以。（比如做产品做运营做技术做设计）<br>2、不值得仅仅是为了退出的轻松而放弃，有时候虽然难，但却不得不担当。<br>3、团队合作起来加把劲，笑递就在慢慢用起来，这是最令人欣慰的事情，还有很多我们可以去做的，创新创业在路上。<br>4、有些事情，得真正试过后才知道是否真的适合，做一件事最重要的是找到他的快乐和兴趣</p>
+]]></content>
+      <categories>
+        <category>经历</category>
+      </categories>
+      <tags>
+        <tag>创新创业</tag>
+        <tag>经历</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>我的创新创业“笑递”行（一）</title>
+    <url>/2016/09/04/%E6%88%91%E7%9A%84%E5%88%9B%E6%96%B0%E5%88%9B%E4%B8%9A%E2%80%9C%E7%AC%91%E9%80%92%E2%80%9D%E8%A1%8C%EF%BC%88%E4%B8%80%EF%BC%89/</url>
+    <content><![CDATA[<p>如果要总结一下我的大学创新创业项目——笑递，得从2015年9月说起，那时我大一下。</p>
+<p><img src="/images/XDlogo.png" alt="笑递logo" title="APP Logo"></p>
+<center>笑递logo</center>
+
+<p>学校组织申报SRTP项目，大学生科研训练计划。咋一听这个名词，瞬间感觉高大上了，然后再辅导员的积极宣传下，我找了静，阿伟一起参加。先找的是阿伟，或许是因为同班而且也一起学了PS吧。后来大一下参加的网页设计大赛，看中了静。而且静是那个军训就在我旁边认真训练的女生，那时一起和波波教官讲讲笑笑，一起唱的青花瓷。这么庆幸大家就在一起了，然后想创意。我想做一个校园信息整合平台，不过毕竟年轻，想法真的是简单，都不知这个早就被萌学长做过了。</p>
+<p>最后我们去找了郭老师聊，那是大一某天晚上9左右了，我们在那个嫩绿色的办公室里和郭老师谈想法。阿伟提出了如果可以代买代送到寝室就好了，郭老师只是笑谈你们去做做试试看吧。就这么一个简单的想法，居然延伸至今，扩展变大。我们立刻行动，先拿笔在长宽不到10cm的小笔记本上画草图，把什么功能啥的都放上去，一个简略版的笑递设计稿就出炉了，那天吃饭的时候都是超开心的。</p>
+<p>第二天，我和阿伟就去找了自习室做界面。作为初学PS的孩子，连抠图都没有用过几次小鲜肉，我们自信满满地开始我们的APP界面设计。PS只有用起来才学得最快吧，不会百度，再互相帮个忙，简单的画个框框做个圆还是不难的。不过做出来的效果，那就不敢恭维了。不过那时的我们还觉得还是挺好看的，因为那是自己亲手做的，即是在丑也觉得是一种自我突破。</p>
+<p>原本打算就这样去答辩SRTP了，不过中间还好遇上了他。韩学长，一位大四的有经验的UI设计学长。因为第一届APP设计大赛，我们结识了高高的友善的韩学长。大一的我们没有技术，没有专业设计能力，甚至审美意识也很差，但是学长用产品的思维悉心指导。在虎溪的二食堂，那个称号为“屌丝食堂”的负一楼，我们从中午聊到了晚上。我们的idea也逐渐丰富了许多，最大的不同是积分制与社交板块的增加，那时候感觉原来一个APP可以这么丰富，瞬间觉得受教了。</p>
+<p>后来学长充当了产品经理的角色，给了笑递的初步定位、结构框架，基本功能点。那时候，我才发觉原来一个简单的应用都是来源于抽象的归纳，再有设计。第一次感受到了做一个真正的产品的魅力。还记得那天和班级一起参加户外挑战赛，QQ收到了学长发来的笑递几个主界面。青绿色为主色的界面，灰色边框简洁大方，整个APP界面清爽活泼，带着大学的气息。</p>
+<p>生活其实就是这样充满了机会，只要你一直努力做着，那总会有一个你的舞台。<br>   靠着学长指导，我们以这样一个简略版的想法去申报了srtp。答辩前我做了ppt的内容，包含了笑递的创意来源，调查结果，基本定位，意义，演讲流程，界面初步展示。然后有了整个框架的掌握以后，再自己撰写演讲稿。我在准备演讲的同时，队友做ppt的设计优化和其他相关准备。</p>
+<p>那天，我着橙色衬衣，牛仔裤走上了第一个答辩舞台。教室很大，前面是有资历的几位评委。因为这一届srtp宣传好申报队伍众多，仅大一就约100多人。我面向所有人，自信的开始了我的第一次正式的笑递答辩展示……</p>
+<p>有备而来，自然不出所料，我们成功晋级SRTP，这只是开始，路就这样走起来了~</p>
+]]></content>
+      <categories>
+        <category>经历</category>
+      </categories>
+      <tags>
+        <tag>创新创业</tag>
+        <tag>经历</tag>
+      </tags>
+  </entry>
+</search>
