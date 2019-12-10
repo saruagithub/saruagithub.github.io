@@ -102,3 +102,6 @@ deploy:
 
 mathjax:
   enable:true
+
+all_minifier:
+  enable:true
