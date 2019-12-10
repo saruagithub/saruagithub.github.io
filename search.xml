@@ -1,72 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>20190507paper-the-Numenta-Anomaly-Benchmark</title>
-    <url>/2019/12/09/20190507paper-the-Numenta-Anomaly-Benchmark/</url>
-    <content><![CDATA[<h3 id="1-ABS-amp-Introduction"><a href="#1-ABS-amp-Introduction" class="headerlink" title="1 ABS &amp; Introduction"></a>1 ABS &amp; Introduction</h3><h4 id="1-1-Abstract"><a href="#1-1-Abstract" class="headerlink" title="1.1 Abstract"></a>1.1 Abstract</h4><p>对象：streams, time-series data, sequence</p>
-<p>异常检测难点：real-time processing</p>
-<p>NAB是一个测试评估针对流数据的异常检测算法的开源工具。</p>
-<p>理想的异常检测器 </p>
-<ol>
-<li><p>检测到所有出现的异常 </p>
-</li>
-<li><p>尽早检测出异常，最好在人们看到异常之前 </p>
-</li>
-<li><p>no FP 不误报 </p>
-</li>
-<li><p>实时检测、没有前瞻（不看前面的数据） </p>
-</li>
-<li><p>自动化检测、无人工调节</p>
-</li>
-<li>适用性广泛，具有泛化性</li>
-</ol>
-<h4 id="1-2-Intro"><a href="#1-2-Intro" class="headerlink" title="1.2 Intro"></a>1.2 Intro</h4><p>静态基准不适合用于实时性算法。Precision和Recall无法反应出早检测这个效果。人工划分训练集测试集不适合流场景。NAB设计了新的评价标准，整合了各类数据集。其他数据集还有the UC- Irvine dataset ，Yahoo Labs。本论文比较了HTM、Skyline、与Twitter的两种方法<a href="https://blog.twitter.com/engineering/en_us/a/2015/introducing-practical-and-robust-anomaly-detection-in-a-time-series.html" target="_blank" rel="noopener">Twitter 方法，翻</a> （AnomalyDetectionTs and AnomalyDetectionVec. ）。</p>
-<h3 id="2，NAB-scoring"><a href="#2，NAB-scoring" class="headerlink" title="2，NAB scoring"></a>2，NAB scoring</h3><h4 id="2-1-基础"><a href="#2-1-基础" class="headerlink" title="2.1 基础"></a>2.1 基础</h4><p>异常定义：We define anomalies in a data stream to be patterns that do not conform to past patterns of behavior for the stream. 包括空间异常和时间异常。</p>
-<p><img src="/images/20191210anomaly.jpg" alt="20191210anomaly"></p>
-<p>Dataset：范围从IT指标（例如网络利用率）到工业机器上的传感器再到社交媒体聊天。我们还包括一些人工生成的数据文件，用于测试尚未在语料库的真实数据中表示的异常行为，以及几个没有任何异常的数据文件。当前的NAB数据集包含58个数据文件，每个文件具有1000-22,000个数据实例（github里有）</p>
-<p>标记异常：按一定规则，标记ground truth label</p>
-<h4 id="2-2-算法"><a href="#2-2-算法" class="headerlink" title="2.2 算法"></a>2.2 算法</h4><p>算法核心三个方面：anomaly Window，the scoring function，application Profiles（配置文件）</p>
-<h5 id="2-2-1-异常窗口"><a href="#2-2-1-异常窗口" class="headerlink" title="2.2.1 异常窗口"></a>2.2.1 异常窗口</h5><p>异常窗口是代表一系列以真实异常标签（ a ground truth anomaly label ）为中心的数据点。</p>
-<p>异常窗口的作用是判断真假检测，检测在窗外的话是FP。</p>
-<p>评分函数基于窗口识别、加权TP，FP，FN。前面紫色部分只用来初始学习，不需测试。</p>
-<p>1，窗口内最早的TP检测被计分，其他忽略。</p>
-<p>2，sigmoidal scoring function 给早检测的TP高分。给FP负分数。</p>
-<p>3，窗口大小 = 10%*总数据长度/异常数量。实验测试了5% - 20%，由于缩放评分函数，这个百分比对最后结果不敏感。</p>
-<p><img src="/images/20191210AnomalyWindow.jpg" alt="20191210AnomalyWindow"></p>
-<p>application profile配置：FN对工业机器来说会造成损失，FP要求技术人员查看。（对监视数据中心中各个服务器状态的应用程序可能对误报的数量敏感，并且由于大多数服务器群集都相对容错，因此偶尔会遗漏异常情况很好。）因此配置文件用于：对于TP，FP，FN和TN，NAB应用与每个配置文件相关的不同相对权重以获得每个配置文件的单独分数。</p>
-<h5 id="2-2-2-计算过程"><a href="#2-2-2-计算过程" class="headerlink" title="2.2.2 计算过程"></a>2.2.2 计算过程</h5><p>1，配置权重$A$</p>
-<script type="math/tex; mode=display">A_{T P}, A_{F P}, A_{F N}, A_{T N}, 0 \leq A_{TP},A_{TN} \leq 1, -1 \leq A_{FP},A_{FN} \leq 0</script><p>$D$ 是数据集，$Y_d$是数据 $d$ 中被检测出来的异常。$f_d$表示没有检测到任何异常的窗口数量，</p>
-<p><img src="/images/20191210NABScoring.jpg" alt="20191210NABScoring"></p>
-<p>2，单个窗口的得分计算</p>
-<p>图中TP：早检测则，增加NAB score；点2：早检测的TP，贡献+0.999 。</p>
-<p>FP：减分（窗外后面的FP的减分更大）；点1：FP，贡献-1，点4：权重为-0.8093是根据$\sigma^{A}(y)$得到的。5：5更有害，因此5贡献-1。</p>
-<p>FN：完全没有检测到，减分。</p>
-<p>总的来看这个窗口的得分就是：$−1.0A_{FP} + 0.9999A_{TP} −0.8093A_{FP} − 1.0A_{FP} $ ，公式是：</p>
-<script type="math/tex; mode=display">\sigma^{A}(y)=\left(A_{T P}-A_{F P}\right)\left(\frac{1}{1+e^{5 y}}\right)-1</script><p>$\sigma^{A}(y)$中，y表示是检测在异常检测窗的相对位置，参数被设置为窗口右侧，$\sigma ( y = 0.0 ) = 0$。 </p>
-<p>3，一个数据文件的得分计算</p>
-<p>得分是每个检测的得分+错过的Window</p>
-<script type="math/tex; mode=display">S_{d}^{A}=\left(\sum_{y \in Y_{d}} \sigma^{A}(y)\right)+A_{F N} f_{d}</script><p>4，一个异常检测算法对所有数据集的得分</p>
-<script type="math/tex; mode=display">S ^ { A } = \sum _ { d \in D } S _ { d } ^ { A }</script><p>5，归一化这个算法的分数，normalized NAB score</p>
-<script type="math/tex; mode=display">S _ { N A B } ^ { A } = 100 \cdot \frac { S ^ { A } - S _ { \text {null} } ^ { A } } { S _ { \text {perfect} } ^ { A } - S _ { \text {null} } ^ { A } }</script><p>完美检测器检测到所有TP，无FP。NULL检测器就是没有检测到任何异常。</p>
-<h5 id="2-2-3-其他"><a href="#2-2-3-其他" class="headerlink" title="2.2.3 其他"></a>2.2.3 其他</h5><p>HTM算法，Skyline统计算法，Twitter统计算法等</p>
-<p>每个异常检测器输出是0-1之间的分数，使用固定阈值对分数进行阈值处理，以检测异常。 NAB包括自动爬坡搜索，用于为每种算法选择最佳阈值。其中要最大化的目标函数是NAB评分函数。一个阈值针对所有的数据集dataset（The detection threshold is thus tuned based on the full NAB dataset）。</p>
-<h3 id="3-result"><a href="#3-result" class="headerlink" title="3 result"></a>3 result</h3><p>见github首页</p>
-<p>一些小结论</p>
-<p>1，HTM和Skyline对漂移适应得更快</p>
-<p>2，HTM和Skyline各自也有误报但HTM可以早检测（3h，机器温度传感器数据）</p>
-<p>3，行为的时间变化通常先于容易检测到的大变化（做提前检测）。 </p>
-<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，Lavin A, Ahmad S. Evaluating Real-Time Anomaly Detection Algorithms—The Numenta Anomaly Benchmark[C]//2015 IEEE 14th International Conference on Machine Learning and Applications (ICMLA). IEEE, 2015: 38-44.</p>
-<p>2, <a href="https://github.com/numenta/NAB" target="_blank" rel="noopener">https://github.com/numenta/NAB</a> 很好的学习项目</p>
-]]></content>
-      <categories>
-        <category>AIOps</category>
-      </categories>
-      <tags>
-        <tag>AIOps</tag>
-        <tag>时间序列</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>NAB源码阅读系列1</title>
     <url>/2019/12/04/NAB%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E7%B3%BB%E5%88%971/</url>
     <content><![CDATA[<h3 id="1-NAB的基本框架"><a href="#1-NAB的基本框架" class="headerlink" title="1 NAB的基本框架"></a>1 NAB的基本框架</h3><p>NAB里包括了几个在线时间序列异常检测器，包括了几组异常检测数据集，包括了阈值优化，评分算法，归一化检测器分数等内容，包括了NAB结果及可视化等内容。</p>
@@ -245,6 +179,107 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
       </tags>
   </entry>
   <entry>
+    <title>20190707《明朝那些事1》明朝的建立</title>
+    <url>/2019/07/07/20190707%E3%80%8A%E6%98%8E%E6%9C%9D%E9%82%A3%E4%BA%9B%E4%BA%8B1%E3%80%8B%E6%98%8E%E6%9C%9D%E7%9A%84%E5%BB%BA%E7%AB%8B/</url>
+    <content><![CDATA[<h3 id="一、序言"><a href="#一、序言" class="headerlink" title="一、序言"></a>一、序言</h3><p>以前我小觑了明朝，看完此书方知其宏伟恢弘。一个持久了两三百年的王朝，中间既有繁荣、胜利、正气；亦有凋敝、惨败与阴邪。历史有趣的就是在这来来回回的博弈中，道义精神的永不磨灭，历史规律的永恒不变。在此，我存着对历史的温情与敬意，以人物性格的角度，记录二三。</p>
+<h3 id="二、人物"><a href="#二、人物" class="headerlink" title="二、人物"></a>二、人物</h3><p>明太祖朱元璋，最初本是穷苦人家的放牛娃。为生计所迫曾辗转为和尚，后来饥荒和压迫，最终他连和尚也做不成了，云游了几年加入了红巾军。在农民军里，他是一个很突出的人，不但作战勇敢，而且很有计谋，处事冷静，思虑深远，还很讲义气，有危险的时候第一个上，这一切都让他有了崇高的威信。</p>
+<p><strong>将军——统率之人，必有更多素质要求。其中战略、远见、理想、勇气、气量等等皆不可缺。</strong></p>
+<p>后续，朱元璋大败陈友谅、消灭张士诚，这些都是很精彩的战役。他不仅个人强，周边的人也都很强。他有贤内助妻子马皇后；身边大将如云、徐达、常遇春、李文忠、冯胜、朱文正、耿炳文、参谋刘基、李善长等等，我仅选部分介绍，详细的还是看书吧。</p>
+<p>陈友谅，敢作敢当，但心黑手狠，胆大妄为，不重义气、背信弃义、骄横暴力。最终被诱敌深入的伏击给干掉了。巧的是那场鄱阳湖决战真的很像赤壁之战，果真历史来回重现。</p>
+<p>张士诚，有勇气、意志坚强、却无大志，但他的的确确是个大好人。他待人宽大，免除了江浙一带的赋税。但他的过于宽大和无主见也使得他无法成为枭雄，而只能做一个豪杰。乱世中小富即安的思想可是不够生存的，在这种历史的淘汰赛里，只有胜负。</p>
+<p>此处引用下朱元璋的战略分析，果真知人知彼啊，所以最后的赢家是朱元璋。</p>
+<blockquote>
+<p>张士诚的特点是器小，陈友谅的特点是志骄；器小无远见，志骄好生事。如果我进攻陈友谅，张士诚必然不会救他；而进攻张士诚，陈友谅就一定会动员全国兵力来救，我就要两线作战，到时就很难说了。</p>
+</blockquote>
+<p>马皇后，一心一意对待朱元璋，贤良仁德。在朱元璋称帝后乱杀大臣，马皇后“刀下留人”救了众多开国功臣。在教育子女上，也是要求他们生活简朴、用功读书。</p>
+<p><strong>这样的女子不知道为朱元璋笼络了多少人心、培养了多少子女人才啊。</strong></p>
+<p>常遇春，先锋大将，冷静观察形势，勇猛敢站，擅长骑兵突破，但却嗜好杀戮。后来常遇春主动向陈友谅挑事，活埋了降兵三千，带来了很多麻烦。</p>
+<p><strong>可见，一个人的缺陷会很有可能导致大问题出现。</strong></p>
+<p>徐达、善谋略、身先士卒、令出无二、为人谨慎，刚毅武勇，持重有谋，纪律严明，屡统大军，转战南北，治军严整，功高不矜，名列功臣第一。他是大破元军的关键人物，他也是活到最后的人之一了。</p>
+<p>朱文正，善防守、排兵布阵。有军事才能，却不懂为人，性格乖张，心胸狭隘，最后竟然因为分攻奖赏不满而勾结张士诚，最终被囚禁。</p>
+<p>刘基，神机军事，年少好学，运筹帷幄，准确判断。陈友谅进攻，其他人都在建议撤退之时，只有他在坚持，并且提出了诱敌伏击的策略。在多次战役中，他的判断甚至比朱元璋的判断还要准确。“三分天下诸葛亮，一统江山刘伯温”，在我看来他甚至比诸葛亮的成就还要高呢。不过，可惜最终死于政治斗争中。</p>
+<p><strong>学习和实践从来都是成为一个有所建树的人的前提条件。</strong></p>
+<h3 id="三、总结"><a href="#三、总结" class="headerlink" title="三、总结"></a>三、总结</h3><p>最后引用下原文对优秀将领成长过程的总结：</p>
+<blockquote>
+<p>第一个年级要学习的是军事理论。所有想成为名将的人，必须要学习一些经典的理论知识，包括《孙子兵法》《吴子兵法》等等。<br>第二个年级学习的内容是实战。这是极为重要的，那些理论学习的优秀者如果不能过这一关，他们就将被授予一个光荣的称号——纸上谈兵。<br>三年级要学习的是冷酷。 成为一个名将，就必须和仁慈、温和之类的名词说再见。他必须心如铁石、冷酷无情。<br>四年级要学习的是理智。<br>五年级学习判断，准确判断并决策。<br>六年级学习坚强，那些最优秀的人能够从失败中爬起来，去挑战那个多次战胜自己的人，这就叫做坚强。</p>
+</blockquote>
+<p>明朝的建立，经历了好几场大战。战场千变万化，胜者的智慧，败者的教训都是值得学习借鉴的。毕竟从人性、历史规律上看，一切都还是有章可循的。</p>
+]]></content>
+      <categories>
+        <category>读书笔记</category>
+      </categories>
+      <tags>
+        <tag>读书笔记</tag>
+        <tag>历史</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>20190507paper-the-Numenta-Anomaly-Benchmark</title>
+    <url>/2019/05/07/20190507paper-the-Numenta-Anomaly-Benchmark/</url>
+    <content><![CDATA[<h3 id="1-ABS-amp-Introduction"><a href="#1-ABS-amp-Introduction" class="headerlink" title="1 ABS &amp; Introduction"></a>1 ABS &amp; Introduction</h3><h4 id="1-1-Abstract"><a href="#1-1-Abstract" class="headerlink" title="1.1 Abstract"></a>1.1 Abstract</h4><p>对象：streams, time-series data, sequence</p>
+<p>异常检测难点：real-time processing</p>
+<p>NAB是一个测试评估针对流数据的异常检测算法的开源工具。</p>
+<p>理想的异常检测器 </p>
+<ol>
+<li><p>检测到所有出现的异常 </p>
+</li>
+<li><p>尽早检测出异常，最好在人们看到异常之前 </p>
+</li>
+<li><p>no FP 不误报 </p>
+</li>
+<li><p>实时检测、没有前瞻（不看前面的数据） </p>
+</li>
+<li><p>自动化检测、无人工调节</p>
+</li>
+<li>适用性广泛，具有泛化性</li>
+</ol>
+<h4 id="1-2-Intro"><a href="#1-2-Intro" class="headerlink" title="1.2 Intro"></a>1.2 Intro</h4><p>静态基准不适合用于实时性算法。Precision和Recall无法反应出早检测这个效果。人工划分训练集测试集不适合流场景。NAB设计了新的评价标准，整合了各类数据集。其他数据集还有the UC- Irvine dataset ，Yahoo Labs。本论文比较了HTM、Skyline、与Twitter的两种方法<a href="https://blog.twitter.com/engineering/en_us/a/2015/introducing-practical-and-robust-anomaly-detection-in-a-time-series.html" target="_blank" rel="noopener">Twitter 方法，翻</a> （AnomalyDetectionTs and AnomalyDetectionVec. ）。</p>
+<h3 id="2，NAB-scoring"><a href="#2，NAB-scoring" class="headerlink" title="2，NAB scoring"></a>2，NAB scoring</h3><h4 id="2-1-基础"><a href="#2-1-基础" class="headerlink" title="2.1 基础"></a>2.1 基础</h4><p>异常定义：We define anomalies in a data stream to be patterns that do not conform to past patterns of behavior for the stream. 包括空间异常和时间异常。</p>
+<p><img src="/images/20191210anomaly.jpg" alt="20191210anomaly"></p>
+<p>Dataset：范围从IT指标（例如网络利用率）到工业机器上的传感器再到社交媒体聊天。我们还包括一些人工生成的数据文件，用于测试尚未在语料库的真实数据中表示的异常行为，以及几个没有任何异常的数据文件。当前的NAB数据集包含58个数据文件，每个文件具有1000-22,000个数据实例（github里有）</p>
+<p>标记异常：按一定规则，标记ground truth label</p>
+<h4 id="2-2-算法"><a href="#2-2-算法" class="headerlink" title="2.2 算法"></a>2.2 算法</h4><p>算法核心三个方面：anomaly Window，the scoring function，application Profiles（配置文件）</p>
+<h5 id="2-2-1-异常窗口"><a href="#2-2-1-异常窗口" class="headerlink" title="2.2.1 异常窗口"></a>2.2.1 异常窗口</h5><p>异常窗口是代表一系列以真实异常标签（ a ground truth anomaly label ）为中心的数据点。</p>
+<p>异常窗口的作用是判断真假检测，检测在窗外的话是FP。</p>
+<p>评分函数基于窗口识别、加权TP，FP，FN。前面紫色部分只用来初始学习，不需测试。</p>
+<p>1，窗口内最早的TP检测被计分，其他忽略。</p>
+<p>2，sigmoidal scoring function 给早检测的TP高分。给FP负分数。</p>
+<p>3，窗口大小 = 10%*总数据长度/异常数量。实验测试了5% - 20%，由于缩放评分函数，这个百分比对最后结果不敏感。</p>
+<p><img src="/images/20191210AnomalyWindow.jpg" alt="20191210AnomalyWindow"></p>
+<p>application profile配置：FN对工业机器来说会造成损失，FP要求技术人员查看。（对监视数据中心中各个服务器状态的应用程序可能对误报的数量敏感，并且由于大多数服务器群集都相对容错，因此偶尔会遗漏异常情况很好。）因此配置文件用于：对于TP，FP，FN和TN，NAB应用与每个配置文件相关的不同相对权重以获得每个配置文件的单独分数。</p>
+<h5 id="2-2-2-计算过程"><a href="#2-2-2-计算过程" class="headerlink" title="2.2.2 计算过程"></a>2.2.2 计算过程</h5><p>1，配置权重$A$</p>
+<script type="math/tex; mode=display">A_{T P}, A_{F P}, A_{F N}, A_{T N}, 0 \leq A_{TP},A_{TN} \leq 1, -1 \leq A_{FP},A_{FN} \leq 0</script><p>$D$ 是数据集，$Y_d$是数据 $d$ 中被检测出来的异常。$f_d$表示没有检测到任何异常的窗口数量，</p>
+<p><img src="/images/20191210NABScoring.jpg" alt="20191210NABScoring"></p>
+<p>2，单个窗口的得分计算</p>
+<p>图中TP：早检测则，增加NAB score；点2：早检测的TP，贡献+0.999 。</p>
+<p>FP：减分（窗外后面的FP的减分更大）；点1：FP，贡献-1，点4：权重为-0.8093是根据$\sigma^{A}(y)$得到的。5：5更有害，因此5贡献-1。</p>
+<p>FN：完全没有检测到，减分。</p>
+<p>总的来看这个窗口的得分就是：$−1.0A_{FP} + 0.9999A_{TP} −0.8093A_{FP} − 1.0A_{FP} $ ，公式是：</p>
+<script type="math/tex; mode=display">\sigma^{A}(y)=\left(A_{T P}-A_{F P}\right)\left(\frac{1}{1+e^{5 y}}\right)-1</script><p>$\sigma^{A}(y)$中，y表示是检测在异常检测窗的相对位置，参数被设置为窗口右侧，$\sigma ( y = 0.0 ) = 0$。 </p>
+<p>3，一个数据文件的得分计算</p>
+<p>得分是每个检测的得分+错过的Window</p>
+<script type="math/tex; mode=display">S_{d}^{A}=\left(\sum_{y \in Y_{d}} \sigma^{A}(y)\right)+A_{F N} f_{d}</script><p>4，一个异常检测算法对所有数据集的得分</p>
+<script type="math/tex; mode=display">S ^ { A } = \sum _ { d \in D } S _ { d } ^ { A }</script><p>5，归一化这个算法的分数，normalized NAB score</p>
+<script type="math/tex; mode=display">S _ { N A B } ^ { A } = 100 \cdot \frac { S ^ { A } - S _ { \text {null} } ^ { A } } { S _ { \text {perfect} } ^ { A } - S _ { \text {null} } ^ { A } }</script><p>完美检测器检测到所有TP，无FP。NULL检测器就是没有检测到任何异常。</p>
+<h5 id="2-2-3-其他"><a href="#2-2-3-其他" class="headerlink" title="2.2.3 其他"></a>2.2.3 其他</h5><p>HTM算法，Skyline统计算法，Twitter统计算法等</p>
+<p>每个异常检测器输出是0-1之间的分数，使用固定阈值对分数进行阈值处理，以检测异常。 NAB包括自动爬坡搜索，用于为每种算法选择最佳阈值。其中要最大化的目标函数是NAB评分函数。一个阈值针对所有的数据集dataset（The detection threshold is thus tuned based on the full NAB dataset）。</p>
+<h3 id="3-result"><a href="#3-result" class="headerlink" title="3 result"></a>3 result</h3><p>见github首页</p>
+<p>一些小结论</p>
+<p>1，HTM和Skyline对漂移适应得更快</p>
+<p>2，HTM和Skyline各自也有误报但HTM可以早检测（3h，机器温度传感器数据）</p>
+<p>3，行为的时间变化通常先于容易检测到的大变化（做提前检测）。 </p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，Lavin A, Ahmad S. Evaluating Real-Time Anomaly Detection Algorithms—The Numenta Anomaly Benchmark[C]//2015 IEEE 14th International Conference on Machine Learning and Applications (ICMLA). IEEE, 2015: 38-44.</p>
+<p>2, <a href="https://github.com/numenta/NAB" target="_blank" rel="noopener">https://github.com/numenta/NAB</a> 很好的学习项目</p>
+]]></content>
+      <categories>
+        <category>AIOps</category>
+      </categories>
+      <tags>
+        <tag>AIOps</tag>
+        <tag>时间序列</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>装window、ubuntu双系统</title>
     <url>/2019/04/24/%E8%A3%85window%E3%80%81ubuntu%E5%8F%8C%E7%B3%BB%E7%BB%9F/</url>
     <content><![CDATA[<h2 id="装window10、ubuntu16-04双系统"><a href="#装window10、ubuntu16-04双系统" class="headerlink" title="装window10、ubuntu16.04双系统"></a>装window10、ubuntu16.04双系统</h2><p>周末趁空装了个双系统，记录记录过程吧。</p>
@@ -319,6 +354,60 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
       </categories>
       <tags>
         <tag>机器学习</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>20180318《乔布斯传》——伟大的人和伟大的产品</title>
+    <url>/2018/03/18/20180318%E3%80%8A%E4%B9%94%E5%B8%83%E6%96%AF%E4%BC%A0%E3%80%8B%E2%80%94%E2%80%94%E4%BC%9F%E5%A4%A7%E7%9A%84%E4%BA%BA%E5%92%8C%E4%BC%9F%E5%A4%A7%E7%9A%84%E4%BA%A7%E5%93%81/</url>
+    <content><![CDATA[<p>你在使用iPhone或者Mac吗？如果有，那你一定要了解下创造它的人，到底怎样一个人才能创造这样伟大的产品呢。 </p>
+<p>我手里有台Mac，大二的时候，因为看中了它的设计感自己掏钱买了。我喜欢他的简洁，流畅，易用，也喜欢苹果开发者们创造出的各类好玩实用的应用，比如sketch。当我买后，班上静和官霸也跟着买了，哈哈。可见他的吸引力多大，那么这背后这个人该更有吸引力吧。</p>
+<p>记得初中的公开课开课前，有位老师说，乔帮主去世了。当时，我还不知道，但听老师的赞美和惋惜。我才知晓了苹果和他，但未曾多关注，不过这也算是种下了一个好奇心吧。过年，老家没网，也就最适合整天阅读了，我孜孜不倦读完了《乔布斯传》。书中故事很有趣，读的时候我还自己笑了出来，读完共鸣感悟颇多。</p>
+<p>乔帮主的特质很多，<strong>突出的是他的现实扭曲场、优雅简约，精致的细节控、强烈的使命感与控制欲、细节把控、出众的演讲能力、识人用人、向渊博的人摄取知识、注重品牌等等</strong>。当然，人也是有缺陷的，但总觉得他的缺陷变成了促进苹果发展的动力。</p>
+<h3 id="1、现实扭曲场——专注"><a href="#1、现实扭曲场——专注" class="headerlink" title="1、现实扭曲场——专注"></a>1、现实扭曲场——专注</h3><p>他是一个极其专注的人，极其投入的人。在设计MAC的时候，即使是开机多用了10s，他不满意他就会要求员工必须做到开机时间减少。他自己也会深信不疑，于是再难的问题再不可能的事情，他总会使用各种方法，哄骗、安抚、劝说、奉承、威胁等让员工服从并做到。这就是他的现实扭曲力场，是一种自身的坚定，不屈的意志，让现实屈从与自己意图的热切渴望。</p>
+<p> 其中还有个好玩的故事，也有员工们为了在一些极端问题上改变乔帮主的想法，勇于挑战他。于是，苹果公司设立了一个奖项，每年给最能抵抗得住乔布斯的现实扭曲力场的人颁发。我觉得他们真是有趣，公司也真是有活力。</p>
+<p>人最难的就是坚信自己，专注投入。我们的想法都很容易受到身边人和世俗的影响，但其实想法万千，哪有什么标准的原则来评判对错呢。只要坚信自己的想法，专注投入到自己认定的事情上，不断追求极致，我们的现实扭曲力场也将出现。</p>
+<h3 id="2、个人电脑、至繁归于至简、站在科技与设计的前沿交汇点"><a href="#2、个人电脑、至繁归于至简、站在科技与设计的前沿交汇点" class="headerlink" title="2、个人电脑、至繁归于至简、站在科技与设计的前沿交汇点"></a>2、个人电脑、至繁归于至简、站在科技与设计的前沿交汇点</h3><p>1、个人电脑：MAC最初也是诞生于车库，当时乔的心愿是做个人电脑，人人都有的电脑，这个想法甚至先于微软。当时的许多公司的产品大多面向企业级顾客，可见乔的远见。他最先将电脑一体化组装，最先将图形界面引入，最先将触屏技术应用。</p>
+<p>2、苹果的电脑和手机设计得像个艺术品一样，不得不赞叹乔帮主的要求和品味。其实，这些品味和要求都来自于其追求优雅简约、来源于他总是站在技与设计的前沿交汇点去思考感受产品。他具有工匠和艺术设计者的本心。MAC电脑表里如一，即使隐藏的部分也做的漂亮；设计追随情感，设计表达情感；造型优美，细节中充满乐趣，至繁归于至简。这些也是他的产品别出一裁、受欢迎的关键原因。</p>
+<p>3、皮克斯与迪士尼：乔帮主被自己的公司开除期间，他喜欢上了另一个具有艺术特质的行业，他想将科技与动画结合。他欣赏拉塞特这样一位具有绅士气质的艺术家，他尊重他的设计。</p>
+<p>乔带来的技术让皮克斯的动画光影、3D效果更棒，加上电影内涵。他创造了另一个最好的品牌——皮克斯动画。现在我们经常在电影开头，看到迪士尼的城堡后会出现皮克斯和一盏跳跳的台灯。这盏台灯动画《顽皮跳跳灯》是皮克斯第一次参加SIGGRAPH大会展示的短片，并被评为最佳影片。后来甚至迪士尼为了挽救自己的电影地位，也不得不和皮克斯合作了。</p>
+<p>跨界交叉的创新来源于人的心灵想法的跨界，如果不是乔对科技和动画艺术的喜爱，怎么会有皮克斯这么棒的动画公司呢。</p>
+<p> 4、音乐变革+数字中枢</p>
+<p>音乐产品ipod的想法来源是乔帮主对版权的保护、为了自己能听最高质量的音乐。他坚定的去和许多唱片公司、音乐人谈判。于是iPod和iTunes出现。2001年互联网泡沫破裂，计算机被预测变为无聊的东西。这时候乔帮主继续思考，他说个人计算机不会成为边缘产品，而将成为数字中枢，管理音乐图片视频信息等等。他又一次站在科技和人文的位置上，先人一步，有了对数字中枢的设想。iTunes后续逐步销售视频、应用程序、订阅服务，慢慢形成了一个数字中枢，它将苹果代入了数字商业的新时代。</p>
+<p>  不得不说，个人电脑产品，各种手持电子产品，路演，产品发布会，数字战略……这些是影响了当今互联网产业的多少方方面面啊。</p>
+<p>他做的是自己喜欢和希望的事情，热情和思考成就了苹果。</p>
+<h3 id="3、强烈的使命感、细节控"><a href="#3、强烈的使命感、细节控" class="headerlink" title="3、强烈的使命感、细节控"></a>3、强烈的使命感、细节控</h3><p>带团队首先自己要有强烈的使命感和愿景的，团队带头人必定知道要去哪。知道怎么去。</p>
+<p>乔帮主总能构建出宏伟强烈的使命感，他最爱的格言是“过程就是奖励”，MAC团队是有着崇高使命的特殊团队。在使命感之下，痛苦会变成过眼云烟，最后长久的留下人生的巅峰时刻。他把控宏观，同时又及其关注细节。伟大的产品，总是在细节之处体现品牌和价值，因此它可以长久的引领潮流。</p>
+<p>他们每次设计一款产品，会有无数多的模型，每一个试用，并不断对比细节处的不同设计。即使到了发布前，如果不满意，他们也会推迟发布会，重新返工打磨产品。这样的呕心沥血，怎会不诞生出伟大的产品呢？</p>
+<h3 id="4、识人用人——向渊博的人摄取知识"><a href="#4、识人用人——向渊博的人摄取知识" class="headerlink" title="4、识人用人——向渊博的人摄取知识"></a>4、识人用人——向渊博的人摄取知识</h3><p>乔帮主的品味、知识、远见不仅仅来源于自身，他是个非常喜欢结交有才华的人。他和艺术大师、广告大师、动画大师、厉害的工程师都会有许多交流。</p>
+<p>他取百家之所长，不断学习和完善自己，于是他成为了强者。同时他的核心圈子里聚集的也都是真正的强者，相互成就。</p>
+<p>乔布斯，他用大师级手法把理念、科技、艺术融合在了一体，创造了未来。</p>
+]]></content>
+      <categories>
+        <category>读书笔记</category>
+      </categories>
+      <tags>
+        <tag>读书笔记</tag>
+        <tag>产品</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>20171020周国平《生活的幸福》</title>
+    <url>/2017/10/20/20171020%E5%91%A8%E5%9B%BD%E5%B9%B3%E3%80%8A%E7%94%9F%E6%B4%BB%E7%9A%84%E5%B9%B8%E7%A6%8F%E3%80%8B/</url>
+    <content><![CDATA[<p>老周（周国平）说，幸福的源泉是生命和精神的幸福，感受生命本身的美好，追求精神上的快乐。我是十分赞同的，虽然这看上去有些偏离现实。其实，我觉得这是最贴切的说法，没有偏离现实。</p>
+<p>生命的幸福在身体的健康，情感的丰满。大家其实都能感觉疾病带来的抑郁和沉闷，生病的我真的是完全缺乏生命的活力，不肯动也不肯学，不肯说话不肯笑，这样的我连他也看不下去了。身体健康是多么重要的事情啊。这是最基本的，而生命深层次的快乐还在于情感体验，我们的朋友、亲人、恋人组成了我们周围的生活。我们和喜欢的他们在一起，并让他们也感到快乐，这也是生命最简单的幸福。其实这算是我们现在很多平凡人追求的，我爸妈基本也是希望我过上这样的生活，身体健康、衣食无忧、家庭和睦、朋友友好。</p>
+<p>以前我不明白为什么我总是不太想按照父母的希望去生活，那时是觉得这样的被安排着没有自由，但现在我想我内心真实拒绝的原因的因为我想有属于自己的精神生活，那个独属于我的人生。</p>
+<p>精神生活包括智力思考、实践意志。</p>
+<p>智力思考就是要有好奇心和独立思考的能力。其实小时候，每个人都会很好奇世界，那时最让我困扰的问题是“为什么我是我，我知道自己的想法感受，我能生活我的生活，但是别人为什么不是我，不能有我同样的感受，不能过我的生活。”我对我这个个体是非常好奇的，这曾经带给我许多的思考。我才惊觉，原来这是哲学的开端啊。老周说：“我认为一个人在受过大学教育以后，应该成为一个知识分子。什么是知识分子？就是热爱智力生活的人，养成了智力活动习惯的人。”我才意识现在快毕业的我真的还算不上知识分子，庆幸我还有时间，可以重拾我的好奇心，慢慢开始自己的研究之路吧。</p>
+<p>实践意志就是要过自己的内心的精神灵魂生活，就是要做喜欢的事情、积极思考、写日记记录。一个人有了持续的内心生活，会感到你在这个世界上生活的时候是有灵魂的。有灵魂的人才是真正的不同与他人的人，才是最独立的个体，不然与咸鱼有什么区别呢。我们人最先进就是在于精神生活，而现代人，仿佛因为忙碌而越来越缺乏了。大家都过着具体的日子，很少有人从局部中跳出来，看看人生全景，想想人生的大问题。</p>
+<p>这次在决定我读出国读博的问题上，我想了想这段时间与我一生而言，应该是最简单的学习思考写作的时光了，这对我一生而言都会是很珍贵的、自由的精神生活的时光，所以我选择了这个生活。</p>
+<p>老周说：“优秀，就是我一直所强调的，要让老天赋予你的各种精神能力得到很好的生长，智、情、德全面发展，拥有自由的头脑、丰富的心灵和高贵的灵魂。”以前觉得这句话在教育上说得很空，现在我想与我个人而言，这句话很实在。我也正朝着这样的优秀而努力，过智力生活，体验生命的美好，提高德行修养。</p>
+]]></content>
+      <categories>
+        <category>读书笔记</category>
+      </categories>
+      <tags>
+        <tag>读书笔记</tag>
+        <tag>哲思</tag>
       </tags>
   </entry>
   <entry>
