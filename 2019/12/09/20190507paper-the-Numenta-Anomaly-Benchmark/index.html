@@ -47,26 +47,22 @@
   };
 </script>
 
-  <meta name="description" content="1, Numenta的HTM简介Hierarchical Temporal Memeory(HTM,层级时间记忆，皮质学习) 是一种基于脑神经科学来模拟大脑进行学习和信息处理的神经网络。新皮质就是大脑里褶皱的皮层部分（图1），这只有哺乳动物有。将皮层纵向切开，不论是视觉还是听觉部分，切开后的结构是相似的（图2），很有可能大脑处理不同信息的方法是类似的。   图1 大脑皮层，图2 细胞图新皮质分化为">
-<meta name="keywords" content="AIOps,神经网络">
+  <meta name="description" content="1 ABS &amp;amp; Introduction1.1 Abstract对象：streams, time-series data, sequence 异常检测难点：real-time processing NAB是一个测试评估针对流数据的异常检测算法的开源工具。 理想的异常检测器   检测到所有出现的异常   尽早检测出异常，最好在人们看到异常之前   no FP 不误报   实时检测、没有前瞻（">
+<meta name="keywords" content="AIOPs,时间序列">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Numenta的HTM简介">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;11&#x2F;25&#x2F;Numenta%E7%9A%84HTM%E7%AE%80%E4%BB%8B&#x2F;index.html">
+<meta property="og:title" content="20190507paper-the-Numenta-Anomaly-Benchmark">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;12&#x2F;09&#x2F;20190507paper-the-Numenta-Anomaly-Benchmark&#x2F;index.html">
 <meta property="og:site_name" content="WangXue">
-<meta property="og:description" content="1, Numenta的HTM简介Hierarchical Temporal Memeory(HTM,层级时间记忆，皮质学习) 是一种基于脑神经科学来模拟大脑进行学习和信息处理的神经网络。新皮质就是大脑里褶皱的皮层部分（图1），这只有哺乳动物有。将皮层纵向切开，不论是视觉还是听觉部分，切开后的结构是相似的（图2），很有可能大脑处理不同信息的方法是类似的。   图1 大脑皮层，图2 细胞图新皮质分化为">
+<meta property="og:description" content="1 ABS &amp;amp; Introduction1.1 Abstract对象：streams, time-series data, sequence 异常检测难点：real-time processing NAB是一个测试评估针对流数据的异常检测算法的开源工具。 理想的异常检测器   检测到所有出现的异常   尽早检测出异常，最好在人们看到异常之前   no FP 不误报   实时检测、没有前瞻（">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20191125head.jpg">
-<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20191125cells.png">
-<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20191125HierarchicalMode1.png">
-<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20191125featureRepresentation1.png">
-<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20191125SDR_Define.png">
-<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20191125NoiseTolerant.jpg">
-<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20191204SDR_Stack.jpg">
-<meta property="og:updated_time" content="2019-12-04T04:18:05.801Z">
+<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20191210anomaly.jpg">
+<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20191210AnomalyWindow.jpg">
+<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20191210NABScoring.jpg">
+<meta property="og:updated_time" content="2019-12-10T03:33:10.019Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20191125head.jpg">
+<meta name="twitter:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20191210anomaly.jpg">
 
-<link rel="canonical" href="http://yoursite.com/2019/11/25/Numenta%E7%9A%84HTM%E7%AE%80%E4%BB%8B/">
+<link rel="canonical" href="http://yoursite.com/2019/12/09/20190507paper-the-Numenta-Anomaly-Benchmark/">
 
 
 <script id="page-configurations">
@@ -80,7 +76,7 @@
   };
 </script>
 
-  <title>Numenta的HTM简介 | WangXue</title>
+  <title>20190507paper-the-Numenta-Anomaly-Benchmark | WangXue</title>
   
 
 
@@ -192,7 +188,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/11/25/Numenta%E7%9A%84HTM%E7%AE%80%E4%BB%8B/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/09/20190507paper-the-Numenta-Anomaly-Benchmark/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -205,7 +201,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Numenta的HTM简介
+          20190507paper-the-Numenta-Anomaly-Benchmark
         </h1>
 
         <div class="post-meta">
@@ -215,14 +211,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2019-11-25 16:26:49" itemprop="dateCreated datePublished" datetime="2019-11-25T16:26:49+08:00">2019-11-25</time>
+              <time title="创建时间：2019-12-09 21:38:23" itemprop="dateCreated datePublished" datetime="2019-12-09T21:38:23+08:00">2019-12-09</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-12-04 12:18:05" itemprop="dateModified" datetime="2019-12-04T12:18:05+08:00">2019-12-04</time>
+                <time title="修改时间：2019-12-10 11:33:10" itemprop="dateModified" datetime="2019-12-10T11:33:10+08:00">2019-12-10</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -230,8 +226,8 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/AIOps/" itemprop="url" rel="index">
-                    <span itemprop="name">AIOps</span>
+                  <a href="/categories/AIOPs/" itemprop="url" rel="index">
+                    <span itemprop="name">AIOPs</span>
                   </a>
                 </span>
             </span>
@@ -247,30 +243,60 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h4 id="1-Numenta的HTM简介"><a href="#1-Numenta的HTM简介" class="headerlink" title="1, Numenta的HTM简介"></a>1, Numenta的HTM简介</h4><p>Hierarchical Temporal Memeory(HTM,层级时间记忆，皮质学习) 是一种基于脑神经科学来模拟大脑进行学习和信息处理的神经网络。新皮质就是大脑里褶皱的皮层部分（图1），这只有哺乳动物有。将皮层纵向切开，不论是视觉还是听觉部分，切开后的结构是相似的（图2），很有可能大脑处理不同信息的方法是类似的。</p>
-<p><img src="/images/20191125head.jpg" width="250"/><br><img src="/images/20191125cells.png" width="200"/> </p>
-<p><center>图1 大脑皮层，图2 细胞图</center><br>新皮质分化为很多个区域（region，图3），这些区域通过神经纤维连接。这些区域以层次结构的方式连接在一起。低层级信息收集基础信号，经过不同层级逐渐加工，提取并理解更抽象信息，更高级的话或许可以关联到想法、事物活动等信息。这个有点类似卷积神经网络，低层级的网络提取图像边界等信息，高层级的网络识别物体类型等等。</p>
-<p><img src="/images/20191125HierarchicalMode1.png" width="400"/></p>
-<p><center> 图 3 HTM分层示意图</center><br>目前，<strong>Numenta的HTM设计介绍讲解主要针对一个区域，即一层（图3，如黄色层），说明其数据输入方式，数据表征方式，神经元激活，以及时间记忆表示方式</strong>。HTM大概的原理是，首先将输入的数据编码为0、1稀疏数组，将这些稀疏数组经过空间池化转换为稀疏分布表征（SDR），然后时序记忆，建立突触，存储信息，进行预测等。</p>
-<h4 id="2-数据输入"><a href="#2-数据输入" class="headerlink" title="2, 数据输入"></a>2, 数据输入</h4><p>数据输入一般有数字，日期，温度等，将这些数据编码为01稀疏数组（bit数组）。这在计算机领域十分常见，如一个字符的ASCⅡ表示，使用8bit表示的。n个bit可以表示$2^n$容量（capacity）的信息，bit数组可以有许多运算，与或非与异或等等。</p>
-<p><img src="/images/20191125featureRepresentation1.png" width="400"/></p>
-<p>在HTM里，稀疏的每一个1可能表示了一个信息。在通过稀疏bit数组的压缩存储（只存1的下标位置），可以表示非常多的数据信息了。</p>
-<h4 id="3-空间池化Spatial-Pooler"><a href="#3-空间池化Spatial-Pooler" class="headerlink" title="3, 空间池化Spatial Pooler"></a>3, 空间池化Spatial Pooler</h4><h5 id="3-1-稀疏分布表征-SDR"><a href="#3-1-稀疏分布表征-SDR" class="headerlink" title="3.1 稀疏分布表征 SDR"></a>3.1 稀疏分布表征 SDR</h5><p>稀疏分布表征（SDR）是空间池化的结果，通俗来看有点像大脑的数据结构，我们先看看SDR的一些特性，如图。计算SDR的容量:</p>
-<script type="math/tex; mode=display">
-capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac { n! } { w! ( n - w )! } = C_n^w （组合数）</script><p>也就是说可以表示这么多的信息量。</p>
-<p><img src="/images/20191125SDR_Define.png" width="400"/></p>
-<p>1，SDR的一些基本运算。overlap交集，两个SDR交起来，相同的激活的bit越多，表明这俩SDR越相似。判断俩SDR是否匹配，可以设置一定的阈值。当俩SDR overlap之后，交集bit  $&gt;=\theta$ (阈值)，则俩SDR匹配。</p>
-<p>2，SDR的噪声容忍度（noise tolerant）强。在下图中，选取29%的比例翻转bit的值，对比两个SDR，重叠分数为30。当30大于等于$\theta=30$ 则匹配。意思是说如果俩SDR是原本一致，就算其中一个SDR不完全准确有噪声，则还是会匹配上的。当然也有可能确实两SDR不一致，但又因为噪声导致其匹配上了，这样的误报可能有，但是概率很低 $FP = 交集的基数 / 原始SDR的n w的组合数 $ </p>
-<p><img src="/images/20191125NoiseTolerant.jpg" width="400"/></p>
-<h5 id="3-2-SDR的重叠集"><a href="#3-2-SDR的重叠集" class="headerlink" title="3.2 SDR的重叠集"></a>3.2 SDR的重叠集</h5><p>如果俩同样大小的SDR（即$n,w$ 分别相等），所有bit匹配，则匹配的SDR必然跟原SDR一模一样，就只有一个。那如果降低匹配阈值 $\theta$ ，当相同激活的bit数目为$\theta$时，可以有多少个SDR与原SDR相匹配呢？ 这是个排列组合问题。</p>
-<script type="math/tex; mode=display">\left|\Omega(n, w, \theta)\right|=\left(\begin{array}{c}{w} \\ {\theta}\end{array}\right) \times\left(\begin{array}{l}{n-w} \\ {w-\theta}\end{array}\right)</script><p>相匹配的SDR，左边从原SDR里$w$里选出$\theta$个bit来激活，这是俩SDR相同激活的bit。右边从原SDR里没有激活的$n-w$ 个bit里选出 $w-\theta$ 来激活即可。若 $n=600, w=40, \theta = 39$，算一算可以有 $40 * 560$个不同的SDR与原SDR匹配，是不是很多呀。</p>
-<p>这有个好处就是，SDR可以表示很多相似的信息，而且可以直接通过俩SDR的交集来判断是否相似，误报率也很低。</p>
-<h5 id="3-3-SDR栈"><a href="#3-3-SDR栈" class="headerlink" title="3.3 SDR栈"></a>3.3 SDR栈</h5><p>随着时间序列值逐步产生，即SDR也逐步产生。我们模拟看到SDR进行匹配的过程。new SDR与栈里的SDRs匹配，看看之前是不是见到过。匹配的SDR会有很多重叠的bit。</p>
-<p><img src="/images/20191204SDR_Stack.jpg" width="400"/></p>
-<p>为了加快计算，之前的所有SDR采用Union合并到一起进行匹配。其实由于$n$很大，错误匹配的概率还是很小的。</p>
-<h4 id="5-时序记忆-Temporal-Memory"><a href="#5-时序记忆-Temporal-Memory" class="headerlink" title="5, 时序记忆 Temporal Memory"></a>5, 时序记忆 Temporal Memory</h4><h4 id="6-总结"><a href="#6-总结" class="headerlink" title="6, 总结"></a>6, 总结</h4><h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><p>1，<a href="https://www.bilibili.com/video/av35735228?from=search&amp;seid=7001690129614399170" target="_blank" rel="noopener">bilibili的翻译HTM school</a></p>
-<p>2，<a href="https://numenta.org/htm-school/" target="_blank" rel="noopener">numenta的YouTube视频</a></p>
-<p>3， Ahmad S, Lavin A, Purdy S, et al. Unsupervised real-time anomaly detection for streaming data[J]. Neurocomputing, 2017, 262: 134-147.</p>
+        <h3 id="1-ABS-amp-Introduction"><a href="#1-ABS-amp-Introduction" class="headerlink" title="1 ABS &amp; Introduction"></a>1 ABS &amp; Introduction</h3><h4 id="1-1-Abstract"><a href="#1-1-Abstract" class="headerlink" title="1.1 Abstract"></a>1.1 Abstract</h4><p>对象：streams, time-series data, sequence</p>
+<p>异常检测难点：real-time processing</p>
+<p>NAB是一个测试评估针对流数据的异常检测算法的开源工具。</p>
+<p>理想的异常检测器 </p>
+<ol>
+<li><p>检测到所有出现的异常 </p>
+</li>
+<li><p>尽早检测出异常，最好在人们看到异常之前 </p>
+</li>
+<li><p>no FP 不误报 </p>
+</li>
+<li><p>实时检测、没有前瞻（不看前面的数据） </p>
+</li>
+<li><p>自动化检测、无人工调节</p>
+</li>
+<li>适用性广泛，具有泛化性</li>
+</ol>
+<h4 id="1-2-Intro"><a href="#1-2-Intro" class="headerlink" title="1.2 Intro"></a>1.2 Intro</h4><p>静态基准不适合用于实时性算法。Precision和Recall无法反应出早检测这个效果。人工划分训练集测试集不适合流场景。NAB设计了新的评价标准，整合了各类数据集。其他数据集还有the UC- Irvine dataset ，Yahoo Labs。本论文比较了HTM、Skyline、与Twitter的两种方法<a href="https://blog.twitter.com/engineering/en_us/a/2015/introducing-practical-and-robust-anomaly-detection-in-a-time-series.html" target="_blank" rel="noopener">Twitter 方法，翻</a> （AnomalyDetectionTs and AnomalyDetectionVec. ）。</p>
+<h3 id="2，NAB-scoring"><a href="#2，NAB-scoring" class="headerlink" title="2，NAB scoring"></a>2，NAB scoring</h3><h4 id="2-1-基础"><a href="#2-1-基础" class="headerlink" title="2.1 基础"></a>2.1 基础</h4><p>异常定义：We define anomalies in a data stream to be patterns that do not conform to past patterns of behavior for the stream. 包括空间异常和时间异常。</p>
+<p><img src="/images/20191210anomaly.jpg" alt="20191210anomaly"></p>
+<p>Dataset：范围从IT指标（例如网络利用率）到工业机器上的传感器再到社交媒体聊天。我们还包括一些人工生成的数据文件，用于测试尚未在语料库的真实数据中表示的异常行为，以及几个没有任何异常的数据文件。当前的NAB数据集包含58个数据文件，每个文件具有1000-22,000个数据实例（github里有）</p>
+<p>标记异常：按一定规则，标记ground truth label</p>
+<h4 id="2-2-算法"><a href="#2-2-算法" class="headerlink" title="2.2 算法"></a>2.2 算法</h4><p>算法核心三个方面：anomaly Window，the scoring function，application Profiles（配置文件）</p>
+<h5 id="2-2-1-异常窗口"><a href="#2-2-1-异常窗口" class="headerlink" title="2.2.1 异常窗口"></a>2.2.1 异常窗口</h5><p>异常窗口是代表一系列以真实异常标签（ a ground truth anomaly label ）为中心的数据点。</p>
+<p>异常窗口的作用是判断真假检测，检测在窗外的话是FP。</p>
+<p>评分函数基于窗口识别、加权TP，FP，FN。前面紫色部分只用来初始学习，不需测试。</p>
+<p>1，窗口内最早的TP检测被计分，其他忽略。</p>
+<p>2，sigmoidal scoring function 给早检测的TP高分。给FP负分数。</p>
+<p>3，窗口大小 = 10%*总数据长度/异常数量。实验测试了5% - 20%，由于缩放评分函数，这个百分比对最后结果不敏感。</p>
+<p><img src="/images/20191210AnomalyWindow.jpg" alt="20191210AnomalyWindow"></p>
+<p>application profile配置：FN对工业机器来说会造成损失，FP要求技术人员查看。（对监视数据中心中各个服务器状态的应用程序可能对误报的数量敏感，并且由于大多数服务器群集都相对容错，因此偶尔会遗漏异常情况很好。）因此配置文件用于：对于TP，FP，FN和TN，NAB应用与每个配置文件相关的不同相对权重以获得每个配置文件的单独分数。</p>
+<h5 id="2-2-2-计算过程"><a href="#2-2-2-计算过程" class="headerlink" title="2.2.2 计算过程"></a>2.2.2 计算过程</h5><p>1，配置权重$A$</p>
+<script type="math/tex; mode=display">A_{T P}, A_{F P}, A_{F N}, A_{T N}, 0 \leq A_{TP},A_{TN} \leq 1, -1 \leq A_{FP},A_{FN} \leq 0</script><p>$D$ 是数据集，$Y_d$是数据 $d$ 中被检测出来的异常。$f_d$表示没有检测到任何异常的窗口数量，</p>
+<p><img src="/images/20191210NABScoring.jpg" alt="20191210NABScoring"></p>
+<p>2，单个窗口的得分计算</p>
+<p>图中TP：早检测则，增加NAB score；点2：早检测的TP，贡献+0.999 。</p>
+<p>FP：减分（窗外后面的FP的减分更大）；点1：FP，贡献-1，点4：权重为-0.8093是根据$\sigma^{A}(y)$得到的。5：5更有害，因此5贡献-1。</p>
+<p>FN：完全没有检测到，减分。</p>
+<p>总的来看这个窗口的得分就是：$−1.0A_{FP} + 0.9999A_{TP} −0.8093A_{FP} − 1.0A_{FP} $ ，公式是：</p>
+<script type="math/tex; mode=display">\sigma^{A}(y)=\left(A_{T P}-A_{F P}\right)\left(\frac{1}{1+e^{5 y}}\right)-1</script><p>$\sigma^{A}(y)$中，y表示是检测在异常检测窗的相对位置，参数被设置为窗口右侧，$\sigma ( y = 0.0 ) = 0$。 </p>
+<p>3，一个数据文件的得分计算</p>
+<p>得分是每个检测的得分+错过的Window</p>
+<script type="math/tex; mode=display">S_{d}^{A}=\left(\sum_{y \in Y_{d}} \sigma^{A}(y)\right)+A_{F N} f_{d}</script><p>4，一个异常检测算法对所有数据集的得分</p>
+<script type="math/tex; mode=display">S ^ { A } = \sum _ { d \in D } S _ { d } ^ { A }</script><p>5，归一化这个算法的分数，normalized NAB score</p>
+<script type="math/tex; mode=display">S _ { N A B } ^ { A } = 100 \cdot \frac { S ^ { A } - S _ { \text {null} } ^ { A } } { S _ { \text {perfect} } ^ { A } - S _ { \text {null} } ^ { A } }</script><p>完美检测器检测到所有TP，无FP。NULL检测器就是没有检测到任何异常。</p>
+<h5 id="2-2-3-其他"><a href="#2-2-3-其他" class="headerlink" title="2.2.3 其他"></a>2.2.3 其他</h5><p>HTM算法，Skyline统计算法，Twitter统计算法等</p>
+<p>每个异常检测器输出是0-1之间的分数，使用固定阈值对分数进行阈值处理，以检测异常。 NAB包括自动爬坡搜索，用于为每种算法选择最佳阈值。其中要最大化的目标函数是NAB评分函数。一个阈值针对所有的数据集dataset（The detection threshold is thus tuned based on the full NAB dataset）。</p>
+<h3 id="3-result"><a href="#3-result" class="headerlink" title="3 result"></a>3 result</h3><p>见github首页</p>
+<p>一些小结论</p>
+<p>1，HTM和Skyline对漂移适应得更快</p>
+<p>2，HTM和Skyline各自也有误报但HTM可以早检测（3h，机器温度传感器数据）</p>
+<p>3，行为的时间变化通常先于容易检测到的大变化（做提前检测）。 </p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，Lavin A, Ahmad S. Evaluating Real-Time Anomaly Detection Algorithms—The Numenta Anomaly Benchmark[C]//2015 IEEE 14th International Conference on Machine Learning and Applications (ICMLA). IEEE, 2015: 38-44.</p>
+<p>2, <a href="https://github.com/numenta/NAB" target="_blank" rel="noopener">https://github.com/numenta/NAB</a> 很好的学习项目</p>
 
     </div>
 
@@ -280,8 +306,8 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/AIOps/" rel="tag"># AIOps</a>
-              <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag"># 神经网络</a>
+              <a href="/tags/AIOPs/" rel="tag"># AIOPs</a>
+              <a href="/tags/%E6%97%B6%E9%97%B4%E5%BA%8F%E5%88%97/" rel="tag"># 时间序列</a>
           </div>
 
         
@@ -290,13 +316,10 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2019/11/06/paper-2019-11-06AIOps-Real-World-Challenges-and-Research-Innovations/" rel="prev" title="[paper]2019/11/06AIOps: Real-World Challenges and Research Innovations">
-      <i class="fa fa-chevron-left"></i> [paper]2019/11/06AIOps: Real-World Challenges and Research Innovations
+    <a href="/2019/12/04/NAB%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E7%B3%BB%E5%88%971/" rel="prev" title="NAB源码阅读系列1">
+      <i class="fa fa-chevron-left"></i> NAB源码阅读系列1
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2019/11/26/mac%E4%B8%8Ahexo%E7%9A%84mathjax%E9%85%8D%E7%BD%AE/" rel="next" title="mac上hexo的mathjax配置">
-      mac上hexo的mathjax配置 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -334,7 +357,7 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-Numenta的HTM简介"><span class="nav-number">1.</span> <span class="nav-text">1, Numenta的HTM简介</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-数据输入"><span class="nav-number">2.</span> <span class="nav-text">2, 数据输入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-空间池化Spatial-Pooler"><span class="nav-number">3.</span> <span class="nav-text">3, 空间池化Spatial Pooler</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#3-1-稀疏分布表征-SDR"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 稀疏分布表征 SDR</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-2-SDR的重叠集"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 SDR的重叠集</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-3-SDR栈"><span class="nav-number">3.3.</span> <span class="nav-text">3.3 SDR栈</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-时序记忆-Temporal-Memory"><span class="nav-number">4.</span> <span class="nav-text">5, 时序记忆 Temporal Memory</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-总结"><span class="nav-number">5.</span> <span class="nav-text">6, 总结</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#参考"><span class="nav-number">6.</span> <span class="nav-text">参考</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-ABS-amp-Introduction"><span class="nav-number">1.</span> <span class="nav-text">1 ABS &amp; Introduction</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-Abstract"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 Abstract</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-Intro"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 Intro</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2，NAB-scoring"><span class="nav-number">2.</span> <span class="nav-text">2，NAB scoring</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-基础"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 基础</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-算法"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 算法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2-1-异常窗口"><span class="nav-number">2.2.1.</span> <span class="nav-text">2.2.1 异常窗口</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2-2-计算过程"><span class="nav-number">2.2.2.</span> <span class="nav-text">2.2.2 计算过程</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2-3-其他"><span class="nav-number">2.2.3.</span> <span class="nav-text">2.2.3 其他</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-result"><span class="nav-number">3.</span> <span class="nav-text">3 result</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reference"><span class="nav-number">4.</span> <span class="nav-text">Reference</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

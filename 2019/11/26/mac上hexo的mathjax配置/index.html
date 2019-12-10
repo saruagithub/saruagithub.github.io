@@ -55,7 +55,7 @@
 <meta property="og:site_name" content="WangXue">
 <meta property="og:description" content="博文中要写公式是难免的，因为配置hexo支持数学公式是必要的。 Next 主题提供了两个渲染引擎，分别是 mathjax 和 katex，后者相对前者来说渲染速度更快，而且支持更丰富的公式。我这里hexo是4.0版本了，因此又折腾了下。 1，更改next下的config配置next主题里的_config如下，只需要改一个地方就是mathjax的enable为true。 12345678910111">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-11-26T04:05:06.305Z">
+<meta property="og:updated_time" content="2019-12-10T01:46:28.124Z">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="http://yoursite.com/2019/11/26/mac%E4%B8%8Ahexo%E7%9A%84mathjax%E9%85%8D%E7%BD%AE/">
@@ -206,10 +206,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2019-11-26 11:50:08 / 修改时间：12:05:06" itemprop="dateCreated datePublished" datetime="2019-11-26T11:50:08+08:00">2019-11-26</time>
+              <time title="创建时间：2019-11-26 11:50:08" itemprop="dateCreated datePublished" datetime="2019-11-26T11:50:08+08:00">2019-11-26</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-12-10 09:46:28" itemprop="dateModified" datetime="2019-12-10T09:46:28+08:00">2019-12-10</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -252,7 +258,7 @@
 <h6 id="3，开启bolg下的config支持"><a href="#3，开启bolg下的config支持" class="headerlink" title="3，开启bolg下的config支持"></a>3，开启bolg下的config支持</h6><p>在末尾添加内容。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mathjax:</span><br><span class="line">    enable: true</span><br></pre></td></tr></table></figure>
 <p>就可以了，鉴于之前的博客可能有些老了，配置了半天就记录下。</p>
-
+<h6 id="4，最后自己在写bolg的时候头部加上mathjax-true，表示本文要数学公式渲染。"><a href="#4，最后自己在写bolg的时候头部加上mathjax-true，表示本文要数学公式渲染。" class="headerlink" title="4，最后自己在写bolg的时候头部加上mathjax: true，表示本文要数学公式渲染。"></a>4，最后自己在写bolg的时候头部加上mathjax: true，表示本文要数学公式渲染。</h6>
     </div>
 
     
@@ -314,7 +320,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-6"><a class="nav-link" href="#1，更改next下的config"><span class="nav-number">1.</span> <span class="nav-text">1，更改next下的config</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2-去掉hexo自带的数学渲染"><span class="nav-number">2.</span> <span class="nav-text">2, 去掉hexo自带的数学渲染</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#3，开启bolg下的config支持"><span class="nav-number">3.</span> <span class="nav-text">3，开启bolg下的config支持</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-6"><a class="nav-link" href="#1，更改next下的config"><span class="nav-number">1.</span> <span class="nav-text">1，更改next下的config</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2-去掉hexo自带的数学渲染"><span class="nav-number">2.</span> <span class="nav-text">2, 去掉hexo自带的数学渲染</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#3，开启bolg下的config支持"><span class="nav-number">3.</span> <span class="nav-text">3，开启bolg下的config支持</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#4，最后自己在写bolg的时候头部加上mathjax-true，表示本文要数学公式渲染。"><span class="nav-number">4.</span> <span class="nav-text">4，最后自己在写bolg的时候头部加上mathjax: true，表示本文要数学公式渲染。</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -330,20 +336,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-count">12</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-count">15</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
