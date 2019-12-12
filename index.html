@@ -207,6 +207,259 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/10/20191210%E5%BC%82%E5%B8%B8%E6%A3%80%E6%B5%8B%E8%83%8C%E6%99%AF%E4%B8%8E%E7%BB%BC%E8%BF%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="WangXue">
+      <meta itemprop="description" content="本科重庆大学CS，研究生南京大学MS，主要研究AIOps，机器学习等，语言Python&C++">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="WangXue">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/12/10/20191210%E5%BC%82%E5%B8%B8%E6%A3%80%E6%B5%8B%E8%83%8C%E6%99%AF%E4%B8%8E%E7%BB%BC%E8%BF%B0/" class="post-title-link" itemprop="url">20191210异常检测背景与综述</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-12-10 16:24:27" itemprop="dateCreated datePublished" datetime="2019-12-10T16:24:27+08:00">2019-12-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-12-12 15:54:00" itemprop="dateModified" datetime="2019-12-12T15:54:00+08:00">2019-12-12</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/AIOps/" itemprop="url" rel="index">
+                    <span itemprop="name">AIOps</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="2-异常检测方法总结与综述"><a href="#2-异常检测方法总结与综述" class="headerlink" title="2 异常检测方法总结与综述"></a>2 异常检测方法总结与综述</h3><h4 id="2-1-统计方法"><a href="#2-1-统计方法" class="headerlink" title="2.1 统计方法"></a>2.1 统计方法</h4><p>主要是对数据的分布做出假设，并找出假设下所定义的“异常”，因此往往会使用极值分析或者假设检验，概率密度函数值小于某个阈值的点判定为异常。 </p>
+<h5 id="2-1-1，看图"><a href="#2-1-1，看图" class="headerlink" title="2.1.1，看图"></a>2.1.1，看图</h5><p>频率直方图， 点分布图</p>
+<h5 id="2-1-2，高斯分布的-k-sigma"><a href="#2-1-2，高斯分布的-k-sigma" class="headerlink" title="2.1.2，高斯分布的 k-sigma"></a>2.1.2，高斯分布的 k-sigma</h5><p>概率密度函数为 $f(x)=\frac{1}{\sqrt{2 \pi} \sigma} e^{-\frac{(x-\mu)^{2}}{2 \sigma^{2}}}$</p>
+<p>当点$X \notin ( { \mu } - 3 { \sigma } ,  { \mu } + 3  { \sigma } ) $ 则为异常，因为这个点出现的概率小于 1 - 99.74%。</p>
+<p>延伸出滑动窗高斯模型，后续s表示为异常分数score：</p>
+<script type="math/tex; mode=display">s =1-Q\left(\frac{\left|x_-\mu \right|}{\sigma}\right)</script><p>Q函数是标准正态分布的右尾函数：$Q(x)=\int_{x}^{\infty} \frac{1}{\sqrt{2 \pi}} e^{-\frac{t^{2}}{2}} d t$，Q函数又叫（标准正态分布的）互补累计分布函数，Q ( x )是正常(高斯)随机变量获得大于x标准差的值的概率。</p>
+<h5 id="2-1-3，箱型图"><a href="#2-1-3，箱型图" class="headerlink" title="2.1.3，箱型图"></a>2.1.3，箱型图</h5><p><img src="/Users/wangxue/gitpro/20191105MyBlog/saruagithub/source/images/20191211BoxPlot.jpg" alt="20191211BoxPlot"></p>
+<p>IQR (inter quartile range) = Q3 - Q1 ； 占据中心值周围50%数量的范围</p>
+<p>LQR (lower quartile range) = median - Q1 ； IQR的下半部分</p>
+<p>UQR (upper quartile range) = Q3 - median ； IQR的上半部分</p>
+<p>若按3 σ来判断异常， 3 σ = 2.1 IQR，则异常在median的2.1 IQR之外，因此在Q1或者Q3再延伸1.5 IQR (3σ 之外)的点就很可能是outlier点了。</p>
+<p>即$P &gt; Q3+1.5IQR$ or $P&lt; Q1 - 1.5IQR$</p>
+<h5 id="2-1-4，假设检验类型"><a href="#2-1-4，假设检验类型" class="headerlink" title="2.1.4，假设检验类型"></a>2.1.4，假设检验类型</h5><p>如extreme studentized deviate（Grubb’s Test ）</p>
+<p>提出假设H0:没有异常点，H1：至少有一个异常点。</p>
+<p>根据样本的均值和标准差来计算最大 bias / standard deviation 比值。</p>
+<script type="math/tex; mode=display">G=\frac{\max _{i=1, \ldots, N}\left|X_{i}-\bar{X}\right|}{s}</script><p>基于t-student分布定检出水平$\alpha$（置信概率$P=1- \alpha$）与检测次数$n$查找表格获得临界值$G_0$。当计算的$G&gt;G_0$则判断为异常点。</p>
+<p>其他还有卡方检验（chi-square theory），Q_test等</p>
+<h5 id="2-1-5，Skyline用到的几种统计方法"><a href="#2-1-5，Skyline用到的几种统计方法" class="headerlink" title="2.1.5，Skyline用到的几种统计方法"></a>2.1.5，Skyline用到的几种统计方法</h5><p><strong>median absolute deviation （MAD）</strong></p>
+<p>计算数据的中位数，偏差 = 每个值-中位数，得到偏差中位数</p>
+<script type="math/tex; mode=display">\mathrm{MAD}=\operatorname{median}\left(\left|X_{i}-\operatorname{median}(X)\right|\right)</script><p>MAD对数据集中的异常值比标准偏差更具弹性。在标准偏差中，与均值的距离的平方，较大的异常值会影响更大。可以通过判断一个点的偏差是否过于偏离MAD来判断异常。</p>
+<p>least_squares</p>
+<p>检测趋势分量</p>
+<p>Histogram-based</p>
+<p>统计学方法是可以用在时间序列上的，取最近的一段来计算可以实时计算。</p>
+<h4 id="2-2-基于距离distanced-based"><a href="#2-2-基于距离distanced-based" class="headerlink" title="2.2 基于距离distanced-based"></a>2.2 基于距离distanced-based</h4><p>1，直接定义距离</p>
+<p>2，KNN等基于邻居</p>
+<p>3，聚类clustering</p>
+<p>4，基于密度density</p>
+<p>LOF方法</p>
+<p>5，ABOD基于角度 </p>
+<p>6，IsolationForest</p>
+<p>random cut forest</p>
+<p>iForest、SCiForest、RRCF</p>
+<p>改进的iForestASD方法，流数据异常检测帧。。。</p>
+<h4 id="2-3-回归模型"><a href="#2-3-回归模型" class="headerlink" title="2.3 回归模型"></a>2.3 回归模型</h4><p>1，自回归AR</p>
+<script type="math/tex; mode=display">X_t = c + \sum_{i=1}^P \theta_{i}X_{t-i} + \varepsilon_t</script><p>其中$c$是常数项，$\theta_i$是自相关系数，$ \varepsilon_t$是随机误差项（平均数为0，标准差为$\sigma$的随机误差值，也称白噪声）。$X_t$的当前值是前几期的线性组合。$\theta_i$的变化将使得时间序列拥有不同的特征。</p>
+<p>对于AR(1)而言：</p>
+<p>当$\theta_1=0$, $X_t$相当于白噪声。</p>
+<p>当$\theta_1=1, c=0$时，$X_t$相当于随机游走模型。</p>
+<p>当$\theta_1=1, c\neq0$时，$X_t$相当于带漂移的随机游走模型。</p>
+<p>当$\theta_1&lt;0$, $X_t$在正负值之间上下浮动。</p>
+<p>P阶自回归模型的要求是时序数据具有平稳性，必须有自相关性（即自相关系数大于0.5），自回归只能适用于预测与自身前期相关的经济现象。</p>
+<p>2，移动平均模型 MA</p>
+<script type="math/tex; mode=display">X_{t}=c+\varepsilon_{t}+\sum_{i=1}^q \theta_i\varepsilon_{t-i}</script><p>移动平均模型MA(q)更关注自回归模型中的误差项的累加。每一个值都可以被认为是一个历史预测误差的加权移动平均值。</p>
+<p>AR(1)可以用MA($\infty$) 表示：$y_{t}=\varepsilon_{t}+\phi_{1} \varepsilon_{t-1}+\phi_{1}^{2} \varepsilon_{t-2}+\phi_{1}^{3} \varepsilon_{t-3}+\cdots$</p>
+<p>2.1 注意移动平均法和移动模型不同</p>
+<p>移动平均法适用于即期预测。当产品需求既不快速增长也不快速下降，且不存在季节性因素时，移动平均法能有效地消除预测中的随机波动，非常有用的。移动平均法包括简单移动平均和加权移动平均。</p>
+<p>简单移动平均：$X_t = \frac{\sum_{i=1}^n X_{t-i}}{n}$</p>
+<p>加权移动平均：$X_t = \sum_{i=1}^n \theta_i X_{t-i}$ , 其中$\theta_i$是权重值，对近期的趋势反映较敏感，但不适合有季节性的数据。</p>
+<p>根据同一个移动段内不同时间的数据对预测值的影响程度，分别给予不同的权数，然后再进行平均移动以预测未来值。</p>
+<p>指数加权移动平均EWMA，指数移动平均EMA。</p>
+<p>3，ARIMA模型</p>
+<script type="math/tex; mode=display">y_{t}=\mu+\sum_{i=1}^{p} \gamma_{i} y_{t-i}+\epsilon_{t}+\sum_{i=1}^{q} \theta_{i} \epsilon_{t-i}</script><p>适合有季节性的数据</p>
+<p>4，时间序列分解</p>
+<p>STL季节性分解</p>
+<p>论文：Online Conditional Outlier Detection in Nonstationary Time Series</p>
+<p>STL分解（非参数分解方法）为三个要素：季节性、趋势、残差。 分析残差的偏差，然后引入残差阈值，这样就能得到一种异常检测得算法。</p>
+<p>移动平均、指数平滑、ARMA、ARIMA</p>
+<h4 id="2-4-线性模型（基于子空间subspace）"><a href="#2-4-线性模型（基于子空间subspace）" class="headerlink" title="2.4 线性模型（基于子空间subspace）"></a>2.4 线性模型（基于子空间subspace）</h4><p>主成分分析PCA</p>
+<p>因子分析Factor Analysis</p>
+<h4 id="2-3-机器学习"><a href="#2-3-机器学习" class="headerlink" title="2.3 机器学习"></a>2.3 机器学习</h4><p>分类模型（类别不平衡问题）</p>
+<p>决策树</p>
+<p>支持向量SVM </p>
+<p>延伸出来的还有OneClass SVM，Support Vector Machine (SVM) with ant colony network[4]</p>
+<p>随机森林等</p>
+<p>Isolation Forest方法</p>
+<p>GBDT方法 / XgBoost / Bagging等</p>
+<p>Bayesiannetwork </p>
+<h4 id="2-4-神经网络"><a href="#2-4-神经网络" class="headerlink" title="2.4 神经网络"></a>2.4 神经网络</h4><p>RNN、LSTM方法</p>
+<p>论文：Anomaly detection in ECG time signals via deep long short-term memory networks</p>
+<p>AutoEncoder</p>
+<p>深度信念网络等</p>
+<p>SOM自组织地图</p>
+<p>HTM方法</p>
+<p>频谱残差</p>
+<h4 id="2-5-实时序列异常检测"><a href="#2-5-实时序列异常检测" class="headerlink" title="2.5 实时序列异常检测"></a>2.5 实时序列异常检测</h4><h5 id="2-5-1-NAB库有的"><a href="#2-5-1-NAB库有的" class="headerlink" title="2.5.1 NAB库有的"></a>2.5.1 NAB库有的</h5><p>期望相似性估计</p>
+<h5 id="2-5-2-其他"><a href="#2-5-2-其他" class="headerlink" title="2.5.2 其他"></a>2.5.2 其他</h5><p>[4]里的Support Vector Machine (SVM) with ant colony network ，pcStream algorithm（stream clustering），random cut forest, </p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1, “Everything you need to know about AIOps”, from <a href="https://www.moogsoft.com/resources/aiops/guide/everything-aiops/" target="_blank" rel="noopener">https://www.moogsoft.com/resources/aiops/guide/everything-aiops/</a> (retrieved as of Feb. 12, 2019)</p>
+<p>2，<a href="https://github.com/yzhao062/pyod#gopalan2019pidforest" target="_blank" rel="noopener">https://github.com/yzhao062/pyod#gopalan2019pidforest</a> pyod异常检测库</p>
+<p>3，<a href="https://github.com/etsy/skyline" target="_blank" rel="noopener">https://github.com/etsy/skyline</a> Skyline，一些统计方法</p>
+<p>4，Habeeb R A A, Nasaruddin F, Gani A, et al. Real-time big data processing for anomaly detection: A Survey[J]. International Journal of Information Management, 2019, 45: 289-307.</p>
+<p>5，<a href="https://otexts.com/fppcn/MA.html" target="_blank" rel="noopener">https://otexts.com/fppcn/MA.html</a> 预测方法与实践</p>
+<p>6，</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/10/20191210Skyline%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="WangXue">
+      <meta itemprop="description" content="本科重庆大学CS，研究生南京大学MS，主要研究AIOps，机器学习等，语言Python&C++">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="WangXue">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/12/10/20191210Skyline%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" class="post-title-link" itemprop="url">20191210Skyline源码阅读</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-12-10 09:32:49" itemprop="dateCreated datePublished" datetime="2019-12-10T09:32:49+08:00">2019-12-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-12-12 15:53:44" itemprop="dateModified" datetime="2019-12-12T15:53:44+08:00">2019-12-12</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/AIOps/" itemprop="url" rel="index">
+                    <span itemprop="name">AIOps</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="1-基类结构"><a href="#1-基类结构" class="headerlink" title="1 基类结构"></a>1 基类结构</h3><p>首先看异常检测基类base.py，所有检测器都是由它继承而来：</p>
+<p>1，init() ：初始化dataSet，probationaryPercent 数据的最初一部分数据不做测试。inputMin, inputMax初始化最大最小值。</p>
+<p>2，initialize()：多进程问题。进程池pool（它默认调用的是CPU的核数）</p>
+<p>3，handleRecord(): 返回每一个时间点的异常分数值，Returns a list [anomalyScore, *]。这个函数子类必须继承。</p>
+<p>4，getAdditionalHeaders()：如HTM检测器里会添加’anomalyscore’ , ‘rawscore’。添加并返回列名的，run函数中调用它拼接最后返回的dataframe。</p>
+<p>5，detectDataSet(): 在运行给定检测器的每个检测器进程中调用的函数。参数 (i, detectorInstance, detectorName, labels, outputDir, relativePath) = args，主要是创建保存文件的路径，调用detectorInstance.initialize()，results = detectorInstance.run() </p>
+<p>6，run()：为整个dataSet打分并返回结果（dataframe格式）</p>
+<h3 id="2-Etsy的Skyline算法"><a href="#2-Etsy的Skyline算法" class="headerlink" title="2 Etsy的Skyline算法"></a>2 Etsy的Skyline算法</h3><p>继承异常检测器基类。另外它的算法是根据几个小算法各自的评分进行平均投票得到。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">self.algorithms =   [median_absolute_deviation,</span><br><span class="line">                     first_hour_average,</span><br><span class="line">                     stddev_from_average,</span><br><span class="line">                     stddev_from_moving_average,</span><br><span class="line">                     mean_subtraction_cumulation,</span><br><span class="line">                     least_squares,</span><br><span class="line">                     histogram_bins]</span><br></pre></td></tr></table></figure>
+<h5 id="median-absolute-deviation"><a href="#median-absolute-deviation" class="headerlink" title="median_absolute_deviation"></a>median_absolute_deviation</h5><p>计算数据的中位数，偏差 = 每个值-中位数，得到偏差中位数</p>
+<script type="math/tex; mode=display">\mathrm{MAD}=\operatorname{median}\left(\left|X_{i}-\operatorname{median}(X)\right|\right)</script><p>MAD对数据集中的异常值比标准偏差更具弹性。在标准偏差中，与均值的距离的平方，较大的异常值会影响更大。可以通过判断一个点的偏差是否过于偏离MAD来判断异常，此处是如果偏差6倍大于中位数，则判断为异常。</p>
+<h5 id="first-hour-average"><a href="#first-hour-average" class="headerlink" title="first_hour_average"></a>first_hour_average</h5><p>上一天的这个时间段1h的均值是$mean$，标准差是$std$，如果$|X_t - mean| &gt; 3 * std$ 则是异常。</p>
+<h5 id="stddev-from-average"><a href="#stddev-from-average" class="headerlink" title="stddev_from_average"></a>stddev_from_average</h5><p>值减去移动平均值大于平均值的三个标准偏差则为异常。</p>
+<script type="math/tex; mode=display">|X_t - mean| > 3 * std</script><h5 id="stddev-from-moving-average"><a href="#stddev-from-moving-average" class="headerlink" title="stddev_from_moving_average"></a>stddev_from_moving_average</h5><p>值减去指数加权移动平均值大于平均值的三个标准偏差则为异常。</p>
+<p>expAvg = series.ewm().mean()</p>
+<p>stdDev = series.ewm().std()</p>
+<script type="math/tex; mode=display">| X_t - expAvg | > 3 * stdDev</script><h5 id="mean-subtraction-cumulation"><a href="#mean-subtraction-cumulation" class="headerlink" title="mean_subtraction_cumulation"></a>mean_subtraction_cumulation</h5><p>从每个数据源点减去过去历史平均值之后，如果该序列中下一个数据点的值比累积项中的三个标准差远，则该时间序列是异常的。</p>
+<h5 id="least-squares"><a href="#least-squares" class="headerlink" title="least_squares"></a>least_squares</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#X——代表时间 timestamp，Y——代表 value</span><br><span class="line">results = np.linalg.lstsq(A, Y)</span><br><span class="line">residual = results[1] #残差</span><br><span class="line">m, c = np.linalg.lstsq(A, Y)[0] #斜率与截距</span><br><span class="line">  for i, value in enumerate(y):</span><br><span class="line">    projected = m * X[i] + c</span><br><span class="line">    error = value - projected</span><br><span class="line">    errors.append(error)</span><br></pre></td></tr></table></figure>
+<p>最后点投影到最小二乘上误差大于所有误差的std的3sigma时，判断为异常。</p>
+<script type="math/tex; mode=display">Error_t > ErrorsStd</script><h5 id="histogram-bins"><a href="#histogram-bins" class="headerlink" title="histogram_bins"></a>histogram_bins</h5><p>最后时间点的值落入带有少于threshold个其他数据点的直方图bin中，则时间序列是异常的。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/04/NAB%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E7%B3%BB%E5%88%971/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -799,7 +1052,7 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2019/05/07/20190507paper-the-Numenta-Anomaly-Benchmark/" class="post-title-link" itemprop="url">20190507paper-the-Numenta-Anomaly-Benchmark</a>
+            <a href="/2019/05/07/20190507paper-the-Numenta-Anomaly-Benchmark/" class="post-title-link" itemprop="url">20190507paper the Numenta Anomaly Benchmark</a>
         </h1>
 
         <div class="post-meta">
@@ -816,7 +1069,7 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-12-10 12:03:13" itemprop="dateModified" datetime="2019-12-10T12:03:13+08:00">2019-12-10</time>
+                <time title="修改时间：2019-12-11 17:31:32" itemprop="dateModified" datetime="2019-12-11T17:31:32+08:00">2019-12-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1006,210 +1259,6 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/08/20191208LR%E5%8E%9F%E7%90%86/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="WangXue">
-      <meta itemprop="description" content="本科重庆大学CS，研究生南京大学MS，主要研究AIOps，机器学习等，语言Python&C++">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="WangXue">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/12/08/20191208LR%E5%8E%9F%E7%90%86/" class="post-title-link" itemprop="url">20191208LR原理</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-12-08 10:59:11" itemprop="dateCreated datePublished" datetime="2018-12-08T10:59:11+08:00">2018-12-08</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-12-09 19:55:27" itemprop="dateModified" datetime="2019-12-09T19:55:27+08:00">2019-12-09</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index">
-                    <span itemprop="name">机器学习</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="1、线性回归"><a href="#1、线性回归" class="headerlink" title="1、线性回归"></a>1、线性回归</h3><h4 id="1-1-单变量线性回归"><a href="#1-1-单变量线性回归" class="headerlink" title="1.1 单变量线性回归"></a>1.1 单变量线性回归</h4><p>x ——&gt; hypothesis（假设）——&gt; y，此处假设为线性函数，y输出为数值（若是分类则为0或1）</p>
-<script type="math/tex; mode=display">h_{\theta}{(x)} = \theta^Tx</script><p>为了让hypothesis尽量根据数据拟合好曲线，需要设计损失函数，并对此损失函数优化。损失函数是参数$\theta$ 的 Cost function: </p>
-<script type="math/tex; mode=display">J(\theta)=\min \frac{1}{m} \sum_{i=1}^{m}\left(h_{\theta}(x)-y\right)^{2}</script><p>优化损失函数用到梯度下降法：</p>
-<p>为了 $min J(\theta)$，我们采用随机梯度下降方法。（其实也可以用一些矩阵直接计算的方法，最优化里的牛顿法、BFGS等等）</p>
-<p>repeat until convergence{</p>
-<script type="math/tex; mode=display">\theta_{j}=\theta_{j}-\alpha \frac{\partial}{\partial \theta_{j}} J(\theta) \quad(for j=0 \cdots)</script><p>}</p>
-<p><strong>注意</strong>：</p>
-<p>1，学习率影响了梯度下降的步长，一般越大下降越快（但如果最初就在靠近局部最优处，则容易震荡发散），一般设置在0.001~0.003, 取比最大值稍小一点的值即可。</p>
-<p>2，不同的初始$\theta$ 可能下降到不同的局部最优点（因此，我们希望损失函数最好是凸函数，线性回归的$J$就是凸函数，是碗面）。</p>
-<p>3，数据处理的小技巧，将特征归一化到0-1或者-1-1可以避免量纲影响 x- mean / std。</p>
-<p>4，<strong>特征工程非常重要</strong>，特征组合，平方，开根号等等。</p>
-<h3 id="2，逻辑回归LR"><a href="#2，逻辑回归LR" class="headerlink" title="2，逻辑回归LR"></a>2，逻辑回归LR</h3><p>逻辑回归中x ——&gt; hypothesis（假设）——&gt; y，sigmoid函数将预测值转换为0-1之间的值。</p>
-<script type="math/tex; mode=display">0 \leq h_{\theta}(x) \leqslant 1</script><script type="math/tex; mode=display">h_{\theta}(x)=g\left(\theta^{\top} x\right)</script><script type="math/tex; mode=display">g(z)=\frac{1}{1+e^{-z}}</script><p>解释：$h_{\theta}(x)$ 是对输入x，y=1的概率估计，$h_{\theta}(x)=P(y=1 / x ; \theta)$ 给定特征x与参数$\theta$时，y=1的概率。也可以这样理解，一个事件的发生几率指的是该事件发生的概率p与该事件不发生的概率1-p的比值。</p>
-<script type="math/tex; mode=display">logit(p) = \log{p}/{1-p}</script><script type="math/tex; mode=display">\log \frac{P(Y=1|x)}{1-P(Y=1|x)} = \theta^T x</script><p>LR中，输出Y=1的对数几率是输入x的线性函数。</p>
-<p>cost function这里有所不同，因为sigmoid函数代入到平方误差中得到$J$ 是非凸函数，所以cost function用的就是</p>
-<script type="math/tex; mode=display">J\left(h_{0}(x), y\right)=-y \log \left(h_{\theta}(x)\right)-(1-y) \log \left(1-h_{\theta}(x)\right)</script><p>这个非常像似然函数。</p>
-<p>LR的梯度下降公式是，因为sigmoid函数求导特殊g(z)’ = g(z) (1-g(z))’。</p>
-<script type="math/tex; mode=display">\theta_{j}=\theta_j-\alpha\frac{1}{m} \sum_{i=1}^{m}\left(h_{\theta}\left(x^{(i)}\right)-y^{(i)}\right) x_{j}^{(i)}</script><p>其实逻辑回归还可以用于多分类问题上，分别拟合三个分类器$h_{\theta}^{(i)}(x)$，选择 $max {h_{\theta}^{(i)}(x)}$的类i。</p>
-<h3 id="3，过拟合与正则化"><a href="#3，过拟合与正则化" class="headerlink" title="3，过拟合与正则化"></a>3，过拟合与正则化</h3><h4 id="3-1-欠拟合与过拟合"><a href="#3-1-欠拟合与过拟合" class="headerlink" title="3.1 欠拟合与过拟合"></a>3.1 欠拟合与过拟合</h4><p>欠拟合：模型过于简单，underfit，带来高偏差high bias，就是说模型偏见很强；</p>
-<p>过拟合：模型复杂，overfit，太过于拟合训练数据，经验误差虽小但结构误差大，无法拟合新数据。</p>
-<p><img src="/images/20191209overfit.jpg" alt="20191209overfit"></p>
-<p>避免过拟合的方法：数据增强more data，简化模型（早停，限制权值正则化，多种模型Bagging，Boosting），增加噪声，集成ensemble，贝叶斯等。</p>
-<h4 id="3-2-正则化"><a href="#3-2-正则化" class="headerlink" title="3.2 正则化"></a>3.2 正则化</h4><p>正则化，损失部分尽量拟合数据，后面部分尽量保持参数较小，起到正则化作用。</p>
-<p>线性回归的损失函数：</p>
-<script type="math/tex; mode=display">J(\theta) = \frac{1}{2m}[\sum_{i=1}^{m}(h_\theta(x^{(i)}) - y^{(i)} )^2 + \lambda \sum_{i=1}^{n} \theta_j^2]</script><p>逻辑回归的损失函数</p>
-<script type="math/tex; mode=display">J(\theta)=-\left[\frac{1}{m} \sum_{i=1}^{m} y^{(i)} \log \left(h_{\theta}(x^{(i)}\right)+\left(1-y^{(i)}\right) \log \left(1-h_{\theta}\left(x^{(i)}\right)\right)\right] + \frac{\lambda}{2m} \sum_{j=1}^n\theta_j^2</script><h3 id="4，优化方法复习"><a href="#4，优化方法复习" class="headerlink" title="4，优化方法复习"></a>4，优化方法复习</h3><h4 id="4-1-最速下降法即负梯度方向"><a href="#4-1-最速下降法即负梯度方向" class="headerlink" title="4.1 最速下降法即负梯度方向"></a>4.1 最速下降法即负梯度方向</h4><script type="math/tex; mode=display">f(x_k+\alpha \vec P) = f(x_k) + \alpha P^T \nabla f(x_k) + o(\alpha)</script><script type="math/tex; mode=display">min{f(x_k+\alpha \vec P)}</script><p>则需要$min{P^T \nabla f(x_k)}$</p>
-<script type="math/tex; mode=display">P = -\frac{\nabla f(x_k)}{||\nabla f(x_k)||}</script><p>此处$\alpha$是学习率</p>
-<p>一般来说，损失函数偏碗状的时候，比较圆的时候，下降比较快。如果，函数形状椭圆形，会来回震荡着走。</p>
-<h4 id="4-2-牛顿法"><a href="#4-2-牛顿法" class="headerlink" title="4.2 牛顿法"></a>4.2 牛顿法</h4><p>牛顿法考虑二阶导信息</p>
-<script type="math/tex; mode=display">f\left(x_{k} + P\right)=f\left(x_{k}\right)+p^T \nabla f_{k}+\frac{1}{2} p^{T} \nabla^{2} f_{k} P</script><p>则$P = - \nabla^2 f(x_k)^{-1} \nabla f(x_k)$</p>
-<p>此处二阶导大于0，即要求$\nabla^2 f(x_k)$ 正定。</p>
-<p>总结：逻辑回归主要是增加了一个sigmoid函数，将预测值映射为概率。为了避免损失函数变为非凸函数，损失函数变为对数损失函数。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/18/20180318%E3%80%8A%E4%B9%94%E5%B8%83%E6%96%AF%E4%BC%A0%E3%80%8B%E2%80%94%E2%80%94%E4%BC%9F%E5%A4%A7%E7%9A%84%E4%BA%BA%E5%92%8C%E4%BC%9F%E5%A4%A7%E7%9A%84%E4%BA%A7%E5%93%81/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="WangXue">
-      <meta itemprop="description" content="本科重庆大学CS，研究生南京大学MS，主要研究AIOps，机器学习等，语言Python&C++">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="WangXue">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/03/18/20180318%E3%80%8A%E4%B9%94%E5%B8%83%E6%96%AF%E4%BC%A0%E3%80%8B%E2%80%94%E2%80%94%E4%BC%9F%E5%A4%A7%E7%9A%84%E4%BA%BA%E5%92%8C%E4%BC%9F%E5%A4%A7%E7%9A%84%E4%BA%A7%E5%93%81/" class="post-title-link" itemprop="url">20180318《乔布斯传》——伟大的人和伟大的产品</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-03-18 12:04:20" itemprop="dateCreated datePublished" datetime="2018-03-18T12:04:20+08:00">2018-03-18</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-12-10 12:06:43" itemprop="dateModified" datetime="2019-12-10T12:06:43+08:00">2019-12-10</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
-                    <span itemprop="name">读书笔记</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>你在使用iPhone或者Mac吗？如果有，那你一定要了解下创造它的人，到底怎样一个人才能创造这样伟大的产品呢。 </p>
-<p>我手里有台Mac，大二的时候，因为看中了它的设计感自己掏钱买了。我喜欢他的简洁，流畅，易用，也喜欢苹果开发者们创造出的各类好玩实用的应用，比如sketch。当我买后，班上静和官霸也跟着买了，哈哈。可见他的吸引力多大，那么这背后这个人该更有吸引力吧。</p>
-<p>记得初中的公开课开课前，有位老师说，乔帮主去世了。当时，我还不知道，但听老师的赞美和惋惜。我才知晓了苹果和他，但未曾多关注，不过这也算是种下了一个好奇心吧。过年，老家没网，也就最适合整天阅读了，我孜孜不倦读完了《乔布斯传》。书中故事很有趣，读的时候我还自己笑了出来，读完共鸣感悟颇多。</p>
-<p>乔帮主的特质很多，<strong>突出的是他的现实扭曲场、优雅简约，精致的细节控、强烈的使命感与控制欲、细节把控、出众的演讲能力、识人用人、向渊博的人摄取知识、注重品牌等等</strong>。当然，人也是有缺陷的，但总觉得他的缺陷变成了促进苹果发展的动力。</p>
-<h3 id="1、现实扭曲场——专注"><a href="#1、现实扭曲场——专注" class="headerlink" title="1、现实扭曲场——专注"></a>1、现实扭曲场——专注</h3><p>他是一个极其专注的人，极其投入的人。在设计MAC的时候，即使是开机多用了10s，他不满意他就会要求员工必须做到开机时间减少。他自己也会深信不疑，于是再难的问题再不可能的事情，他总会使用各种方法，哄骗、安抚、劝说、奉承、威胁等让员工服从并做到。这就是他的现实扭曲力场，是一种自身的坚定，不屈的意志，让现实屈从与自己意图的热切渴望。</p>
-<p> 其中还有个好玩的故事，也有员工们为了在一些极端问题上改变乔帮主的想法，勇于挑战他。于是，苹果公司设立了一个奖项，每年给最能抵抗得住乔布斯的现实扭曲力场的人颁发。我觉得他们真是有趣，公司也真是有活力。</p>
-<p>人最难的就是坚信自己，专注投入。我们的想法都很容易受到身边人和世俗的影响，但其实想法万千，哪有什么标准的原则来评判对错呢。只要坚信自己的想法，专注投入到自己认定的事情上，不断追求极致，我们的现实扭曲力场也将出现。</p>
-<h3 id="2、个人电脑、至繁归于至简、站在科技与设计的前沿交汇点"><a href="#2、个人电脑、至繁归于至简、站在科技与设计的前沿交汇点" class="headerlink" title="2、个人电脑、至繁归于至简、站在科技与设计的前沿交汇点"></a>2、个人电脑、至繁归于至简、站在科技与设计的前沿交汇点</h3><p>1、个人电脑：MAC最初也是诞生于车库，当时乔的心愿是做个人电脑，人人都有的电脑，这个想法甚至先于微软。当时的许多公司的产品大多面向企业级顾客，可见乔的远见。他最先将电脑一体化组装，最先将图形界面引入，最先将触屏技术应用。</p>
-<p>2、苹果的电脑和手机设计得像个艺术品一样，不得不赞叹乔帮主的要求和品味。其实，这些品味和要求都来自于其追求优雅简约、来源于他总是站在技与设计的前沿交汇点去思考感受产品。他具有工匠和艺术设计者的本心。MAC电脑表里如一，即使隐藏的部分也做的漂亮；设计追随情感，设计表达情感；造型优美，细节中充满乐趣，至繁归于至简。这些也是他的产品别出一裁、受欢迎的关键原因。</p>
-<p>3、皮克斯与迪士尼：乔帮主被自己的公司开除期间，他喜欢上了另一个具有艺术特质的行业，他想将科技与动画结合。他欣赏拉塞特这样一位具有绅士气质的艺术家，他尊重他的设计。</p>
-<p>乔带来的技术让皮克斯的动画光影、3D效果更棒，加上电影内涵。他创造了另一个最好的品牌——皮克斯动画。现在我们经常在电影开头，看到迪士尼的城堡后会出现皮克斯和一盏跳跳的台灯。这盏台灯动画《顽皮跳跳灯》是皮克斯第一次参加SIGGRAPH大会展示的短片，并被评为最佳影片。后来甚至迪士尼为了挽救自己的电影地位，也不得不和皮克斯合作了。</p>
-<p>跨界交叉的创新来源于人的心灵想法的跨界，如果不是乔对科技和动画艺术的喜爱，怎么会有皮克斯这么棒的动画公司呢。</p>
-<p> 4、音乐变革+数字中枢</p>
-<p>音乐产品ipod的想法来源是乔帮主对版权的保护、为了自己能听最高质量的音乐。他坚定的去和许多唱片公司、音乐人谈判。于是iPod和iTunes出现。2001年互联网泡沫破裂，计算机被预测变为无聊的东西。这时候乔帮主继续思考，他说个人计算机不会成为边缘产品，而将成为数字中枢，管理音乐图片视频信息等等。他又一次站在科技和人文的位置上，先人一步，有了对数字中枢的设想。iTunes后续逐步销售视频、应用程序、订阅服务，慢慢形成了一个数字中枢，它将苹果代入了数字商业的新时代。</p>
-<p>  不得不说，个人电脑产品，各种手持电子产品，路演，产品发布会，数字战略……这些是影响了当今互联网产业的多少方方面面啊。</p>
-<p>他做的是自己喜欢和希望的事情，热情和思考成就了苹果。</p>
-<h3 id="3、强烈的使命感、细节控"><a href="#3、强烈的使命感、细节控" class="headerlink" title="3、强烈的使命感、细节控"></a>3、强烈的使命感、细节控</h3><p>带团队首先自己要有强烈的使命感和愿景的，团队带头人必定知道要去哪。知道怎么去。</p>
-<p>乔帮主总能构建出宏伟强烈的使命感，他最爱的格言是“过程就是奖励”，MAC团队是有着崇高使命的特殊团队。在使命感之下，痛苦会变成过眼云烟，最后长久的留下人生的巅峰时刻。他把控宏观，同时又及其关注细节。伟大的产品，总是在细节之处体现品牌和价值，因此它可以长久的引领潮流。</p>
-<p>他们每次设计一款产品，会有无数多的模型，每一个试用，并不断对比细节处的不同设计。即使到了发布前，如果不满意，他们也会推迟发布会，重新返工打磨产品。这样的呕心沥血，怎会不诞生出伟大的产品呢？</p>
-<h3 id="4、识人用人——向渊博的人摄取知识"><a href="#4、识人用人——向渊博的人摄取知识" class="headerlink" title="4、识人用人——向渊博的人摄取知识"></a>4、识人用人——向渊博的人摄取知识</h3><p>乔帮主的品味、知识、远见不仅仅来源于自身，他是个非常喜欢结交有才华的人。他和艺术大师、广告大师、动画大师、厉害的工程师都会有许多交流。</p>
-<p>他取百家之所长，不断学习和完善自己，于是他成为了强者。同时他的核心圈子里聚集的也都是真正的强者，相互成就。</p>
-<p>乔布斯，他用大师级手法把理念、科技、艺术融合在了一体，创造了未来。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1260,7 +1309,7 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">15</span>
+          <span class="site-state-item-count">18</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

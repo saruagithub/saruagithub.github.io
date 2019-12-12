@@ -47,18 +47,18 @@
   };
 </script>
 
-  <meta name="description" content="论文信息论文名字：AIOps: Real-World Challenges and Research Innovations引用：Dang Y, Lin Q, Huang P. AIOps: real-world challenges and research innovations[C]&#x2F;&#x2F;Proceedings of the 41st International Conference on S">
-<meta name="keywords" content="AIOps,论文综述">
+  <meta name="description" content="1 基类结构首先看异常检测基类base.py，所有检测器都是由它继承而来： 1，init() ：初始化dataSet，probationaryPercent 数据的最初一部分数据不做测试。inputMin, inputMax初始化最大最小值。 2，initialize()：多进程问题。进程池pool（它默认调用的是CPU的核数） 3，handleRecord(): 返回每一个时间点的异常分数值，R">
+<meta name="keywords" content="AIOps,机器学习">
 <meta property="og:type" content="article">
-<meta property="og:title" content="[paper]2019&#x2F;11&#x2F;06AIOps: Real-World Challenges and Research Innovations">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;11&#x2F;06&#x2F;paper-2019-11-06AIOps-Real-World-Challenges-and-Research-Innovations&#x2F;index.html">
+<meta property="og:title" content="20191210Skyline源码阅读">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;12&#x2F;10&#x2F;20191210Skyline%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB&#x2F;index.html">
 <meta property="og:site_name" content="WangXue">
-<meta property="og:description" content="论文信息论文名字：AIOps: Real-World Challenges and Research Innovations引用：Dang Y, Lin Q, Huang P. AIOps: real-world challenges and research innovations[C]&#x2F;&#x2F;Proceedings of the 41st International Conference on S">
+<meta property="og:description" content="1 基类结构首先看异常检测基类base.py，所有检测器都是由它继承而来： 1，init() ：初始化dataSet，probationaryPercent 数据的最初一部分数据不做测试。inputMin, inputMax初始化最大最小值。 2，initialize()：多进程问题。进程池pool（它默认调用的是CPU的核数） 3，handleRecord(): 返回每一个时间点的异常分数值，R">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-11-06T12:56:38.592Z">
+<meta property="og:updated_time" content="2019-12-12T07:53:44.149Z">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://yoursite.com/2019/11/06/paper-2019-11-06AIOps-Real-World-Challenges-and-Research-Innovations/">
+<link rel="canonical" href="http://yoursite.com/2019/12/10/20191210Skyline%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/">
 
 
 <script id="page-configurations">
@@ -72,7 +72,7 @@
   };
 </script>
 
-  <title>[paper]2019/11/06AIOps: Real-World Challenges and Research Innovations | WangXue</title>
+  <title>20191210Skyline源码阅读 | WangXue</title>
   
 
 
@@ -209,7 +209,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/11/06/paper-2019-11-06AIOps-Real-World-Challenges-and-Research-Innovations/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/10/20191210Skyline%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -222,7 +222,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          [paper]2019/11/06AIOps: Real-World Challenges and Research Innovations
+          20191210Skyline源码阅读
         </h1>
 
         <div class="post-meta">
@@ -231,10 +231,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2019-11-06 20:56:04 / 修改时间：20:56:38" itemprop="dateCreated datePublished" datetime="2019-11-06T20:56:04+08:00">2019-11-06</time>
+              <time title="创建时间：2019-12-10 09:32:49" itemprop="dateCreated datePublished" datetime="2019-12-10T09:32:49+08:00">2019-12-10</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-12-12 15:53:44" itemprop="dateModified" datetime="2019-12-12T15:53:44+08:00">2019-12-12</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -258,16 +264,26 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h3 id="论文信息"><a href="#论文信息" class="headerlink" title="论文信息"></a>论文信息</h3><p>论文名字：AIOps: Real-World Challenges and Research Innovations<br>引用：Dang Y, Lin Q, Huang P. AIOps: real-world challenges and research innovations[C]//Proceedings of the 41st International Conference on Software Engineering: Companion Proceedings. IEEE Press, 2019: 4-5.</p>
-<h3 id="AIOps定义"><a href="#AIOps定义" class="headerlink" title="AIOps定义"></a>AIOps定义</h3><p>智能运维的定义：通过AI与ML有效构建运维应用 AIOps is about empowering software and service engineers (e.g., developers, program managers, support engineers, site reliability engineers) to efficiently and effectively build and operate online services and applications at scale with artificial intelligence (AI) and machine learning (ML) techniques. </p>
-<p>DevOps 连续开发部署应用（来源于 G. Kim, P. Debois, et al, “The DevOps Handbook: How to Create World- Class Agility, Reliability, and Security in Technology Organizations”, IT Revolution Press, Oct. 2016）</p>
-<h3 id="AIOps的三个目标"><a href="#AIOps的三个目标" class="headerlink" title="AIOps的三个目标"></a>AIOps的三个目标</h3><p>1，服务智能化<br>及时观察多方面变化，质量下降，成本增加，工作量增加等，基于AIOps的服务还可以根据其历史行为，工作量模式和基础来预测其未来状态。根据状态自我调整，trigger self-adaption or auto-healing behaviors of a service, with low human intervention.</p>
-<p>思考：要监控性能，监控反应时间，问题调整策略（自动化调整）</p>
-<p>2，较高的客户满意度<br>具有内置智能的服务可以了解客户的使用行为，并采取积极的行动来提高客户满意度。 例如，服务可以自动向客户推荐调整建议，以使其获得最佳性能（例如，调整配置，冗余级别，资源分配）</p>
-<p>思考：网络不好的话如何自动调整？</p>
-<p>3，高工程生产率<br> 工程师和操作员免于繁琐的工作，例如（1）从各种来源手动收集信息以调查问题； （2）解决重复出现的问题。 工程师和操作人员还可以使用AI / ML技术来学习系统行为的模式，预测服务行为和客户活动的未来，以进行必要的体系结构更改和服务适应策略更改等。</p>
-<h3 id="challenges"><a href="#challenges" class="headerlink" title="challenges"></a>challenges</h3><p>整体思考，充足理解系统<br>工程架构转变 the AIOps engineering principles should include data/label quality monitoring and assurances, continuous model-quality validation, and actionability of insights.<br>缺乏label，极端失衡，数量太少，噪声程度高等，监督或半监督模型<br>组件服务之间的复杂依存关系</p>
-<p>思考：还有服务变更带来的问题，新学习吗？<br>实时数据大量产生，怎么利用?</p>
+        <h3 id="1-基类结构"><a href="#1-基类结构" class="headerlink" title="1 基类结构"></a>1 基类结构</h3><p>首先看异常检测基类base.py，所有检测器都是由它继承而来：</p>
+<p>1，init() ：初始化dataSet，probationaryPercent 数据的最初一部分数据不做测试。inputMin, inputMax初始化最大最小值。</p>
+<p>2，initialize()：多进程问题。进程池pool（它默认调用的是CPU的核数）</p>
+<p>3，handleRecord(): 返回每一个时间点的异常分数值，Returns a list [anomalyScore, *]。这个函数子类必须继承。</p>
+<p>4，getAdditionalHeaders()：如HTM检测器里会添加’anomalyscore’ , ‘rawscore’。添加并返回列名的，run函数中调用它拼接最后返回的dataframe。</p>
+<p>5，detectDataSet(): 在运行给定检测器的每个检测器进程中调用的函数。参数 (i, detectorInstance, detectorName, labels, outputDir, relativePath) = args，主要是创建保存文件的路径，调用detectorInstance.initialize()，results = detectorInstance.run() </p>
+<p>6，run()：为整个dataSet打分并返回结果（dataframe格式）</p>
+<h3 id="2-Etsy的Skyline算法"><a href="#2-Etsy的Skyline算法" class="headerlink" title="2 Etsy的Skyline算法"></a>2 Etsy的Skyline算法</h3><p>继承异常检测器基类。另外它的算法是根据几个小算法各自的评分进行平均投票得到。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">self.algorithms =   [median_absolute_deviation,</span><br><span class="line">                     first_hour_average,</span><br><span class="line">                     stddev_from_average,</span><br><span class="line">                     stddev_from_moving_average,</span><br><span class="line">                     mean_subtraction_cumulation,</span><br><span class="line">                     least_squares,</span><br><span class="line">                     histogram_bins]</span><br></pre></td></tr></table></figure>
+<h5 id="median-absolute-deviation"><a href="#median-absolute-deviation" class="headerlink" title="median_absolute_deviation"></a>median_absolute_deviation</h5><p>计算数据的中位数，偏差 = 每个值-中位数，得到偏差中位数</p>
+<script type="math/tex; mode=display">\mathrm{MAD}=\operatorname{median}\left(\left|X_{i}-\operatorname{median}(X)\right|\right)</script><p>MAD对数据集中的异常值比标准偏差更具弹性。在标准偏差中，与均值的距离的平方，较大的异常值会影响更大。可以通过判断一个点的偏差是否过于偏离MAD来判断异常，此处是如果偏差6倍大于中位数，则判断为异常。</p>
+<h5 id="first-hour-average"><a href="#first-hour-average" class="headerlink" title="first_hour_average"></a>first_hour_average</h5><p>上一天的这个时间段1h的均值是$mean$，标准差是$std$，如果$|X_t - mean| &gt; 3 * std$ 则是异常。</p>
+<h5 id="stddev-from-average"><a href="#stddev-from-average" class="headerlink" title="stddev_from_average"></a>stddev_from_average</h5><p>值减去移动平均值大于平均值的三个标准偏差则为异常。</p>
+<script type="math/tex; mode=display">|X_t - mean| > 3 * std</script><h5 id="stddev-from-moving-average"><a href="#stddev-from-moving-average" class="headerlink" title="stddev_from_moving_average"></a>stddev_from_moving_average</h5><p>值减去指数加权移动平均值大于平均值的三个标准偏差则为异常。</p>
+<p>expAvg = series.ewm().mean()</p>
+<p>stdDev = series.ewm().std()</p>
+<script type="math/tex; mode=display">| X_t - expAvg | > 3 * stdDev</script><h5 id="mean-subtraction-cumulation"><a href="#mean-subtraction-cumulation" class="headerlink" title="mean_subtraction_cumulation"></a>mean_subtraction_cumulation</h5><p>从每个数据源点减去过去历史平均值之后，如果该序列中下一个数据点的值比累积项中的三个标准差远，则该时间序列是异常的。</p>
+<h5 id="least-squares"><a href="#least-squares" class="headerlink" title="least_squares"></a>least_squares</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#X——代表时间 timestamp，Y——代表 value</span><br><span class="line">results = np.linalg.lstsq(A, Y)</span><br><span class="line">residual = results[1] #残差</span><br><span class="line">m, c = np.linalg.lstsq(A, Y)[0] #斜率与截距</span><br><span class="line">  for i, value in enumerate(y):</span><br><span class="line">    projected = m * X[i] + c</span><br><span class="line">    error = value - projected</span><br><span class="line">    errors.append(error)</span><br></pre></td></tr></table></figure>
+<p>最后点投影到最小二乘上误差大于所有误差的std的3sigma时，判断为异常。</p>
+<script type="math/tex; mode=display">Error_t > ErrorsStd</script><h5 id="histogram-bins"><a href="#histogram-bins" class="headerlink" title="histogram_bins"></a>histogram_bins</h5><p>最后时间点的值落入带有少于threshold个其他数据点的直方图bin中，则时间序列是异常的。</p>
 
     </div>
 
@@ -278,7 +294,7 @@
       <footer class="post-footer">
           <div class="post-tags">
               <a href="/tags/AIOps/" rel="tag"># AIOps</a>
-              <a href="/tags/%E8%AE%BA%E6%96%87%E7%BB%BC%E8%BF%B0/" rel="tag"># 论文综述</a>
+              <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag"># 机器学习</a>
           </div>
 
         
@@ -287,12 +303,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2019/11/06/ubuntu16%E9%85%8D%E7%BD%AEGPU%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%8E%AF%E5%A2%83%E3%80%81CUDA%E3%80%81cuNDD%E7%AD%89/" rel="prev" title="ubuntu16配置GPU深度学习环境、CUDA、cuNDD等">
-      <i class="fa fa-chevron-left"></i> ubuntu16配置GPU深度学习环境、CUDA、cuNDD等
+    <a href="/2019/12/04/NAB%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E7%B3%BB%E5%88%971/" rel="prev" title="NAB源码阅读系列1">
+      <i class="fa fa-chevron-left"></i> NAB源码阅读系列1
     </a></div>
       <div class="post-nav-item">
-    <a href="/2019/11/25/Numenta%E7%9A%84HTM%E7%AE%80%E4%BB%8B/" rel="next" title="Numenta的HTM简介">
-      Numenta的HTM简介 <i class="fa fa-chevron-right"></i>
+    <a href="/2019/12/10/20191210%E5%BC%82%E5%B8%B8%E6%A3%80%E6%B5%8B%E8%83%8C%E6%99%AF%E4%B8%8E%E7%BB%BC%E8%BF%B0/" rel="next" title="20191210异常检测背景与综述">
+      20191210异常检测背景与综述 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -331,7 +347,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#论文信息"><span class="nav-number">1.</span> <span class="nav-text">论文信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AIOps定义"><span class="nav-number">2.</span> <span class="nav-text">AIOps定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AIOps的三个目标"><span class="nav-number">3.</span> <span class="nav-text">AIOps的三个目标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#challenges"><span class="nav-number">4.</span> <span class="nav-text">challenges</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-基类结构"><span class="nav-number">1.</span> <span class="nav-text">1 基类结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Etsy的Skyline算法"><span class="nav-number">2.</span> <span class="nav-text">2 Etsy的Skyline算法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#median-absolute-deviation"><span class="nav-number">2.0.1.</span> <span class="nav-text">median_absolute_deviation</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#first-hour-average"><span class="nav-number">2.0.2.</span> <span class="nav-text">first_hour_average</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#stddev-from-average"><span class="nav-number">2.0.3.</span> <span class="nav-text">stddev_from_average</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#stddev-from-moving-average"><span class="nav-number">2.0.4.</span> <span class="nav-text">stddev_from_moving_average</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#mean-subtraction-cumulation"><span class="nav-number">2.0.5.</span> <span class="nav-text">mean_subtraction_cumulation</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#least-squares"><span class="nav-number">2.0.6.</span> <span class="nav-text">least_squares</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#histogram-bins"><span class="nav-number">2.0.7.</span> <span class="nav-text">histogram_bins</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
