@@ -207,6 +207,102 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/24/%E8%A3%85window%E3%80%81ubuntu%E5%8F%8C%E7%B3%BB%E7%BB%9F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="WangXue">
+      <meta itemprop="description" content="本科重庆大学CS，研究生南京大学MS，主要研究AIOps，机器学习等，语言Python&C++">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="WangXue">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/04/24/%E8%A3%85window%E3%80%81ubuntu%E5%8F%8C%E7%B3%BB%E7%BB%9F/" class="post-title-link" itemprop="url">装window、ubuntu双系统</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-04-24 09:09:12" itemprop="dateCreated datePublished" datetime="2019-04-24T09:09:12+08:00">2019-04-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-11-06 11:07:09" itemprop="dateModified" datetime="2019-11-06T11:07:09+08:00">2019-11-06</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%85%8D%E7%BD%AE/" itemprop="url" rel="index">
+                    <span itemprop="name">配置</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="装window10、ubuntu16-04双系统"><a href="#装window10、ubuntu16-04双系统" class="headerlink" title="装window10、ubuntu16.04双系统"></a>装window10、ubuntu16.04双系统</h2><p>周末趁空装了个双系统，记录记录过程吧。</p>
+<h3 id="装windows10"><a href="#装windows10" class="headerlink" title="装windows10"></a>装windows10</h3><ol>
+<li>首先下载好win10的系统镜像ISO文件，由于我不咋用win10就装了家庭版<br>链接: <a href="http://pan.baidu.com/s/1sj3JNRJ" target="_blank" rel="noopener">http://pan.baidu.com/s/1sj3JNRJ</a> 密码: z49r</li>
+</ol>
+<ol>
+<li><p>准备好空的U盘，准备做系统启动盘。<br>下载安装好UltraISO，插入U盘。<br>点击打开，选择ISO文件<br>点击启动 - 写入硬盘映像<br>写入方式选择的是USB-HDD，USB-HDD+，一般默认就好<br>在点击写入，就等着他默默写好就好了<br><img src="https://img-blog.csdnimg.cn/20190422141325858.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNjczNDUz,size_16,color_FFFFFF,t_70" alt="ULtraISO刻录系统启动盘"></p>
+</li>
+<li><p>制作好的系统启动U盘插入要装系统的电脑。开启电脑，一直按 F2或在F12等（这个键根据电脑确定，可以查查，但一般就是这个），进入电脑的Bios设置。<br>选择usb storage device，放到最前面，表示系统启动优先从USB开始。点击apply，再点exit。</p>
+</li>
+<li><p>之后电脑自动重启，然后进入windows10的安装。<br>默认简体中文，下一步<br>哪种类型的安装：选择自定义，以前windows的东西会变成windows.old<br>输入产品密钥那里跳过。<br>你想将windows安装在哪？ 选择分区，选择之前C盘所在分区位置。我这选择的是分区1，476G的盘。<br>后面就等着自己装就好了。</p>
+</li>
+<li><p>装完后注意，系统会重新启动。此时要拔掉U盘。产品密钥那个后面可以去找破解工具破解。暂时不管，然后设置用户密码进入就好。</p>
+</li>
+</ol>
+<h3 id="装ubuntu16-04"><a href="#装ubuntu16-04" class="headerlink" title="装ubuntu16.04"></a>装ubuntu16.04</h3><ol>
+<li>同理下载好U盘，将ubuntu的系统镜像刻录到U盘里。</li>
+<li>设置好bios优先从U盘启动。</li>
+<li>preparing to install Ubuntu: 这里可以选择第二项（Erase disk and install Ubuntu 单独装个Ubuntu系统）或者something else（我这装双系统，本来电脑里分区比较多，因此要选择之前从window划分出来的空闲空间）</li>
+<li>挂载分区到根路径 / ,如果空间足够大，就只挂载这个，剩下的Ubuntu自己会分。如果不够，可以单独跟/home , /boot那些单独分。<br><img src="https://img-blog.csdnimg.cn/2019042409082143.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNjczNDUz,size_16,color_FFFFFF,t_70" alt="挂载"></li>
+<li>继续时区，创建用户，后面就会重启了。重启的时候，注意拔掉U盘。</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/08/20190408AnomalyDetectionBackground/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -333,7 +429,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-12-09 19:55:27" itemprop="dateModified" datetime="2019-12-09T19:55:27+08:00">2019-12-09</time>
+                <time title="修改时间：2019-12-18 11:30:02" itemprop="dateModified" datetime="2019-12-18T11:30:02+08:00">2019-12-18</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -360,22 +456,36 @@
       
           <h3 id="1、线性回归"><a href="#1、线性回归" class="headerlink" title="1、线性回归"></a>1、线性回归</h3><h4 id="1-1-单变量线性回归"><a href="#1-1-单变量线性回归" class="headerlink" title="1.1 单变量线性回归"></a>1.1 单变量线性回归</h4><p>x ——&gt; hypothesis（假设）——&gt; y，此处假设为线性函数，y输出为数值（若是分类则为0或1）</p>
 <script type="math/tex; mode=display">h_{\theta}{(x)} = \theta^Tx</script><p>为了让hypothesis尽量根据数据拟合好曲线，需要设计损失函数，并对此损失函数优化。损失函数是参数$\theta$ 的 Cost function: </p>
-<script type="math/tex; mode=display">J(\theta)=\min \frac{1}{m} \sum_{i=1}^{m}\left(h_{\theta}(x)-y\right)^{2}</script><p>优化损失函数用到梯度下降法：</p>
+<script type="math/tex; mode=display">J(\theta)=\min \frac{1}{2m} \sum_{i=1}^{m}\left(h_{\theta}(x)-y\right)^{2}</script><p>优化损失函数用到梯度下降法：</p>
 <p>为了 $min J(\theta)$，我们采用随机梯度下降方法。（其实也可以用一些矩阵直接计算的方法，最优化里的牛顿法、BFGS等等）</p>
 <p>repeat until convergence{</p>
 <script type="math/tex; mode=display">\theta_{j}=\theta_{j}-\alpha \frac{\partial}{\partial \theta_{j}} J(\theta) \quad(for j=0 \cdots)</script><p>}</p>
-<p><strong>注意</strong>：</p>
+<p>展开就是:</p>
+<script type="math/tex; mode=display">\theta_j = \theta_j - \alpha \frac{1}{m} \sum_{i=1}^m (h_\theta(x^{(i)})- y^{(i)}) \frac{\partial h_\theta(x)}{\partial \theta_{j}}</script><p><strong>注意</strong>：</p>
 <p>1，学习率影响了梯度下降的步长，一般越大下降越快（但如果最初就在靠近局部最优处，则容易震荡发散），一般设置在0.001~0.003, 取比最大值稍小一点的值即可。</p>
 <p>2，不同的初始$\theta$ 可能下降到不同的局部最优点（因此，我们希望损失函数最好是凸函数，线性回归的$J$就是凸函数，是碗面）。</p>
 <p>3，数据处理的小技巧，将特征归一化到0-1或者-1-1可以避免量纲影响 x- mean / std。</p>
 <p>4，<strong>特征工程非常重要</strong>，特征组合，平方，开根号等等。</p>
-<h3 id="2，逻辑回归LR"><a href="#2，逻辑回归LR" class="headerlink" title="2，逻辑回归LR"></a>2，逻辑回归LR</h3><p>逻辑回归中x ——&gt; hypothesis（假设）——&gt; y，sigmoid函数将预测值转换为0-1之间的值。</p>
+<h3 id="2，逻辑回归LR"><a href="#2，逻辑回归LR" class="headerlink" title="2，逻辑回归LR"></a>2，逻辑回归LR</h3><p>逻辑回归是用来解决二分类问题的机器学习方法，用于估计某种事物的可能性。</p>
+<p>逻辑回归中x ——&gt; hypothesis（假设）——&gt; y，sigmoid函数将预测值转换为0-1之间的值。</p>
 <script type="math/tex; mode=display">0 \leq h_{\theta}(x) \leqslant 1</script><script type="math/tex; mode=display">h_{\theta}(x)=g\left(\theta^{\top} x\right)</script><script type="math/tex; mode=display">g(z)=\frac{1}{1+e^{-z}}</script><p>解释：$h_{\theta}(x)$ 是对输入x，y=1的概率估计，$h_{\theta}(x)=P(y=1 / x ; \theta)$ 给定特征x与参数$\theta$时，y=1的概率。也可以这样理解，一个事件的发生几率指的是该事件发生的概率p与该事件不发生的概率1-p的比值。</p>
-<script type="math/tex; mode=display">logit(p) = \log{p}/{1-p}</script><script type="math/tex; mode=display">\log \frac{P(Y=1|x)}{1-P(Y=1|x)} = \theta^T x</script><p>LR中，输出Y=1的对数几率是输入x的线性函数。</p>
-<p>cost function这里有所不同，因为sigmoid函数代入到平方误差中得到$J$ 是非凸函数，所以cost function用的就是</p>
-<script type="math/tex; mode=display">J\left(h_{0}(x), y\right)=-y \log \left(h_{\theta}(x)\right)-(1-y) \log \left(1-h_{\theta}(x)\right)</script><p>这个非常像似然函数。</p>
-<p>LR的梯度下降公式是，因为sigmoid函数求导特殊g(z)’ = g(z) (1-g(z))’。</p>
-<script type="math/tex; mode=display">\theta_{j}=\theta_j-\alpha\frac{1}{m} \sum_{i=1}^{m}\left(h_{\theta}\left(x^{(i)}\right)-y^{(i)}\right) x_{j}^{(i)}</script><p>其实逻辑回归还可以用于多分类问题上，分别拟合三个分类器$h_{\theta}^{(i)}(x)$，选择 $max {h_{\theta}^{(i)}(x)}$的类i。</p>
+<script type="math/tex; mode=display">logit(p) = \log{\frac{p}{1-p}}</script><script type="math/tex; mode=display">\log \frac{P(Y=1|x)}{1-P(Y=1|x)} = \theta^T x</script><p>LR中，输出Y=1的对数几率是输入x的线性函数。</p>
+<p>损失函数这里有所不同，因为sigmoid函数代入到平方误差中得到$J$ 是非凸函数，所以cost function用的是交叉熵（信息量中度量不确定性的度量）。</p>
+<script type="math/tex; mode=display">J\left(h_{\theta}(x), y\right)=-\frac{1}{m} [ \sum_{i=1}^m y^{(i)} \log \left(h_{\theta}(x^{(i)})\right) + (1-y^{(i)}) \log \left(1-h_{\theta}(x^{(i)})\right) ]</script><p>这个非常像似然函数。</p>
+<p>LR的梯度下降公式（对各个参数的偏导 or 链式求导），因为sigmoid函数求导特殊g(z)’ = g(z) (1-g(z))’。</p>
+<script type="math/tex; mode=display">\theta_j = \theta_j - \alpha \frac{\partial}{\partial \theta_j} J(\theta)</script><script type="math/tex; mode=display">\theta_{j}=\theta_j-\alpha\frac{1}{m} \sum_{i=1}^{m}\left(h_{\theta}\left(x^{(i)}\right)-y^{(i)}\right) x_{j}^{(i)}</script><p>推导过程：</p>
+<script type="math/tex; mode=display">\frac{\partial}{\partial \theta_j} J(\theta) =-\frac{1}{m} \sum_{i=1}^{m}\left[y^{(i)} \frac{1}{\left.h_{\theta}\left(x^{(i)}\right)\right)} \frac{\partial}{\partial \theta_{j}} h_{\theta}\left(x^{(i)}\right)-\left(1-y^{(i)}\right) \frac{1}{1-h_{\theta}\left(x^{(i)}\right)} \frac{\partial}{\partial \theta_{j}} h_{\theta}\left(x^{(i)}\right)\right]</script><script type="math/tex; mode=display">\frac{\partial}{\partial \theta_j} h_\theta(x^{(i)}) = \frac{e^{-\theta^{T} x^{(i)}}}{\left(1+e^{-\theta^{T} x^{(i)}}\right)^{2}} \frac{\partial}{\partial \theta_{j}} \theta^{T} x^{(i)} = g\left(\theta^{T} x^{(i)}\right)\left(1-g\left(\theta^{T} x^{(i)}\right)\right) x_{j}^{(i)}</script><p>最后代入化简即可。</p>
+<p>其实逻辑回归还可以用于多分类问题上，分别拟合三个分类器$h_{\theta}^{(i)}(x)$，选择 $max {h_{\theta}^{(i)}(x)}$的类i。</p>
+<p><strong>注意：</strong></p>
+<p>优点：</p>
+<p>1，对逻辑回归来说，多重共线性并不是问题，它可以结合L2正则化来解决</p>
+<p>2，属于判别式模型</p>
+<p>3，在线梯度下降算法-online gradient descent</p>
+<p>4，便利的观测样本概率分数</p>
+<p>缺点</p>
+<p>1，特征空间很大时，逻辑回归的性能不是很好（不能很好地处理大量多类特征或变量，one hot很大）</p>
+<p>2，容易欠拟合，一般准确度不太高；</p>
+<p>3，对于非线性特征，需要进行转换。</p>
 <h3 id="3，过拟合与正则化"><a href="#3，过拟合与正则化" class="headerlink" title="3，过拟合与正则化"></a>3，过拟合与正则化</h3><h4 id="3-1-欠拟合与过拟合"><a href="#3-1-欠拟合与过拟合" class="headerlink" title="3.1 欠拟合与过拟合"></a>3.1 欠拟合与过拟合</h4><p>欠拟合：模型过于简单，underfit，带来高偏差high bias，就是说模型偏见很强；</p>
 <p>过拟合：模型复杂，overfit，太过于拟合训练数据，经验误差虽小但结构误差大，无法拟合新数据。</p>
 <p><img src="/images/20191209overfit.jpg" alt="20191209overfit"></p>
@@ -1026,20 +1136,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-count">19</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-count">20</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
