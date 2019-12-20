@@ -495,137 +495,6 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/09/20191209SVM%E6%8E%A8%E5%AF%BC/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="WangXue">
-      <meta itemprop="description" content="本科重庆大学CS，研究生南京大学MS，主要研究AIOps，机器学习等，语言Python&C++">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="WangXue">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/12/09/20191209SVM%E6%8E%A8%E5%AF%BC/" class="post-title-link" itemprop="url">20191209SVM推导</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-12-09 09:26:32" itemprop="dateCreated datePublished" datetime="2019-12-09T09:26:32+08:00">2019-12-09</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-12-20 21:40:02" itemprop="dateModified" datetime="2019-12-20T21:40:02+08:00">2019-12-20</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index">
-                    <span itemprop="name">机器学习</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="1-简介"><a href="#1-简介" class="headerlink" title="1 简介"></a>1 简介</h3><p>标签：二分类模型，特征空间上的间隔最大的线性分类器，核技巧（非线性问题），求解凸二次规划问题。</p>
-<p>三类：线性可分支持向量机与硬间隔最大化，线性支持向量机与软间隔最大化，非线性支持向量机与核函数。</p>
-<h3 id="2-线性可分支持向量机"><a href="#2-线性可分支持向量机" class="headerlink" title="2 线性可分支持向量机"></a>2 线性可分支持向量机</h3><p>学习的目标是在特征空间中找出一个分离超平面，将实例分到不同的类。</p>
-<script type="math/tex; mode=display">wx + b = 0</script><p>$w$代表法向量，指向的一般是正类；$b$是截距。</p>
-<p>利用误分类最小的策略求得分离超平面。利用间隔最大化求最优分离超平面。</p>
-<p>在超平面确定的情况下，$|wx+b|$能够相对表示点$x$距离超平面的远近，$y (wx+b)$的符号是否一致表示分类是否正确。</p>
-<h4 id="2-1-函数间隔"><a href="#2-1-函数间隔" class="headerlink" title="2.1 函数间隔"></a>2.1 函数间隔</h4><p>1，函数间隔  $\hat{\gamma}_{i}=y_{i}\left(w \cdot x_{i}+b\right)$，超平面关于训练数据$T$ 的函数间隔 $\hat{\gamma}=\min _{i=1, \cdots, N} \hat{\gamma}_{i}$</p>
-<p>函数间隔可以表示分类预测的正确性及确信度。</p>
-<p>2，几何间隔：</p>
-<p>对分离超平面的法向量 $w$加上某些约束，如规范化 $||w||=1$，使得间隔确定，这时函数间隔为<strong>几何间隔</strong>。</p>
-<p>给定训练集$T$ 和超平面$(w,b)$，定义超平面关于样本点$(x_i,y_i)$的几何间隔是：</p>
-<p><img src="/images/20191209margin.jpg" alt="20191209几何间隔"></p>
-<script type="math/tex; mode=display">\gamma_{i}=y_{i}\left(\frac{w}{\|w\|} \cdot x_{i}+\frac{b}{\|w\|}\right)</script><h4 id="2-2-间隔最大化"><a href="#2-2-间隔最大化" class="headerlink" title="2.2 间隔最大化"></a>2.2 间隔最大化</h4><p>1，SVM基本思想</p>
-<p>求解能够正确划分训练数据集并且几何间隔最大的分离超平面。</p>
-<script type="math/tex; mode=display">\max _{w, b} \frac{\hat{\gamma}}{\|w\|}</script><script type="math/tex; mode=display">\text { s.t. } \quad y_{i}\left(w \cdot x_{i}+b\right) \geqslant \hat{\gamma}, \quad i=1,2, \cdots, N</script><p><strong>函数间隔$\hat{\gamma}$ 不影响最优化问题的解，可以得到下面的线性可分支持向量机学习的最优化问题，凸二次规划问题，有最优解且唯一。（原始最优化问题）</strong> （备注，判断一个问题是否是凸问题，<a href="https://www.zhihu.com/question/334515180" target="_blank" rel="noopener">凸优化</a>）</p>
-<script type="math/tex; mode=display">\min _{w, b} \frac{1}{2}\|w\|^{2}</script><script type="math/tex; mode=display">\text { s.t. } \quad y_{i}\left(w \cdot x_{i}+b\right)-1 \geqslant 0, \quad i=1,2, \cdots, N</script><p>求解得到分离超平面：$w^{<em>} \cdot x+b^{</em>}=0$，分类决策函数是：$f(x)=\operatorname{sign}\left(w^{<em>} \cdot x+b^{</em>}\right)$</p>
-<p>2，支持向量</p>
-<p>在线性可分情况下，训练数据集的样本点中与分离超平面距离最近的样本点的实例称为支持向量。支持向量是使约束$\text { s.t. } \quad y_{i}\left(w \cdot x_{i}+b\right)-1 = 0$ 成立。</p>
-<p><img src="/images/20191209SupportVector.jpg" alt="20191209SupportVector"></p>
-<p>间隔等于$\frac{2}{||w||}$</p>
-<h4 id="2-3-对偶问题"><a href="#2-3-对偶问题" class="headerlink" title="2.3 对偶问题"></a>2.3 对偶问题</h4><p>通过求解对偶问题得到原始问题的最优解。</p>
-<p><strong>首先构建拉格朗日函数</strong>，不等式约束引入拉格朗日乘子 $\alpha_{i} \geqslant 0 , i=1,2, \cdots, N$</p>
-<script type="math/tex; mode=display">L(w, b, \alpha)=\frac{1}{2}\|w\|^{2}-\sum_{i=1}^{N} \alpha_{i} y_{i}\left(w \cdot x_{i}+b\right)+\sum_{i=1}^{N} \alpha_{i}</script><p>其中 $\alpha=\left(\alpha_{1}, \alpha_{2}, \cdots, \alpha_{N}\right)^{\mathrm{T}}$ 是拉格朗日乘子向量</p>
-<p><strong>需求$\max _{\alpha} \min _{w, b} L(w, b, \alpha)$</strong></p>
-<p>Step1，先求$\min _{w, b} L(w, b, \alpha)$</p>
-<p>拉格朗日函数 $L(w, b, \alpha) $ 分别对$w,b$求偏导并令其等于0。</p>
-<script type="math/tex; mode=display">\nabla_{w} L(w, b, \alpha)=w-\sum_{i=1}^{N} \alpha_{i} y_{i} x_{i}=0</script><script type="math/tex; mode=display">\nabla_{b} L(w, b, \alpha)=-\sum_{i=1}^{N} \alpha_{i} y_{i}=0</script><p>代入回拉格朗日函数中 $L(w,b,\alpha)$ 并化简：</p>
-<script type="math/tex; mode=display">L(w, b, \alpha)=\frac{1}{2} \sum_{i=1}^{N} \sum_{j=1}^{N} \alpha_{i} \alpha_{j} y_{i} y_{j}\left(x_{i} \cdot x_{j}\right)-\sum_{i=1}^{N} \alpha_{i} y_{i}\left(\left(\sum_{j=1}^{N} \alpha_{j} y_{j} x_{j}\right) \cdot x_{i}+b\right)+\sum_{i=1}^{N} \alpha_{i}</script><p>化简推导过程见[5]，也可以代入简单的例子去看，化简得到：</p>
-<script type="math/tex; mode=display">\min _{w, b} L(w, b, \alpha)=-\frac{1}{2} \sum_{i=1}^{N} \sum_{j=1}^{N} \alpha_{i} \alpha_{j} y_{i} y_{j}\left(x_{i} \cdot x_{j}\right)+\sum_{i=1}^{N} \alpha_{i}</script><p>Step2，求$\min _{w, b} L(w, b, \alpha)$ 对$\alpha$的极大值，<strong>即是对偶问题</strong>：</p>
-<script type="math/tex; mode=display">\max _{\alpha}-\frac{1}{2} \sum_{i=1}^{N} \sum_{j=1}^{N} \alpha_{i} \alpha_{j} y_{i} y_{j}\left(x_{i} \cdot x_{j}\right)+\sum_{i=1}^{N} \alpha_{i}</script><p>转换为求极小</p>
-<script type="math/tex; mode=display">\min _{\alpha} \frac{1}{2} \sum_{i=1}^{N} \sum_{j=1}^{N} \alpha_{i} \alpha_{j} y_{i} y_{j}\left(x_{i} \cdot x_{j}\right)-\sum_{i=1}^{N} \alpha_{i}</script><script type="math/tex; mode=display">\text { s.t. } \quad \sum_{i=1}^{N} \alpha_{i} y_{i}=0</script><p>注意：为什么线性规划中求解原始问题可以转为求解对偶问题，对偶问题有良好的性质。对偶问题的对偶是原问题，无论原始问题是否是凸对偶问题都是凸优化问题，对偶问题可以给出原始问题的一个下界，满足一定条件时原始问题的解与对偶问题的解是完全等价的（备注 <a href="https://zhuanlan.zhihu.com/p/31131842" target="_blank" rel="noopener">拉格朗日对偶问题</a>）。</p>
-<p>Step3，根据KKT条件求得 $w^<em>$ 与 $b^</em>$</p>
-<p>过程如下，设 $\alpha^{<em>}=\left(\alpha_{1}^{</em>}, \alpha_{2}^{<em>}, \cdots, \alpha_{N}^{</em>}\right)^{\mathrm{T}}$ 是对偶最优化问题的解。根据原问题的不等式约束，KKT条件成立。</p>
-<script type="math/tex; mode=display">\nabla_{w} L\left(w^{*}, b^{*}, \alpha^{*}\right)=w^{*}-\sum_{i=1}^{N} \alpha_{i}^{*} y_{i} x_{i}=0</script><script type="math/tex; mode=display">\nabla_{b} L\left(w^{*}, b^{*}, \alpha^{*}\right)=-\sum_{i=1}^{N} \alpha_{i}^{*} y_{i}=0</script><script type="math/tex; mode=display">\alpha_{i}^{*}\left(y_{i}\left(w^{*} \cdot x_{i}+b^{*}\right)-1\right)=0, \quad i=1,2, \cdots, N</script><script type="math/tex; mode=display">y_{i}\left(w^{*} \cdot x_{i}+b^{*}\right)-1 \geqslant 0, \quad i=1,2, \cdots, N</script><script type="math/tex; mode=display">\alpha_{i}^{*} \geqslant 0, \quad i=1,2, \cdots, N</script><p>由此可得:</p>
-<script type="math/tex; mode=display">w^{*}=\sum_{i} \alpha_{i}^{*} y_{i} x_{i}</script><p>至少有一个$\alpha_i^<em> &gt; 0$，将$w^</em>$ 代入$y_{j}\left(w^{<em>} \cdot x_{j}+b^{</em>}\right)-1=0$ （注意 $y_j^2 = 1$）得:</p>
-<script type="math/tex; mode=display">b^{*}=y_{j}-\sum_{i=1}^{N} \alpha_{i}^{*} y_{i}\left(x_{i} \cdot x_{j}\right)</script><p>最终分类决策函数是：</p>
-<script type="math/tex; mode=display">f(x)=\operatorname{sign}\left(\sum_{i=1}^{N} \alpha_{i}^{*} y_{i}\left(x \cdot x_{i}\right)+b^{*}\right)</script><p><img src="/images/20191209SVMAlgorithm.jpg" alt="20191209SVMAlgorithm"></p>
-<p>《李航》书P125例子好</p>
-<h3 id="3-线性支持向量机与软间隔最大化"><a href="#3-线性支持向量机与软间隔最大化" class="headerlink" title="3 线性支持向量机与软间隔最大化"></a>3 线性支持向量机与软间隔最大化</h3><p>线性不可分问题（即某些样本点不满足函数间隔大于等于1的约束条件），用软间隔最大化（引入松弛变量 ）:</p>
-<script type="math/tex; mode=display">y_i(w \cdot x_i + b) \geqslant 1 - \xi_i</script><p>原始问题：</p>
-<script type="math/tex; mode=display">\min _{w, b} \frac{1}{2}\|w\|^{2} + C \sum_{i=1}^N \xi_i</script><script type="math/tex; mode=display">\text { s.t. } \quad y_{i}\left(w \cdot x_{i}+b\right) \geqslant 1 - \xi_i, \quad i=1,2, \cdots, N</script><script type="math/tex; mode=display">\xi_i \geqslant 0,i=1,2, \cdots, N</script><p>对偶问题：</p>
-<script type="math/tex; mode=display">\min _{\alpha} \frac{1}{2} \sum_{i=1}^{N} \sum_{j=1}^{N} \alpha_{i} \alpha_{j} y_{i} y_{j}\left(x_{i} \cdot x_{j}\right)-\sum_{i=1}^{N} \alpha_{i}</script><script type="math/tex; mode=display">\text { s.t. } \quad \sum_{i=1}^{N} \alpha_{i} y_{i}=0</script><script type="math/tex; mode=display">0 \leq \alpha_i \leq C, i=1,2, \cdots, N</script><h3 id="4-非线性支持向量机"><a href="#4-非线性支持向量机" class="headerlink" title="4 非线性支持向量机"></a>4 非线性支持向量机</h3><p>核技巧。例子从椭圆变到线性可分，设原空间：$\mathcal{X} \subset \mathbf{R}^{2}, x=\left(x^{(1)}, x^{(2)}\right)^{\mathrm{T}} \in \mathcal{X}$，新空间 $\mathcal{Z} \subset \mathbf{R}^{2}, z=\left(z^{(1)}, z^{(2)}\right)^{\mathrm{T}} \in \mathcal{Z}$，从原空间到新空间的映射：$z=\phi(x)=\left(\left(x^{(1)}\right)^{2},\left(x^{(2)}\right)^{2}\right)^{\mathrm{T}}$</p>
-<h4 id="4-1-核函数"><a href="#4-1-核函数" class="headerlink" title="4.1 核函数"></a>4.1 核函数</h4><p>核函数定义</p>
-<p>设$\mathcal{X}$ 是输入空间（欧式空间$R^n$ 的子集或者离散集合），设$\mathcal{H}$为特征k空间（希尔伯特空间），如果存在一个映射：</p>
-<script type="math/tex; mode=display">\phi(x): \mathcal{X} \rightarrow \mathcal{H}</script><p>使得对所有$x, z \in \mathcal{X}$ ，函数K(x,z) 满足条件 $K(x, z)=\phi(x) \cdot \phi(z)$ 则K为核函数，$\phi(x)$是映射函数。</p>
-<p>对偶问题的目标函数中内积用核函数来替代表示为：</p>
-<script type="math/tex; mode=display">W(\alpha)=\frac{1}{2} \sum_{i=1}^{N} \sum_{j=1}^{N} \alpha_{i} \alpha_{j} y_{i} y_{j} K\left(x_{i}, x_{j}\right)-\sum_{i=1}^{N} \alpha_{i}</script><p>通常所说的核函数就是正定核函数。定义映射，定义内积使其成为内积空间（证明定义的运算是内积，证明其加法和数乘是封闭的。），将内积空间完备化为希尔伯特空间。</p>
-<p>常用的核函数：</p>
-<p><img src="/images/20191209KernelFunction.jpg" alt="20191209KernelFunction"></p>
-<h4 id="4-2-序列最小最优化算法"><a href="#4-2-序列最小最优化算法" class="headerlink" title="4.2 序列最小最优化算法"></a>4.2 序列最小最优化算法</h4><p>SMO算法包括两部分：求解两个变量二次规划的解析方法和选择变量的启发式方法。</p>
-<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1, <a href="https://www.zhihu.com/question/334515180" target="_blank" rel="noopener">https://www.zhihu.com/question/334515180</a></p>
-<p>2，陈宝林，最优化理论与算法</p>
-<p>3，李航《统计学习方法》</p>
-<p>4，<a href="https://zhuanlan.zhihu.com/p/31131842" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/31131842</a></p>
-<p>5，优秀博文 <a href="https://blog.csdn.net/v_JULY_v/article/details/7624837" target="_blank" rel="noopener">https://blog.csdn.net/v_JULY_v/article/details/7624837</a></p>
-<p>6，支持向量机通俗导论(理解 SVM 的三层境界)  ，这个也讲的好</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/04/NAB%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E7%B3%BB%E5%88%971/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1185,6 +1054,135 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
 <p>第一个年级要学习的是军事理论。所有想成为名将的人，必须要学习一些经典的理论知识，包括《孙子兵法》《吴子兵法》等等。<br>第二个年级学习的内容是实战。这是极为重要的，那些理论学习的优秀者如果不能过这一关，他们就将被授予一个光荣的称号——纸上谈兵。<br>三年级要学习的是冷酷。 成为一个名将，就必须和仁慈、温和之类的名词说再见。他必须心如铁石、冷酷无情。<br>四年级要学习的是理智。<br>五年级学习判断，准确判断并决策。<br>六年级学习坚强，那些最优秀的人能够从失败中爬起来，去挑战那个多次战胜自己的人，这就叫做坚强。</p>
 </blockquote>
 <p>明朝的建立，经历了好几场大战。战场千变万化，胜者的智慧，败者的教训都是值得学习借鉴的。毕竟从人性、历史规律上看，一切都还是有章可循的。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/07/20190507paper-the-Numenta-Anomaly-Benchmark/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="WangXue">
+      <meta itemprop="description" content="本科重庆大学CS，研究生南京大学MS，主要研究AIOps，机器学习等，语言Python&C++">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="WangXue">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/05/07/20190507paper-the-Numenta-Anomaly-Benchmark/" class="post-title-link" itemprop="url">20190507paper the Numenta Anomaly Benchmark</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-05-07 21:38:23" itemprop="dateCreated datePublished" datetime="2019-05-07T21:38:23+08:00">2019-05-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-12-11 17:31:32" itemprop="dateModified" datetime="2019-12-11T17:31:32+08:00">2019-12-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/AIOps/" itemprop="url" rel="index">
+                    <span itemprop="name">AIOps</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="1-ABS-amp-Introduction"><a href="#1-ABS-amp-Introduction" class="headerlink" title="1 ABS &amp; Introduction"></a>1 ABS &amp; Introduction</h3><h4 id="1-1-Abstract"><a href="#1-1-Abstract" class="headerlink" title="1.1 Abstract"></a>1.1 Abstract</h4><p>对象：streams, time-series data, sequence</p>
+<p>异常检测难点：real-time processing</p>
+<p>NAB是一个测试评估针对流数据的异常检测算法的开源工具。</p>
+<p>理想的异常检测器 </p>
+<ol>
+<li><p>检测到所有出现的异常 </p>
+</li>
+<li><p>尽早检测出异常，最好在人们看到异常之前 </p>
+</li>
+<li><p>no FP 不误报 </p>
+</li>
+<li><p>实时检测、没有前瞻（不看前面的数据） </p>
+</li>
+<li><p>自动化检测、无人工调节</p>
+</li>
+<li>适用性广泛，具有泛化性</li>
+</ol>
+<h4 id="1-2-Intro"><a href="#1-2-Intro" class="headerlink" title="1.2 Intro"></a>1.2 Intro</h4><p>静态基准不适合用于实时性算法。Precision和Recall无法反应出早检测这个效果。人工划分训练集测试集不适合流场景。NAB设计了新的评价标准，整合了各类数据集。其他数据集还有the UC- Irvine dataset ，Yahoo Labs。本论文比较了HTM、Skyline、与Twitter的两种方法<a href="https://blog.twitter.com/engineering/en_us/a/2015/introducing-practical-and-robust-anomaly-detection-in-a-time-series.html" target="_blank" rel="noopener">Twitter 方法，翻</a> （AnomalyDetectionTs and AnomalyDetectionVec. ）。</p>
+<h3 id="2，NAB-scoring"><a href="#2，NAB-scoring" class="headerlink" title="2，NAB scoring"></a>2，NAB scoring</h3><h4 id="2-1-基础"><a href="#2-1-基础" class="headerlink" title="2.1 基础"></a>2.1 基础</h4><p>异常定义：We define anomalies in a data stream to be patterns that do not conform to past patterns of behavior for the stream. 包括空间异常和时间异常。</p>
+<p><img src="/images/20191210anomaly.jpg" alt="20191210anomaly"></p>
+<p>Dataset：范围从IT指标（例如网络利用率）到工业机器上的传感器再到社交媒体聊天。我们还包括一些人工生成的数据文件，用于测试尚未在语料库的真实数据中表示的异常行为，以及几个没有任何异常的数据文件。当前的NAB数据集包含58个数据文件，每个文件具有1000-22,000个数据实例（github里有）</p>
+<p>标记异常：按一定规则，标记ground truth label</p>
+<h4 id="2-2-算法"><a href="#2-2-算法" class="headerlink" title="2.2 算法"></a>2.2 算法</h4><p>算法核心三个方面：anomaly Window，the scoring function，application Profiles（配置文件）</p>
+<h5 id="2-2-1-异常窗口"><a href="#2-2-1-异常窗口" class="headerlink" title="2.2.1 异常窗口"></a>2.2.1 异常窗口</h5><p>异常窗口是代表一系列以真实异常标签（ a ground truth anomaly label ）为中心的数据点。</p>
+<p>异常窗口的作用是判断真假检测，检测在窗外的话是FP。</p>
+<p>评分函数基于窗口识别、加权TP，FP，FN。前面紫色部分只用来初始学习，不需测试。</p>
+<p>1，窗口内最早的TP检测被计分，其他忽略。</p>
+<p>2，sigmoidal scoring function 给早检测的TP高分。给FP负分数。</p>
+<p>3，窗口大小 = 10%*总数据长度/异常数量。实验测试了5% - 20%，由于缩放评分函数，这个百分比对最后结果不敏感。</p>
+<p><img src="/images/20191210AnomalyWindow.jpg" alt="20191210AnomalyWindow"></p>
+<p>application profile配置：FN对工业机器来说会造成损失，FP要求技术人员查看。（对监视数据中心中各个服务器状态的应用程序可能对误报的数量敏感，并且由于大多数服务器群集都相对容错，因此偶尔会遗漏异常情况很好。）因此配置文件用于：对于TP，FP，FN和TN，NAB应用与每个配置文件相关的不同相对权重以获得每个配置文件的单独分数。</p>
+<h5 id="2-2-2-计算过程"><a href="#2-2-2-计算过程" class="headerlink" title="2.2.2 计算过程"></a>2.2.2 计算过程</h5><p>1，配置权重$A$</p>
+<script type="math/tex; mode=display">A_{T P}, A_{F P}, A_{F N}, A_{T N}, 0 \leq A_{TP},A_{TN} \leq 1, -1 \leq A_{FP},A_{FN} \leq 0</script><p>$D$ 是数据集，$Y_d$是数据 $d$ 中被检测出来的异常。$f_d$表示没有检测到任何异常的窗口数量，</p>
+<p><img src="/images/20191210NABScoring.jpg" alt="20191210NABScoring"></p>
+<p>2，单个窗口的得分计算</p>
+<p>图中TP：早检测则，增加NAB score；点2：早检测的TP，贡献+0.999 。</p>
+<p>FP：减分（窗外后面的FP的减分更大）；点1：FP，贡献-1，点4：权重为-0.8093是根据$\sigma^{A}(y)$得到的。5：5更有害，因此5贡献-1。</p>
+<p>FN：完全没有检测到，减分。</p>
+<p>总的来看这个窗口的得分就是：$−1.0A_{FP} + 0.9999A_{TP} −0.8093A_{FP} − 1.0A_{FP} $ ，公式是：</p>
+<script type="math/tex; mode=display">\sigma^{A}(y)=\left(A_{T P}-A_{F P}\right)\left(\frac{1}{1+e^{5 y}}\right)-1</script><p>$\sigma^{A}(y)$中，y表示是检测在异常检测窗的相对位置，参数被设置为窗口右侧，$\sigma ( y = 0.0 ) = 0$。 </p>
+<p>3，一个数据文件的得分计算</p>
+<p>得分是每个检测的得分+错过的Window</p>
+<script type="math/tex; mode=display">S_{d}^{A}=\left(\sum_{y \in Y_{d}} \sigma^{A}(y)\right)+A_{F N} f_{d}</script><p>4，一个异常检测算法对所有数据集的得分</p>
+<script type="math/tex; mode=display">S ^ { A } = \sum _ { d \in D } S _ { d } ^ { A }</script><p>5，归一化这个算法的分数，normalized NAB score</p>
+<script type="math/tex; mode=display">S _ { N A B } ^ { A } = 100 \cdot \frac { S ^ { A } - S _ { \text {null} } ^ { A } } { S _ { \text {perfect} } ^ { A } - S _ { \text {null} } ^ { A } }</script><p>完美检测器检测到所有TP，无FP。NULL检测器就是没有检测到任何异常。</p>
+<h5 id="2-2-3-其他"><a href="#2-2-3-其他" class="headerlink" title="2.2.3 其他"></a>2.2.3 其他</h5><p>HTM算法，Skyline统计算法，Twitter统计算法等</p>
+<p>每个异常检测器输出是0-1之间的分数，使用固定阈值对分数进行阈值处理，以检测异常。 NAB包括自动爬坡搜索，用于为每种算法选择最佳阈值。其中要最大化的目标函数是NAB评分函数。一个阈值针对所有的数据集dataset（The detection threshold is thus tuned based on the full NAB dataset）。</p>
+<h3 id="3-result"><a href="#3-result" class="headerlink" title="3 result"></a>3 result</h3><p>见github首页</p>
+<p>一些小结论</p>
+<p>1，HTM和Skyline对漂移适应得更快</p>
+<p>2，HTM和Skyline各自也有误报但HTM可以早检测（3h，机器温度传感器数据）</p>
+<p>3，行为的时间变化通常先于容易检测到的大变化（做提前检测）。 </p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，Lavin A, Ahmad S. Evaluating Real-Time Anomaly Detection Algorithms—The Numenta Anomaly Benchmark[C]//2015 IEEE 14th International Conference on Machine Learning and Applications (ICMLA). IEEE, 2015: 38-44.</p>
+<p>2, <a href="https://github.com/numenta/NAB" target="_blank" rel="noopener">https://github.com/numenta/NAB</a> 很好的学习项目</p>
 
       
     </div>
