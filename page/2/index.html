@@ -429,7 +429,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-12-20 21:46:00" itemprop="dateModified" datetime="2019-12-20T21:46:00+08:00">2019-12-20</time>
+                <time title="修改时间：2019-12-20 22:06:38" itemprop="dateModified" datetime="2019-12-20T22:06:38+08:00">2019-12-20</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -469,8 +469,9 @@
 <script type="math/tex; mode=display">\gamma_{i}=y_{i}\left(\frac{w}{\|w\|} \cdot x_{i}+\frac{b}{\|w\|}\right)</script><h4 id="2-2-间隔最大化"><a href="#2-2-间隔最大化" class="headerlink" title="2.2 间隔最大化"></a>2.2 间隔最大化</h4><p>1，SVM基本思想</p>
 <p>求解能够正确划分训练数据集并且几何间隔最大的分离超平面。</p>
 <script type="math/tex; mode=display">\max _{w, b} \frac{\hat{\gamma}}{\|w\|}</script><script type="math/tex; mode=display">\text { s.t. } \quad y_{i}\left(w \cdot x_{i}+b\right) \geqslant \hat{\gamma}, \quad i=1,2, \cdots, N</script><p><strong>函数间隔$\hat{\gamma}$ 不影响最优化问题的解，可以得到下面的线性可分支持向量机学习的最优化问题，凸二次规划问题，有最优解且唯一。（原始最优化问题）</strong> （备注，判断一个问题是否是凸问题，<a href="https://www.zhihu.com/question/334515180" target="_blank" rel="noopener">凸优化</a>）</p>
-<script type="math/tex; mode=display">\min _{w, b} \frac{1}{2}\|w\|^{2}</script><script type="math/tex; mode=display">\text { s.t. } \quad y_{i}\left(w \cdot x_{i}+b\right)-1 \geqslant 0, \quad i=1,2, \cdots, N</script><p>求解得到分离超平面：$w^{<em>} \cdot x+b^{</em>}=0$，分类决策函数是：$f(x)=\operatorname{sign}\left(w^{<em>} \cdot x+b^{</em>}\right)$</p>
-<p>2，支持向量</p>
+<script type="math/tex; mode=display">\min _{w, b} \frac{1}{2}\|w\|^{2}</script><script type="math/tex; mode=display">\text { s.t. } \quad y_{i}\left(w \cdot x_{i}+b\right)-1 \geqslant 0, \quad i=1,2, \cdots, N</script><p>求解得到分离超平面：</p>
+<script type="math/tex; mode=display">w^{*}·x+b^{*}=0</script><p>分类决策函数是：</p>
+<script type="math/tex; mode=display">f(x)=\operatorname{sign}\left(w^{*} \cdot x+b^{*}\right)</script><p>2，支持向量</p>
 <p>在线性可分情况下，训练数据集的样本点中与分离超平面距离最近的样本点的实例称为支持向量。支持向量是使约束$\text { s.t. } \quad y_{i}\left(w \cdot x_{i}+b\right)-1 = 0$ 成立。</p>
 <p><img src="/images/20191209SupportVector.jpg" alt="20191209SupportVector"></p>
 <p>间隔等于$\frac{2}{||w||}$</p>
@@ -485,12 +486,12 @@
 <script type="math/tex; mode=display">\min _{w, b} L(w, b, \alpha)=-\frac{1}{2} \sum_{i=1}^{N} \sum_{j=1}^{N} \alpha_{i} \alpha_{j} y_{i} y_{j}\left(x_{i} \cdot x_{j}\right)+\sum_{i=1}^{N} \alpha_{i}</script><p>Step2，求$\min _{w, b} L(w, b, \alpha)$ 对$\alpha$的极大值，<strong>即是对偶问题</strong>：</p>
 <script type="math/tex; mode=display">\max _{\alpha}-\frac{1}{2} \sum_{i=1}^{N} \sum_{j=1}^{N} \alpha_{i} \alpha_{j} y_{i} y_{j}\left(x_{i} \cdot x_{j}\right)+\sum_{i=1}^{N} \alpha_{i}</script><p>转换为求极小</p>
 <script type="math/tex; mode=display">\min _{\alpha} \frac{1}{2} \sum_{i=1}^{N} \sum_{j=1}^{N} \alpha_{i} \alpha_{j} y_{i} y_{j}\left(x_{i} \cdot x_{j}\right)-\sum_{i=1}^{N} \alpha_{i}</script><script type="math/tex; mode=display">\text { s.t. } \quad \sum_{i=1}^{N} \alpha_{i} y_{i}=0</script><p>注意：为什么线性规划中求解原始问题可以转为求解对偶问题，对偶问题有良好的性质。对偶问题的对偶是原问题，无论原始问题是否是凸对偶问题都是凸优化问题，对偶问题可以给出原始问题的一个下界，满足一定条件时原始问题的解与对偶问题的解是完全等价的（备注 <a href="https://zhuanlan.zhihu.com/p/31131842" target="_blank" rel="noopener">拉格朗日对偶问题</a>）。</p>
-<p>Step3，根据KKT条件求得 $w^<em>$ 与 $b^</em>$</p>
-<p>过程如下，设 $\alpha^{<em>}=\left(\alpha_{1}^{</em>}, \alpha_{2}^{<em>}, \cdots, \alpha_{N}^{</em>}\right)^{\mathrm{T}}$ 是对偶最优化问题的解。根据原问题的不等式约束，KKT条件成立。</p>
-<script type="math/tex; mode=display">\nabla_{w} L\left(w^{*}, b^{*}, \alpha^{*}\right)=w^{*}-\sum_{i=1}^{N} \alpha_{i}^{*} y_{i} x_{i}=0</script><script type="math/tex; mode=display">\nabla_{b} L\left(w^{*}, b^{*}, \alpha^{*}\right)=-\sum_{i=1}^{N} \alpha_{i}^{*} y_{i}=0</script><script type="math/tex; mode=display">\alpha_{i}^{*}\left(y_{i}\left(w^{*} \cdot x_{i}+b^{*}\right)-1\right)=0, \quad i=1,2, \cdots, N</script><script type="math/tex; mode=display">y_{i}\left(w^{*} \cdot x_{i}+b^{*}\right)-1 \geqslant 0, \quad i=1,2, \cdots, N</script><script type="math/tex; mode=display">\alpha_{i}^{*} \geqslant 0, \quad i=1,2, \cdots, N</script><p>由此可得:</p>
-<script type="math/tex; mode=display">w^{*}=\sum_{i} \alpha_{i}^{*} y_{i} x_{i}</script><p>至少有一个$\alpha_i^<em> &gt; 0$，将$w^</em>$ 代入$y_{j}\left(w^{<em>} \cdot x_{j}+b^{</em>}\right)-1=0$ （注意 $y_j^2 = 1$）得:</p>
-<script type="math/tex; mode=display">b^{*}=y_{j}-\sum_{i=1}^{N} \alpha_{i}^{*} y_{i}\left(x_{i} \cdot x_{j}\right)</script><p>最终分类决策函数是：</p>
-<script type="math/tex; mode=display">f(x)=\operatorname{sign}\left(\sum_{i=1}^{N} \alpha_{i}^{*} y_{i}\left(x \cdot x_{i}\right)+b^{*}\right)</script><p><img src="/images/20191209SVMAlgorithm.jpg" alt="20191209SVMAlgorithm"></p>
+<p>Step3，根据KKT条件求得 $w^{\star}$ 与 $b^{\star}$</p>
+<p>过程如下，设 $\alpha^{\star}=\left(\alpha_{1}^{\star}, \alpha_{2}^{\star}, \cdots, \alpha_{N}^{\star}\right)^{\mathrm{T}}$ 是对偶最优化问题的解。根据原问题的不等式约束，KKT条件成立。</p>
+<script type="math/tex; mode=display">\nabla_{w} L\left(w^{\star}, b^{\star}, \alpha^{\star}\right)=w^{\star}-\sum_{i=1}^{N} \alpha_{i}^{\star} y_{i} x_{i}=0</script><script type="math/tex; mode=display">\nabla_{b} L\left(w^{\star}, b^{\star}, \alpha^{\star}\right)=-\sum_{i=1}^{N} \alpha_{i}^{\star} y_{i}=0</script><script type="math/tex; mode=display">\alpha_{i}^{\star}\left(y_{i}\left(w^{\star} \cdot x_{i}+b^{\star}\right)-1\right)=0, \quad i=1,2, \cdots, N</script><script type="math/tex; mode=display">y_{i}\left(w^{\star} \cdot x_{i}+b^{\star}\right)-1 \geqslant 0, \quad i=1,2, \cdots, N</script><script type="math/tex; mode=display">\alpha_{i}^{\star} \geqslant 0, \quad i=1,2, \cdots, N</script><p>由此可得:</p>
+<script type="math/tex; mode=display">w^{*}=\sum_{i} \alpha_{i}^{\star} y_{i} x_{i}</script><p>至少有一个$\alpha_i^{\star} &gt; 0$，将$w^*$ 代入$y_{j}\left(w^{\star} \cdot x_{j}+b^{\star}\right)-1=0$ （注意 $y_j^2 = 1$）得:</p>
+<script type="math/tex; mode=display">b^{\star}=y_{j}-\sum_{i=1}^{N} \alpha_{i}^{\star} y_{i}\left(x_{i} \cdot x_{j}\right)</script><p>最终分类决策函数是：</p>
+<script type="math/tex; mode=display">f(x)=\operatorname{sign}\left(\sum_{i=1}^{N} \alpha_{i}^{\star} y_{i}\left(x \cdot x_{i}\right)+b^{\star}\right)</script><p><img src="/images/20191209SVMAlgorithm.jpg" alt="20191209SVMAlgorithm"></p>
 <p>《李航》书P125例子好</p>
 <h3 id="3-线性支持向量机与软间隔最大化"><a href="#3-线性支持向量机与软间隔最大化" class="headerlink" title="3 线性支持向量机与软间隔最大化"></a>3 线性支持向量机与软间隔最大化</h3><p>线性不可分问题（即某些样本点不满足函数间隔大于等于1的约束条件），用软间隔最大化（引入松弛变量 ）:</p>
 <script type="math/tex; mode=display">y_i(w \cdot x_i + b) \geqslant 1 - \xi_i</script><p>原始问题：</p>
