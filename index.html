@@ -207,6 +207,92 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/22/20191222leecode168%E5%91%A8%E8%B5%9B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="WangXue">
+      <meta itemprop="description" content="本科重庆大学CS，研究生南京大学MS，主要研究AIOps，机器学习等，语言Python&C++">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="WangXue">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/12/22/20191222leecode168%E5%91%A8%E8%B5%9B/" class="post-title-link" itemprop="url">leecode168周赛</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2019-12-22 15:06:13 / 修改时间：18:08:55" itemprop="dateCreated datePublished" datetime="2019-12-22T15:06:13+08:00">2019-12-22</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index">
+                    <span itemprop="name">算法</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="leecode5291统计位数为偶数的数字"><a href="#leecode5291统计位数为偶数的数字" class="headerlink" title="leecode5291统计位数为偶数的数字"></a>leecode5291统计位数为偶数的数字</h3><p>给你一个整数数组 <code>nums</code>，请你返回其中位数为 <strong>偶数</strong> 的数字的个数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">输入：nums = [12,345,2,6,7896]</span><br><span class="line">输出：2</span><br><span class="line">解释：</span><br><span class="line">12 是 2 位数字（位数为偶数） </span><br><span class="line">345 是 3 位数字（位数为奇数）  </span><br><span class="line">2 是 1 位数字（位数为奇数） </span><br><span class="line">6 是 1 位数字 位数为奇数） </span><br><span class="line">7896 是 4 位数字（位数为偶数）  </span><br><span class="line">因此只有 12 和 7896 是位数为偶数的数字</span><br><span class="line"></span><br><span class="line">输入：nums = [555,901,482,1771]</span><br><span class="line">输出：1 </span><br><span class="line">解释： </span><br><span class="line">只有 1771 是位数为偶数的数字。</span><br><span class="line"></span><br><span class="line">1 &lt;= nums.length &lt;= 500</span><br><span class="line">1 &lt;= nums[i] &lt;= 10^5</span><br></pre></td></tr></table></figure>
+<p>思路1：c++，位数是除以10，而判断是否偶数是对2取余判断是否为0。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">findNumbers</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> res=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">auto</span> num: nums)&#123;</span><br><span class="line">        <span class="keyword">int</span> weishu=<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span>(num / <span class="number">10</span> &gt; <span class="number">0</span>)&#123;</span><br><span class="line">            weishu ++;</span><br><span class="line">            num /= <span class="number">10</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">cout</span>&lt;&lt;weishu&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">        <span class="keyword">if</span>(weishu % <span class="number">2</span> == <span class="number">0</span>)&#123;</span><br><span class="line">            res ++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; test1 = &#123;<span class="number">12</span>,<span class="number">345</span>,<span class="number">2</span>,<span class="number">6</span>,<span class="number">7896</span>&#125;;</span><br><span class="line">    <span class="keyword">int</span> res = findNumbers(test1);</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;res&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>思路2：Python，遍历nums里的数字。将数字转换为string。判断string的长度对2取余是否为0，是0则取1，否则取0（表示位数不是偶数）。再将是偶数的数字求和 sum。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">findNumbers</span><span class="params">(nums: List[int])</span> -&gt; int:</span></span><br><span class="line">        <span class="keyword">return</span> sum(<span class="number">1</span> <span class="keyword">if</span> len(str(x)) % <span class="number">2</span> == <span class="number">0</span> <span class="keyword">else</span> <span class="number">0</span> <span class="keyword">for</span> x <span class="keyword">in</span> nums)</span><br></pre></td></tr></table></figure>
+<h3 id="leecode5292划分数组为连续数字的集合"><a href="#leecode5292划分数组为连续数字的集合" class="headerlink" title="leecode5292划分数组为连续数字的集合"></a>leecode5292划分数组为连续数字的集合</h3><p>给你一个整数数组 nums 和一个正整数 k，请你判断是否可以把这个数组划分成一些由 k 个连续数字组成的集合。<br>如果可以，请返回 True；否则，返回 False。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">实例1</span><br><span class="line">输入：nums = [1,2,3,3,4,4,5,6], k = 4</span><br><span class="line">输出：true</span><br><span class="line">解释：数组可以分成 [1,2,3,4] 和 [3,4,5,6]。</span><br><span class="line"></span><br><span class="line">示例2</span><br><span class="line">输入：nums = [3,2,1,2,3,4,3,4,5,9,10,11], k = 3</span><br><span class="line">输出：true</span><br><span class="line">解释：数组可以分成 [1,2,3] , [2,3,4] , [3,4,5] 和 [9,10,11]。</span><br><span class="line"></span><br><span class="line">示例3 </span><br><span class="line">输入：nums = [3,3,2,2,1,1], k = 3</span><br><span class="line">输出：true</span><br><span class="line"></span><br><span class="line">示例4</span><br><span class="line">输入：nums = [1,2,3,4], k = 3</span><br><span class="line">输出：false</span><br><span class="line">解释：数组不能分成几个大小为 3 的子数组。</span><br><span class="line"></span><br><span class="line">1 &lt;= nums.length &lt;= 10^5</span><br><span class="line">1 &lt;= nums[i] &lt;= 10^9</span><br><span class="line">1 &lt;= k &lt;= nums.length</span><br></pre></td></tr></table></figure>
+<p>思路1：简单基本思路，将nums里的最小取出来，然后每次取[min,min+k]的值，不断从原nums里去除掉。如果可以这样去空原nums则返回true，否则只要有值不在nums里，则返回false。（但这个方法的时间复杂度太高$O(kn^2)$）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">isPossibleDivide</span><span class="params">(nums, k)</span>:</span></span><br><span class="line">	<span class="string">"""</span></span><br><span class="line"><span class="string">	:type nums: List[int]</span></span><br><span class="line"><span class="string">	:type k: int</span></span><br><span class="line"><span class="string">	:rtype: bool</span></span><br><span class="line"><span class="string">	"""</span></span><br><span class="line">	<span class="keyword">if</span> (len(nums) % k != <span class="number">0</span>):</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">while</span> (len(nums) != <span class="number">0</span>):</span><br><span class="line">		<span class="comment"># each list</span></span><br><span class="line">		<span class="keyword">for</span> x <span class="keyword">in</span> range(min(nums), min(nums)+k):</span><br><span class="line">			<span class="keyword">if</span> x <span class="keyword">in</span> nums:</span><br><span class="line">				nums.remove(x)</span><br><span class="line">			<span class="keyword">else</span>:</span><br><span class="line">				<span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">	<span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">	nums = [<span class="number">3</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">9</span>,<span class="number">10</span>,<span class="number">11</span>]</span><br><span class="line">	k = <span class="number">3</span></span><br><span class="line">	res = isPossibleDivide(nums,k)</span><br><span class="line">	print(res)</span><br></pre></td></tr></table></figure>
+<p>进一步，用hash优化查找x in nums。(c++中的map是平衡二叉树)，排序时间复杂度$O(nlogn)$，</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;map&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">isPossibleDivide</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (nums.<span class="built_in">size</span>() % k != <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    sort(nums.<span class="built_in">begin</span>(), nums.<span class="built_in">end</span>());</span><br><span class="line">    <span class="built_in">map</span>&lt;<span class="keyword">int</span>,<span class="keyword">int</span>&gt; hash;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">auto</span> num:nums) hash[num]++;</span><br><span class="line">    <span class="keyword">int</span> groups = nums.<span class="built_in">size</span>() / k;</span><br><span class="line">    <span class="comment">//group nums</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;groups; i++) &#123;</span><br><span class="line">        <span class="keyword">int</span> min_index = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (hash[nums[min_index]] == <span class="number">0</span>) &#123;</span><br><span class="line">            min_index++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//if min~min+k is not in nums, false</span></span><br><span class="line">        <span class="keyword">int</span> start = nums[min_index];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j=start; j&lt;start+k; j++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (hash[j] == <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> hash[j]--;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; test2 = &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">9</span>,<span class="number">10</span>,<span class="number">11</span>&#125;;</span><br><span class="line">    <span class="keyword">int</span> res2 = isPossibleDivide(test2,<span class="number">3</span>);</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;res2&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>思路3。新学习了multiset。避免了while这一段找min_index（见上），直接在multiset里查找并去掉，时间要短一点点，但空间用的要更多（因为multiset允许存储重复元素）</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">isPossibleDivide2</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; nums, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (nums.<span class="built_in">size</span>() % k != <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">multiset</span>&lt;<span class="keyword">int</span>&gt; s;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">auto</span> num:nums) s.insert(num);</span><br><span class="line">  	<span class="comment">//multiset&lt;int&gt; s(a.begin(), a.end());</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;nums.<span class="built_in">size</span>() / k; i++) &#123;</span><br><span class="line">        <span class="keyword">int</span> <span class="built_in">min</span> = *s.<span class="built_in">begin</span>();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j=<span class="built_in">min</span>; j&lt;<span class="built_in">min</span>+k; j++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (s.<span class="built_in">find</span>(j) == s.<span class="built_in">end</span>()) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            s.erase(s.<span class="built_in">find</span>(j));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1, <a href="https://leetcode-cn.com/problems/find-numbers-with-even-number-of-digits" target="_blank" rel="noopener">https://leetcode-cn.com/problems/find-numbers-with-even-number-of-digits</a></p>
+<p>2, <a href="https://leetcode-cn.com/problems/divide-array-in-sets-of-k-consecutive-numbers" target="_blank" rel="noopener">https://leetcode-cn.com/problems/divide-array-in-sets-of-k-consecutive-numbers</a></p>
+<p>3，<a href="https://leetcode-cn.com/contest/weekly-contest-168/" target="_blank" rel="noopener">https://leetcode-cn.com/contest/weekly-contest-168/</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/19/20191219leecode142%E5%BF%AB%E6%85%A2%E6%8C%87%E9%92%88%E5%AD%A6%E4%B9%A0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -317,7 +403,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-12-19 20:22:21" itemprop="dateModified" datetime="2019-12-19T20:22:21+08:00">2019-12-19</time>
+                <time title="修改时间：2019-12-22 15:07:37" itemprop="dateModified" datetime="2019-12-22T15:07:37+08:00">2019-12-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -325,8 +411,8 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E9%9D%A2%E8%AF%95/" itemprop="url" rel="index">
-                    <span itemprop="name">面试</span>
+                  <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index">
+                    <span itemprop="name">算法</span>
                   </a>
                 </span>
             </span>
@@ -1069,140 +1155,11 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/07/20190507paper-the-Numenta-Anomaly-Benchmark/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="WangXue">
-      <meta itemprop="description" content="本科重庆大学CS，研究生南京大学MS，主要研究AIOps，机器学习等，语言Python&C++">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="WangXue">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/05/07/20190507paper-the-Numenta-Anomaly-Benchmark/" class="post-title-link" itemprop="url">20190507paper the Numenta Anomaly Benchmark</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-05-07 21:38:23" itemprop="dateCreated datePublished" datetime="2019-05-07T21:38:23+08:00">2019-05-07</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-12-11 17:31:32" itemprop="dateModified" datetime="2019-12-11T17:31:32+08:00">2019-12-11</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/AIOps/" itemprop="url" rel="index">
-                    <span itemprop="name">AIOps</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="1-ABS-amp-Introduction"><a href="#1-ABS-amp-Introduction" class="headerlink" title="1 ABS &amp; Introduction"></a>1 ABS &amp; Introduction</h3><h4 id="1-1-Abstract"><a href="#1-1-Abstract" class="headerlink" title="1.1 Abstract"></a>1.1 Abstract</h4><p>对象：streams, time-series data, sequence</p>
-<p>异常检测难点：real-time processing</p>
-<p>NAB是一个测试评估针对流数据的异常检测算法的开源工具。</p>
-<p>理想的异常检测器 </p>
-<ol>
-<li><p>检测到所有出现的异常 </p>
-</li>
-<li><p>尽早检测出异常，最好在人们看到异常之前 </p>
-</li>
-<li><p>no FP 不误报 </p>
-</li>
-<li><p>实时检测、没有前瞻（不看前面的数据） </p>
-</li>
-<li><p>自动化检测、无人工调节</p>
-</li>
-<li>适用性广泛，具有泛化性</li>
-</ol>
-<h4 id="1-2-Intro"><a href="#1-2-Intro" class="headerlink" title="1.2 Intro"></a>1.2 Intro</h4><p>静态基准不适合用于实时性算法。Precision和Recall无法反应出早检测这个效果。人工划分训练集测试集不适合流场景。NAB设计了新的评价标准，整合了各类数据集。其他数据集还有the UC- Irvine dataset ，Yahoo Labs。本论文比较了HTM、Skyline、与Twitter的两种方法<a href="https://blog.twitter.com/engineering/en_us/a/2015/introducing-practical-and-robust-anomaly-detection-in-a-time-series.html" target="_blank" rel="noopener">Twitter 方法，翻</a> （AnomalyDetectionTs and AnomalyDetectionVec. ）。</p>
-<h3 id="2，NAB-scoring"><a href="#2，NAB-scoring" class="headerlink" title="2，NAB scoring"></a>2，NAB scoring</h3><h4 id="2-1-基础"><a href="#2-1-基础" class="headerlink" title="2.1 基础"></a>2.1 基础</h4><p>异常定义：We define anomalies in a data stream to be patterns that do not conform to past patterns of behavior for the stream. 包括空间异常和时间异常。</p>
-<p><img src="/images/20191210anomaly.jpg" alt="20191210anomaly"></p>
-<p>Dataset：范围从IT指标（例如网络利用率）到工业机器上的传感器再到社交媒体聊天。我们还包括一些人工生成的数据文件，用于测试尚未在语料库的真实数据中表示的异常行为，以及几个没有任何异常的数据文件。当前的NAB数据集包含58个数据文件，每个文件具有1000-22,000个数据实例（github里有）</p>
-<p>标记异常：按一定规则，标记ground truth label</p>
-<h4 id="2-2-算法"><a href="#2-2-算法" class="headerlink" title="2.2 算法"></a>2.2 算法</h4><p>算法核心三个方面：anomaly Window，the scoring function，application Profiles（配置文件）</p>
-<h5 id="2-2-1-异常窗口"><a href="#2-2-1-异常窗口" class="headerlink" title="2.2.1 异常窗口"></a>2.2.1 异常窗口</h5><p>异常窗口是代表一系列以真实异常标签（ a ground truth anomaly label ）为中心的数据点。</p>
-<p>异常窗口的作用是判断真假检测，检测在窗外的话是FP。</p>
-<p>评分函数基于窗口识别、加权TP，FP，FN。前面紫色部分只用来初始学习，不需测试。</p>
-<p>1，窗口内最早的TP检测被计分，其他忽略。</p>
-<p>2，sigmoidal scoring function 给早检测的TP高分。给FP负分数。</p>
-<p>3，窗口大小 = 10%*总数据长度/异常数量。实验测试了5% - 20%，由于缩放评分函数，这个百分比对最后结果不敏感。</p>
-<p><img src="/images/20191210AnomalyWindow.jpg" alt="20191210AnomalyWindow"></p>
-<p>application profile配置：FN对工业机器来说会造成损失，FP要求技术人员查看。（对监视数据中心中各个服务器状态的应用程序可能对误报的数量敏感，并且由于大多数服务器群集都相对容错，因此偶尔会遗漏异常情况很好。）因此配置文件用于：对于TP，FP，FN和TN，NAB应用与每个配置文件相关的不同相对权重以获得每个配置文件的单独分数。</p>
-<h5 id="2-2-2-计算过程"><a href="#2-2-2-计算过程" class="headerlink" title="2.2.2 计算过程"></a>2.2.2 计算过程</h5><p>1，配置权重$A$</p>
-<script type="math/tex; mode=display">A_{T P}, A_{F P}, A_{F N}, A_{T N}, 0 \leq A_{TP},A_{TN} \leq 1, -1 \leq A_{FP},A_{FN} \leq 0</script><p>$D$ 是数据集，$Y_d$是数据 $d$ 中被检测出来的异常。$f_d$表示没有检测到任何异常的窗口数量，</p>
-<p><img src="/images/20191210NABScoring.jpg" alt="20191210NABScoring"></p>
-<p>2，单个窗口的得分计算</p>
-<p>图中TP：早检测则，增加NAB score；点2：早检测的TP，贡献+0.999 。</p>
-<p>FP：减分（窗外后面的FP的减分更大）；点1：FP，贡献-1，点4：权重为-0.8093是根据$\sigma^{A}(y)$得到的。5：5更有害，因此5贡献-1。</p>
-<p>FN：完全没有检测到，减分。</p>
-<p>总的来看这个窗口的得分就是：$−1.0A_{FP} + 0.9999A_{TP} −0.8093A_{FP} − 1.0A_{FP} $ ，公式是：</p>
-<script type="math/tex; mode=display">\sigma^{A}(y)=\left(A_{T P}-A_{F P}\right)\left(\frac{1}{1+e^{5 y}}\right)-1</script><p>$\sigma^{A}(y)$中，y表示是检测在异常检测窗的相对位置，参数被设置为窗口右侧，$\sigma ( y = 0.0 ) = 0$。 </p>
-<p>3，一个数据文件的得分计算</p>
-<p>得分是每个检测的得分+错过的Window</p>
-<script type="math/tex; mode=display">S_{d}^{A}=\left(\sum_{y \in Y_{d}} \sigma^{A}(y)\right)+A_{F N} f_{d}</script><p>4，一个异常检测算法对所有数据集的得分</p>
-<script type="math/tex; mode=display">S ^ { A } = \sum _ { d \in D } S _ { d } ^ { A }</script><p>5，归一化这个算法的分数，normalized NAB score</p>
-<script type="math/tex; mode=display">S _ { N A B } ^ { A } = 100 \cdot \frac { S ^ { A } - S _ { \text {null} } ^ { A } } { S _ { \text {perfect} } ^ { A } - S _ { \text {null} } ^ { A } }</script><p>完美检测器检测到所有TP，无FP。NULL检测器就是没有检测到任何异常。</p>
-<h5 id="2-2-3-其他"><a href="#2-2-3-其他" class="headerlink" title="2.2.3 其他"></a>2.2.3 其他</h5><p>HTM算法，Skyline统计算法，Twitter统计算法等</p>
-<p>每个异常检测器输出是0-1之间的分数，使用固定阈值对分数进行阈值处理，以检测异常。 NAB包括自动爬坡搜索，用于为每种算法选择最佳阈值。其中要最大化的目标函数是NAB评分函数。一个阈值针对所有的数据集dataset（The detection threshold is thus tuned based on the full NAB dataset）。</p>
-<h3 id="3-result"><a href="#3-result" class="headerlink" title="3 result"></a>3 result</h3><p>见github首页</p>
-<p>一些小结论</p>
-<p>1，HTM和Skyline对漂移适应得更快</p>
-<p>2，HTM和Skyline各自也有误报但HTM可以早检测（3h，机器温度传感器数据）</p>
-<p>3，行为的时间变化通常先于容易检测到的大变化（做提前检测）。 </p>
-<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，Lavin A, Ahmad S. Evaluating Real-Time Anomaly Detection Algorithms—The Numenta Anomaly Benchmark[C]//2015 IEEE 14th International Conference on Machine Learning and Applications (ICMLA). IEEE, 2015: 38-44.</p>
-<p>2, <a href="https://github.com/numenta/NAB" target="_blank" rel="noopener">https://github.com/numenta/NAB</a> 很好的学习项目</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1248,14 +1205,14 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">20</span>
+          <span class="site-state-item-count">21</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
