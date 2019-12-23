@@ -55,10 +55,10 @@
 <meta property="og:site_name" content="WangXue">
 <meta property="og:description" content="1 概述1.1 梯度下降梯度下降是经典的局部优化算法。在2000年L Bottou使得随机梯度下降再次被提出。 对于数据$\left\{\left(X_{j}, Y_{j}\right)\right\}_{j=1}^{M}$ 需要求解： \min _{\theta \in \mathbb{R}^{n}} J(\theta), \quad J(\theta)=\frac{1}{M} \sum_{j=">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;Users&#x2F;wangxue&#x2F;gitpro&#x2F;20191105MyBlog&#x2F;saruagithub&#x2F;source&#x2F;images&#x2F;20181015Nesterov.jpg">
-<meta property="og:updated_time" content="2019-12-23T14:02:35.015Z">
+<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20181015Nesterov.jpg">
+<meta property="og:updated_time" content="2019-12-23T14:06:55.357Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;Users&#x2F;wangxue&#x2F;gitpro&#x2F;20191105MyBlog&#x2F;saruagithub&#x2F;source&#x2F;images&#x2F;20181015Nesterov.jpg">
+<meta name="twitter:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20181015Nesterov.jpg">
 
 <link rel="canonical" href="http://yoursite.com/2019/12/23/20181015StochasticGradientDescent/">
 
@@ -235,7 +235,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2019-12-23 10:20:15 / 修改时间：22:02:35" itemprop="dateCreated datePublished" datetime="2019-12-23T10:20:15+08:00">2019-12-23</time>
+              <time title="创建时间：2019-12-23 10:20:15 / 修改时间：22:06:55" itemprop="dateCreated datePublished" datetime="2019-12-23T10:20:15+08:00">2019-12-23</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -273,12 +273,11 @@
 <h4 id="1-4-Github代码"><a href="#1-4-Github代码" class="headerlink" title="1.4 Github代码"></a>1.4 Github代码</h4><p><a href="https://github.com/saruagithub/AIcourse_gradientDescent" target="_blank" rel="noopener">https://github.com/saruagithub/AIcourse_gradientDescent</a></p>
 <h3 id="2-SGD技巧"><a href="#2-SGD技巧" class="headerlink" title="2 SGD技巧"></a>2 SGD技巧</h3><p>1，SGD缺点：梯度方向不一定好，固定的学习率太小收敛慢太大则阻碍收敛，如何快速穿过山谷（狭窄山谷的震荡）平原呢。</p>
 <script type="math/tex; mode=display">v_i = \alpha \nabla_{\theta} J\left(\theta_{i}\right)</script><script type="math/tex; mode=display">\theta_{i+1}=\theta_{i}-v_{i}</script><p>2，动量法：梯度的加权平均，递归的添加方向的历史信息（即$v_{i-1}$）。但转弯会慢。</p>
-<script type="math/tex; mode=display">v_{i}=\gamma v_{i-1}+\alpha \nabla_{\theta} J\left(\theta_{i}\right)$$ 其中$\gamma$ 是阻力因子。
-
-$$\theta_{i+1}=\theta_{i}-v_{i}</script><p>3，Nesterov：加速梯度法，更早的注意到梯度的变化。在动量法梯度更新前减去动量项。</p>
+<script type="math/tex; mode=display">v_{i}=\gamma v_{i-1}+\alpha \nabla_{\theta} J\left(\theta_{i}\right)</script><p>其中$\gamma$ 是阻力因子。</p>
+<script type="math/tex; mode=display">\theta_{i+1}=\theta_{i}-v_{i}</script><p>3，Nesterov：加速梯度法，更早的注意到梯度的变化。在动量法梯度更新前减去动量项。</p>
 <script type="math/tex; mode=display">v_{i}=\gamma v_{i-1}+\alpha \nabla_{\theta} J\left(\theta_{i}-\gamma v_{i-1}\right)</script><script type="math/tex; mode=display">\theta_{i+1}=\theta_{i}-v_{i}</script><p>就是使用上一步的$v_{i-1}$先走一步再计算合并梯度。这里的$- \gamma v_{i-1}$就是下图B-C这段。</p>
 <p>优点：前瞻性，在原方向虚拟走了一步后的梯度。收敛速度明显加快。波动也小了很多。</p>
-<p><img src="/Users/wangxue/gitpro/20191105MyBlog/saruagithub/source/images/20181015Nesterov.jpg" alt="20181015Nesterov"></p>
+<p><img src="/images/20181015Nesterov.jpg" alt="20181015Nesterov"></p>
 <p>4，Adagrad：自适应梯度，弱化频繁变化的参数。$G_i$指的是历史与当前梯度的平方的累加。</p>
 <script type="math/tex; mode=display">\theta_{i+1}=\theta_{i}-\frac{\alpha}{\sqrt{G_{i}+\epsilon}} \nabla_{\theta} J\left(\theta_{i}\right)</script><script type="math/tex; mode=display">G_{i}=G_{i-1} + (\nabla_{\theta} J\left(\theta_{i}\right))^{2}</script><p>$\epsilon$ 平滑项，避免除数为0。</p>
 <p>5，Adadelta：RMSProp，对AdaGrad的一种改进，使用加权平均于梯度平方项。当前梯度平方项加上上一时刻的平均值。</p>
