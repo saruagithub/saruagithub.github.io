@@ -1,12 +1,12 @@
 ---
-title: 20190507paper-the-Numenta-Anomaly-Benchmark
-date: 2019-12-09 21:38:23
+title: 20190507paper the Numenta Anomaly Benchmark
+date: 2019-05-07 21:38:23
 mathjax: true
 tags:
-- AIOPs
+- AIOps
 - 时间序列
 categories:
-- AIOPs
+- AIOps
 ---
 
 ### 1 ABS & Introduction
