@@ -526,7 +526,41 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
       </tags>
   </entry>
   <entry>
-    <title>20191209SVM推导</title>
+    <title>朴素贝叶斯</title>
+    <url>/2018/12/24/20191224%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF/</url>
+    <content><![CDATA[<h3 id="1-简介"><a href="#1-简介" class="headerlink" title="1 简介"></a>1 简介</h3><p>朴素贝叶斯法基于<u>贝叶斯定理</u>与<u>特征条件独立</u>假设的分类方法。对于给定的训练数据集，首先基于特征条件独立假设学习输入输出的联合概率分布（学习到生成数据的机制，是生成模型），然后基于此模型，对给定的输入x，利用贝叶斯定理求出后验概率最大的输出 $y$。</p>
+<p>输入空间 $\mathcal{X} \subseteq \mathbf{R}^{n}$ 为n维向量的集合。</p>
+<p>输出空间 $\mathcal{Y} = \left\{c_{1}, c_{2}, \cdots, c_{K}\right\}$</p>
+<p>输入特征向量 $x$，输出类标记 $y$</p>
+<p>随机向量$X$是定义在输入空间 $\mathcal{X}$，$Y$是定义在输出空间 $\mathcal{Y}$ 的随机变量。</p>
+<p>训练数据集 $T=\left\{\left(x_{1}, y_{1}\right),\left(x_{2}, y_{2}\right), \cdots,\left(x_{N}, y_{N}\right)\right\}$ 由$P(X,Y)$ 独立同分布产生。</p>
+<h4 id="1-1-学习"><a href="#1-1-学习" class="headerlink" title="1.1 学习"></a>1.1 学习</h4><p>朴素贝叶斯法先学习先验概率分布及条件概率分布。</p>
+<p>先验概率分布：</p>
+<script type="math/tex; mode=display">P(Y = c_k), k=1,2 \cdots K</script><p>条件概率分布：它有指数级数量的参数，基于条件独立性假设</p>
+<script type="math/tex; mode=display">P\left(X=x | Y=c_{k}\right)=P\left(X^{(1)}=x^{(1)}, \cdots, X^{(n)}=x^{(n)} | Y=c_{k}\right), \quad k=1,2, \cdots, K</script><script type="math/tex; mode=display">=\prod_{j=1}^{n} P\left(X^{(j)}=x^{(j)} | Y=c_{k}\right)</script><p>条件独立假设：用于分类的特征在类确定的条件下，都是属于条件独立的</p>
+<h4 id="1-2-预测"><a href="#1-2-预测" class="headerlink" title="1.2 预测"></a>1.2 预测</h4><p>对给定的输入$x$，通过学习到的模型计算后验概率，最大的类作为预测结果。</p>
+<p>后验概率计算根据的是贝叶斯定理：</p>
+<script type="math/tex; mode=display">P\left(Y=c_{k} | X=x\right)=\frac{P\left(X=x | Y=c_{k}\right) P\left(Y=c_{k}\right)}{\sum_{k} P\left(X=x | Y=c_{k}\right) P\left(Y=c_{k}\right)}</script><p>将前面学习到的代入得：</p>
+<script type="math/tex; mode=display">P\left(Y=c_{k} | X=x\right)=\frac{P\left(Y=c_{k}\right) \prod_{j}^n P\left(X^{(j)}=x^{(j)} | Y=c_{k}\right)}{\sum_{k} P\left(Y=c_{k}\right) \prod_{j}^n P\left(X^{(j)}=x^{(j)} | Y=c_{k}\right)}, \quad k=1,2, \cdots, K</script><p>！！！因此<strong>朴素贝叶斯分类器</strong>就是这样子了：</p>
+<script type="math/tex; mode=display">y = f(x)=argmin_{c_k} \frac{P\left(Y=c_{k}\right) \prod_{j}^n P\left(X^{(j)}=x^{(j)} | Y=c_{k}\right)}{\sum_{k} P\left(Y=c_{k}\right) \prod_{j}^n P\left(X^{(j)}=x^{(j)} | Y=c_{k}\right)}, \quad k=1,2, \cdots, K</script><h4 id="1-3-后验概率最大化的含义"><a href="#1-3-后验概率最大化的含义" class="headerlink" title="1.3 后验概率最大化的含义"></a>1.3 后验概率最大化的含义</h4><p>将实例分到后验概率最大的类中，等价于期望风险最小化。</p>
+<p>假设损失函数：</p>
+<script type="math/tex; mode=display">L(Y, f(X))=\left\{\begin{array}{ll}{1,} & {Y \neq f(X)} \\ {0,} & {Y=f(X)}\end{array}\right.</script><p>期望风险函数:</p>
+<script type="math/tex; mode=display">R_{\mathrm{exp}}(f)=E[L(Y, f(X))]</script><p>取条件期望</p>
+<script type="math/tex; mode=display">R_{\exp }(f)=E_{X} \sum_{k=1}^{K}\left[L\left(c_{k}, f(X)\right)\right] P\left(c_{k} | X\right)</script><p>为了使得期望风险最小化，需要对$X = x$ 逐个极小化:</p>
+<script type="math/tex; mode=display">f(x)=\arg \min _{y \in \mathcal{Y}} \sum_{k=1}^{K} L\left(c_{k}, y\right) P\left(c_{k} | X=x\right)</script><script type="math/tex; mode=display">= \arg \min _{y \in \mathcal{Y}} \sum_{k=1}^{K} P\left(y \neq c_{k} | X=x\right)</script><script type="math/tex; mode=display">= \arg \max _{y \in \mathcal{Y}} P\left(y=c_{k} | X=x\right)</script><h3 id="2-极大似然估计"><a href="#2-极大似然估计" class="headerlink" title="2 极大似然估计"></a>2 极大似然估计</h3><p>学习即估计先验概率分布与条件概率分布：</p>
+<script type="math/tex; mode=display">P\left(Y=c_{k}\right)=\frac{\sum_{i=1}^{N} I\left(y_{i}=c_{k}\right)}{N}, \quad k=1,2, \cdots, K</script><p>设第$j$个特征$x^{(j)}$的可能取值的集合为 $\left\{a_{j 1}, a_{j 2}, \cdots, a_{j S_{j}}\right\}$，条件概率 $P\left(X^{(j)}=a_{j l} | Y = c_k )\right.$ 的极大似然估计是：</p>
+<script type="math/tex; mode=display">P\left(X^{(j)}=a_{j l} | Y=c_{k}\right)=\frac{\sum_{i=1}^{N} I\left(x_{i}^{(j)}=a_{j l}, y_{i}=c_{k}\right)}{\sum_{i=1}^{N} I\left(y_{i}=c_{k}\right)}</script><script type="math/tex; mode=display">j=1,2, \cdots, n ; \quad l=1,2, \cdots, S_{j} ; \quad k=1,2, \cdots, K</script><h3 id="3-算法过程"><a href="#3-算法过程" class="headerlink" title="3 算法过程"></a>3 算法过程</h3><p>(1) 计算先验概率和条件概率（见2，极大似然估计部分）</p>
+<p>(2) 对于给定实例 $x=\left(x^{(1)}, x^{(2)}, \cdots, x^{(n)}\right)^{\mathrm{T}}$计算，取最大值</p>
+<script type="math/tex; mode=display">y = f(x)=argmin_{c_k} \frac{P\left(Y=c_{k}\right) \prod_{j}^n P\left(X^{(j)}=x^{(j)} | Y=c_{k}\right)}{\sum_{k} P\left(Y=c_{k}\right) \prod_{j}^n P\left(X^{(j)}=x^{(j)} | Y=c_{k}\right)}, \quad k=1,2, \cdots, K</script>]]></content>
+      <categories>
+        <category>机器学习</category>
+      </categories>
+      <tags>
+        <tag>机器学习</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>SVM推导</title>
     <url>/2018/12/09/20191209SVM%E6%8E%A8%E5%AF%BC/</url>
     <content><![CDATA[<h3 id="1-简介"><a href="#1-简介" class="headerlink" title="1 简介"></a>1 简介</h3><p>标签：二分类模型，特征空间上的间隔最大的线性分类器，核技巧（非线性问题），求解凸二次规划问题。</p>
 <p>三类：线性可分支持向量机与硬间隔最大化，线性支持向量机与软间隔最大化，非线性支持向量机与核函数。</p>
@@ -594,7 +628,7 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
       </tags>
   </entry>
   <entry>
-    <title>20191208LR原理</title>
+    <title>LR原理</title>
     <url>/2018/12/08/20191208LR%E5%8E%9F%E7%90%86/</url>
     <content><![CDATA[<h3 id="1、线性回归"><a href="#1、线性回归" class="headerlink" title="1、线性回归"></a>1、线性回归</h3><h4 id="1-1-单变量线性回归"><a href="#1-1-单变量线性回归" class="headerlink" title="1.1 单变量线性回归"></a>1.1 单变量线性回归</h4><p>x ——&gt; hypothesis（假设）——&gt; y，此处假设为线性函数，y输出为数值（若是分类则为0或1）</p>
 <script type="math/tex; mode=display">h_{\theta}{(x)} = \theta^Tx</script><p>为了让hypothesis尽量根据数据拟合好曲线，需要设计损失函数，并对此损失函数优化。损失函数是参数$\theta$ 的 Cost function: </p>
@@ -642,6 +676,48 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
 <script type="math/tex; mode=display">f\left(x_{k} + P\right)=f\left(x_{k}\right)+p^T \nabla f_{k}+\frac{1}{2} p^{T} \nabla^{2} f_{k} P</script><p>则$P = - \nabla^2 f(x_k)^{-1} \nabla f(x_k)$</p>
 <p>此处二阶导大于0，即要求$\nabla^2 f(x_k)$ 正定。</p>
 <p>总结：逻辑回归主要是增加了一个sigmoid函数，将预测值映射为概率。为了避免损失函数变为非凸函数，损失函数变为对数损失函数。</p>
+]]></content>
+      <categories>
+        <category>机器学习</category>
+      </categories>
+      <tags>
+        <tag>机器学习</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>感知机 &amp; KNN</title>
+    <url>/2018/12/04/20191224%E6%84%9F%E7%9F%A5%E6%9C%BA%E4%B8%8EKNN/</url>
+    <content><![CDATA[<h3 id="1-感知机"><a href="#1-感知机" class="headerlink" title="1 感知机"></a>1 感知机</h3><h4 id="1-1-简介"><a href="#1-1-简介" class="headerlink" title="1.1 简介"></a>1.1 简介</h4><p>感知机是二分类<u>线性分类</u>模型，感知机对输入空间中将实例划分为正负两类的分离超平面，属于判别模型。使用基于误分类的损失函数，利用梯度下降法对损失函数进行最小化。</p>
+<p>感知机：</p>
+<script type="math/tex; mode=display">f(x)=\operatorname{sign}(w \cdot x+b)</script><script type="math/tex; mode=display">\operatorname{sign}(x)=\left\{\begin{array}{ll}{+1,} & {x \geqslant 0} \\ {-1,} & {x<0}\end{array}\right.</script><p><img src="/images/20181204InceptionMachine.jpg" alt="20181204InceptionMachine"></p>
+<h4 id="1-2-学习策略"><a href="#1-2-学习策略" class="headerlink" title="1.2 学习策略"></a>1.2 学习策略</h4><p>损失函数的自然选择是误分类点的总数（但这样$w,b$不是连续可导函数，不易优化）</p>
+<p>故采用误分类点到超平面$S$的总距离：</p>
+<script type="math/tex; mode=display">\frac{1}{\|w\|}\left|w \cdot x_{0}+b\right|</script><p>由于对于一个误分类的数据$(x_i,y_i)$来说：</p>
+<script type="math/tex; mode=display">-y_i(w \cdot x_i + b) > 0</script><p>因此感知机的损失函数是（忽略常数）：</p>
+<script type="math/tex; mode=display">L(w, b)=-\sum_{x_{i} \in M} y_{i}\left(w \cdot x_{i}+b\right)</script><h4 id="1-3-随机梯度下降"><a href="#1-3-随机梯度下降" class="headerlink" title="1.3 随机梯度下降"></a>1.3 随机梯度下降</h4><p>一次随机选取一个误分类点使其梯度下降。</p>
+<p>损失函数的梯度：</p>
+<script type="math/tex; mode=display">\nabla_{w} L(w, b)=-\sum_{x_{i} \in M} y_{i} x_{i}</script><script type="math/tex; mode=display">\nabla_{b} L(w, b)=-\sum_{x_{i} \in M} y_{i}</script><p>选取一个误分类点$(x_i,y_i)$进行更新w，b。</p>
+<script type="math/tex; mode=display">w = w + \alpha y_i x_i , b = b + \alpha y_i</script><h4 id="1-4-感知机算法过程"><a href="#1-4-感知机算法过程" class="headerlink" title="1.4 感知机算法过程"></a>1.4 感知机算法过程</h4><p>输入：训练数据集$T=\left\{\left(x_{1}, y_{1}\right),\left(x_{2}, y_{2}\right), \cdots,\left(x_{N}, y_{N}\right)\right\}$，其中$x_{i} \in \mathcal{X}=\mathbf{R}^{n}, y_i \in y=\{-1,+1\}, i=1,2, \cdots, N$ 。学习率 $\alpha$，</p>
+<p>输出： 求解感知机模型 $f(x) = sign(w \cdot x + b)$</p>
+<p>(1) 选取初值$w_0,b_0$</p>
+<p>(2) 在训练数据中选取数据 $(x_i,y_i)$</p>
+<p>(3) 如果$y_{i}\left(w \cdot x_{i}+b\right) \leqslant 0$ ，则 $w = w + \alpha y_i x_i, b = b + \alpha y_i$</p>
+<h3 id="2-K近邻KNN"><a href="#2-K近邻KNN" class="headerlink" title="2 K近邻KNN"></a>2 K近邻KNN</h3><h4 id="2-1-简介"><a href="#2-1-简介" class="headerlink" title="2.1 简介"></a>2.1 简介</h4><p>KNN是一种基本的<u>分类</u>与回归方法。KNN法假设给定一个训练数据集，其中实例类别已定。分类时，对新的实例根据其K个最近邻的训练实例的类别，通过多数表决来预测。</p>
+<p>基本要素：K值的选择，距离度量，分类决策规则</p>
+<h4 id="2-2-K近邻法算法"><a href="#2-2-K近邻法算法" class="headerlink" title="2.2 K近邻法算法"></a>2.2 K近邻法算法</h4><p>输入：训练数据集$T=\left\{\left(x_{1}, y_{1}\right),\left(x_{2}, y_{2}\right), \cdots,\left(x_{N}, y_{N}\right)\right\}$，其中 $x_{i} \in \mathcal{X}=\mathbf{R}^{n}, y_i \in y=\{c_1,c_2,\cdot \cdot, c_k\}, i=1,2, \cdots, N$</p>
+<p>输出：新实例 $x$ 所属的类别 $y$</p>
+<p>(1) 根据给定的距离度量，在训练集中找出与x最临近的k个点，涵盖这k个点的x的邻域记作$N_k(x)$</p>
+<p>(2) 在$N_k(x)$中根据分类决策规则（如多数表决）来判定x的类别y</p>
+<script type="math/tex; mode=display">y=\arg \max _{c_{j}} \sum_{x_{i} \in N_{k}(x)} I\left(y_{i}=c_{j}\right), \quad i=1,2, \cdots, N ; j=1,2, \cdots, K</script><p>$I$是指示函数，当$y_i = c_j$ 时为1。</p>
+<h4 id="2-3-距离度量"><a href="#2-3-距离度量" class="headerlink" title="2.3 距离度量"></a>2.3 距离度量</h4><p>距离是两个点相似度的反映。设特征空间$\mathcal{X}$是n维实数向量空间$\mathbf{R}^{n}$, </p>
+<script type="math/tex; mode=display">x_{i}, x_{j} \in \mathcal{X}, x_{i}=\left(x_{i}^{(1)}, x_{i}^{(2)}, \cdots, x_{i}^{(n)}\right)^{\mathrm{T}}</script><script type="math/tex; mode=display">x_{j}=\left(x_{j}^{(1)}, x_{j}^{(2)}, \cdots, x_{j}^{(n)}\right)^{\mathrm{T}}</script><p>则P范数距离是：</p>
+<script type="math/tex; mode=display">L_p(x_i,x_j) = ( \sum_{l=1}^n |x_i^{(l)} - x_j^{(l)}|^p)^{\frac{1}{p}}</script><p>p=1 曼哈顿距离，p=2 欧氏距离，p=$\infty$，是各个坐标距离的最大值。</p>
+<script type="math/tex; mode=display">L_{\infty}\left(x_{i}, x_{j}\right)=\max _{l}\left|x_{i}^{(l)}-x_{j}^{(l)}\right|</script><h4 id="2-4-K值的影响"><a href="#2-4-K值的影响" class="headerlink" title="2.4 K值的影响"></a>2.4 K值的影响</h4><p>1，k较小时，使用较小的邻域中的训练实例进行预测，“学习”的近似误差减小，但是估计误差增大。即预测结果对邻近点非常敏感，如果邻近的点是噪声则会预测出错（容易过拟合）。</p>
+<h4 id="2-5-分类决策规则"><a href="#2-5-分类决策规则" class="headerlink" title="2.5 分类决策规则"></a>2.5 分类决策规则</h4><p>一般多数表决。误分类的概率是：</p>
+<script type="math/tex; mode=display">P(Y \neq f(X))=1-P(Y=f(X))</script><p>则误分类率是：</p>
+<script type="math/tex; mode=display">\frac{1}{k} \sum_{x_{i} \in N_{k}(x)} I\left(y_{i} \neq c_{j}\right)=1-\frac{1}{k} \sum_{x_{i} \in N_{k}(x)} I\left(y_{i}=c_{j}\right)</script><h4 id="2-6-k-d-tree"><a href="#2-6-k-d-tree" class="headerlink" title="2.6 k-d tree"></a>2.6 k-d tree</h4><p>为了提高k近邻的搜索效率。用特殊的结构存储训练数据，减少计算距离的次数。构造kd树相当于不断地用垂直于坐标轴的超平面将k维空间切分（递归），构成一系列的k维超矩形矩阵区域。（李航书P53）</p>
+<p>搜索：首先找到包含目标点的叶节点，然后从该叶节点出发依次回退到父节点，不断查找与目标点最邻近的节点。当确定不存在更近的结点时终止。</p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，《统计学习方法》李航</p>
 ]]></content>
       <categories>
         <category>机器学习</category>

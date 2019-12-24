@@ -50,7 +50,7 @@
   <meta name="description" content="1 简介标签：二分类模型，特征空间上的间隔最大的线性分类器，核技巧（非线性问题），求解凸二次规划问题。 三类：线性可分支持向量机与硬间隔最大化，线性支持向量机与软间隔最大化，非线性支持向量机与核函数。 2 线性可分支持向量机学习的目标是在特征空间中找出一个分离超平面，将实例分到不同的类。 wx + b = 0$w$代表法向量，指向的一般是正类；$b$是截距。 利用误分类最小的策略求得分离超平面。利">
 <meta name="keywords" content="机器学习">
 <meta property="og:type" content="article">
-<meta property="og:title" content="20191209SVM推导">
+<meta property="og:title" content="SVM推导">
 <meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2018&#x2F;12&#x2F;09&#x2F;20191209SVM%E6%8E%A8%E5%AF%BC&#x2F;index.html">
 <meta property="og:site_name" content="WangXue">
 <meta property="og:description" content="1 简介标签：二分类模型，特征空间上的间隔最大的线性分类器，核技巧（非线性问题），求解凸二次规划问题。 三类：线性可分支持向量机与硬间隔最大化，线性支持向量机与软间隔最大化，非线性支持向量机与核函数。 2 线性可分支持向量机学习的目标是在特征空间中找出一个分离超平面，将实例分到不同的类。 wx + b = 0$w$代表法向量，指向的一般是正类；$b$是截距。 利用误分类最小的策略求得分离超平面。利">
@@ -59,7 +59,7 @@
 <meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20191209SupportVector.jpg">
 <meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20191209SVMAlgorithm.jpg">
 <meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20191209KernelFunction.jpg">
-<meta property="og:updated_time" content="2019-12-20T14:06:38.262Z">
+<meta property="og:updated_time" content="2019-12-24T10:53:54.687Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20191209margin.jpg">
 
@@ -77,7 +77,7 @@
   };
 </script>
 
-  <title>20191209SVM推导 | WangXue</title>
+  <title>SVM推导 | WangXue</title>
   
 
 
@@ -227,7 +227,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          20191209SVM推导
+          SVM推导
         </h1>
 
         <div class="post-meta">
@@ -244,7 +244,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-12-20 22:06:38" itemprop="dateModified" datetime="2019-12-20T22:06:38+08:00">2019-12-20</time>
+                <time title="修改时间：2019-12-24 18:53:54" itemprop="dateModified" datetime="2019-12-24T18:53:54+08:00">2019-12-24</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -344,12 +344,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2018/12/08/20191208LR%E5%8E%9F%E7%90%86/" rel="prev" title="20191208LR原理">
-      <i class="fa fa-chevron-left"></i> 20191208LR原理
+    <a href="/2018/12/08/20191208LR%E5%8E%9F%E7%90%86/" rel="prev" title="LR原理">
+      <i class="fa fa-chevron-left"></i> LR原理
     </a></div>
       <div class="post-nav-item">
-    <a href="/2019/04/08/20190408AnomalyDetectionBackground/" rel="next" title="20190408AnomalyDetectionBackground">
-      20190408AnomalyDetectionBackground <i class="fa fa-chevron-right"></i>
+    <a href="/2018/12/24/20191224%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF/" rel="next" title="朴素贝叶斯">
+      朴素贝叶斯 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -404,7 +404,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">23</span>
+          <span class="site-state-item-count">25</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

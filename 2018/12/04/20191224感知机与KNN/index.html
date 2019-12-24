@@ -47,18 +47,20 @@
   };
 </script>
 
-  <meta name="description" content="1 基类结构首先看异常检测基类base.py，所有检测器都是由它继承而来： 1，init() ：初始化dataSet，probationaryPercent 数据的最初一部分数据不做测试。inputMin, inputMax初始化最大最小值。 2，initialize()：多进程问题。进程池pool（它默认调用的是CPU的核数） 3，handleRecord(): 返回每一个时间点的异常分数值，R">
-<meta name="keywords" content="机器学习,AIOps">
+  <meta name="description" content="1 感知机1.1 简介感知机是二分类线性分类模型，感知机对输入空间中将实例划分为正负两类的分离超平面，属于判别模型。使用基于误分类的损失函数，利用梯度下降法对损失函数进行最小化。 感知机： f(x)=\operatorname{sign}(w \cdot x+b)\operatorname{sign}(x)=\left\{\begin{array}{ll}{+1,} &amp; {x \geqslant">
+<meta name="keywords" content="机器学习">
 <meta property="og:type" content="article">
-<meta property="og:title" content="20191210Skyline源码阅读">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;12&#x2F;10&#x2F;20191210Skyline%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB&#x2F;index.html">
+<meta property="og:title" content="感知机 &amp; KNN">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2018&#x2F;12&#x2F;04&#x2F;20191224%E6%84%9F%E7%9F%A5%E6%9C%BA%E4%B8%8EKNN&#x2F;index.html">
 <meta property="og:site_name" content="WangXue">
-<meta property="og:description" content="1 基类结构首先看异常检测基类base.py，所有检测器都是由它继承而来： 1，init() ：初始化dataSet，probationaryPercent 数据的最初一部分数据不做测试。inputMin, inputMax初始化最大最小值。 2，initialize()：多进程问题。进程池pool（它默认调用的是CPU的核数） 3，handleRecord(): 返回每一个时间点的异常分数值，R">
+<meta property="og:description" content="1 感知机1.1 简介感知机是二分类线性分类模型，感知机对输入空间中将实例划分为正负两类的分离超平面，属于判别模型。使用基于误分类的损失函数，利用梯度下降法对损失函数进行最小化。 感知机： f(x)=\operatorname{sign}(w \cdot x+b)\operatorname{sign}(x)=\left\{\begin{array}{ll}{+1,} &amp; {x \geqslant">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-12-12T07:53:44.149Z">
+<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20181204InceptionMachine.jpg">
+<meta property="og:updated_time" content="2019-12-24T12:35:11.124Z">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20181204InceptionMachine.jpg">
 
-<link rel="canonical" href="http://yoursite.com/2019/12/10/20191210Skyline%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/">
+<link rel="canonical" href="http://yoursite.com/2018/12/04/20191224%E6%84%9F%E7%9F%A5%E6%9C%BA%E4%B8%8EKNN/">
 
 
 <script id="page-configurations">
@@ -72,7 +74,7 @@
   };
 </script>
 
-  <title>20191210Skyline源码阅读 | WangXue</title>
+  <title>感知机 & KNN | WangXue</title>
   
 
 
@@ -209,7 +211,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/10/20191210Skyline%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/04/20191224%E6%84%9F%E7%9F%A5%E6%9C%BA%E4%B8%8EKNN/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -222,7 +224,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          20191210Skyline源码阅读
+          感知机 & KNN
         </h1>
 
         <div class="post-meta">
@@ -232,14 +234,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2019-12-10 09:32:49" itemprop="dateCreated datePublished" datetime="2019-12-10T09:32:49+08:00">2019-12-10</time>
+              <time title="创建时间：2018-12-04 18:52:35" itemprop="dateCreated datePublished" datetime="2018-12-04T18:52:35+08:00">2018-12-04</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-12-12 15:53:44" itemprop="dateModified" datetime="2019-12-12T15:53:44+08:00">2019-12-12</time>
+                <time title="修改时间：2019-12-24 20:35:11" itemprop="dateModified" datetime="2019-12-24T20:35:11+08:00">2019-12-24</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -247,8 +249,8 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/AIOps/" itemprop="url" rel="index">
-                    <span itemprop="name">AIOps</span>
+                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习</span>
                   </a>
                 </span>
             </span>
@@ -264,26 +266,37 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h3 id="1-基类结构"><a href="#1-基类结构" class="headerlink" title="1 基类结构"></a>1 基类结构</h3><p>首先看异常检测基类base.py，所有检测器都是由它继承而来：</p>
-<p>1，init() ：初始化dataSet，probationaryPercent 数据的最初一部分数据不做测试。inputMin, inputMax初始化最大最小值。</p>
-<p>2，initialize()：多进程问题。进程池pool（它默认调用的是CPU的核数）</p>
-<p>3，handleRecord(): 返回每一个时间点的异常分数值，Returns a list [anomalyScore, *]。这个函数子类必须继承。</p>
-<p>4，getAdditionalHeaders()：如HTM检测器里会添加’anomalyscore’ , ‘rawscore’。添加并返回列名的，run函数中调用它拼接最后返回的dataframe。</p>
-<p>5，detectDataSet(): 在运行给定检测器的每个检测器进程中调用的函数。参数 (i, detectorInstance, detectorName, labels, outputDir, relativePath) = args，主要是创建保存文件的路径，调用detectorInstance.initialize()，results = detectorInstance.run() </p>
-<p>6，run()：为整个dataSet打分并返回结果（dataframe格式）</p>
-<h3 id="2-Etsy的Skyline算法"><a href="#2-Etsy的Skyline算法" class="headerlink" title="2 Etsy的Skyline算法"></a>2 Etsy的Skyline算法</h3><p>继承异常检测器基类。另外它的算法是根据几个小算法各自的评分进行平均投票得到。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">self.algorithms =   [median_absolute_deviation,</span><br><span class="line">                     first_hour_average,</span><br><span class="line">                     stddev_from_average,</span><br><span class="line">                     stddev_from_moving_average,</span><br><span class="line">                     mean_subtraction_cumulation,</span><br><span class="line">                     least_squares,</span><br><span class="line">                     histogram_bins]</span><br></pre></td></tr></table></figure>
-<h5 id="median-absolute-deviation"><a href="#median-absolute-deviation" class="headerlink" title="median_absolute_deviation"></a>median_absolute_deviation</h5><p>计算数据的中位数，偏差 = 每个值-中位数，得到偏差中位数</p>
-<script type="math/tex; mode=display">\mathrm{MAD}=\operatorname{median}\left(\left|X_{i}-\operatorname{median}(X)\right|\right)</script><p>MAD对数据集中的异常值比标准偏差更具弹性。在标准偏差中，与均值的距离的平方，较大的异常值会影响更大。可以通过判断一个点的偏差是否过于偏离MAD来判断异常，此处是如果偏差6倍大于中位数，则判断为异常。</p>
-<h5 id="first-hour-average"><a href="#first-hour-average" class="headerlink" title="first_hour_average"></a>first_hour_average</h5><p>上一天的这个时间段1h的均值是$mean$，标准差是$std$，如果$|X_t - mean| &gt; 3 * std$ 则是异常。</p>
-<h5 id="stddev-from-average"><a href="#stddev-from-average" class="headerlink" title="stddev_from_average"></a>stddev_from_average</h5><p>值减去移动平均值大于平均值的三个标准偏差则为异常。</p>
-<script type="math/tex; mode=display">|X_t - mean| > 3 * std</script><h5 id="stddev-from-moving-average"><a href="#stddev-from-moving-average" class="headerlink" title="stddev_from_moving_average"></a>stddev_from_moving_average</h5><p>值减去指数加权移动平均值大于平均值的三个标准偏差则为异常。</p>
-<p>expAvg = series.ewm().mean()</p>
-<p>stdDev = series.ewm().std()</p>
-<script type="math/tex; mode=display">| X_t - expAvg | > 3 * stdDev</script><h5 id="mean-subtraction-cumulation"><a href="#mean-subtraction-cumulation" class="headerlink" title="mean_subtraction_cumulation"></a>mean_subtraction_cumulation</h5><p>从每个数据源点减去过去历史平均值之后，如果该序列中下一个数据点的值比累积项中的三个标准差远，则该时间序列是异常的。</p>
-<h5 id="least-squares"><a href="#least-squares" class="headerlink" title="least_squares"></a>least_squares</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#X——代表时间 timestamp，Y——代表 value</span><br><span class="line">results = np.linalg.lstsq(A, Y)</span><br><span class="line">residual = results[1] #残差</span><br><span class="line">m, c = np.linalg.lstsq(A, Y)[0] #斜率与截距</span><br><span class="line">  for i, value in enumerate(y):</span><br><span class="line">    projected = m * X[i] + c</span><br><span class="line">    error = value - projected</span><br><span class="line">    errors.append(error)</span><br></pre></td></tr></table></figure>
-<p>最后点投影到最小二乘上误差大于所有误差的std的3sigma时，判断为异常。</p>
-<script type="math/tex; mode=display">Error_t > ErrorsStd</script><h5 id="histogram-bins"><a href="#histogram-bins" class="headerlink" title="histogram_bins"></a>histogram_bins</h5><p>最后时间点的值落入带有少于threshold个其他数据点的直方图bin中，则时间序列是异常的。</p>
+        <h3 id="1-感知机"><a href="#1-感知机" class="headerlink" title="1 感知机"></a>1 感知机</h3><h4 id="1-1-简介"><a href="#1-1-简介" class="headerlink" title="1.1 简介"></a>1.1 简介</h4><p>感知机是二分类<u>线性分类</u>模型，感知机对输入空间中将实例划分为正负两类的分离超平面，属于判别模型。使用基于误分类的损失函数，利用梯度下降法对损失函数进行最小化。</p>
+<p>感知机：</p>
+<script type="math/tex; mode=display">f(x)=\operatorname{sign}(w \cdot x+b)</script><script type="math/tex; mode=display">\operatorname{sign}(x)=\left\{\begin{array}{ll}{+1,} & {x \geqslant 0} \\ {-1,} & {x<0}\end{array}\right.</script><p><img src="/images/20181204InceptionMachine.jpg" alt="20181204InceptionMachine"></p>
+<h4 id="1-2-学习策略"><a href="#1-2-学习策略" class="headerlink" title="1.2 学习策略"></a>1.2 学习策略</h4><p>损失函数的自然选择是误分类点的总数（但这样$w,b$不是连续可导函数，不易优化）</p>
+<p>故采用误分类点到超平面$S$的总距离：</p>
+<script type="math/tex; mode=display">\frac{1}{\|w\|}\left|w \cdot x_{0}+b\right|</script><p>由于对于一个误分类的数据$(x_i,y_i)$来说：</p>
+<script type="math/tex; mode=display">-y_i(w \cdot x_i + b) > 0</script><p>因此感知机的损失函数是（忽略常数）：</p>
+<script type="math/tex; mode=display">L(w, b)=-\sum_{x_{i} \in M} y_{i}\left(w \cdot x_{i}+b\right)</script><h4 id="1-3-随机梯度下降"><a href="#1-3-随机梯度下降" class="headerlink" title="1.3 随机梯度下降"></a>1.3 随机梯度下降</h4><p>一次随机选取一个误分类点使其梯度下降。</p>
+<p>损失函数的梯度：</p>
+<script type="math/tex; mode=display">\nabla_{w} L(w, b)=-\sum_{x_{i} \in M} y_{i} x_{i}</script><script type="math/tex; mode=display">\nabla_{b} L(w, b)=-\sum_{x_{i} \in M} y_{i}</script><p>选取一个误分类点$(x_i,y_i)$进行更新w，b。</p>
+<script type="math/tex; mode=display">w = w + \alpha y_i x_i , b = b + \alpha y_i</script><h4 id="1-4-感知机算法过程"><a href="#1-4-感知机算法过程" class="headerlink" title="1.4 感知机算法过程"></a>1.4 感知机算法过程</h4><p>输入：训练数据集$T=\left\{\left(x_{1}, y_{1}\right),\left(x_{2}, y_{2}\right), \cdots,\left(x_{N}, y_{N}\right)\right\}$，其中$x_{i} \in \mathcal{X}=\mathbf{R}^{n}, y_i \in y=\{-1,+1\}, i=1,2, \cdots, N$ 。学习率 $\alpha$，</p>
+<p>输出： 求解感知机模型 $f(x) = sign(w \cdot x + b)$</p>
+<p>(1) 选取初值$w_0,b_0$</p>
+<p>(2) 在训练数据中选取数据 $(x_i,y_i)$</p>
+<p>(3) 如果$y_{i}\left(w \cdot x_{i}+b\right) \leqslant 0$ ，则 $w = w + \alpha y_i x_i, b = b + \alpha y_i$</p>
+<h3 id="2-K近邻KNN"><a href="#2-K近邻KNN" class="headerlink" title="2 K近邻KNN"></a>2 K近邻KNN</h3><h4 id="2-1-简介"><a href="#2-1-简介" class="headerlink" title="2.1 简介"></a>2.1 简介</h4><p>KNN是一种基本的<u>分类</u>与回归方法。KNN法假设给定一个训练数据集，其中实例类别已定。分类时，对新的实例根据其K个最近邻的训练实例的类别，通过多数表决来预测。</p>
+<p>基本要素：K值的选择，距离度量，分类决策规则</p>
+<h4 id="2-2-K近邻法算法"><a href="#2-2-K近邻法算法" class="headerlink" title="2.2 K近邻法算法"></a>2.2 K近邻法算法</h4><p>输入：训练数据集$T=\left\{\left(x_{1}, y_{1}\right),\left(x_{2}, y_{2}\right), \cdots,\left(x_{N}, y_{N}\right)\right\}$，其中 $x_{i} \in \mathcal{X}=\mathbf{R}^{n}, y_i \in y=\{c_1,c_2,\cdot \cdot, c_k\}, i=1,2, \cdots, N$</p>
+<p>输出：新实例 $x$ 所属的类别 $y$</p>
+<p>(1) 根据给定的距离度量，在训练集中找出与x最临近的k个点，涵盖这k个点的x的邻域记作$N_k(x)$</p>
+<p>(2) 在$N_k(x)$中根据分类决策规则（如多数表决）来判定x的类别y</p>
+<script type="math/tex; mode=display">y=\arg \max _{c_{j}} \sum_{x_{i} \in N_{k}(x)} I\left(y_{i}=c_{j}\right), \quad i=1,2, \cdots, N ; j=1,2, \cdots, K</script><p>$I$是指示函数，当$y_i = c_j$ 时为1。</p>
+<h4 id="2-3-距离度量"><a href="#2-3-距离度量" class="headerlink" title="2.3 距离度量"></a>2.3 距离度量</h4><p>距离是两个点相似度的反映。设特征空间$\mathcal{X}$是n维实数向量空间$\mathbf{R}^{n}$, </p>
+<script type="math/tex; mode=display">x_{i}, x_{j} \in \mathcal{X}, x_{i}=\left(x_{i}^{(1)}, x_{i}^{(2)}, \cdots, x_{i}^{(n)}\right)^{\mathrm{T}}</script><script type="math/tex; mode=display">x_{j}=\left(x_{j}^{(1)}, x_{j}^{(2)}, \cdots, x_{j}^{(n)}\right)^{\mathrm{T}}</script><p>则P范数距离是：</p>
+<script type="math/tex; mode=display">L_p(x_i,x_j) = ( \sum_{l=1}^n |x_i^{(l)} - x_j^{(l)}|^p)^{\frac{1}{p}}</script><p>p=1 曼哈顿距离，p=2 欧氏距离，p=$\infty$，是各个坐标距离的最大值。</p>
+<script type="math/tex; mode=display">L_{\infty}\left(x_{i}, x_{j}\right)=\max _{l}\left|x_{i}^{(l)}-x_{j}^{(l)}\right|</script><h4 id="2-4-K值的影响"><a href="#2-4-K值的影响" class="headerlink" title="2.4 K值的影响"></a>2.4 K值的影响</h4><p>1，k较小时，使用较小的邻域中的训练实例进行预测，“学习”的近似误差减小，但是估计误差增大。即预测结果对邻近点非常敏感，如果邻近的点是噪声则会预测出错（容易过拟合）。</p>
+<h4 id="2-5-分类决策规则"><a href="#2-5-分类决策规则" class="headerlink" title="2.5 分类决策规则"></a>2.5 分类决策规则</h4><p>一般多数表决。误分类的概率是：</p>
+<script type="math/tex; mode=display">P(Y \neq f(X))=1-P(Y=f(X))</script><p>则误分类率是：</p>
+<script type="math/tex; mode=display">\frac{1}{k} \sum_{x_{i} \in N_{k}(x)} I\left(y_{i} \neq c_{j}\right)=1-\frac{1}{k} \sum_{x_{i} \in N_{k}(x)} I\left(y_{i}=c_{j}\right)</script><h4 id="2-6-k-d-tree"><a href="#2-6-k-d-tree" class="headerlink" title="2.6 k-d tree"></a>2.6 k-d tree</h4><p>为了提高k近邻的搜索效率。用特殊的结构存储训练数据，减少计算距离的次数。构造kd树相当于不断地用垂直于坐标轴的超平面将k维空间切分（递归），构成一系列的k维超矩形矩阵区域。（李航书P53）</p>
+<p>搜索：首先找到包含目标点的叶节点，然后从该叶节点出发依次回退到父节点，不断查找与目标点最邻近的节点。当确定不存在更近的结点时终止。</p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，《统计学习方法》李航</p>
 
     </div>
 
@@ -294,7 +307,6 @@
       <footer class="post-footer">
           <div class="post-tags">
               <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag"># 机器学习</a>
-              <a href="/tags/AIOps/" rel="tag"># AIOps</a>
           </div>
 
         
@@ -303,12 +315,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2019/12/04/NAB%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E7%B3%BB%E5%88%971/" rel="prev" title="NAB源码阅读系列1">
-      <i class="fa fa-chevron-left"></i> NAB源码阅读系列1
+    <a href="/2018/10/30/20181030%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9CDNN/" rel="prev" title="神经网络DNN">
+      <i class="fa fa-chevron-left"></i> 神经网络DNN
     </a></div>
       <div class="post-nav-item">
-    <a href="/2019/12/17/20191216%E5%AD%97%E8%8A%82%E9%9D%A2%E8%AF%95%E4%B8%8E%E5%8D%8E%E4%B8%BA%E5%9B%BE%E8%AE%BA%E9%97%AE%E9%A2%98/" rel="next" title="20191216字节面试&图论问题回顾">
-      20191216字节面试&图论问题回顾 <i class="fa fa-chevron-right"></i>
+    <a href="/2018/12/08/20191208LR%E5%8E%9F%E7%90%86/" rel="next" title="LR原理">
+      LR原理 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -347,7 +359,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-基类结构"><span class="nav-number">1.</span> <span class="nav-text">1 基类结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Etsy的Skyline算法"><span class="nav-number">2.</span> <span class="nav-text">2 Etsy的Skyline算法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#median-absolute-deviation"><span class="nav-number">2.0.1.</span> <span class="nav-text">median_absolute_deviation</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#first-hour-average"><span class="nav-number">2.0.2.</span> <span class="nav-text">first_hour_average</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#stddev-from-average"><span class="nav-number">2.0.3.</span> <span class="nav-text">stddev_from_average</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#stddev-from-moving-average"><span class="nav-number">2.0.4.</span> <span class="nav-text">stddev_from_moving_average</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#mean-subtraction-cumulation"><span class="nav-number">2.0.5.</span> <span class="nav-text">mean_subtraction_cumulation</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#least-squares"><span class="nav-number">2.0.6.</span> <span class="nav-text">least_squares</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#histogram-bins"><span class="nav-number">2.0.7.</span> <span class="nav-text">histogram_bins</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-感知机"><span class="nav-number">1.</span> <span class="nav-text">1 感知机</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-简介"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 简介</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-学习策略"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 学习策略</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-随机梯度下降"><span class="nav-number">1.3.</span> <span class="nav-text">1.3 随机梯度下降</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-感知机算法过程"><span class="nav-number">1.4.</span> <span class="nav-text">1.4 感知机算法过程</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-K近邻KNN"><span class="nav-number">2.</span> <span class="nav-text">2 K近邻KNN</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-简介"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 简介</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-K近邻法算法"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 K近邻法算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-距离度量"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 距离度量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-K值的影响"><span class="nav-number">2.4.</span> <span class="nav-text">2.4 K值的影响</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-5-分类决策规则"><span class="nav-number">2.5.</span> <span class="nav-text">2.5 分类决策规则</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-6-k-d-tree"><span class="nav-number">2.6.</span> <span class="nav-text">2.6 k-d tree</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reference"><span class="nav-number">3.</span> <span class="nav-text">Reference</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -524,6 +536,54 @@ window.addEventListener('pjax:success', () => {
   
 
   
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
 
   
 
