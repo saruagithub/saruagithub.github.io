@@ -625,6 +625,156 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/25/20191225%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="WangXue">
+      <meta itemprop="description" content="本科重庆大学CS，研究生南京大学MS，主要研究AIOps，机器学习等，语言Python&C++">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="WangXue">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/12/25/20191225%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0/" class="post-title-link" itemprop="url">集成学习</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-12-25 11:23:38" itemprop="dateCreated datePublished" datetime="2018-12-25T11:23:38+08:00">2018-12-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-12-25 17:10:10" itemprop="dateModified" datetime="2019-12-25T17:10:10+08:00">2019-12-25</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="1-简介"><a href="#1-简介" class="headerlink" title="1 简介"></a>1 简介</h3><p>集成学习（Ensemble learning）通过组合几种模型来提高机器学习的效果。构建并结合多个学习器，个体学习器要“好而不同”，一定的准确性/多样性。</p>
+<h3 id="2-提升方法"><a href="#2-提升方法" class="headerlink" title="2 提升方法"></a>2 提升方法</h3><h4 id="2-1-提升方法之Adaboost"><a href="#2-1-提升方法之Adaboost" class="headerlink" title="2.1 提升方法之Adaboost"></a>2.1 提升方法之Adaboost</h4><p>一般过程：训练—基学习器—调整训练样本分布—重复得到更多基学习器 T个—将这T个基学习器加权结合。代表是Adaboost：提高那些被前一轮弱分类器分错的样本的权值。最后加权多数表决方法、加大分类误差率小的弱分类器的权值。属于序列集成。</p>
+<p>算法（书P156）：</p>
+<p>输入训练集$T=\left\{\left(x_{1}, y_{1}\right),\left(x_{2}, y_{2}\right), \cdots,\left(x_{N}, y_{N}\right)\right\}$，其中实例$x_{i} \in \mathcal{X}=\mathbf{R}^{n}$，$y_i \in \mathcal{Y} = \left\{ -1,+1 \right\}$</p>
+<p>1，初始化训练数据的权值分布为均匀分布 。$w_{1i} = \frac{1}{N}$。</p>
+<p>2，使用具有权值分布的$D_m$的训练数据集学习得到基分类器$G_{m}(x): \mathcal{X} \rightarrow\{-1,+1\}$。</p>
+<p>3，计算$G_m(x)$在训练数据集上的分类误差率:</p>
+<script type="math/tex; mode=display">e_{m}=\sum_{i=1}^{N} P\left(G_{m}\left(x_{i}\right) \neq y_{i}\right)=\sum_{i=1}^{N} w_{m i} I\left(G_{m}\left(x_{i}\right) \neq y_{i}\right)</script><p>计算得到$G_m(x)$的系数，它表示了$G_m(x)$在最终分类器中的重要性。他随$e_m$的减小而增大。</p>
+<script type="math/tex; mode=display">\alpha_{m}=\frac{1}{2} \log \frac{1-e_{m}}{e_{m}}</script><p>在更新训练数据集的权值分布</p>
+<script type="math/tex; mode=display">D_{m+1}=\left(w_{m+1,1}, \cdots, w_{m+1, i}, \cdots, w_{m+1, N}\right)</script><script type="math/tex; mode=display">w_{m+1, i}=\frac{w_{m i}}{Z_{m}} \exp \left(-\alpha_{m} y_{i} G_{m}\left(x_{i}\right)\right), \quad i=1,2, \cdots, N</script><p>其中$Z_m$是规范化因子：</p>
+<script type="math/tex; mode=display">Z_{m}=\sum_{i=1}^{N} w_{m i} \exp \left(-\alpha_{m} y_{i} G_{m}\left(x_{i}\right)\right)</script><p>4，构建基分类器的线性组合 $f(x) = \sum_{m=1}^M  \alpha_m  G_m(x)$</p>
+<p>得到最终分类器：</p>
+<script type="math/tex; mode=display">G(x) = \operatorname{sign}\left(\sum_{m=1}^{M} \alpha_{m} G_{m}(x)\right)</script><h4 id="2-2-提升方法之提升树-Boosting"><a href="#2-2-提升方法之提升树-Boosting" class="headerlink" title="2.2 提升方法之提升树 Boosting"></a>2.2 提升方法之提升树 Boosting</h4><p>采用加法模型（基函数的线性组合，基函数为树的时候叫Boosting tree），前向分步算法。减小偏差。</p>
+<h5 id="2-2-1-前向分步算法："><a href="#2-2-1-前向分步算法：" class="headerlink" title="2.2.1 前向分步算法："></a>2.2.1 前向分步算法：</h5><p>1，确定初始提升树$f_0(x) = 0$</p>
+<p>2，第m步的模型是$f_m(x) = f_{m-1}(x) + T(x: \theta_m)$</p>
+<p>这里需要通过经验风险极小化来确定下一棵决策树参数参数:</p>
+<script type="math/tex; mode=display">\hat{\theta_m} = argmin_{\theta_m} \sum_{i=1}^N L(y_i, f_{m-1}(x_i) + T(x_i:\theta_m))</script><p>不同问题的提升树学习算法区别在于使用的损失函数不同。</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>问题</th>
+<th>学习算法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>回归树</td>
+<td>平方误差（拟合残差）</td>
+</tr>
+<tr>
+<td>分类问题</td>
+<td>指数损失函数</td>
+</tr>
+<tr>
+<td>一般决策问题</td>
+<td>一般损失函数</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>对于二分类问题，提升树算法只需将Adaboost算法中基本分类器限制为二分类树即可。</p>
+<h5 id="2-2-2-回归问题的提升树，拟合残差"><a href="#2-2-2-回归问题的提升树，拟合残差" class="headerlink" title="2.2.2 回归问题的提升树，拟合残差"></a>2.2.2 回归问题的提升树，拟合残差</h5><p>1，初始化$f0(x)=0$</p>
+<p>2，对m=1,2..M计算残差，N是样本数。当前模型拟合数据的残差。</p>
+<script type="math/tex; mode=display">r_{mi} = y_i -f_{m-1}(x_i), i=1.2..N</script><p>拟合残差$r_{mi}$学习一个回归树$T(x: \theta_m)$。更新：</p>
+<script type="math/tex; mode=display">f_m(x) = f_{m-1}(xi) + T(x: \theta_m)</script><p>3，得到回归问题提升树 </p>
+<script type="math/tex; mode=display">f_M(x) = \sum_{m=1}^M T(x; \theta_m)</script><h5 id="2-2-3-一般决策问题GBDT"><a href="#2-2-3-一般决策问题GBDT" class="headerlink" title="2.2.3 一般决策问题GBDT"></a>2.2.3 一般决策问题GBDT</h5><p>一般损失函数：</p>
+<p>梯度提升gradientBoosting （GBDT）：利用最速下降法的近似方法，关键是利用损失函数的负梯度在当前模型的值</p>
+<script type="math/tex; mode=display">-\left[\frac{\partial L\left(y, f\left(x_{i}\right)\right)}{\partial f\left(x_{i}\right)}\right]_{f(x)=f_{m-1}(x)}</script><p>作为回归问题提升树算法中的残差的近似值，拟合一个回归树。</p>
+<p>过程：</p>
+<p>输入训练集$T=\left\{\left(x_{1}, y_{1}\right),\left(x_{2}, y_{2}\right), \cdots,\left(x_{N}, y_{N}\right)\right\}$，其中实例$x_{i} \in \mathcal{X} \subseteq \mathbf{R}^{n}, y_{i} \in \mathcal{Y} \subseteq \mathbf{R}$</p>
+<p>输出回归树： $\hat{f(x)}$</p>
+<p>(1) 初始化</p>
+<script type="math/tex; mode=display">f_{0}(x)=\arg \min _{c} \sum_{i=1}^{N} L\left(y_{i}, c\right)</script><p>(2) 对m = 1,2…M</p>
+<p>对 i = 1,2,…N 计算：</p>
+<script type="math/tex; mode=display">r_{m i}=-\left[\frac{\partial L\left(y_{i}, f\left(x_{i}\right)\right)}{\partial f\left(x_{i}\right)}\right]_{f(x)=f_{m-1}(x)}</script><p>对$r_{mi}$ 拟合一个回归树。得到第m棵树的叶节点区域$R_{m j}, j=1,2, \cdots, J$</p>
+<p>对 j = 1,2 …J 计算：</p>
+<script type="math/tex; mode=display">c_{m j}=\arg \min _{c} \sum_{x_{i} \in R_{m j}} L\left(y_{i}, f_{m-1}\left(x_{i}\right)+c\right)</script><p>更新</p>
+<script type="math/tex; mode=display">f_{m}(x)=f_{m-1}(x)+\sum_{j=1}^{J} c_{m j} I\left(x \in R_{m j}\right)</script><p>(3) 得到回归树</p>
+<script type="math/tex; mode=display">\hat{f}(x)=f_{M}(x)=\sum_{m=1}^{M} \sum_{j=1}^{J} c_{m j} I\left(x \in R_{m j}\right)</script><h4 id="2-3-其他"><a href="#2-3-其他" class="headerlink" title="2.3 其他"></a>2.3 其他</h4><p>XGBoost：</p>
+<p>经过优化的分布式梯度提升（Gradient Boosting）库，实现了并行方式的决策树提升(Tree Boosting)。XGBoost采用的是level（depth）-wise生长策略，如下所示，能够同时分裂同一层的叶子，从而进行多线程优化，不容易过拟合；但不加区分的对待同一层的叶子，带来了很多没必要的开销。</p>
+<p>XGBoost使用的是pre-sorted算法，能够更精确的找到数据分隔点；</p>
+<p><img src="/images/20191225Xgboost.jpg" alt="20191225Xgboost"></p>
+<p>LightGBM：</p>
+<p>LightGBM的设计思路主要是两点：1. 减小数据对内存的使用，保证单个机器在不牺牲速度的情况下，尽可能地用上更多的数据；2. 减小通信的代价，提升多机并行时的效率，实现在计算上的线性加速。</p>
+<p>LightGBM采用leaf-wise生长策略，如Figure 2所示，每次从当前所有叶子中找到分裂增益最大（一般也是数据量最大）的一个叶子，然后分裂，如此循环；但会生长出比较深的决策树，产生过拟合。</p>
+<p>LightGBM使用的是histogram算法，占用的内存更低，数据分隔的复杂度更低。</p>
+<p><img src="/images/20191225LightGBM.jpg" alt="20191225LightGBM"></p>
+<h3 id="3-Bagging"><a href="#3-Bagging" class="headerlink" title="3 Bagging"></a>3 Bagging</h3><h4 id="3-1-Bagging"><a href="#3-1-Bagging" class="headerlink" title="3.1 Bagging"></a>3.1 Bagging</h4><p>Bagging是有放回样本采样boostrap——产生互相有交叠的采样子集63.2% 。一般对分类任务使用简单投票法。剩下36.8%的数据可以用作验证集对泛化性能进行包外估计out-of-bag-estimate。</p>
+<script type="math/tex; mode=display">f(x)=1 / M \sum_{m=1}^{M} f_{m}(x)</script><p>在不同样本集上训练不同的树，通常分类任务使用投票的方式集成，而回归任务通过平均的方式集成。减小方差。</p>
+<h4 id="3-2-随机森林"><a href="#3-2-随机森林" class="headerlink" title="3.2 随机森林"></a>3.2 随机森林</h4><p>随机森林：样本采样+属性采样构建多棵决策树，最终决定结果。方差小，偏差也小。</p>
+<h4 id="Stacking方法"><a href="#Stacking方法" class="headerlink" title="Stacking方法"></a>Stacking方法</h4><p>Stacking是通过一个元分类器或者元回归器来整合多个分类模型或回归模型的集成学习技术。基础模型利用整个训练集做训练，元模型将基础模型的特征作为特征进行训练。</p>
+<p><img src="/Users/wangxue/gitpro/20191105MyBlog/saruagithub/source/images/20191225Stacking.jpg" alt="20191225Stacking"></p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，李航《统计学习方法》</p>
+<p>2，<a href="https://zhuanlan.zhihu.com/p/36161812" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/36161812</a> 集成学习</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/24/20191224%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1007,7 +1157,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-12-24 20:35:11" itemprop="dateModified" datetime="2019-12-24T20:35:11+08:00">2019-12-24</time>
+                <time title="修改时间：2019-12-25 16:40:38" itemprop="dateModified" datetime="2019-12-25T16:40:38+08:00">2019-12-25</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1056,7 +1206,7 @@
 <script type="math/tex; mode=display">y=\arg \max _{c_{j}} \sum_{x_{i} \in N_{k}(x)} I\left(y_{i}=c_{j}\right), \quad i=1,2, \cdots, N ; j=1,2, \cdots, K</script><p>$I$是指示函数，当$y_i = c_j$ 时为1。</p>
 <h4 id="2-3-距离度量"><a href="#2-3-距离度量" class="headerlink" title="2.3 距离度量"></a>2.3 距离度量</h4><p>距离是两个点相似度的反映。设特征空间$\mathcal{X}$是n维实数向量空间$\mathbf{R}^{n}$, </p>
 <script type="math/tex; mode=display">x_{i}, x_{j} \in \mathcal{X}, x_{i}=\left(x_{i}^{(1)}, x_{i}^{(2)}, \cdots, x_{i}^{(n)}\right)^{\mathrm{T}}</script><script type="math/tex; mode=display">x_{j}=\left(x_{j}^{(1)}, x_{j}^{(2)}, \cdots, x_{j}^{(n)}\right)^{\mathrm{T}}</script><p>则P范数距离是：</p>
-<script type="math/tex; mode=display">L_p(x_i,x_j) = ( \sum_{l=1}^n |x_i^{(l)} - x_j^{(l)}|^p)^{\frac{1}{p}}</script><p>p=1 曼哈顿距离，p=2 欧氏距离，p=$\infty$，是各个坐标距离的最大值。</p>
+<script type="math/tex; mode=display">L_p(x_i,x_j) = ( \sum_{l=1}^n |x_i^{(l)} - x_j^{(l)}|^p)^{\frac{1}{p}}</script><p>p=1 曼哈顿距离，p=2 欧氏距离，p=$\infty$，是切比雪夫距离，各个坐标距离的最大值。</p>
 <script type="math/tex; mode=display">L_{\infty}\left(x_{i}, x_{j}\right)=\max _{l}\left|x_{i}^{(l)}-x_{j}^{(l)}\right|</script><h4 id="2-4-K值的影响"><a href="#2-4-K值的影响" class="headerlink" title="2.4 K值的影响"></a>2.4 K值的影响</h4><p>1，k较小时，使用较小的邻域中的训练实例进行预测，“学习”的近似误差减小，但是估计误差增大。即预测结果对邻近点非常敏感，如果邻近的点是噪声则会预测出错（容易过拟合）。</p>
 <h4 id="2-5-分类决策规则"><a href="#2-5-分类决策规则" class="headerlink" title="2.5 分类决策规则"></a>2.5 分类决策规则</h4><p>一般多数表决。误分类的概率是：</p>
 <script type="math/tex; mode=display">P(Y \neq f(X))=1-P(Y=f(X))</script><p>则误分类率是：</p>
@@ -1064,81 +1214,6 @@
 <p>搜索：首先找到包含目标点的叶节点，然后从该叶节点出发依次回退到父节点，不断查找与目标点最邻近的节点。当确定不存在更近的结点时终止。</p>
 <h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，《统计学习方法》李航</p>
 
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/30/20181030%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9CDNN/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="WangXue">
-      <meta itemprop="description" content="本科重庆大学CS，研究生南京大学MS，主要研究AIOps，机器学习等，语言Python&C++">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="WangXue">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/10/30/20181030%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9CDNN/" class="post-title-link" itemprop="url">神经网络DNN</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-10-30 10:09:56" itemprop="dateCreated datePublished" datetime="2018-10-30T10:09:56+08:00">2018-10-30</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-12-23 10:15:54" itemprop="dateModified" datetime="2019-12-23T10:15:54+08:00">2019-12-23</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0DL/" itemprop="url" rel="index">
-                    <span itemprop="name">深度学习DL</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
       
     </div>
 
@@ -1307,7 +1382,7 @@
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">

@@ -47,13 +47,13 @@
   };
 </script>
 
-  <meta name="description" content="1、准备 请先看好各种软件的版本对应要求，这仨一定要对应好。  Tensorflow不同版本要求与CUDA及CUDNN版本对应关系 知道要下哪些版本了，就预先做好各种软件下载工作。 首先下载好英伟达的驱动 NVIDIA驱动下载 注意！！！下载好跟自己显卡对应的驱动。显卡的产品类型、系列那些如果之前已经装好了驱动，则可以通过命令 nvidia-smi查询到。没有装刚买来就自己查。即使你的机器之前已经">
+  <meta name="description" content="1、准备 请先看好各种软件的版本对应要求，这仨一定要对应好。  [Tensorflow不同版本要求与CUDA及CUDNN版本对应关系](https:&#x2F;&#x2F;blog.csdn.net&#x2F;omodao1&#x2F;article&#x2F;details&#x2F;83241074)  知道要下哪些版本了，就预先做好各种软件下载工作。 首先下载好英伟达的驱动 NVIDIA驱动下载 注意！！！下载好跟自己显卡对应的驱动。显卡的产品类型、">
 <meta name="keywords" content="深度学习,配置">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ubuntu16配置GPU深度学习环境、CUDA、cuNDD等">
 <meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;11&#x2F;06&#x2F;ubuntu16%E9%85%8D%E7%BD%AEGPU%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%8E%AF%E5%A2%83%E3%80%81CUDA%E3%80%81cuNDD%E7%AD%89&#x2F;index.html">
 <meta property="og:site_name" content="WangXue">
-<meta property="og:description" content="1、准备 请先看好各种软件的版本对应要求，这仨一定要对应好。  Tensorflow不同版本要求与CUDA及CUDNN版本对应关系 知道要下哪些版本了，就预先做好各种软件下载工作。 首先下载好英伟达的驱动 NVIDIA驱动下载 注意！！！下载好跟自己显卡对应的驱动。显卡的产品类型、系列那些如果之前已经装好了驱动，则可以通过命令 nvidia-smi查询到。没有装刚买来就自己查。即使你的机器之前已经">
+<meta property="og:description" content="1、准备 请先看好各种软件的版本对应要求，这仨一定要对应好。  [Tensorflow不同版本要求与CUDA及CUDNN版本对应关系](https:&#x2F;&#x2F;blog.csdn.net&#x2F;omodao1&#x2F;article&#x2F;details&#x2F;83241074)  知道要下哪些版本了，就预先做好各种软件下载工作。 首先下载好英伟达的驱动 NVIDIA驱动下载 注意！！！下载好跟自己显卡对应的驱动。显卡的产品类型、">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https:&#x2F;&#x2F;img-blog.csdnimg.cn&#x2F;20190519153242367.png?x-oss-process=image&#x2F;watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNjczNDUz,size_1,color_FFFFFF,t_70">
 <meta property="og:image" content="https:&#x2F;&#x2F;img-blog.csdnimg.cn&#x2F;20190519154540803.png?x-oss-process=image&#x2F;watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNjczNDUz,size_1,color_FFFFFF,t_70">
@@ -66,7 +66,7 @@
 <meta property="og:image" content="https:&#x2F;&#x2F;img-blog.csdnimg.cn&#x2F;20190519164725139.jpg?x-oss-process=image&#x2F;watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNjczNDUz,size_1,color_FFFFFF,t_70">
 <meta property="og:image" content="https:&#x2F;&#x2F;img-blog.csdnimg.cn&#x2F;20190519165519471.png?x-oss-process=image&#x2F;watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNjczNDUz,size_4,color_FFFFFF,t_70">
 <meta property="og:image" content="https:&#x2F;&#x2F;img-blog.csdnimg.cn&#x2F;20190519165702507.png?x-oss-process=image&#x2F;watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNjczNDUz,size_1,color_FFFFFF,t_70">
-<meta property="og:updated_time" content="2019-11-06T03:16:51.608Z">
+<meta property="og:updated_time" content="2019-12-25T04:10:59.719Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https:&#x2F;&#x2F;img-blog.csdnimg.cn&#x2F;20190519153242367.png?x-oss-process=image&#x2F;watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNjczNDUz,size_1,color_FFFFFF,t_70">
 
@@ -243,18 +243,24 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2019-11-06 11:15:21 / 修改时间：11:16:51" itemprop="dateCreated datePublished" datetime="2019-11-06T11:15:21+08:00">2019-11-06</time>
+              <time title="创建时间：2019-11-06 11:15:21" itemprop="dateCreated datePublished" datetime="2019-11-06T11:15:21+08:00">2019-11-06</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-12-25 12:10:59" itemprop="dateModified" datetime="2019-12-25T12:10:59+08:00">2019-12-25</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0DL/" itemprop="url" rel="index">
-                    <span itemprop="name">深度学习DL</span>
+                  <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index">
+                    <span itemprop="name">深度学习</span>
                   </a>
                 </span>
             </span>
@@ -271,7 +277,8 @@
 
       
         <h3 id="1、准备"><a href="#1、准备" class="headerlink" title="1、准备"></a>1、准备</h3><ol>
-<li>请先看好各种软件的版本对应要求，这仨一定要对应好。<br>  <a href="https://blog.csdn.net/omodao1/article/details/83241074" target="_blank" rel="noopener">Tensorflow不同版本要求与CUDA及CUDNN版本对应关系</a></li>
+<li>请先看好各种软件的版本对应要求，这仨一定要对应好。<pre><code>  [Tensorflow不同版本要求与CUDA及CUDNN版本对应关系](https://blog.csdn.net/omodao1/article/details/83241074)
+</code></pre></li>
 <li><p>知道要下哪些版本了，就预先做好各种软件下载工作。<br> 首先下载好英伟达的驱动 <a href="https://www.nvidia.cn/Download/index.aspx?lang=cn" target="_blank" rel="noopener">NVIDIA驱动下载</a><br> 注意！！！下载好跟自己显卡对应的驱动。显卡的产品类型、系列那些如果之前已经装好了驱动，则可以通过命令 nvidia-smi查询到。没有装刚买来就自己查。<br><img src="https://img-blog.csdnimg.cn/20190519153242367.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNjczNDUz,size_1,color_FFFFFF,t_70" alt="我的显卡驱动"><br>即使你的机器之前已经装过驱动，那也最好重新装一遍驱动，因为那个CUDA一定要对应起来。不然后面有坑！</p>
 <p>下载CUDA，链接 <a href="https://developer.nvidia.com/cuda-toolkit-archive" target="_blank" rel="noopener">cuda-toolkit-archive</a><br><img src="https://img-blog.csdnimg.cn/20190519154540803.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNjczNDUz,size_1,color_FFFFFF,t_70" alt="下载CUDA9.0版本"><br>请注意这里一定要选择下载runfilw文件，不是deb！，不然会覆盖之前的显卡驱动带来问题。<br><img src="https://img-blog.csdnimg.cn/20190519154709423.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNjczNDUz,size_1,color_FFFFFF,t_70" alt="对应操作系统下载CUDA"><br>最后下载cuDNN，<a href="https://developer.nvidia.com/rdp/cudnn-archive" target="_blank" rel="noopener">cuDNN下载地址</a>，我下的7.0.5版本<br><img src="https://img-blog.csdnimg.cn/20190519160003336.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNjczNDUz,size_1,color_FFFFFF,t_70" alt="cuDNN下载"></p>
 <h3 id="2、安装驱动"><a href="#2、安装驱动" class="headerlink" title="2、安装驱动"></a>2、安装驱动</h3><h4 id="2-1、正常装驱动。"><a href="#2-1、正常装驱动。" class="headerlink" title="2.1、正常装驱动。"></a>2.1、正常装驱动。</h4><p>按ctrl+alt+f2（有的是f1）进入字符界面命令行，先删除以前的驱动：</p>
@@ -416,7 +423,7 @@
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
