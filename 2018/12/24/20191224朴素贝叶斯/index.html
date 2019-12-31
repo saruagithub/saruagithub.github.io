@@ -254,6 +254,20 @@
             </span>
 
           
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2018/12/24/20191224%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2018/12/24/20191224%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
 
         </div>
       </header>
@@ -305,8 +319,8 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2018/12/09/20191209SVM%E6%8E%A8%E5%AF%BC/" rel="prev" title="SVM推导">
-      <i class="fa fa-chevron-left"></i> SVM推导
+    <a href="/2018/12/09/20191224%E6%84%9F%E7%9F%A5%E6%9C%BA%E4%B8%8EKNN/" rel="prev" title="感知机 & KNN">
+      <i class="fa fa-chevron-left"></i> 感知机 & KNN
     </a></div>
       <div class="post-nav-item">
     <a href="/2018/12/25/20191225%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0/" rel="next" title="集成学习">
@@ -325,6 +339,7 @@
 
           </div>
           
+    <div class="comments" id="comments"></div>
 
         </div>
           
@@ -576,6 +591,33 @@ window.addEventListener('pjax:success', () => {
     
 
   
+
+
+<script>
+NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(item => {
+    return GUEST.includes(item);
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: '0TVJlt2cIYmtVMl43kgpM5x9-gzGzoHsz',
+    appKey: 'nBjNpIkIeApmj8vOtnjsjUTT',
+    placeholder: "Just go go",
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: '' || 'zh-cn',
+    path: location.pathname,
+    recordIP: false,
+    serverURLs: ''
+  });
+}, window.Valine);
+</script>
 
     </div>
 </body>

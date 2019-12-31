@@ -254,6 +254,20 @@
             </span>
 
           
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2019/07/07/20190707%E3%80%8A%E6%98%8E%E6%9C%9D%E9%82%A3%E4%BA%9B%E4%BA%8B1%E3%80%8B%E6%98%8E%E6%9C%9D%E7%9A%84%E5%BB%BA%E7%AB%8B/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/07/07/20190707%E3%80%8A%E6%98%8E%E6%9C%9D%E9%82%A3%E4%BA%9B%E4%BA%8B1%E3%80%8B%E6%98%8E%E6%9C%9D%E7%9A%84%E5%BB%BA%E7%AB%8B/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
 
         </div>
       </header>
@@ -326,6 +340,7 @@
 
           </div>
           
+    <div class="comments" id="comments"></div>
 
         </div>
           
@@ -529,6 +544,33 @@ window.addEventListener('pjax:success', () => {
   
 
   
+
+
+<script>
+NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(item => {
+    return GUEST.includes(item);
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: '0TVJlt2cIYmtVMl43kgpM5x9-gzGzoHsz',
+    appKey: 'nBjNpIkIeApmj8vOtnjsjUTT',
+    placeholder: "Just go go",
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: '' || 'zh-cn',
+    path: location.pathname,
+    recordIP: false,
+    serverURLs: ''
+  });
+}, window.Valine);
+</script>
 
     </div>
 </body>

@@ -262,6 +262,20 @@
             </span>
 
           
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2019/11/25/Numenta%E7%9A%84HTM%E7%AE%80%E4%BB%8B/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/11/25/Numenta%E7%9A%84HTM%E7%AE%80%E4%BB%8B/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
 
         </div>
       </header>
@@ -335,6 +349,7 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
 
           </div>
           
+    <div class="comments" id="comments"></div>
 
         </div>
           
@@ -586,6 +601,33 @@ window.addEventListener('pjax:success', () => {
     
 
   
+
+
+<script>
+NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(item => {
+    return GUEST.includes(item);
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: '0TVJlt2cIYmtVMl43kgpM5x9-gzGzoHsz',
+    appKey: 'nBjNpIkIeApmj8vOtnjsjUTT',
+    placeholder: "Just go go",
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: '' || 'zh-cn',
+    path: location.pathname,
+    recordIP: false,
+    serverURLs: ''
+  });
+}, window.Valine);
+</script>
 
     </div>
 </body>
