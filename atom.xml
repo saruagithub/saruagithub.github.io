@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2019-12-23T14:13:45.711Z</updated>
+  <updated>2020-01-02T09:16:43.434Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>20191231面试2</title>
+    <link href="http://yoursite.com/2020/01/02/20191231%E7%9F%A5%E4%B9%8E%E9%9D%A2%E8%AF%95/"/>
+    <id>http://yoursite.com/2020/01/02/20191231%E7%9F%A5%E4%B9%8E%E9%9D%A2%E8%AF%95/</id>
+    <published>2020-01-02T03:07:35.000Z</published>
+    <updated>2020-01-02T09:16:43.434Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="1，项目介绍"><a href="#1，项目介绍" class="headerlink" title="1，项目介绍"></a>1，项目介绍</h3><p>首先自我介绍。再介绍异常检测项目。在介绍广告CTR项目。</p><p>1，对每个项目的细节梳理清楚：</p><p>如lightGBM如何对类别特征进行节点分裂的？（<a href="http://papers.nips.cc/paper/6907-lightgbm-a-highly-efficient-gradi" target="_blank" rel="noopener">lightGBM论文</a>）</p><p>2，然后就是要仔细思考进一步的优化的地方在哪。</p><p>如何进一步提高点云的识别率呢？当时做了实验加多卷积层并没有明显的提升效果了，物体结构的特征点已经提取充分，所以并没用更深的网络。另一方面继续优化的点可以考虑点与点之间的领域结构，就像图像主要是考虑了相对位置关系，才可以用一些高反差核之类的卷积核提取图像的局部信息。</p><h3 id="2-基础知识"><a href="#2-基础知识" class="headerlink" title="2 基础知识"></a>2 基础知识</h3><p>中间问了机器学习的一些算法。</p><p>1，随机森林的采样体现在哪些地方？</p><p>（1）随机森林主要是Bagging和特征采用。Bagging是有放回的抽样，每次约63.2%的数据样本作为训练集。</p><p>随机森林每次没有用的样本数据有用吗？做包外预测$H^{oob}(x)$：</p><script type="math/tex; mode=display">H^{o o b}(\boldsymbol{x})=\underset{y \in \mathcal{Y}}{\arg \max } \sum_{t=1}^{T} \mathbb{I}\left(h_{t}(\boldsymbol{x})=y\right) \cdot \mathbb{I}\left(\boldsymbol{x} \notin D_{t}\right)</script><p>Bagging的泛化误差包外估计是：</p><script type="math/tex; mode=display">\epsilon^{o o b}=\frac{1}{|D|} \sum_{(\boldsymbol{x}, y) \in D} \mathbb{I}\left(H^{o o b}(\boldsymbol{x}) \neq y\right)</script><p>包外估计可以辅助剪枝。</p><p>Bagging可以降低方差。</p><p>（2）另外RF引入了随机特征选择。就是每个结点都会随机选择一些特征来构建树。如下图的算法流程。第5行，先选取了部分特征用来构建树，然后每个结点都有选择特征子集（line 5）来计算Gini impurity或均方误差，以此挑选最优划分特征（line 6），计算最优划分点（line7）。</p><p>（额额额，后面我居然给直接忘了，还有后面算法题短路得不行，捂脸）</p><p><img src="/Users/wangxue/gitpro/20191105MyBlog/saruagithub/source/images/20200102RandomForest.jpg" alt="20200102RandomForest"></p><p>（3）其他</p><p>随机森林的结合策略有：平均法（简单平均、加权平均），投票法，stacking（先从初始数据集训练出初始学习器，然后生成一个新数据集用于训练次级学习器，交叉验证）</p><p><img src="/Users/wangxue/gitpro/20191105MyBlog/saruagithub/source/images/20200102Stacking.jpg" alt="20200102Stacking"></p><p>2，梯度下降算法在GBDT有吗？动量法可以用到里面吗？</p><p>GBDT本身就是梯度提升法。在构建树的时候，是根据上一次的预测值和真实值的预测残差来构建的，其实就是拟合的损失函数的负梯度。</p><h3 id="3-算法题"><a href="#3-算法题" class="headerlink" title="3 算法题"></a>3 算法题</h3><p>海量数据，找出最大的k个数。紧张得面红耳赤，哎。下来了总结学习下咯。</p><p>思路1，将数据qsort从大道小排序，取前k-1个数。回顾下qsort，复杂度O(nlogn)。</p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">swap</span><span class="params">(<span class="keyword">int</span> A[], <span class="keyword">int</span> i, <span class="keyword">int</span> j)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> temp = A[i];</span><br><span class="line">    A[i] = A[j];</span><br><span class="line">    A[j] = temp;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">partition</span><span class="params">(<span class="keyword">int</span> A[],<span class="keyword">int</span> l, <span class="keyword">int</span> r, <span class="keyword">int</span>&amp; pivot)</span></span>&#123;</span><br><span class="line">    <span class="keyword">do</span>&#123;</span><br><span class="line">        <span class="keyword">while</span>(A[++l] &gt; pivot);</span><br><span class="line">        <span class="keyword">while</span>((l&lt;r) &amp;&amp; (A[--r] &lt; pivot));</span><br><span class="line">        swap(A,l,r);</span><br><span class="line">    &#125;<span class="keyword">while</span>(l&lt;r);</span><br><span class="line">    <span class="keyword">return</span> l;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">myqsort</span><span class="params">(<span class="keyword">int</span> A[],<span class="keyword">int</span> i,<span class="keyword">int</span> j)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (j &lt;= i) <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">int</span> pivotIndex = (i+j)/<span class="number">2</span>;</span><br><span class="line">    swap(A,pivotIndex,j);</span><br><span class="line">    <span class="keyword">int</span> k = partition(A,i<span class="number">-1</span>,j,A[j]);</span><br><span class="line">    swap(A,k,j);</span><br><span class="line">    myqsort(A,i,k<span class="number">-1</span>);</span><br><span class="line">    myqsort(A,k+<span class="number">1</span>,j);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// function call: myqsort(num, 0, N-1);</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">  <span class="keyword">int</span> k;</span><br><span class="line">    <span class="keyword">int</span> num[<span class="number">3</span>] = &#123;<span class="number">1</span>,<span class="number">-2</span>,<span class="number">0</span>&#125;;</span><br><span class="line">    myqsort(num, <span class="number">0</span>, N<span class="number">-1</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;k; i++) &#123;</span><br><span class="line">        <span class="built_in">cout</span>&lt;&lt;num[i]&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>思路2，用partition函数每次划分，两边排好序来做。当中间pivot下标正好是k-1则左边部分就是前k大个数，</p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">KthBig</span><span class="params">(<span class="keyword">int</span> A[],<span class="keyword">int</span> i,<span class="keyword">int</span> j,<span class="keyword">int</span> kBig)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">if</span> (j &lt;= i || A == <span class="literal">NULL</span>) <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    <span class="keyword">int</span> pivotIndex = (i+j)/<span class="number">2</span>;</span><br><span class="line">    swap(A,pivotIndex,j);</span><br><span class="line">    <span class="keyword">int</span> index = partition0(A,i<span class="number">-1</span>,j,A[j]); <span class="comment">// k is index</span></span><br><span class="line">    swap(A,index,j);</span><br><span class="line">    count = index - i + <span class="number">1</span>; <span class="comment">// count the k big data</span></span><br><span class="line">    <span class="keyword">if</span> (kBig == count) &#123;</span><br><span class="line">        <span class="keyword">return</span> index;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(count &gt; kBig)&#123;</span><br><span class="line">        <span class="keyword">return</span> KthBig(A, i, index, kBig);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> KthBig(A, index, j, kBig-count);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>思路3，k个的最大堆。一会更</p><p>最近面了三次，也见识了，知道哪该查漏补缺了。</p><p>1，项目的总结（启发式算法、三维点云、异常检测部分）</p><p>2，深度模型CTR（DeepCTR入手）</p><p>3，leecode刷题系列</p><p>4，其他（印象笔记搬迁到博客，kaggle比赛开源代码读读）</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h3 id=&quot;1，项目介绍&quot;&gt;&lt;a href=&quot;#1，项目介绍&quot; class=&quot;headerlink&quot; title=&quot;1，项目介绍&quot;&gt;&lt;/a&gt;1，项目介绍&lt;/h3&gt;&lt;p&gt;首先自我介绍。再介绍异常检测项目。在介绍广告CTR项目。&lt;/p&gt;
+&lt;p&gt;1，对每个项目的细节梳理清楚：&lt;/p
+      
+    
+    </summary>
+    
+    
+    
+      <category term="面试" scheme="http://yoursite.com/tags/%E9%9D%A2%E8%AF%95/"/>
+    
+      <category term="算法" scheme="http://yoursite.com/tags/%E7%AE%97%E6%B3%95/"/>
+    
+  </entry>
   
   <entry>
     <title>Stochastic Gradient Descent</title>
@@ -157,8 +184,8 @@
   
   <entry>
     <title>NAB源码阅读系列1</title>
-    <link href="http://yoursite.com/2019/12/04/NAB%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E7%B3%BB%E5%88%971/"/>
-    <id>http://yoursite.com/2019/12/04/NAB%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E7%B3%BB%E5%88%971/</id>
+    <link href="http://yoursite.com/2019/12/04/20191204NAB%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E7%B3%BB%E5%88%971/"/>
+    <id>http://yoursite.com/2019/12/04/20191204NAB%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E7%B3%BB%E5%88%971/</id>
     <published>2019-12-04T02:04:59.000Z</published>
     <updated>2019-12-09T13:32:32.115Z</updated>
     
@@ -189,8 +216,8 @@
   
   <entry>
     <title>mac上hexo的mathjax配置</title>
-    <link href="http://yoursite.com/2019/11/26/mac%E4%B8%8Ahexo%E7%9A%84mathjax%E9%85%8D%E7%BD%AE/"/>
-    <id>http://yoursite.com/2019/11/26/mac%E4%B8%8Ahexo%E7%9A%84mathjax%E9%85%8D%E7%BD%AE/</id>
+    <link href="http://yoursite.com/2019/11/26/20191126mac%E4%B8%8Ahexo%E7%9A%84mathjax%E9%85%8D%E7%BD%AE/"/>
+    <id>http://yoursite.com/2019/11/26/20191126mac%E4%B8%8Ahexo%E7%9A%84mathjax%E9%85%8D%E7%BD%AE/</id>
     <published>2019-11-26T03:50:08.000Z</published>
     <updated>2019-12-10T01:46:28.124Z</updated>
     
@@ -216,8 +243,8 @@
   
   <entry>
     <title>Numenta的HTM简介</title>
-    <link href="http://yoursite.com/2019/11/25/Numenta%E7%9A%84HTM%E7%AE%80%E4%BB%8B/"/>
-    <id>http://yoursite.com/2019/11/25/Numenta%E7%9A%84HTM%E7%AE%80%E4%BB%8B/</id>
+    <link href="http://yoursite.com/2019/11/25/20191125Numenta%E7%9A%84HTM%E7%AE%80%E4%BB%8B/"/>
+    <id>http://yoursite.com/2019/11/25/20191125Numenta%E7%9A%84HTM%E7%AE%80%E4%BB%8B/</id>
     <published>2019-11-25T08:26:49.000Z</published>
     <updated>2019-12-04T04:18:05.801Z</updated>
     
@@ -415,8 +442,8 @@
   
   <entry>
     <title>PCL库升级问题</title>
-    <link href="http://yoursite.com/2019/03/27/PCL%E5%BA%93%E5%8D%87%E7%BA%A7%E9%97%AE%E9%A2%98/"/>
-    <id>http://yoursite.com/2019/03/27/PCL%E5%BA%93%E5%8D%87%E7%BA%A7%E9%97%AE%E9%A2%98/</id>
+    <link href="http://yoursite.com/2019/03/27/20190327PCL%E5%BA%93%E5%8D%87%E7%BA%A7%E9%97%AE%E9%A2%98/"/>
+    <id>http://yoursite.com/2019/03/27/20190327PCL%E5%BA%93%E5%8D%87%E7%BA%A7%E9%97%AE%E9%A2%98/</id>
     <published>2019-03-27T02:58:04.000Z</published>
     <updated>2020-01-02T02:59:52.383Z</updated>
     
@@ -534,32 +561,6 @@
       
         &lt;h3 id=&quot;1-简介&quot;&gt;&lt;a href=&quot;#1-简介&quot; class=&quot;headerlink&quot; title=&quot;1 简介&quot;&gt;&lt;/a&gt;1 简介&lt;/h3&gt;&lt;p&gt;标签：二分类模型，特征空间上的间隔最大的线性分类器，核技巧（非线性问题），求解凸二次规划问题。&lt;/p&gt;
 &lt;p&gt;三类：线性可分
-      
-    
-    </summary>
-    
-    
-      <category term="机器学习" scheme="http://yoursite.com/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-      <category term="机器学习" scheme="http://yoursite.com/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>LR原理</title>
-    <link href="http://yoursite.com/2018/12/08/20191208LR%E5%8E%9F%E7%90%86/"/>
-    <id>http://yoursite.com/2018/12/08/20191208LR%E5%8E%9F%E7%90%86/</id>
-    <published>2018-12-08T02:59:11.000Z</published>
-    <updated>2019-12-25T12:07:43.560Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="1、线性回归"><a href="#1、线性回归" class="headerlink" title="1、线性回归"></a>1、线性回归</h3><h4 id="1-1-单变量线性回归"><a href="#1-1-单变量线性回归" class="headerlink" title="1.1 单变量线性回归"></a>1.1 单变量线性回归</h4><p>x ——&gt; hypothesis（假设）——&gt; y，此处假设为线性函数，y输出为数值（若是分类则为0或1）</p><script type="math/tex; mode=display">h_{\theta}{(x)} = \theta^Tx</script><p>为了让hypothesis尽量根据数据拟合好曲线，需要设计损失函数，并对此损失函数优化。损失函数是参数$\theta$ 的 Cost function: </p><script type="math/tex; mode=display">J(\theta)=\min \frac{1}{2m} \sum_{i=1}^{m}\left(h_{\theta}(x)-y\right)^{2}</script><p>优化损失函数用到梯度下降法：</p><p>为了 $min J(\theta)$，我们采用随机梯度下降方法。（其实也可以用一些矩阵直接计算的方法，最优化里的牛顿法、BFGS等等）</p><p>repeat until convergence{</p><script type="math/tex; mode=display">\theta_{j}=\theta_{j}-\alpha \frac{\partial}{\partial \theta_{j}} J(\theta) \quad(for j=0 \cdots)</script><p>}</p><p>展开就是:</p><script type="math/tex; mode=display">\theta_j = \theta_j - \alpha \frac{1}{m} \sum_{i=1}^m (h_\theta(x^{(i)})- y^{(i)}) \frac{\partial h_\theta(x)}{\partial \theta_{j}}</script><p><strong>注意</strong>：</p><p>1，学习率影响了梯度下降的步长，一般越大下降越快（但如果最初就在靠近局部最优处，则容易震荡发散），一般设置在0.001~0.003, 取比最大值稍小一点的值即可。</p><p>2，不同的初始$\theta$ 可能下降到不同的局部最优点（因此，我们希望损失函数最好是凸函数，线性回归的$J$就是凸函数，是碗面）。</p><p>3，数据处理的小技巧，将特征归一化到0-1或者-1-1可以避免量纲影响 x- mean / std。</p><p>4，<strong>特征工程非常重要</strong>，特征组合，平方，开根号等等。</p><h3 id="2，逻辑回归LR"><a href="#2，逻辑回归LR" class="headerlink" title="2，逻辑回归LR"></a>2，逻辑回归LR</h3><p>逻辑回归是用来解决二分类问题的机器学习方法，用于估计某种事物的可能性。</p><p>逻辑回归中x ——&gt; hypothesis（假设）——&gt; y，sigmoid函数将预测值转换为0-1之间的值。</p><script type="math/tex; mode=display">0 \leq h_{\theta}(x) \leqslant 1</script><script type="math/tex; mode=display">h_{\theta}(x)=g\left(\theta^{\top} x\right)</script><script type="math/tex; mode=display">g(z)=\frac{1}{1+e^{-z}}</script><p>解释：$h_{\theta}(x)$ 是对输入x，y=1的概率估计，$h_{\theta}(x)=P(y=1 / x ; \theta)$ 给定特征x与参数$\theta$时，y=1的概率。也可以这样理解，一个事件的发生几率指的是该事件发生的概率p与该事件不发生的概率1-p的比值。</p><script type="math/tex; mode=display">logit(p) = \log{\frac{p}{1-p}}</script><script type="math/tex; mode=display">\log \frac{P(Y=1|x)}{1-P(Y=1|x)} = \theta^T x</script><p>LR中，输出Y=1的对数几率是输入x的线性函数。</p><p>损失函数这里有所不同，因为sigmoid函数代入到平方误差中得到$J$ 是非凸函数，所以cost function用的是交叉熵（信息量中度量不确定性的度量）。</p><script type="math/tex; mode=display">J\left(h_{\theta}(x), y\right)=-\frac{1}{m} [ \sum_{i=1}^m y^{(i)} \log \left(h_{\theta}(x^{(i)})\right) + (1-y^{(i)}) \log \left(1-h_{\theta}(x^{(i)})\right) ]</script><p>这个非常像似然函数。</p><p>LR的梯度下降公式（对各个参数的偏导 or 链式求导），因为sigmoid函数求导特殊g(z)’ = g(z) (1-g(z))’。</p><script type="math/tex; mode=display">\theta_j = \theta_j - \alpha \frac{\partial}{\partial \theta_j} J(\theta)</script><script type="math/tex; mode=display">\theta_{j}=\theta_j-\alpha\frac{1}{m} \sum_{i=1}^{m}\left(h_{\theta}\left(x^{(i)}\right)-y^{(i)}\right) x_{j}^{(i)}</script><p>推导过程：</p><script type="math/tex; mode=display">\frac{\partial}{\partial \theta_j} J(\theta) =-\frac{1}{m} \sum_{i=1}^{m}\left[y^{(i)} \frac{1}{\left.h_{\theta}\left(x^{(i)}\right)\right)} \frac{\partial}{\partial \theta_{j}} h_{\theta}\left(x^{(i)}\right)-\left(1-y^{(i)}\right) \frac{1}{1-h_{\theta}\left(x^{(i)}\right)} \frac{\partial}{\partial \theta_{j}} h_{\theta}\left(x^{(i)}\right)\right]</script><script type="math/tex; mode=display">\frac{\partial}{\partial \theta_j} h_\theta(x^{(i)}) = \frac{e^{-\theta^{T} x^{(i)}}}{\left(1+e^{-\theta^{T} x^{(i)}}\right)^{2}} \frac{\partial}{\partial \theta_{j}} \theta^{T} x^{(i)} = g\left(\theta^{T} x^{(i)}\right)\left(1-g\left(\theta^{T} x^{(i)}\right)\right) x_{j}^{(i)}</script><p>最后代入化简即可。</p><p>其实逻辑回归还可以用于多分类问题上，分别拟合三个分类器$h_{\theta}^{(i)}(x)$，选择 $max {h_{\theta}^{(i)}(x)}$的类i。</p><p><strong>注意：</strong></p><p>优点：</p><p>1，对逻辑回归来说，多重共线性并不是问题，它可以结合L2正则化来解决</p><p>2，属于判别式模型</p><p>3，在线梯度下降算法-online gradient descent</p><p>4，便利的观测样本概率分数</p><p>缺点</p><p>1，特征空间很大时，逻辑回归的性能不是很好（不能很好地处理大量多类特征或变量，one hot很大）</p><p>2，容易欠拟合，一般准确度不太高；</p><p>3，对于非线性特征，需要进行转换。</p><h3 id="3，过拟合与正则化"><a href="#3，过拟合与正则化" class="headerlink" title="3，过拟合与正则化"></a>3，过拟合与正则化</h3><h4 id="3-1-欠拟合与过拟合"><a href="#3-1-欠拟合与过拟合" class="headerlink" title="3.1 欠拟合与过拟合"></a>3.1 欠拟合与过拟合</h4><p>欠拟合：模型过于简单，underfit，带来高偏差high bias，就是说模型偏见很强；</p><p>过拟合：模型复杂，overfit，太过于拟合训练数据，经验误差虽小但结构误差大，无法拟合新数据。</p><p><img src="/images/20191209overfit.jpg" alt="20191209overfit"></p><p>避免过拟合的方法：数据增强more data，简化模型（早停，限制权值正则化，多种模型Bagging，Boosting），增加噪声，集成ensemble，贝叶斯等。</p><h4 id="3-2-正则化"><a href="#3-2-正则化" class="headerlink" title="3.2 正则化"></a>3.2 正则化</h4><p>正则化，损失部分尽量拟合数据，后面部分尽量保持参数较小，起到正则化作用。</p><p>线性回归的损失函数：</p><script type="math/tex; mode=display">J(\theta) = \frac{1}{2m}[\sum_{i=1}^{m}(h_\theta(x^{(i)}) - y^{(i)} )^2 + \lambda \sum_{i=1}^{n} \theta_j^2]</script><p>逻辑回归的损失函数</p><script type="math/tex; mode=display">J(\theta)=-\left[\frac{1}{m} \sum_{i=1}^{m} y^{(i)} \log \left(h_{\theta}(x^{(i)}\right)+\left(1-y^{(i)}\right) \log \left(1-h_{\theta}\left(x^{(i)}\right)\right)\right] + \frac{\lambda}{2m} \sum_{j=1}^n\theta_j^2</script><p>另外可以参考 <a href="https://zhuanlan.zhihu.com/p/25707761" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/25707761</a></p><h3 id="4，优化方法复习"><a href="#4，优化方法复习" class="headerlink" title="4，优化方法复习"></a>4，优化方法复习</h3><h4 id="4-1-最速下降法即负梯度方向"><a href="#4-1-最速下降法即负梯度方向" class="headerlink" title="4.1 最速下降法即负梯度方向"></a>4.1 最速下降法即负梯度方向</h4><script type="math/tex; mode=display">f(x_k+\alpha \vec P) = f(x_k) + \alpha P^T \nabla f(x_k) + o(\alpha)</script><script type="math/tex; mode=display">min{f(x_k+\alpha \vec P)}</script><p>则需要$min{P^T \nabla f(x_k)}$</p><script type="math/tex; mode=display">P = -\frac{\nabla f(x_k)}{||\nabla f(x_k)||}</script><p>此处$\alpha$是学习率</p><p>一般来说，损失函数偏碗状的时候，比较圆的时候，下降比较快。如果，函数形状椭圆形，会来回震荡着走。</p><h4 id="4-2-牛顿法"><a href="#4-2-牛顿法" class="headerlink" title="4.2 牛顿法"></a>4.2 牛顿法</h4><p>牛顿法考虑二阶导信息</p><script type="math/tex; mode=display">f\left(x_{k} + P\right)=f\left(x_{k}\right)+p^T \nabla f_{k}+\frac{1}{2} p^{T} \nabla^{2} f_{k} P</script><p>则$P = - \nabla^2 f(x_k)^{-1} \nabla f(x_k)$</p><p>此处二阶导大于0，即要求$\nabla^2 f(x_k)$ 正定。</p><p>总结：逻辑回归主要是增加了一个sigmoid函数，将预测值映射为概率。为了避免损失函数变为非凸函数，损失函数变为对数损失函数。</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h3 id=&quot;1、线性回归&quot;&gt;&lt;a href=&quot;#1、线性回归&quot; class=&quot;headerlink&quot; title=&quot;1、线性回归&quot;&gt;&lt;/a&gt;1、线性回归&lt;/h3&gt;&lt;h4 id=&quot;1-1-单变量线性回归&quot;&gt;&lt;a href=&quot;#1-1-单变量线性回归&quot; class=&quot;header
       
     
     </summary>

@@ -207,7 +207,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/30/%E6%B5%AA%E6%BD%AE%E4%B9%8B%E5%B7%85%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/08/20191208LR%E5%8E%9F%E7%90%86/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -221,7 +221,136 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2018/10/30/%E6%B5%AA%E6%BD%AE%E4%B9%8B%E5%B7%85%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">《浪潮之巅》—— IT浮沉</a>
+            <a href="/2018/12/08/20191208LR%E5%8E%9F%E7%90%86/" class="post-title-link" itemprop="url">LR原理</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-12-08 10:59:11" itemprop="dateCreated datePublished" datetime="2018-12-08T10:59:11+08:00">2018-12-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-12-25 20:07:43" itemprop="dateModified" datetime="2019-12-25T20:07:43+08:00">2019-12-25</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span id="/2018/12/08/20191208LR%E5%8E%9F%E7%90%86/" class="post-meta-item leancloud_visitors" data-flag-title="LR原理" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="1、线性回归"><a href="#1、线性回归" class="headerlink" title="1、线性回归"></a>1、线性回归</h3><h4 id="1-1-单变量线性回归"><a href="#1-1-单变量线性回归" class="headerlink" title="1.1 单变量线性回归"></a>1.1 单变量线性回归</h4><p>x ——&gt; hypothesis（假设）——&gt; y，此处假设为线性函数，y输出为数值（若是分类则为0或1）</p>
+<script type="math/tex; mode=display">h_{\theta}{(x)} = \theta^Tx</script><p>为了让hypothesis尽量根据数据拟合好曲线，需要设计损失函数，并对此损失函数优化。损失函数是参数$\theta$ 的 Cost function: </p>
+<script type="math/tex; mode=display">J(\theta)=\min \frac{1}{2m} \sum_{i=1}^{m}\left(h_{\theta}(x)-y\right)^{2}</script><p>优化损失函数用到梯度下降法：</p>
+<p>为了 $min J(\theta)$，我们采用随机梯度下降方法。（其实也可以用一些矩阵直接计算的方法，最优化里的牛顿法、BFGS等等）</p>
+<p>repeat until convergence{</p>
+<script type="math/tex; mode=display">\theta_{j}=\theta_{j}-\alpha \frac{\partial}{\partial \theta_{j}} J(\theta) \quad(for j=0 \cdots)</script><p>}</p>
+<p>展开就是:</p>
+<script type="math/tex; mode=display">\theta_j = \theta_j - \alpha \frac{1}{m} \sum_{i=1}^m (h_\theta(x^{(i)})- y^{(i)}) \frac{\partial h_\theta(x)}{\partial \theta_{j}}</script><p><strong>注意</strong>：</p>
+<p>1，学习率影响了梯度下降的步长，一般越大下降越快（但如果最初就在靠近局部最优处，则容易震荡发散），一般设置在0.001~0.003, 取比最大值稍小一点的值即可。</p>
+<p>2，不同的初始$\theta$ 可能下降到不同的局部最优点（因此，我们希望损失函数最好是凸函数，线性回归的$J$就是凸函数，是碗面）。</p>
+<p>3，数据处理的小技巧，将特征归一化到0-1或者-1-1可以避免量纲影响 x- mean / std。</p>
+<p>4，<strong>特征工程非常重要</strong>，特征组合，平方，开根号等等。</p>
+<h3 id="2，逻辑回归LR"><a href="#2，逻辑回归LR" class="headerlink" title="2，逻辑回归LR"></a>2，逻辑回归LR</h3><p>逻辑回归是用来解决二分类问题的机器学习方法，用于估计某种事物的可能性。</p>
+<p>逻辑回归中x ——&gt; hypothesis（假设）——&gt; y，sigmoid函数将预测值转换为0-1之间的值。</p>
+<script type="math/tex; mode=display">0 \leq h_{\theta}(x) \leqslant 1</script><script type="math/tex; mode=display">h_{\theta}(x)=g\left(\theta^{\top} x\right)</script><script type="math/tex; mode=display">g(z)=\frac{1}{1+e^{-z}}</script><p>解释：$h_{\theta}(x)$ 是对输入x，y=1的概率估计，$h_{\theta}(x)=P(y=1 / x ; \theta)$ 给定特征x与参数$\theta$时，y=1的概率。也可以这样理解，一个事件的发生几率指的是该事件发生的概率p与该事件不发生的概率1-p的比值。</p>
+<script type="math/tex; mode=display">logit(p) = \log{\frac{p}{1-p}}</script><script type="math/tex; mode=display">\log \frac{P(Y=1|x)}{1-P(Y=1|x)} = \theta^T x</script><p>LR中，输出Y=1的对数几率是输入x的线性函数。</p>
+<p>损失函数这里有所不同，因为sigmoid函数代入到平方误差中得到$J$ 是非凸函数，所以cost function用的是交叉熵（信息量中度量不确定性的度量）。</p>
+<script type="math/tex; mode=display">J\left(h_{\theta}(x), y\right)=-\frac{1}{m} [ \sum_{i=1}^m y^{(i)} \log \left(h_{\theta}(x^{(i)})\right) + (1-y^{(i)}) \log \left(1-h_{\theta}(x^{(i)})\right) ]</script><p>这个非常像似然函数。</p>
+<p>LR的梯度下降公式（对各个参数的偏导 or 链式求导），因为sigmoid函数求导特殊g(z)’ = g(z) (1-g(z))’。</p>
+<script type="math/tex; mode=display">\theta_j = \theta_j - \alpha \frac{\partial}{\partial \theta_j} J(\theta)</script><script type="math/tex; mode=display">\theta_{j}=\theta_j-\alpha\frac{1}{m} \sum_{i=1}^{m}\left(h_{\theta}\left(x^{(i)}\right)-y^{(i)}\right) x_{j}^{(i)}</script><p>推导过程：</p>
+<script type="math/tex; mode=display">\frac{\partial}{\partial \theta_j} J(\theta) =-\frac{1}{m} \sum_{i=1}^{m}\left[y^{(i)} \frac{1}{\left.h_{\theta}\left(x^{(i)}\right)\right)} \frac{\partial}{\partial \theta_{j}} h_{\theta}\left(x^{(i)}\right)-\left(1-y^{(i)}\right) \frac{1}{1-h_{\theta}\left(x^{(i)}\right)} \frac{\partial}{\partial \theta_{j}} h_{\theta}\left(x^{(i)}\right)\right]</script><script type="math/tex; mode=display">\frac{\partial}{\partial \theta_j} h_\theta(x^{(i)}) = \frac{e^{-\theta^{T} x^{(i)}}}{\left(1+e^{-\theta^{T} x^{(i)}}\right)^{2}} \frac{\partial}{\partial \theta_{j}} \theta^{T} x^{(i)} = g\left(\theta^{T} x^{(i)}\right)\left(1-g\left(\theta^{T} x^{(i)}\right)\right) x_{j}^{(i)}</script><p>最后代入化简即可。</p>
+<p>其实逻辑回归还可以用于多分类问题上，分别拟合三个分类器$h_{\theta}^{(i)}(x)$，选择 $max {h_{\theta}^{(i)}(x)}$的类i。</p>
+<p><strong>注意：</strong></p>
+<p>优点：</p>
+<p>1，对逻辑回归来说，多重共线性并不是问题，它可以结合L2正则化来解决</p>
+<p>2，属于判别式模型</p>
+<p>3，在线梯度下降算法-online gradient descent</p>
+<p>4，便利的观测样本概率分数</p>
+<p>缺点</p>
+<p>1，特征空间很大时，逻辑回归的性能不是很好（不能很好地处理大量多类特征或变量，one hot很大）</p>
+<p>2，容易欠拟合，一般准确度不太高；</p>
+<p>3，对于非线性特征，需要进行转换。</p>
+<h3 id="3，过拟合与正则化"><a href="#3，过拟合与正则化" class="headerlink" title="3，过拟合与正则化"></a>3，过拟合与正则化</h3><h4 id="3-1-欠拟合与过拟合"><a href="#3-1-欠拟合与过拟合" class="headerlink" title="3.1 欠拟合与过拟合"></a>3.1 欠拟合与过拟合</h4><p>欠拟合：模型过于简单，underfit，带来高偏差high bias，就是说模型偏见很强；</p>
+<p>过拟合：模型复杂，overfit，太过于拟合训练数据，经验误差虽小但结构误差大，无法拟合新数据。</p>
+<p><img src="/images/20191209overfit.jpg" alt="20191209overfit"></p>
+<p>避免过拟合的方法：数据增强more data，简化模型（早停，限制权值正则化，多种模型Bagging，Boosting），增加噪声，集成ensemble，贝叶斯等。</p>
+<h4 id="3-2-正则化"><a href="#3-2-正则化" class="headerlink" title="3.2 正则化"></a>3.2 正则化</h4><p>正则化，损失部分尽量拟合数据，后面部分尽量保持参数较小，起到正则化作用。</p>
+<p>线性回归的损失函数：</p>
+<script type="math/tex; mode=display">J(\theta) = \frac{1}{2m}[\sum_{i=1}^{m}(h_\theta(x^{(i)}) - y^{(i)} )^2 + \lambda \sum_{i=1}^{n} \theta_j^2]</script><p>逻辑回归的损失函数</p>
+<script type="math/tex; mode=display">J(\theta)=-\left[\frac{1}{m} \sum_{i=1}^{m} y^{(i)} \log \left(h_{\theta}(x^{(i)}\right)+\left(1-y^{(i)}\right) \log \left(1-h_{\theta}\left(x^{(i)}\right)\right)\right] + \frac{\lambda}{2m} \sum_{j=1}^n\theta_j^2</script><p>另外可以参考 <a href="https://zhuanlan.zhihu.com/p/25707761" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/25707761</a></p>
+<h3 id="4，优化方法复习"><a href="#4，优化方法复习" class="headerlink" title="4，优化方法复习"></a>4，优化方法复习</h3><h4 id="4-1-最速下降法即负梯度方向"><a href="#4-1-最速下降法即负梯度方向" class="headerlink" title="4.1 最速下降法即负梯度方向"></a>4.1 最速下降法即负梯度方向</h4><script type="math/tex; mode=display">f(x_k+\alpha \vec P) = f(x_k) + \alpha P^T \nabla f(x_k) + o(\alpha)</script><script type="math/tex; mode=display">min{f(x_k+\alpha \vec P)}</script><p>则需要$min{P^T \nabla f(x_k)}$</p>
+<script type="math/tex; mode=display">P = -\frac{\nabla f(x_k)}{||\nabla f(x_k)||}</script><p>此处$\alpha$是学习率</p>
+<p>一般来说，损失函数偏碗状的时候，比较圆的时候，下降比较快。如果，函数形状椭圆形，会来回震荡着走。</p>
+<h4 id="4-2-牛顿法"><a href="#4-2-牛顿法" class="headerlink" title="4.2 牛顿法"></a>4.2 牛顿法</h4><p>牛顿法考虑二阶导信息</p>
+<script type="math/tex; mode=display">f\left(x_{k} + P\right)=f\left(x_{k}\right)+p^T \nabla f_{k}+\frac{1}{2} p^{T} \nabla^{2} f_{k} P</script><p>则$P = - \nabla^2 f(x_k)^{-1} \nabla f(x_k)$</p>
+<p>此处二阶导大于0，即要求$\nabla^2 f(x_k)$ 正定。</p>
+<p>总结：逻辑回归主要是增加了一个sigmoid函数，将预测值映射为概率。为了避免损失函数变为非凸函数，损失函数变为对数损失函数。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/30/20181030%E6%B5%AA%E6%BD%AE%E4%B9%8B%E5%B7%85%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="WangXue">
+      <meta itemprop="description" content="本科重庆大学CS，研究生南京大学MS，主要研究AIOps，机器学习等，语言Python&C++">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="WangXue">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/10/30/20181030%E6%B5%AA%E6%BD%AE%E4%B9%8B%E5%B7%85%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">《浪潮之巅》—— IT浮沉</a>
         </h1>
 
         <div class="post-meta">
@@ -253,7 +382,7 @@
             </span>
 
           
-            <span id="/2018/10/30/%E6%B5%AA%E6%BD%AE%E4%B9%8B%E5%B7%85%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" class="post-meta-item leancloud_visitors" data-flag-title="《浪潮之巅》—— IT浮沉" title="阅读次数">
+            <span id="/2018/10/30/20181030%E6%B5%AA%E6%BD%AE%E4%B9%8B%E5%B7%85%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" class="post-meta-item leancloud_visitors" data-flag-title="《浪潮之巅》—— IT浮沉" title="阅读次数">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
@@ -355,7 +484,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/29/%E8%AF%97%E9%9B%86/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/29/20180729%E8%AF%97%E9%9B%86/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -369,7 +498,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2018/07/29/%E8%AF%97%E9%9B%86/" class="post-title-link" itemprop="url">雪的诗集</a>
+            <a href="/2018/07/29/20180729%E8%AF%97%E9%9B%86/" class="post-title-link" itemprop="url">雪的诗集</a>
         </h1>
 
         <div class="post-meta">
@@ -401,7 +530,7 @@
             </span>
 
           
-            <span id="/2018/07/29/%E8%AF%97%E9%9B%86/" class="post-meta-item leancloud_visitors" data-flag-title="雪的诗集" title="阅读次数">
+            <span id="/2018/07/29/20180729%E8%AF%97%E9%9B%86/" class="post-meta-item leancloud_visitors" data-flag-title="雪的诗集" title="阅读次数">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
@@ -1119,7 +1248,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">28</span>
+          <span class="site-state-item-count">29</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1371,6 +1500,54 @@ window.addEventListener('pjax:success', () => {
   
 
   
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
 
   
 

@@ -207,6 +207,149 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/11/06/ubuntu16%E9%85%8D%E7%BD%AEGPU%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%8E%AF%E5%A2%83%E3%80%81CUDA%E3%80%81cuNDD%E7%AD%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="WangXue">
+      <meta itemprop="description" content="本科重庆大学CS，研究生南京大学MS，主要研究AIOps，机器学习等，语言Python&C++">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="WangXue">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/11/06/ubuntu16%E9%85%8D%E7%BD%AEGPU%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%8E%AF%E5%A2%83%E3%80%81CUDA%E3%80%81cuNDD%E7%AD%89/" class="post-title-link" itemprop="url">ubuntu16配置GPU深度学习环境、CUDA、cuNDD等</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-11-06 11:15:21" itemprop="dateCreated datePublished" datetime="2019-11-06T11:15:21+08:00">2019-11-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-12-25 12:10:59" itemprop="dateModified" datetime="2019-12-25T12:10:59+08:00">2019-12-25</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index">
+                    <span itemprop="name">深度学习</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span id="/2019/11/06/ubuntu16%E9%85%8D%E7%BD%AEGPU%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%8E%AF%E5%A2%83%E3%80%81CUDA%E3%80%81cuNDD%E7%AD%89/" class="post-meta-item leancloud_visitors" data-flag-title="ubuntu16配置GPU深度学习环境、CUDA、cuNDD等" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="1、准备"><a href="#1、准备" class="headerlink" title="1、准备"></a>1、准备</h3><ol>
+<li>请先看好各种软件的版本对应要求，这仨一定要对应好。<pre><code>  [Tensorflow不同版本要求与CUDA及CUDNN版本对应关系](https://blog.csdn.net/omodao1/article/details/83241074)
+</code></pre></li>
+<li><p>知道要下哪些版本了，就预先做好各种软件下载工作。<br> 首先下载好英伟达的驱动 <a href="https://www.nvidia.cn/Download/index.aspx?lang=cn" target="_blank" rel="noopener">NVIDIA驱动下载</a><br> 注意！！！下载好跟自己显卡对应的驱动。显卡的产品类型、系列那些如果之前已经装好了驱动，则可以通过命令 nvidia-smi查询到。没有装刚买来就自己查。<br><img src="https://img-blog.csdnimg.cn/20190519153242367.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNjczNDUz,size_1,color_FFFFFF,t_70" alt="我的显卡驱动"><br>即使你的机器之前已经装过驱动，那也最好重新装一遍驱动，因为那个CUDA一定要对应起来。不然后面有坑！</p>
+<p>下载CUDA，链接 <a href="https://developer.nvidia.com/cuda-toolkit-archive" target="_blank" rel="noopener">cuda-toolkit-archive</a><br><img src="https://img-blog.csdnimg.cn/20190519154540803.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNjczNDUz,size_1,color_FFFFFF,t_70" alt="下载CUDA9.0版本"><br>请注意这里一定要选择下载runfilw文件，不是deb！，不然会覆盖之前的显卡驱动带来问题。<br><img src="https://img-blog.csdnimg.cn/20190519154709423.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNjczNDUz,size_1,color_FFFFFF,t_70" alt="对应操作系统下载CUDA"><br>最后下载cuDNN，<a href="https://developer.nvidia.com/rdp/cudnn-archive" target="_blank" rel="noopener">cuDNN下载地址</a>，我下的7.0.5版本<br><img src="https://img-blog.csdnimg.cn/20190519160003336.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNjczNDUz,size_1,color_FFFFFF,t_70" alt="cuDNN下载"></p>
+<h3 id="2、安装驱动"><a href="#2、安装驱动" class="headerlink" title="2、安装驱动"></a>2、安装驱动</h3><h4 id="2-1、正常装驱动。"><a href="#2-1、正常装驱动。" class="headerlink" title="2.1、正常装驱动。"></a>2.1、正常装驱动。</h4><p>按ctrl+alt+f2（有的是f1）进入字符界面命令行，先删除以前的驱动：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get purge nvidia*</span><br><span class="line">sudo apt-get autoremove</span><br></pre></td></tr></table></figure>
+<p>禁止自带的nouveau nvidia驱动：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 打开配置文件</span><br><span class="line">sudo vim /etc/modprobe.d/blacklist-nouveau.conf</span><br></pre></td></tr></table></figure>
+<p>添加以下内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">blacklist nouveau</span><br><span class="line">options nouveau modeset=0</span><br></pre></td></tr></table></figure>
+<p>再更新一下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo update-initramfs -u</span><br></pre></td></tr></table></figure>
+<p>最后需要进行重启。查看下Nouveau是否已经禁止，无输出则为成功：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsmod | grep nouveau</span><br></pre></td></tr></table></figure>
+<p>按ctrl+alt+f2，接着关闭图形化界面：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo service lightdm stop</span><br></pre></td></tr></table></figure>
+<p>然后准备开始装驱动了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo sh NVIDIA-Linux-x86_64-XXX.run  –-no-opengl-files</span><br></pre></td></tr></table></figure>
+<p>然后重新打开图形界面：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo service lightdm start</span><br></pre></td></tr></table></figure>
+<p>再ctrl+alt+f7进入图形界面，再测试下驱动是否装好：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nvidia-smi</span><br></pre></td></tr></table></figure>
+<p>安装完成后，重启:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo reboot</span><br></pre></td></tr></table></figure>
+<p>在命令行通过nvidia-smi还可以查看到驱动的话就没有问题了，以上皆为顺利的过程。</p>
+</li>
+</ol>
+<h4 id="2-2、意外情况"><a href="#2-2、意外情况" class="headerlink" title="2.2、意外情况"></a>2.2、意外情况</h4><p>当然我装的时候是遇到了个大坑的。我看到之前机器上装好了驱动就没管，然后开始装后面的CUDA，结果下的CUDA又是deb的包，导致安装中覆盖了之前的驱动，然后ubuntu打开正确输入密码也无法进入桌面了。</p>
+<h5 id="2-2-1-安装libelf-dev"><a href="#2-2-1-安装libelf-dev" class="headerlink" title="2.2.1 安装libelf-dev"></a>2.2.1 安装libelf-dev</h5><p>于是我又修复，倒回到2.1开始，清理驱动，重装。中间在执行sudo sh NVIDIA-Linux-x86_64-XXX.run  –-no-opengl-files的时候还遇到了build出错，如图：<br><img src="https://img-blog.csdnimg.cn/20190519162933827.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNjczNDUz,size_1,color_FFFFFF,t_70" alt="驱动编译出错"><br>打开他提示的nvidia-installer.log看，里面提示了很多<br><img src="https://img-blog.csdnimg.cn/20190519163249938.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNjczNDUz,size_1,color_FFFFFF,t_70" alt="问题提示"><br>这里还挺好的提示了请安装libelf-dev这种信息，于是我又去下载 <a href="https://pkgs.org/download/libelf-dev" target="_blank" rel="noopener">libelf-dex安装包</a>。本来我只下了1那个，然后输入命令安装：<br><img src="https://img-blog.csdnimg.cn/20190519163856594.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNjczNDUz,size_1,color_FFFFFF,t_70" alt="libelf的版本"><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo dpkg -i libelf-dev_0.165-3ubuntu1_amd64.deb</span><br></pre></td></tr></table></figure><br>很无情的又报了个错，提示amd64 system is ….ubuntu1.1，于是我又下了2那个更新包，再dpkg安装。<br><img src="https://img-blog.csdnimg.cn/20190519164151594.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNjczNDUz,size_1,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>终于顺利给装上了，没有报错了。</p>
+<h5 id="2-2-2-gcc和g-版本问题"><a href="#2-2-2-gcc和g-版本问题" class="headerlink" title="2.2.2 gcc和g++版本问题"></a>2.2.2 gcc和g++版本问题</h5><p>前面的装好了，我又准备执行sudo sh NVIDIA-Linux-x86_64-XXX.run  –-no-opengl-files 来着，然而还有问题，又通过命令查看log信息，sudo vim nvidia-installer.log。<br><img src="https://img-blog.csdnimg.cn/20190519164725139.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNjczNDUz,size_1,color_FFFFFF,t_70" alt="不识别Command line"><br>这个问题就是由于gcc和g++版本太低编译不过导致的，因为我看之前有个教程是将这个版本降低了方便CUDA编译来着。但其实我这是CUDA9.0，CUDA9要求GCC版本是5.x或者6.x，其他版本不可以，需要自己进行配置。我之前就是5.5的版本，就不该降级。好的现在再根据那篇博文给换回来。<br><a href="https://blog.csdn.net/u011784994/article/details/80080938" target="_blank" rel="noopener">ubuntu 16.04 LTS 降级安装gcc 4.8
+</a></p>
+<h5 id="2-2-3-装好驱动"><a href="#2-2-3-装好驱动" class="headerlink" title="2.2.3 装好驱动"></a>2.2.3 装好驱动</h5><p>在sh NVIDIA-Linux-x86_64-XXX.run安装就可以了，哎哟喂真是不容易啊。。。<br>然后我再重启，输入密码，终于可以进入桌面了呀，感动到哭。。。</p>
+<h3 id="3、安装CUDA"><a href="#3、安装CUDA" class="headerlink" title="3、安装CUDA"></a>3、安装CUDA</h3><ol>
+<li>安装CUDA<br>打开终端，执行命令，运行run文件：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo sh cuda_9.0.176_384.81_linux.run</span><br></pre></td></tr></table></figure>
+注意提示，前面是一些法律信息啥的，enter过去就好。到后面提示是否安装图像驱动的时候，一定选择no ！！！<br><img src="https://img-blog.csdnimg.cn/20190519165519471.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNjczNDUz,size_4,color_FFFFFF,t_70" alt="no Driver"><br>后面的一些提示选择y就行。出现下图，就表示安装完成。<br><img src="https://img-blog.csdnimg.cn/20190519165702507.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNjczNDUz,size_1,color_FFFFFF,t_70" alt="CUDA安装"><br>如果出现其他问题，可能是某些依赖库没装好，反正我是没遇到。可以试试安装依赖，然后重启再试试。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install libprotobuf-dev libleveldb-dev libsnappy-dev libopencv-dev libhdf5-serial-dev protobuf-compiler</span><br><span class="line">sudo apt-get install --no-install-recommends libboost-all-dev</span><br><span class="line">sudo apt-get install libopenblas-dev liblapack-dev libatlas-base-dev</span><br><span class="line">sudo apt-get install libgflags-dev libgoogle-glog-dev liblmdb-dev</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<ol>
+<li><p>配置环境变量</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo gedit ~/.bashrc</span><br></pre></td></tr></table></figure>
+<p>打开文件后在最后写入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export PATH=/usr/local/cuda-9.0/bin$&#123;PATH:+:$&#123;PATH&#125;&#125;  </span><br><span class="line">export LD_LIBRARY_PATH=/usr/local/cuda-9.0/lib64$&#123;LD_LIBRARY_PATH:+:$&#123;LD_LIBRARY_PATH&#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>然后点save后关闭在source一下生效：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source ~/.bashrc</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>测试一下CUDA是否安装成功</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 第一步，进入例子文件</span><br><span class="line">cd /usr/local/cuda-8.0/samples/1_Utilities/deviceQuery</span><br><span class="line"># 第二步，执行make命令</span><br><span class="line">sudo make</span><br><span class="line"># 第三步</span><br><span class="line">./deviceQuery</span><br></pre></td></tr></table></figure>
+<p>有提示GPU信息，就表示可以了。</p>
+</li>
+</ol>
+<h3 id="4、安装cuDNN"><a href="#4、安装cuDNN" class="headerlink" title="4、安装cuDNN"></a>4、安装cuDNN</h3><p>安装命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo dpkg -i libcudnn7_7.0.5.15-1+cuda9.0_amd64.deb</span><br><span class="line">sudo dpkg -i libcudnn7-dev_7.0.5.11-1+cuda9.0_amd64.deb</span><br><span class="line">sudo dpkg -i libcudnn7-doc_7.0.5.11-1+cuda9.0_amd64.deb</span><br></pre></td></tr></table></figure><br>安装完以后需要进行测试是否安装成功，出现了“Test passed! ”，这几步我都没啥问题：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cp -r /usr/src/cudnn_samples_v7/ $HOME</span><br><span class="line">cd $HOME/cudnn_samples_v7/mnistCUDNN</span><br><span class="line">make clean &amp;&amp; make</span><br><span class="line">./mnistCUDNN</span><br></pre></td></tr></table></figure></p>
+<h3 id="5、安装TensorFlow-gpu"><a href="#5、安装TensorFlow-gpu" class="headerlink" title="5、安装TensorFlow-gpu"></a>5、安装TensorFlow-gpu</h3><p>卸载以前的TensorFlow，我的python环境是3.6<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 uninstall tensorflow</span><br></pre></td></tr></table></figure><br>然后重新装gpu版本就可以，注意我要用的是TensorFlow-gpu1.7版本，这个跟前面的都是对应的！</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 -i https://pypi.tuna.tsinghua.edu.cn/simple/ install tensorflow-gpu==1.7.0</span><br></pre></td></tr></table></figure>
+<p>跑程序的时候，自动就调用了gpu进行计算，学习起来快了6、7倍，真的是开心啊~</p>
+<h3 id="6、总结"><a href="#6、总结" class="headerlink" title="6、总结"></a>6、总结</h3><ol>
+<li>最关键的问题就是软件各个版本要对应好</li>
+<li>注意先装驱动再CUDA再cuDNN，总之就是驱动要先搞好，不然就会有我那种意外。</li>
+<li>CUDA一定下载runfile文件。</li>
+</ol>
+<h3 id="7、reference"><a href="#7、reference" class="headerlink" title="7、reference"></a>7、reference</h3><p><a href="https://blog.csdn.net/weixin_41863685/article/details/80303963" target="_blank" rel="noopener">Ubuntu18.04深度学习GPU环境配置</a><br>我进不了桌面，也连不了网，所以都是自己拿另外的电脑下了U盘弄过去的。<br><a href="https://blog.csdn.net/hhhhh89/article/details/54311161" target="_blank" rel="noopener">ubuntu中使用终端查看U盘里的内容</a><br><a href="https://blog.csdn.net/u011784994/article/details/80080938" target="_blank" rel="noopener">ubuntu 16.04 LTS 降级安装gcc 4.8</a><br><a href="https://blog.csdn.net/omodao1/article/details/83241074" target="_blank" rel="noopener">Tensorflow不同版本要求与CUDA及CUDNN版本对应关系</a><br>最后感谢各个外援~</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/07/20190707%E3%80%8A%E6%98%8E%E6%9C%9D%E9%82%A3%E4%BA%9B%E4%BA%8B1%E3%80%8B%E6%98%8E%E6%9C%9D%E7%9A%84%E5%BB%BA%E7%AB%8B/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -653,7 +796,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/27/PCL%E5%BA%93%E5%8D%87%E7%BA%A7%E9%97%AE%E9%A2%98/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/27/20190327PCL%E5%BA%93%E5%8D%87%E7%BA%A7%E9%97%AE%E9%A2%98/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -667,7 +810,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2019/03/27/PCL%E5%BA%93%E5%8D%87%E7%BA%A7%E9%97%AE%E9%A2%98/" class="post-title-link" itemprop="url">PCL库升级问题</a>
+            <a href="/2019/03/27/20190327PCL%E5%BA%93%E5%8D%87%E7%BA%A7%E9%97%AE%E9%A2%98/" class="post-title-link" itemprop="url">PCL库升级问题</a>
         </h1>
 
         <div class="post-meta">
@@ -699,7 +842,7 @@
             </span>
 
           
-            <span id="/2019/03/27/PCL%E5%BA%93%E5%8D%87%E7%BA%A7%E9%97%AE%E9%A2%98/" class="post-meta-item leancloud_visitors" data-flag-title="PCL库升级问题" title="阅读次数">
+            <span id="/2019/03/27/20190327PCL%E5%BA%93%E5%8D%87%E7%BA%A7%E9%97%AE%E9%A2%98/" class="post-meta-item leancloud_visitors" data-flag-title="PCL库升级问题" title="阅读次数">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
@@ -1259,135 +1402,6 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/08/20191208LR%E5%8E%9F%E7%90%86/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="WangXue">
-      <meta itemprop="description" content="本科重庆大学CS，研究生南京大学MS，主要研究AIOps，机器学习等，语言Python&C++">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="WangXue">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/12/08/20191208LR%E5%8E%9F%E7%90%86/" class="post-title-link" itemprop="url">LR原理</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-12-08 10:59:11" itemprop="dateCreated datePublished" datetime="2018-12-08T10:59:11+08:00">2018-12-08</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-12-25 20:07:43" itemprop="dateModified" datetime="2019-12-25T20:07:43+08:00">2019-12-25</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index">
-                    <span itemprop="name">机器学习</span>
-                  </a>
-                </span>
-            </span>
-
-          
-            <span id="/2018/12/08/20191208LR%E5%8E%9F%E7%90%86/" class="post-meta-item leancloud_visitors" data-flag-title="LR原理" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="1、线性回归"><a href="#1、线性回归" class="headerlink" title="1、线性回归"></a>1、线性回归</h3><h4 id="1-1-单变量线性回归"><a href="#1-1-单变量线性回归" class="headerlink" title="1.1 单变量线性回归"></a>1.1 单变量线性回归</h4><p>x ——&gt; hypothesis（假设）——&gt; y，此处假设为线性函数，y输出为数值（若是分类则为0或1）</p>
-<script type="math/tex; mode=display">h_{\theta}{(x)} = \theta^Tx</script><p>为了让hypothesis尽量根据数据拟合好曲线，需要设计损失函数，并对此损失函数优化。损失函数是参数$\theta$ 的 Cost function: </p>
-<script type="math/tex; mode=display">J(\theta)=\min \frac{1}{2m} \sum_{i=1}^{m}\left(h_{\theta}(x)-y\right)^{2}</script><p>优化损失函数用到梯度下降法：</p>
-<p>为了 $min J(\theta)$，我们采用随机梯度下降方法。（其实也可以用一些矩阵直接计算的方法，最优化里的牛顿法、BFGS等等）</p>
-<p>repeat until convergence{</p>
-<script type="math/tex; mode=display">\theta_{j}=\theta_{j}-\alpha \frac{\partial}{\partial \theta_{j}} J(\theta) \quad(for j=0 \cdots)</script><p>}</p>
-<p>展开就是:</p>
-<script type="math/tex; mode=display">\theta_j = \theta_j - \alpha \frac{1}{m} \sum_{i=1}^m (h_\theta(x^{(i)})- y^{(i)}) \frac{\partial h_\theta(x)}{\partial \theta_{j}}</script><p><strong>注意</strong>：</p>
-<p>1，学习率影响了梯度下降的步长，一般越大下降越快（但如果最初就在靠近局部最优处，则容易震荡发散），一般设置在0.001~0.003, 取比最大值稍小一点的值即可。</p>
-<p>2，不同的初始$\theta$ 可能下降到不同的局部最优点（因此，我们希望损失函数最好是凸函数，线性回归的$J$就是凸函数，是碗面）。</p>
-<p>3，数据处理的小技巧，将特征归一化到0-1或者-1-1可以避免量纲影响 x- mean / std。</p>
-<p>4，<strong>特征工程非常重要</strong>，特征组合，平方，开根号等等。</p>
-<h3 id="2，逻辑回归LR"><a href="#2，逻辑回归LR" class="headerlink" title="2，逻辑回归LR"></a>2，逻辑回归LR</h3><p>逻辑回归是用来解决二分类问题的机器学习方法，用于估计某种事物的可能性。</p>
-<p>逻辑回归中x ——&gt; hypothesis（假设）——&gt; y，sigmoid函数将预测值转换为0-1之间的值。</p>
-<script type="math/tex; mode=display">0 \leq h_{\theta}(x) \leqslant 1</script><script type="math/tex; mode=display">h_{\theta}(x)=g\left(\theta^{\top} x\right)</script><script type="math/tex; mode=display">g(z)=\frac{1}{1+e^{-z}}</script><p>解释：$h_{\theta}(x)$ 是对输入x，y=1的概率估计，$h_{\theta}(x)=P(y=1 / x ; \theta)$ 给定特征x与参数$\theta$时，y=1的概率。也可以这样理解，一个事件的发生几率指的是该事件发生的概率p与该事件不发生的概率1-p的比值。</p>
-<script type="math/tex; mode=display">logit(p) = \log{\frac{p}{1-p}}</script><script type="math/tex; mode=display">\log \frac{P(Y=1|x)}{1-P(Y=1|x)} = \theta^T x</script><p>LR中，输出Y=1的对数几率是输入x的线性函数。</p>
-<p>损失函数这里有所不同，因为sigmoid函数代入到平方误差中得到$J$ 是非凸函数，所以cost function用的是交叉熵（信息量中度量不确定性的度量）。</p>
-<script type="math/tex; mode=display">J\left(h_{\theta}(x), y\right)=-\frac{1}{m} [ \sum_{i=1}^m y^{(i)} \log \left(h_{\theta}(x^{(i)})\right) + (1-y^{(i)}) \log \left(1-h_{\theta}(x^{(i)})\right) ]</script><p>这个非常像似然函数。</p>
-<p>LR的梯度下降公式（对各个参数的偏导 or 链式求导），因为sigmoid函数求导特殊g(z)’ = g(z) (1-g(z))’。</p>
-<script type="math/tex; mode=display">\theta_j = \theta_j - \alpha \frac{\partial}{\partial \theta_j} J(\theta)</script><script type="math/tex; mode=display">\theta_{j}=\theta_j-\alpha\frac{1}{m} \sum_{i=1}^{m}\left(h_{\theta}\left(x^{(i)}\right)-y^{(i)}\right) x_{j}^{(i)}</script><p>推导过程：</p>
-<script type="math/tex; mode=display">\frac{\partial}{\partial \theta_j} J(\theta) =-\frac{1}{m} \sum_{i=1}^{m}\left[y^{(i)} \frac{1}{\left.h_{\theta}\left(x^{(i)}\right)\right)} \frac{\partial}{\partial \theta_{j}} h_{\theta}\left(x^{(i)}\right)-\left(1-y^{(i)}\right) \frac{1}{1-h_{\theta}\left(x^{(i)}\right)} \frac{\partial}{\partial \theta_{j}} h_{\theta}\left(x^{(i)}\right)\right]</script><script type="math/tex; mode=display">\frac{\partial}{\partial \theta_j} h_\theta(x^{(i)}) = \frac{e^{-\theta^{T} x^{(i)}}}{\left(1+e^{-\theta^{T} x^{(i)}}\right)^{2}} \frac{\partial}{\partial \theta_{j}} \theta^{T} x^{(i)} = g\left(\theta^{T} x^{(i)}\right)\left(1-g\left(\theta^{T} x^{(i)}\right)\right) x_{j}^{(i)}</script><p>最后代入化简即可。</p>
-<p>其实逻辑回归还可以用于多分类问题上，分别拟合三个分类器$h_{\theta}^{(i)}(x)$，选择 $max {h_{\theta}^{(i)}(x)}$的类i。</p>
-<p><strong>注意：</strong></p>
-<p>优点：</p>
-<p>1，对逻辑回归来说，多重共线性并不是问题，它可以结合L2正则化来解决</p>
-<p>2，属于判别式模型</p>
-<p>3，在线梯度下降算法-online gradient descent</p>
-<p>4，便利的观测样本概率分数</p>
-<p>缺点</p>
-<p>1，特征空间很大时，逻辑回归的性能不是很好（不能很好地处理大量多类特征或变量，one hot很大）</p>
-<p>2，容易欠拟合，一般准确度不太高；</p>
-<p>3，对于非线性特征，需要进行转换。</p>
-<h3 id="3，过拟合与正则化"><a href="#3，过拟合与正则化" class="headerlink" title="3，过拟合与正则化"></a>3，过拟合与正则化</h3><h4 id="3-1-欠拟合与过拟合"><a href="#3-1-欠拟合与过拟合" class="headerlink" title="3.1 欠拟合与过拟合"></a>3.1 欠拟合与过拟合</h4><p>欠拟合：模型过于简单，underfit，带来高偏差high bias，就是说模型偏见很强；</p>
-<p>过拟合：模型复杂，overfit，太过于拟合训练数据，经验误差虽小但结构误差大，无法拟合新数据。</p>
-<p><img src="/images/20191209overfit.jpg" alt="20191209overfit"></p>
-<p>避免过拟合的方法：数据增强more data，简化模型（早停，限制权值正则化，多种模型Bagging，Boosting），增加噪声，集成ensemble，贝叶斯等。</p>
-<h4 id="3-2-正则化"><a href="#3-2-正则化" class="headerlink" title="3.2 正则化"></a>3.2 正则化</h4><p>正则化，损失部分尽量拟合数据，后面部分尽量保持参数较小，起到正则化作用。</p>
-<p>线性回归的损失函数：</p>
-<script type="math/tex; mode=display">J(\theta) = \frac{1}{2m}[\sum_{i=1}^{m}(h_\theta(x^{(i)}) - y^{(i)} )^2 + \lambda \sum_{i=1}^{n} \theta_j^2]</script><p>逻辑回归的损失函数</p>
-<script type="math/tex; mode=display">J(\theta)=-\left[\frac{1}{m} \sum_{i=1}^{m} y^{(i)} \log \left(h_{\theta}(x^{(i)}\right)+\left(1-y^{(i)}\right) \log \left(1-h_{\theta}\left(x^{(i)}\right)\right)\right] + \frac{\lambda}{2m} \sum_{j=1}^n\theta_j^2</script><p>另外可以参考 <a href="https://zhuanlan.zhihu.com/p/25707761" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/25707761</a></p>
-<h3 id="4，优化方法复习"><a href="#4，优化方法复习" class="headerlink" title="4，优化方法复习"></a>4，优化方法复习</h3><h4 id="4-1-最速下降法即负梯度方向"><a href="#4-1-最速下降法即负梯度方向" class="headerlink" title="4.1 最速下降法即负梯度方向"></a>4.1 最速下降法即负梯度方向</h4><script type="math/tex; mode=display">f(x_k+\alpha \vec P) = f(x_k) + \alpha P^T \nabla f(x_k) + o(\alpha)</script><script type="math/tex; mode=display">min{f(x_k+\alpha \vec P)}</script><p>则需要$min{P^T \nabla f(x_k)}$</p>
-<script type="math/tex; mode=display">P = -\frac{\nabla f(x_k)}{||\nabla f(x_k)||}</script><p>此处$\alpha$是学习率</p>
-<p>一般来说，损失函数偏碗状的时候，比较圆的时候，下降比较快。如果，函数形状椭圆形，会来回震荡着走。</p>
-<h4 id="4-2-牛顿法"><a href="#4-2-牛顿法" class="headerlink" title="4.2 牛顿法"></a>4.2 牛顿法</h4><p>牛顿法考虑二阶导信息</p>
-<script type="math/tex; mode=display">f\left(x_{k} + P\right)=f\left(x_{k}\right)+p^T \nabla f_{k}+\frac{1}{2} p^{T} \nabla^{2} f_{k} P</script><p>则$P = - \nabla^2 f(x_k)^{-1} \nabla f(x_k)$</p>
-<p>此处二阶导大于0，即要求$\nabla^2 f(x_k)$ 正定。</p>
-<p>总结：逻辑回归主要是增加了一个sigmoid函数，将预测值映射为概率。为了避免损失函数变为非凸函数，损失函数变为对数损失函数。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1438,7 +1452,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">28</span>
+          <span class="site-state-item-count">29</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

@@ -1,6 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>20191231面试2</title>
+    <url>/2020/01/02/20191231%E7%9F%A5%E4%B9%8E%E9%9D%A2%E8%AF%95/</url>
+    <content><![CDATA[<h3 id="1，项目介绍"><a href="#1，项目介绍" class="headerlink" title="1，项目介绍"></a>1，项目介绍</h3><p>首先自我介绍。再介绍异常检测项目。在介绍广告CTR项目。</p>
+<p>1，对每个项目的细节梳理清楚：</p>
+<p>如lightGBM如何对类别特征进行节点分裂的？（<a href="http://papers.nips.cc/paper/6907-lightgbm-a-highly-efficient-gradi" target="_blank" rel="noopener">lightGBM论文</a>）</p>
+<p>2，然后就是要仔细思考进一步的优化的地方在哪。</p>
+<p>如何进一步提高点云的识别率呢？当时做了实验加多卷积层并没有明显的提升效果了，物体结构的特征点已经提取充分，所以并没用更深的网络。另一方面继续优化的点可以考虑点与点之间的领域结构，就像图像主要是考虑了相对位置关系，才可以用一些高反差核之类的卷积核提取图像的局部信息。</p>
+<h3 id="2-基础知识"><a href="#2-基础知识" class="headerlink" title="2 基础知识"></a>2 基础知识</h3><p>中间问了机器学习的一些算法。</p>
+<p>1，随机森林的采样体现在哪些地方？</p>
+<p>（1）随机森林主要是Bagging和特征采用。Bagging是有放回的抽样，每次约63.2%的数据样本作为训练集。</p>
+<p>随机森林每次没有用的样本数据有用吗？做包外预测$H^{oob}(x)$：</p>
+<script type="math/tex; mode=display">H^{o o b}(\boldsymbol{x})=\underset{y \in \mathcal{Y}}{\arg \max } \sum_{t=1}^{T} \mathbb{I}\left(h_{t}(\boldsymbol{x})=y\right) \cdot \mathbb{I}\left(\boldsymbol{x} \notin D_{t}\right)</script><p>Bagging的泛化误差包外估计是：</p>
+<script type="math/tex; mode=display">\epsilon^{o o b}=\frac{1}{|D|} \sum_{(\boldsymbol{x}, y) \in D} \mathbb{I}\left(H^{o o b}(\boldsymbol{x}) \neq y\right)</script><p>包外估计可以辅助剪枝。</p>
+<p>Bagging可以降低方差。</p>
+<p>（2）另外RF引入了随机特征选择。就是每个结点都会随机选择一些特征来构建树。如下图的算法流程。第5行，先选取了部分特征用来构建树，然后每个结点都有选择特征子集（line 5）来计算Gini impurity或均方误差，以此挑选最优划分特征（line 6），计算最优划分点（line7）。</p>
+<p>（额额额，后面我居然给直接忘了，还有后面算法题短路得不行，捂脸）</p>
+<p><img src="/Users/wangxue/gitpro/20191105MyBlog/saruagithub/source/images/20200102RandomForest.jpg" alt="20200102RandomForest"></p>
+<p>（3）其他</p>
+<p>随机森林的结合策略有：平均法（简单平均、加权平均），投票法，stacking（先从初始数据集训练出初始学习器，然后生成一个新数据集用于训练次级学习器，交叉验证）</p>
+<p><img src="/Users/wangxue/gitpro/20191105MyBlog/saruagithub/source/images/20200102Stacking.jpg" alt="20200102Stacking"></p>
+<p>2，梯度下降算法在GBDT有吗？动量法可以用到里面吗？</p>
+<p>GBDT本身就是梯度提升法。在构建树的时候，是根据上一次的预测值和真实值的预测残差来构建的，其实就是拟合的损失函数的负梯度。</p>
+<h3 id="3-算法题"><a href="#3-算法题" class="headerlink" title="3 算法题"></a>3 算法题</h3><p>海量数据，找出最大的k个数。紧张得面红耳赤，哎。下来了总结学习下咯。</p>
+<p>思路1，将数据qsort从大道小排序，取前k-1个数。回顾下qsort，复杂度O(nlogn)。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">swap</span><span class="params">(<span class="keyword">int</span> A[], <span class="keyword">int</span> i, <span class="keyword">int</span> j)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> temp = A[i];</span><br><span class="line">    A[i] = A[j];</span><br><span class="line">    A[j] = temp;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">partition</span><span class="params">(<span class="keyword">int</span> A[],<span class="keyword">int</span> l, <span class="keyword">int</span> r, <span class="keyword">int</span>&amp; pivot)</span></span>&#123;</span><br><span class="line">    <span class="keyword">do</span>&#123;</span><br><span class="line">        <span class="keyword">while</span>(A[++l] &gt; pivot);</span><br><span class="line">        <span class="keyword">while</span>((l&lt;r) &amp;&amp; (A[--r] &lt; pivot));</span><br><span class="line">        swap(A,l,r);</span><br><span class="line">    &#125;<span class="keyword">while</span>(l&lt;r);</span><br><span class="line">    <span class="keyword">return</span> l;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">myqsort</span><span class="params">(<span class="keyword">int</span> A[],<span class="keyword">int</span> i,<span class="keyword">int</span> j)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (j &lt;= i) <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">int</span> pivotIndex = (i+j)/<span class="number">2</span>;</span><br><span class="line">    swap(A,pivotIndex,j);</span><br><span class="line">    <span class="keyword">int</span> k = partition(A,i<span class="number">-1</span>,j,A[j]);</span><br><span class="line">    swap(A,k,j);</span><br><span class="line">    myqsort(A,i,k<span class="number">-1</span>);</span><br><span class="line">    myqsort(A,k+<span class="number">1</span>,j);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// function call: myqsort(num, 0, N-1);</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">  	<span class="keyword">int</span> k;</span><br><span class="line">    <span class="keyword">int</span> num[<span class="number">3</span>] = &#123;<span class="number">1</span>,<span class="number">-2</span>,<span class="number">0</span>&#125;;</span><br><span class="line">    myqsort(num, <span class="number">0</span>, N<span class="number">-1</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;k; i++) &#123;</span><br><span class="line">        <span class="built_in">cout</span>&lt;&lt;num[i]&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>思路2，用partition函数每次划分，两边排好序来做。当中间pivot下标正好是k-1则左边部分就是前k大个数，</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">KthBig</span><span class="params">(<span class="keyword">int</span> A[],<span class="keyword">int</span> i,<span class="keyword">int</span> j,<span class="keyword">int</span> kBig)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">if</span> (j &lt;= i || A == <span class="literal">NULL</span>) <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    <span class="keyword">int</span> pivotIndex = (i+j)/<span class="number">2</span>;</span><br><span class="line">    swap(A,pivotIndex,j);</span><br><span class="line">    <span class="keyword">int</span> index = partition0(A,i<span class="number">-1</span>,j,A[j]); <span class="comment">// k is index</span></span><br><span class="line">    swap(A,index,j);</span><br><span class="line">    count = index - i + <span class="number">1</span>; <span class="comment">// count the k big data</span></span><br><span class="line">    <span class="keyword">if</span> (kBig == count) &#123;</span><br><span class="line">        <span class="keyword">return</span> index;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(count &gt; kBig)&#123;</span><br><span class="line">        <span class="keyword">return</span> KthBig(A, i, index, kBig);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> KthBig(A, index, j, kBig-count);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>思路3，k个的最大堆。一会更</p>
+<p>最近面了三次，也见识了，知道哪该查漏补缺了。</p>
+<p>1，项目的总结（启发式算法、三维点云、异常检测部分）</p>
+<p>2，深度模型CTR（DeepCTR入手）</p>
+<p>3，leecode刷题系列</p>
+<p>4，其他（印象笔记搬迁到博客，kaggle比赛开源代码读读）</p>
+]]></content>
+      <tags>
+        <tag>面试</tag>
+        <tag>算法</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Stochastic Gradient Descent</title>
     <url>/2019/12/23/20181015StochasticGradientDescent/</url>
     <content><![CDATA[<h3 id="1-概述"><a href="#1-概述" class="headerlink" title="1 概述"></a>1 概述</h3><h4 id="1-1-梯度下降"><a href="#1-1-梯度下降" class="headerlink" title="1.1 梯度下降"></a>1.1 梯度下降</h4><p>梯度下降是经典的局部优化算法。在2000年L Bottou使得随机梯度下降再次被提出。</p>
@@ -182,7 +222,7 @@
   </entry>
   <entry>
     <title>NAB源码阅读系列1</title>
-    <url>/2019/12/04/NAB%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E7%B3%BB%E5%88%971/</url>
+    <url>/2019/12/04/20191204NAB%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E7%B3%BB%E5%88%971/</url>
     <content><![CDATA[<h3 id="1-NAB的基本框架"><a href="#1-NAB的基本框架" class="headerlink" title="1 NAB的基本框架"></a>1 NAB的基本框架</h3><p>NAB里包括了几个在线时间序列异常检测器，包括了几组异常检测数据集，包括了阈值优化，评分算法，归一化检测器分数等内容，包括了NAB结果及可视化等内容。</p>
 <h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1, Ahmad S, Lavin A, Purdy S, et al. Unsupervised real-time anomaly detection for streaming data[J]. Neurocomputing, 2017, 262: 134-147.</p>
 <p>2, Lavin A, Ahmad S. Evaluating Real-Time Anomaly Detection Algorithms—The Numenta Anomaly Benchmark[C]//2015 IEEE 14th International Conference on Machine Learning and Applications (ICMLA). IEEE, 2015: 38-44.</p>
@@ -200,7 +240,7 @@
   </entry>
   <entry>
     <title>mac上hexo的mathjax配置</title>
-    <url>/2019/11/26/mac%E4%B8%8Ahexo%E7%9A%84mathjax%E9%85%8D%E7%BD%AE/</url>
+    <url>/2019/11/26/20191126mac%E4%B8%8Ahexo%E7%9A%84mathjax%E9%85%8D%E7%BD%AE/</url>
     <content><![CDATA[<p>博文中要写公式是难免的，因为配置hexo支持数学公式是必要的。 Next 主题提供了两个渲染引擎，分别是 mathjax 和 katex，后者相对前者来说渲染速度更快，而且支持更丰富的公式。我这里hexo是4.0版本了，因此又折腾了下。</p>
 <h6 id="1，更改next下的config"><a href="#1，更改next下的config" class="headerlink" title="1，更改next下的config"></a>1，更改next下的config</h6><p>配置next主题里的_config如下，只需要改一个地方就是mathjax的enable为true。</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># Math Formulas Render Support</span><br><span class="line">math:</span><br><span class="line">  # Default (true) will load mathjax / katex script on demand.</span><br><span class="line">  # That is it only render those page which has `mathjax: true` in Front-matter.</span><br><span class="line">  # If you set it to false, it will load mathjax / katex srcipt EVERY PAGE.</span><br><span class="line">  per_page: true</span><br><span class="line"></span><br><span class="line">  # hexo-renderer-pandoc (or hexo-renderer-kramed) required for full MathJax support.</span><br><span class="line">  mathjax:</span><br><span class="line">    enable: true</span><br><span class="line">    # See: https://mhchem.github.io/MathJax-mhchem/</span><br><span class="line">    mhchem: false</span><br></pre></td></tr></table></figure>
@@ -230,7 +270,7 @@
   </entry>
   <entry>
     <title>Numenta的HTM简介</title>
-    <url>/2019/11/25/Numenta%E7%9A%84HTM%E7%AE%80%E4%BB%8B/</url>
+    <url>/2019/11/25/20191125Numenta%E7%9A%84HTM%E7%AE%80%E4%BB%8B/</url>
     <content><![CDATA[<h4 id="1-Numenta的HTM简介"><a href="#1-Numenta的HTM简介" class="headerlink" title="1, Numenta的HTM简介"></a>1, Numenta的HTM简介</h4><p>Hierarchical Temporal Memeory(HTM,层级时间记忆，皮质学习) 是一种基于脑神经科学来模拟大脑进行学习和信息处理的神经网络。新皮质就是大脑里褶皱的皮层部分（图1），这只有哺乳动物有。将皮层纵向切开，不论是视觉还是听觉部分，切开后的结构是相似的（图2），很有可能大脑处理不同信息的方法是类似的。</p>
 <p><img src="/images/20191125head.jpg" width="250"/><br><img src="/images/20191125cells.png" width="200"/> </p>
 <p><center>图1 大脑皮层，图2 细胞图</center><br>新皮质分化为很多个区域（region，图3），这些区域通过神经纤维连接。这些区域以层次结构的方式连接在一起。低层级信息收集基础信号，经过不同层级逐渐加工，提取并理解更抽象信息，更高级的话或许可以关联到想法、事物活动等信息。这个有点类似卷积神经网络，低层级的网络提取图像边界等信息，高层级的网络识别物体类型等等。</p>
@@ -528,7 +568,7 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
   </entry>
   <entry>
     <title>PCL库升级问题</title>
-    <url>/2019/03/27/PCL%E5%BA%93%E5%8D%87%E7%BA%A7%E9%97%AE%E9%A2%98/</url>
+    <url>/2019/03/27/20190327PCL%E5%BA%93%E5%8D%87%E7%BA%A7%E9%97%AE%E9%A2%98/</url>
     <content><![CDATA[<h3 id="PCL库"><a href="#PCL库" class="headerlink" title="PCL库"></a>PCL库</h3><h6 id="1、安装过程参考官网，环境是Mac10-14-4，mojave"><a href="#1、安装过程参考官网，环境是Mac10-14-4，mojave" class="headerlink" title="1、安装过程参考官网，环境是Mac10.14.4，mojave"></a>1、安装过程参考官网，环境是Mac10.14.4，mojave</h6><p><a href="http://www.pointclouds.org/documentation/tutorials/installing_homebrew.php" target="_blank" rel="noopener">pcl install on Mac</a><br><code>brew install pcl</code> ，一直装就好了</p>
 <h6 id="2、使用xcode创建pcl工程"><a href="#2、使用xcode创建pcl工程" class="headerlink" title="2、使用xcode创建pcl工程"></a>2、使用xcode创建pcl工程</h6><p><a href="http://dragonwood-blastevil.blogspot.com/2013/02/install-pcl-and-first-project-in-xcode.html" target="_blank" rel="noopener">翻墙搜的pcl project in xcode</a><br>此处注意编译器的选择，Switch Compiler for C/C++/Objective-C from Apple LLVM compiler 4.2 -&gt; LLVM GCC 4.2，注意”Header Search Paths”的配置，链接里没有全部配置完全，项目要用到的库都应该加进去。</p>
 <p><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly91cGxvYWQtaW1hZ2VzLmppYW5zaHUuaW8vdXBsb2FkX2ltYWdlcy8xNTQyNjUxLThhYzQxZGFkYjIyNjA0MzEucG5n?x-oss-process=image/format,png" alt="工程配置"></p>
@@ -842,7 +882,7 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
   </entry>
   <entry>
     <title>《浪潮之巅》—— IT浮沉</title>
-    <url>/2018/10/30/%E6%B5%AA%E6%BD%AE%E4%B9%8B%E5%B7%85%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/</url>
+    <url>/2018/10/30/20181030%E6%B5%AA%E6%BD%AE%E4%B9%8B%E5%B7%85%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<h2 id="1-行业历史"><a href="#1-行业历史" class="headerlink" title="1 行业历史"></a>1 行业历史</h2><h4 id="AT-amp-T-通信技术"><a href="#AT-amp-T-通信技术" class="headerlink" title="AT&amp;T-通信技术"></a>AT&amp;T-通信技术</h4><p><strong>兴衰</strong>：AT&amp;T是个百年老人，他技术实力在当时贼强。AT&amp;T贝尔电话的发明首先引领通信浪潮，同时，AT&amp;T下贝尔实验室创造了众多世界级发明，如射电天文望远镜、晶体管、数字交换机，半导体，Unix操作系统、C语言，香农信息论等，奠定了整个信息通信领域的基础技术。</p>
 <p>然而在拆分、销售作假、包装上市后，他失去了在电信业的竞争能力；而外部的互联网的兴起也侵占了传统电话业务，加速了他的衰落。</p>
 <p><strong>一方面要保持公司内部活力，另一方面要对行业有敏锐、远见、布局。</strong></p>
@@ -920,7 +960,7 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
   </entry>
   <entry>
     <title>雪的诗集</title>
-    <url>/2018/07/29/%E8%AF%97%E9%9B%86/</url>
+    <url>/2018/07/29/20180729%E8%AF%97%E9%9B%86/</url>
     <content><![CDATA[<h3 id="1-明眸"><a href="#1-明眸" class="headerlink" title="1 明眸"></a>1 明眸</h3><p>有一双眼 </p>
 <p>净得仿佛天池的水 </p>
 <p>无法让我凝视 </p>

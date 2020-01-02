@@ -207,6 +207,102 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/02/20191231%E7%9F%A5%E4%B9%8E%E9%9D%A2%E8%AF%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="WangXue">
+      <meta itemprop="description" content="本科重庆大学CS，研究生南京大学MS，主要研究AIOps，机器学习等，语言Python&C++">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="WangXue">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/01/02/20191231%E7%9F%A5%E4%B9%8E%E9%9D%A2%E8%AF%95/" class="post-title-link" itemprop="url">20191231面试2</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-01-02 11:07:35 / 修改时间：17:16:43" itemprop="dateCreated datePublished" datetime="2020-01-02T11:07:35+08:00">2020-01-02</time>
+            </span>
+
+          
+            <span id="/2020/01/02/20191231%E7%9F%A5%E4%B9%8E%E9%9D%A2%E8%AF%95/" class="post-meta-item leancloud_visitors" data-flag-title="20191231面试2" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="1，项目介绍"><a href="#1，项目介绍" class="headerlink" title="1，项目介绍"></a>1，项目介绍</h3><p>首先自我介绍。再介绍异常检测项目。在介绍广告CTR项目。</p>
+<p>1，对每个项目的细节梳理清楚：</p>
+<p>如lightGBM如何对类别特征进行节点分裂的？（<a href="http://papers.nips.cc/paper/6907-lightgbm-a-highly-efficient-gradi" target="_blank" rel="noopener">lightGBM论文</a>）</p>
+<p>2，然后就是要仔细思考进一步的优化的地方在哪。</p>
+<p>如何进一步提高点云的识别率呢？当时做了实验加多卷积层并没有明显的提升效果了，物体结构的特征点已经提取充分，所以并没用更深的网络。另一方面继续优化的点可以考虑点与点之间的领域结构，就像图像主要是考虑了相对位置关系，才可以用一些高反差核之类的卷积核提取图像的局部信息。</p>
+<h3 id="2-基础知识"><a href="#2-基础知识" class="headerlink" title="2 基础知识"></a>2 基础知识</h3><p>中间问了机器学习的一些算法。</p>
+<p>1，随机森林的采样体现在哪些地方？</p>
+<p>（1）随机森林主要是Bagging和特征采用。Bagging是有放回的抽样，每次约63.2%的数据样本作为训练集。</p>
+<p>随机森林每次没有用的样本数据有用吗？做包外预测$H^{oob}(x)$：</p>
+<script type="math/tex; mode=display">H^{o o b}(\boldsymbol{x})=\underset{y \in \mathcal{Y}}{\arg \max } \sum_{t=1}^{T} \mathbb{I}\left(h_{t}(\boldsymbol{x})=y\right) \cdot \mathbb{I}\left(\boldsymbol{x} \notin D_{t}\right)</script><p>Bagging的泛化误差包外估计是：</p>
+<script type="math/tex; mode=display">\epsilon^{o o b}=\frac{1}{|D|} \sum_{(\boldsymbol{x}, y) \in D} \mathbb{I}\left(H^{o o b}(\boldsymbol{x}) \neq y\right)</script><p>包外估计可以辅助剪枝。</p>
+<p>Bagging可以降低方差。</p>
+<p>（2）另外RF引入了随机特征选择。就是每个结点都会随机选择一些特征来构建树。如下图的算法流程。第5行，先选取了部分特征用来构建树，然后每个结点都有选择特征子集（line 5）来计算Gini impurity或均方误差，以此挑选最优划分特征（line 6），计算最优划分点（line7）。</p>
+<p>（额额额，后面我居然给直接忘了，还有后面算法题短路得不行，捂脸）</p>
+<p><img src="/Users/wangxue/gitpro/20191105MyBlog/saruagithub/source/images/20200102RandomForest.jpg" alt="20200102RandomForest"></p>
+<p>（3）其他</p>
+<p>随机森林的结合策略有：平均法（简单平均、加权平均），投票法，stacking（先从初始数据集训练出初始学习器，然后生成一个新数据集用于训练次级学习器，交叉验证）</p>
+<p><img src="/Users/wangxue/gitpro/20191105MyBlog/saruagithub/source/images/20200102Stacking.jpg" alt="20200102Stacking"></p>
+<p>2，梯度下降算法在GBDT有吗？动量法可以用到里面吗？</p>
+<p>GBDT本身就是梯度提升法。在构建树的时候，是根据上一次的预测值和真实值的预测残差来构建的，其实就是拟合的损失函数的负梯度。</p>
+<h3 id="3-算法题"><a href="#3-算法题" class="headerlink" title="3 算法题"></a>3 算法题</h3><p>海量数据，找出最大的k个数。紧张得面红耳赤，哎。下来了总结学习下咯。</p>
+<p>思路1，将数据qsort从大道小排序，取前k-1个数。回顾下qsort，复杂度O(nlogn)。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">swap</span><span class="params">(<span class="keyword">int</span> A[], <span class="keyword">int</span> i, <span class="keyword">int</span> j)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> temp = A[i];</span><br><span class="line">    A[i] = A[j];</span><br><span class="line">    A[j] = temp;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">partition</span><span class="params">(<span class="keyword">int</span> A[],<span class="keyword">int</span> l, <span class="keyword">int</span> r, <span class="keyword">int</span>&amp; pivot)</span></span>&#123;</span><br><span class="line">    <span class="keyword">do</span>&#123;</span><br><span class="line">        <span class="keyword">while</span>(A[++l] &gt; pivot);</span><br><span class="line">        <span class="keyword">while</span>((l&lt;r) &amp;&amp; (A[--r] &lt; pivot));</span><br><span class="line">        swap(A,l,r);</span><br><span class="line">    &#125;<span class="keyword">while</span>(l&lt;r);</span><br><span class="line">    <span class="keyword">return</span> l;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">myqsort</span><span class="params">(<span class="keyword">int</span> A[],<span class="keyword">int</span> i,<span class="keyword">int</span> j)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (j &lt;= i) <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">int</span> pivotIndex = (i+j)/<span class="number">2</span>;</span><br><span class="line">    swap(A,pivotIndex,j);</span><br><span class="line">    <span class="keyword">int</span> k = partition(A,i<span class="number">-1</span>,j,A[j]);</span><br><span class="line">    swap(A,k,j);</span><br><span class="line">    myqsort(A,i,k<span class="number">-1</span>);</span><br><span class="line">    myqsort(A,k+<span class="number">1</span>,j);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// function call: myqsort(num, 0, N-1);</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">  	<span class="keyword">int</span> k;</span><br><span class="line">    <span class="keyword">int</span> num[<span class="number">3</span>] = &#123;<span class="number">1</span>,<span class="number">-2</span>,<span class="number">0</span>&#125;;</span><br><span class="line">    myqsort(num, <span class="number">0</span>, N<span class="number">-1</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;k; i++) &#123;</span><br><span class="line">        <span class="built_in">cout</span>&lt;&lt;num[i]&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>思路2，用partition函数每次划分，两边排好序来做。当中间pivot下标正好是k-1则左边部分就是前k大个数，</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">KthBig</span><span class="params">(<span class="keyword">int</span> A[],<span class="keyword">int</span> i,<span class="keyword">int</span> j,<span class="keyword">int</span> kBig)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">if</span> (j &lt;= i || A == <span class="literal">NULL</span>) <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    <span class="keyword">int</span> pivotIndex = (i+j)/<span class="number">2</span>;</span><br><span class="line">    swap(A,pivotIndex,j);</span><br><span class="line">    <span class="keyword">int</span> index = partition0(A,i<span class="number">-1</span>,j,A[j]); <span class="comment">// k is index</span></span><br><span class="line">    swap(A,index,j);</span><br><span class="line">    count = index - i + <span class="number">1</span>; <span class="comment">// count the k big data</span></span><br><span class="line">    <span class="keyword">if</span> (kBig == count) &#123;</span><br><span class="line">        <span class="keyword">return</span> index;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(count &gt; kBig)&#123;</span><br><span class="line">        <span class="keyword">return</span> KthBig(A, i, index, kBig);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> KthBig(A, index, j, kBig-count);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>思路3，k个的最大堆。一会更</p>
+<p>最近面了三次，也见识了，知道哪该查漏补缺了。</p>
+<p>1，项目的总结（启发式算法、三维点云、异常检测部分）</p>
+<p>2，深度模型CTR（DeepCTR入手）</p>
+<p>3，leecode刷题系列</p>
+<p>4，其他（印象笔记搬迁到博客，kaggle比赛开源代码读读）</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/23/20181015StochasticGradientDescent/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -721,7 +817,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/04/NAB%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E7%B3%BB%E5%88%971/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/04/20191204NAB%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E7%B3%BB%E5%88%971/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -735,7 +831,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2019/12/04/NAB%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E7%B3%BB%E5%88%971/" class="post-title-link" itemprop="url">NAB源码阅读系列1</a>
+            <a href="/2019/12/04/20191204NAB%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E7%B3%BB%E5%88%971/" class="post-title-link" itemprop="url">NAB源码阅读系列1</a>
         </h1>
 
         <div class="post-meta">
@@ -767,7 +863,7 @@
             </span>
 
           
-            <span id="/2019/12/04/NAB%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E7%B3%BB%E5%88%971/" class="post-meta-item leancloud_visitors" data-flag-title="NAB源码阅读系列1" title="阅读次数">
+            <span id="/2019/12/04/20191204NAB%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E7%B3%BB%E5%88%971/" class="post-meta-item leancloud_visitors" data-flag-title="NAB源码阅读系列1" title="阅读次数">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
@@ -807,7 +903,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/11/26/mac%E4%B8%8Ahexo%E7%9A%84mathjax%E9%85%8D%E7%BD%AE/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/11/26/20191126mac%E4%B8%8Ahexo%E7%9A%84mathjax%E9%85%8D%E7%BD%AE/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -821,7 +917,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2019/11/26/mac%E4%B8%8Ahexo%E7%9A%84mathjax%E9%85%8D%E7%BD%AE/" class="post-title-link" itemprop="url">mac上hexo的mathjax配置</a>
+            <a href="/2019/11/26/20191126mac%E4%B8%8Ahexo%E7%9A%84mathjax%E9%85%8D%E7%BD%AE/" class="post-title-link" itemprop="url">mac上hexo的mathjax配置</a>
         </h1>
 
         <div class="post-meta">
@@ -853,7 +949,7 @@
             </span>
 
           
-            <span id="/2019/11/26/mac%E4%B8%8Ahexo%E7%9A%84mathjax%E9%85%8D%E7%BD%AE/" class="post-meta-item leancloud_visitors" data-flag-title="mac上hexo的mathjax配置" title="阅读次数">
+            <span id="/2019/11/26/20191126mac%E4%B8%8Ahexo%E7%9A%84mathjax%E9%85%8D%E7%BD%AE/" class="post-meta-item leancloud_visitors" data-flag-title="mac上hexo的mathjax配置" title="阅读次数">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
@@ -908,7 +1004,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/11/25/Numenta%E7%9A%84HTM%E7%AE%80%E4%BB%8B/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/11/25/20191125Numenta%E7%9A%84HTM%E7%AE%80%E4%BB%8B/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -922,7 +1018,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2019/11/25/Numenta%E7%9A%84HTM%E7%AE%80%E4%BB%8B/" class="post-title-link" itemprop="url">Numenta的HTM简介</a>
+            <a href="/2019/11/25/20191125Numenta%E7%9A%84HTM%E7%AE%80%E4%BB%8B/" class="post-title-link" itemprop="url">Numenta的HTM简介</a>
         </h1>
 
         <div class="post-meta">
@@ -954,7 +1050,7 @@
             </span>
 
           
-            <span id="/2019/11/25/Numenta%E7%9A%84HTM%E7%AE%80%E4%BB%8B/" class="post-meta-item leancloud_visitors" data-flag-title="Numenta的HTM简介" title="阅读次数">
+            <span id="/2019/11/25/20191125Numenta%E7%9A%84HTM%E7%AE%80%E4%BB%8B/" class="post-meta-item leancloud_visitors" data-flag-title="Numenta的HTM简介" title="阅读次数">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
@@ -1096,149 +1192,6 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/11/06/ubuntu16%E9%85%8D%E7%BD%AEGPU%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%8E%AF%E5%A2%83%E3%80%81CUDA%E3%80%81cuNDD%E7%AD%89/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="WangXue">
-      <meta itemprop="description" content="本科重庆大学CS，研究生南京大学MS，主要研究AIOps，机器学习等，语言Python&C++">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="WangXue">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/11/06/ubuntu16%E9%85%8D%E7%BD%AEGPU%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%8E%AF%E5%A2%83%E3%80%81CUDA%E3%80%81cuNDD%E7%AD%89/" class="post-title-link" itemprop="url">ubuntu16配置GPU深度学习环境、CUDA、cuNDD等</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-11-06 11:15:21" itemprop="dateCreated datePublished" datetime="2019-11-06T11:15:21+08:00">2019-11-06</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-12-25 12:10:59" itemprop="dateModified" datetime="2019-12-25T12:10:59+08:00">2019-12-25</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index">
-                    <span itemprop="name">深度学习</span>
-                  </a>
-                </span>
-            </span>
-
-          
-            <span id="/2019/11/06/ubuntu16%E9%85%8D%E7%BD%AEGPU%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%8E%AF%E5%A2%83%E3%80%81CUDA%E3%80%81cuNDD%E7%AD%89/" class="post-meta-item leancloud_visitors" data-flag-title="ubuntu16配置GPU深度学习环境、CUDA、cuNDD等" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="1、准备"><a href="#1、准备" class="headerlink" title="1、准备"></a>1、准备</h3><ol>
-<li>请先看好各种软件的版本对应要求，这仨一定要对应好。<pre><code>  [Tensorflow不同版本要求与CUDA及CUDNN版本对应关系](https://blog.csdn.net/omodao1/article/details/83241074)
-</code></pre></li>
-<li><p>知道要下哪些版本了，就预先做好各种软件下载工作。<br> 首先下载好英伟达的驱动 <a href="https://www.nvidia.cn/Download/index.aspx?lang=cn" target="_blank" rel="noopener">NVIDIA驱动下载</a><br> 注意！！！下载好跟自己显卡对应的驱动。显卡的产品类型、系列那些如果之前已经装好了驱动，则可以通过命令 nvidia-smi查询到。没有装刚买来就自己查。<br><img src="https://img-blog.csdnimg.cn/20190519153242367.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNjczNDUz,size_1,color_FFFFFF,t_70" alt="我的显卡驱动"><br>即使你的机器之前已经装过驱动，那也最好重新装一遍驱动，因为那个CUDA一定要对应起来。不然后面有坑！</p>
-<p>下载CUDA，链接 <a href="https://developer.nvidia.com/cuda-toolkit-archive" target="_blank" rel="noopener">cuda-toolkit-archive</a><br><img src="https://img-blog.csdnimg.cn/20190519154540803.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNjczNDUz,size_1,color_FFFFFF,t_70" alt="下载CUDA9.0版本"><br>请注意这里一定要选择下载runfilw文件，不是deb！，不然会覆盖之前的显卡驱动带来问题。<br><img src="https://img-blog.csdnimg.cn/20190519154709423.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNjczNDUz,size_1,color_FFFFFF,t_70" alt="对应操作系统下载CUDA"><br>最后下载cuDNN，<a href="https://developer.nvidia.com/rdp/cudnn-archive" target="_blank" rel="noopener">cuDNN下载地址</a>，我下的7.0.5版本<br><img src="https://img-blog.csdnimg.cn/20190519160003336.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNjczNDUz,size_1,color_FFFFFF,t_70" alt="cuDNN下载"></p>
-<h3 id="2、安装驱动"><a href="#2、安装驱动" class="headerlink" title="2、安装驱动"></a>2、安装驱动</h3><h4 id="2-1、正常装驱动。"><a href="#2-1、正常装驱动。" class="headerlink" title="2.1、正常装驱动。"></a>2.1、正常装驱动。</h4><p>按ctrl+alt+f2（有的是f1）进入字符界面命令行，先删除以前的驱动：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get purge nvidia*</span><br><span class="line">sudo apt-get autoremove</span><br></pre></td></tr></table></figure>
-<p>禁止自带的nouveau nvidia驱动：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 打开配置文件</span><br><span class="line">sudo vim /etc/modprobe.d/blacklist-nouveau.conf</span><br></pre></td></tr></table></figure>
-<p>添加以下内容：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">blacklist nouveau</span><br><span class="line">options nouveau modeset=0</span><br></pre></td></tr></table></figure>
-<p>再更新一下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo update-initramfs -u</span><br></pre></td></tr></table></figure>
-<p>最后需要进行重启。查看下Nouveau是否已经禁止，无输出则为成功：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsmod | grep nouveau</span><br></pre></td></tr></table></figure>
-<p>按ctrl+alt+f2，接着关闭图形化界面：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo service lightdm stop</span><br></pre></td></tr></table></figure>
-<p>然后准备开始装驱动了。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo sh NVIDIA-Linux-x86_64-XXX.run  –-no-opengl-files</span><br></pre></td></tr></table></figure>
-<p>然后重新打开图形界面：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo service lightdm start</span><br></pre></td></tr></table></figure>
-<p>再ctrl+alt+f7进入图形界面，再测试下驱动是否装好：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nvidia-smi</span><br></pre></td></tr></table></figure>
-<p>安装完成后，重启:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo reboot</span><br></pre></td></tr></table></figure>
-<p>在命令行通过nvidia-smi还可以查看到驱动的话就没有问题了，以上皆为顺利的过程。</p>
-</li>
-</ol>
-<h4 id="2-2、意外情况"><a href="#2-2、意外情况" class="headerlink" title="2.2、意外情况"></a>2.2、意外情况</h4><p>当然我装的时候是遇到了个大坑的。我看到之前机器上装好了驱动就没管，然后开始装后面的CUDA，结果下的CUDA又是deb的包，导致安装中覆盖了之前的驱动，然后ubuntu打开正确输入密码也无法进入桌面了。</p>
-<h5 id="2-2-1-安装libelf-dev"><a href="#2-2-1-安装libelf-dev" class="headerlink" title="2.2.1 安装libelf-dev"></a>2.2.1 安装libelf-dev</h5><p>于是我又修复，倒回到2.1开始，清理驱动，重装。中间在执行sudo sh NVIDIA-Linux-x86_64-XXX.run  –-no-opengl-files的时候还遇到了build出错，如图：<br><img src="https://img-blog.csdnimg.cn/20190519162933827.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNjczNDUz,size_1,color_FFFFFF,t_70" alt="驱动编译出错"><br>打开他提示的nvidia-installer.log看，里面提示了很多<br><img src="https://img-blog.csdnimg.cn/20190519163249938.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNjczNDUz,size_1,color_FFFFFF,t_70" alt="问题提示"><br>这里还挺好的提示了请安装libelf-dev这种信息，于是我又去下载 <a href="https://pkgs.org/download/libelf-dev" target="_blank" rel="noopener">libelf-dex安装包</a>。本来我只下了1那个，然后输入命令安装：<br><img src="https://img-blog.csdnimg.cn/20190519163856594.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNjczNDUz,size_1,color_FFFFFF,t_70" alt="libelf的版本"><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo dpkg -i libelf-dev_0.165-3ubuntu1_amd64.deb</span><br></pre></td></tr></table></figure><br>很无情的又报了个错，提示amd64 system is ….ubuntu1.1，于是我又下了2那个更新包，再dpkg安装。<br><img src="https://img-blog.csdnimg.cn/20190519164151594.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNjczNDUz,size_1,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>终于顺利给装上了，没有报错了。</p>
-<h5 id="2-2-2-gcc和g-版本问题"><a href="#2-2-2-gcc和g-版本问题" class="headerlink" title="2.2.2 gcc和g++版本问题"></a>2.2.2 gcc和g++版本问题</h5><p>前面的装好了，我又准备执行sudo sh NVIDIA-Linux-x86_64-XXX.run  –-no-opengl-files 来着，然而还有问题，又通过命令查看log信息，sudo vim nvidia-installer.log。<br><img src="https://img-blog.csdnimg.cn/20190519164725139.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNjczNDUz,size_1,color_FFFFFF,t_70" alt="不识别Command line"><br>这个问题就是由于gcc和g++版本太低编译不过导致的，因为我看之前有个教程是将这个版本降低了方便CUDA编译来着。但其实我这是CUDA9.0，CUDA9要求GCC版本是5.x或者6.x，其他版本不可以，需要自己进行配置。我之前就是5.5的版本，就不该降级。好的现在再根据那篇博文给换回来。<br><a href="https://blog.csdn.net/u011784994/article/details/80080938" target="_blank" rel="noopener">ubuntu 16.04 LTS 降级安装gcc 4.8
-</a></p>
-<h5 id="2-2-3-装好驱动"><a href="#2-2-3-装好驱动" class="headerlink" title="2.2.3 装好驱动"></a>2.2.3 装好驱动</h5><p>在sh NVIDIA-Linux-x86_64-XXX.run安装就可以了，哎哟喂真是不容易啊。。。<br>然后我再重启，输入密码，终于可以进入桌面了呀，感动到哭。。。</p>
-<h3 id="3、安装CUDA"><a href="#3、安装CUDA" class="headerlink" title="3、安装CUDA"></a>3、安装CUDA</h3><ol>
-<li>安装CUDA<br>打开终端，执行命令，运行run文件：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo sh cuda_9.0.176_384.81_linux.run</span><br></pre></td></tr></table></figure>
-注意提示，前面是一些法律信息啥的，enter过去就好。到后面提示是否安装图像驱动的时候，一定选择no ！！！<br><img src="https://img-blog.csdnimg.cn/20190519165519471.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNjczNDUz,size_4,color_FFFFFF,t_70" alt="no Driver"><br>后面的一些提示选择y就行。出现下图，就表示安装完成。<br><img src="https://img-blog.csdnimg.cn/20190519165702507.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNjczNDUz,size_1,color_FFFFFF,t_70" alt="CUDA安装"><br>如果出现其他问题，可能是某些依赖库没装好，反正我是没遇到。可以试试安装依赖，然后重启再试试。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install libprotobuf-dev libleveldb-dev libsnappy-dev libopencv-dev libhdf5-serial-dev protobuf-compiler</span><br><span class="line">sudo apt-get install --no-install-recommends libboost-all-dev</span><br><span class="line">sudo apt-get install libopenblas-dev liblapack-dev libatlas-base-dev</span><br><span class="line">sudo apt-get install libgflags-dev libgoogle-glog-dev liblmdb-dev</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<ol>
-<li><p>配置环境变量</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo gedit ~/.bashrc</span><br></pre></td></tr></table></figure>
-<p>打开文件后在最后写入：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export PATH=/usr/local/cuda-9.0/bin$&#123;PATH:+:$&#123;PATH&#125;&#125;  </span><br><span class="line">export LD_LIBRARY_PATH=/usr/local/cuda-9.0/lib64$&#123;LD_LIBRARY_PATH:+:$&#123;LD_LIBRARY_PATH&#125;&#125;</span><br></pre></td></tr></table></figure>
-<p>然后点save后关闭在source一下生效：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source ~/.bashrc</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>测试一下CUDA是否安装成功</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 第一步，进入例子文件</span><br><span class="line">cd /usr/local/cuda-8.0/samples/1_Utilities/deviceQuery</span><br><span class="line"># 第二步，执行make命令</span><br><span class="line">sudo make</span><br><span class="line"># 第三步</span><br><span class="line">./deviceQuery</span><br></pre></td></tr></table></figure>
-<p>有提示GPU信息，就表示可以了。</p>
-</li>
-</ol>
-<h3 id="4、安装cuDNN"><a href="#4、安装cuDNN" class="headerlink" title="4、安装cuDNN"></a>4、安装cuDNN</h3><p>安装命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo dpkg -i libcudnn7_7.0.5.15-1+cuda9.0_amd64.deb</span><br><span class="line">sudo dpkg -i libcudnn7-dev_7.0.5.11-1+cuda9.0_amd64.deb</span><br><span class="line">sudo dpkg -i libcudnn7-doc_7.0.5.11-1+cuda9.0_amd64.deb</span><br></pre></td></tr></table></figure><br>安装完以后需要进行测试是否安装成功，出现了“Test passed! ”，这几步我都没啥问题：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cp -r /usr/src/cudnn_samples_v7/ $HOME</span><br><span class="line">cd $HOME/cudnn_samples_v7/mnistCUDNN</span><br><span class="line">make clean &amp;&amp; make</span><br><span class="line">./mnistCUDNN</span><br></pre></td></tr></table></figure></p>
-<h3 id="5、安装TensorFlow-gpu"><a href="#5、安装TensorFlow-gpu" class="headerlink" title="5、安装TensorFlow-gpu"></a>5、安装TensorFlow-gpu</h3><p>卸载以前的TensorFlow，我的python环境是3.6<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 uninstall tensorflow</span><br></pre></td></tr></table></figure><br>然后重新装gpu版本就可以，注意我要用的是TensorFlow-gpu1.7版本，这个跟前面的都是对应的！</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 -i https://pypi.tuna.tsinghua.edu.cn/simple/ install tensorflow-gpu==1.7.0</span><br></pre></td></tr></table></figure>
-<p>跑程序的时候，自动就调用了gpu进行计算，学习起来快了6、7倍，真的是开心啊~</p>
-<h3 id="6、总结"><a href="#6、总结" class="headerlink" title="6、总结"></a>6、总结</h3><ol>
-<li>最关键的问题就是软件各个版本要对应好</li>
-<li>注意先装驱动再CUDA再cuDNN，总之就是驱动要先搞好，不然就会有我那种意外。</li>
-<li>CUDA一定下载runfile文件。</li>
-</ol>
-<h3 id="7、reference"><a href="#7、reference" class="headerlink" title="7、reference"></a>7、reference</h3><p><a href="https://blog.csdn.net/weixin_41863685/article/details/80303963" target="_blank" rel="noopener">Ubuntu18.04深度学习GPU环境配置</a><br>我进不了桌面，也连不了网，所以都是自己拿另外的电脑下了U盘弄过去的。<br><a href="https://blog.csdn.net/hhhhh89/article/details/54311161" target="_blank" rel="noopener">ubuntu中使用终端查看U盘里的内容</a><br><a href="https://blog.csdn.net/u011784994/article/details/80080938" target="_blank" rel="noopener">ubuntu 16.04 LTS 降级安装gcc 4.8</a><br><a href="https://blog.csdn.net/omodao1/article/details/83241074" target="_blank" rel="noopener">Tensorflow不同版本要求与CUDA及CUDNN版本对应关系</a><br>最后感谢各个外援~</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1289,7 +1242,7 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">28</span>
+          <span class="site-state-item-count">29</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
