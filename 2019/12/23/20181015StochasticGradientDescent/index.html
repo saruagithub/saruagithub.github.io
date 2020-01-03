@@ -48,7 +48,7 @@
 </script>
 
   <meta name="description" content="1 概述1.1 梯度下降梯度下降是经典的局部优化算法。在2000年L Bottou使得随机梯度下降再次被提出。 对于数据$\left\{\left(X_{j}, Y_{j}\right)\right\}_{j=1}^{M}$ 需要求解： \min _{\theta \in \mathbb{R}^{n}} J(\theta), \quad J(\theta)=\frac{1}{M} \sum_{j=">
-<meta name="keywords" content="深度学习,机器学习">
+<meta name="keywords" content="机器学习,深度学习">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Stochastic Gradient Descent">
 <meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;12&#x2F;23&#x2F;20181015StochasticGradientDescent&#x2F;index.html">
@@ -257,6 +257,20 @@
               <span class="post-meta-item-text">阅读次数：</span>
               <span id="busuanzi_value_page_pv"></span>
             </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2019/12/23/20181015StochasticGradientDescent/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/12/23/20181015StochasticGradientDescent/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
 
         </div>
       </header>
@@ -312,8 +326,8 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" rel="tag"># 深度学习</a>
               <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag"># 机器学习</a>
+              <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" rel="tag"># 深度学习</a>
           </div>
 
         
@@ -342,6 +356,7 @@
 
           </div>
           
+    <div class="comments" id="comments"></div>
 
         </div>
           
@@ -382,7 +397,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">30</span>
+          <span class="site-state-item-count">29</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -395,7 +410,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-count">23</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -613,6 +628,33 @@ window.addEventListener('pjax:success', () => {
     
 
   
+
+
+<script>
+NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(item => {
+    return GUEST.includes(item);
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: '0TVJlt2cIYmtVMl43kgpM5x9-gzGzoHsz',
+    appKey: 'nBjNpIkIeApmj8vOtnjsjUTT',
+    placeholder: "Just go go",
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: '' || 'zh-cn',
+    path: location.pathname,
+    recordIP: false,
+    serverURLs: ''
+  });
+}, window.Valine);
+</script>
 
     </div>
 </body>

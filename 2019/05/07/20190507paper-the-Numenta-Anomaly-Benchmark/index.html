@@ -48,7 +48,7 @@
 </script>
 
   <meta name="description" content="1 ABS &amp;amp; Introduction1.1 Abstract对象：streams, time-series data, sequence 异常检测难点：real-time processing NAB是一个测试评估针对流数据的异常检测算法的开源工具。 理想的异常检测器   检测到所有出现的异常   尽早检测出异常，最好在人们看到异常之前   no FP 不误报   实时检测、没有前瞻（">
-<meta name="keywords" content="AIOps,时间序列">
+<meta name="keywords" content="时间序列,AIOps">
 <meta property="og:type" content="article">
 <meta property="og:title" content="20190507paper the Numenta Anomaly Benchmark">
 <meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;05&#x2F;07&#x2F;20190507paper-the-Numenta-Anomaly-Benchmark&#x2F;index.html">
@@ -265,6 +265,20 @@
               <span class="post-meta-item-text">阅读次数：</span>
               <span id="busuanzi_value_page_pv"></span>
             </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2019/05/07/20190507paper-the-Numenta-Anomaly-Benchmark/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/05/07/20190507paper-the-Numenta-Anomaly-Benchmark/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
 
         </div>
       </header>
@@ -338,8 +352,8 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/AIOps/" rel="tag"># AIOps</a>
               <a href="/tags/%E6%97%B6%E9%97%B4%E5%BA%8F%E5%88%97/" rel="tag"># 时间序列</a>
+              <a href="/tags/AIOps/" rel="tag"># AIOps</a>
           </div>
 
         
@@ -368,6 +382,7 @@
 
           </div>
           
+    <div class="comments" id="comments"></div>
 
         </div>
           
@@ -408,7 +423,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">30</span>
+          <span class="site-state-item-count">29</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -421,7 +436,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-count">23</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -639,6 +654,33 @@ window.addEventListener('pjax:success', () => {
     
 
   
+
+
+<script>
+NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(item => {
+    return GUEST.includes(item);
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: '0TVJlt2cIYmtVMl43kgpM5x9-gzGzoHsz',
+    appKey: 'nBjNpIkIeApmj8vOtnjsjUTT',
+    placeholder: "Just go go",
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: '' || 'zh-cn',
+    path: location.pathname,
+    recordIP: false,
+    serverURLs: ''
+  });
+}, window.Valine);
+</script>
 
     </div>
 </body>
