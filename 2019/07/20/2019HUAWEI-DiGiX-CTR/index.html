@@ -47,15 +47,15 @@
   };
 </script>
 
-  <meta name="description" content="1 赛题介绍比赛是广告CTR预估问题。 数据如下：     train.zip zip（2.62GB） 2019-05-18 00:00:00      test.zip zip（15MB） 2019-05-18 00:00:00    user_info.zip zip（291MB） 2019-05-18 00:00:00    ad_info.zip zip（17.9KB） 2019-05-1">
+  <meta name="description" content="1 赛题介绍7月HUAWEI-DIGIX比赛是广告CTR预估问题。 数据如下：     train.zip zip（2.62GB） 2019-05-18 00:00:00      test.zip zip（15MB） 2019-05-18 00:00:00    user_info.zip zip（291MB） 2019-05-18 00:00:00    ad_info.zip zip（17.">
 <meta name="keywords" content="机器学习,华为比赛">
 <meta property="og:type" content="article">
 <meta property="og:title" content="2019HUAWEI_DiGiX_CTR">
 <meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;07&#x2F;20&#x2F;2019HUAWEI-DiGiX-CTR&#x2F;index.html">
 <meta property="og:site_name" content="WangXue">
-<meta property="og:description" content="1 赛题介绍比赛是广告CTR预估问题。 数据如下：     train.zip zip（2.62GB） 2019-05-18 00:00:00      test.zip zip（15MB） 2019-05-18 00:00:00    user_info.zip zip（291MB） 2019-05-18 00:00:00    ad_info.zip zip（17.9KB） 2019-05-1">
+<meta property="og:description" content="1 赛题介绍7月HUAWEI-DIGIX比赛是广告CTR预估问题。 数据如下：     train.zip zip（2.62GB） 2019-05-18 00:00:00      test.zip zip（15MB） 2019-05-18 00:00:00    user_info.zip zip（291MB） 2019-05-18 00:00:00    ad_info.zip zip（17.">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-01-03T08:13:51.549Z">
+<meta property="og:updated_time" content="2020-01-03T13:12:49.665Z">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="http://yoursite.com/2019/07/20/2019HUAWEI-DiGiX-CTR/">
@@ -239,7 +239,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-01-03 16:13:51" itemprop="dateModified" datetime="2020-01-03T16:13:51+08:00">2020-01-03</time>
+                <time title="修改时间：2020-01-03 21:12:49" itemprop="dateModified" datetime="2020-01-03T21:12:49+08:00">2020-01-03</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -285,7 +285,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h3 id="1-赛题介绍"><a href="#1-赛题介绍" class="headerlink" title="1 赛题介绍"></a>1 赛题介绍</h3><p>比赛是广告CTR预估问题。 数据如下：</p>
+        <h3 id="1-赛题介绍"><a href="#1-赛题介绍" class="headerlink" title="1 赛题介绍"></a>1 赛题介绍</h3><p>7月HUAWEI-DIGIX比赛是广告CTR预估问题。 数据如下：</p>
 <div class="table-container">
 <table>
 <thead>
@@ -455,8 +455,50 @@
 </tbody>
 </table>
 </div>
-<h3 id="2-数据预处理"><a href="#2-数据预处理" class="headerlink" title="2 数据预处理"></a>2 数据预处理</h3><h4 id="2-1-分析数据"><a href="#2-1-分析数据" class="headerlink" title="2.1 分析数据"></a>2.1 分析数据</h4><p>1，首先查看每个表里数据的分布情况。尤其注意训练集与测试集的分布情况。pd.des查看平均值、中值、</p>
-<h4 id="2-2-缺失值处理"><a href="#2-2-缺失值处理" class="headerlink" title="2.2 缺失值处理"></a>2.2 缺失值处理</h4>
+<h3 id="2-数据预处理"><a href="#2-数据预处理" class="headerlink" title="2 数据预处理"></a>2 数据预处理</h3><h4 id="2-1-分析数据"><a href="#2-1-分析数据" class="headerlink" title="2.1 分析数据"></a>2.1 分析数据</h4><h5 id="2-2-1-分布情况"><a href="#2-2-1-分布情况" class="headerlink" title="2.2.1 分布情况"></a>2.2.1 分布情况</h5><p>首先查看每个表里数据的分布情况。尤其注意训练集与测试集的分布情况。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pd.describe() # 查看计数，平均值、标准差，min max等值。</span><br></pre></td></tr></table></figure>
+<p>有些特征取值频次低的考虑合并为其他类。</p>
+<h5 id="2-2-2-可视化分析"><a href="#2-2-2-可视化分析" class="headerlink" title="2.2.2 可视化分析"></a>2.2.2 可视化分析</h5><p>对 Numerical Variable，可以用 Box Plot / 小提琴 来直观地查看它的分布。Categories Variable 用直方图。对于坐标类数据，可以用 Scatter Plot 来查看它们的分布趋势和是否有离群点的存在。（seaborn画图）</p>
+<p>绘制变量之间两两的分布和相关度图表等，发现一些高相关和共线性的特征。</p>
+<p>这些分析都有利于后续构造特征。</p>
+<h4 id="2-2-数据处理"><a href="#2-2-数据处理" class="headerlink" title="2.2 数据处理"></a>2.2 数据处理</h4><p>1，缺失值处理</p>
+<p>可以填补，丢弃等。</p>
+<p>我在比赛中对content的firstclass和secondcalss根据spreadApp进行补全，因为广告类型可能会跟广告出现在哪类app有关系。 取出spreadApp相同的firstClass众数替换了少量缺失值。</p>
+<p>2，异常值处理</p>
+<p>比赛中，遇到了那种机器人用户，连续不停点击。这种数据应该在训练时过滤掉，在最后的提交结果也应该用规则处理下。</p>
+<p>另外可以考虑分箱、均值、中位数、众数处理异常值缺失值等。</p>
+<p>3，归一化和one hot的问题</p>
+<p>SVM、LR模型等常常需要考虑归一化和one hot（dummy）的问题。</p>
+<p>4，划分数据集</p>
+<p>然后采用k折交叉验证。当线下的验证集和线上的测试集有同步的效果时最好，此时可以通过线下的验证集变化来验证线上情况。</p>
+<p>比赛中我没有做到。但是后面问了大佬，做法是把训练集里的有点击广告行为的用户数据抽取出来作为的训练集。</p>
+<h3 id="3-特征工程"><a href="#3-特征工程" class="headerlink" title="3 特征工程"></a>3 特征工程</h3><p>1，特征工程是最重要的。我们其实尝试用过自动特征工程，有一个featuretools，但这个做的所有统计特征都比较偏向数值类型的特征。做类别特征不太强。所以后面还是自己做特征。总的来说，我们应该生成尽量多的 Feature，相信 Model 能够挑出最有用的 Feature。</p>
+<p>交叉特征：把俩取值连接起来，然后将str转换为数值。</p>
+<p>俩俩特征之间的统计特征：比如用户看那些类别的广告数目，用户看广告主的次数等等。还有三个特征之间的统计特征。</p>
+<p>还有就是word2ve的用户id和广告id序列特征（但这个效果不太好）。</p>
+<p>2，筛选特征：</p>
+<p>Random Forest 训练完以后得到的 Feature Importance。</p>
+<p>也可以进行一些统计检验，卡方检验等。</p>
+<p>直接观察CTR。比如特征对应的CTR数目。</p>
+<h3 id="4-模型"><a href="#4-模型" class="headerlink" title="4 模型"></a>4 模型</h3><p>采用了lightGBM树模型。优点：基于直方图的树结点划分，内存消耗更少速度更快。lightGBM的论文阅读见博客。</p>
+<p>注意一些模型选择：</p>
+<ul>
+<li><p>对于稀疏型特征（如文本特征，One-hot的ID类特征），我们一般使用线性模型，比如 Linear Regression 或者 Logistic Regression。Random Forest 和 GBDT 等树模型不太适用于稀疏的特征，但可以先对特征进行降维（如PCA，SVD/LSA等），再使用这些特征。稀疏特征直接输入 DNN 会导致网络 weight 较多，不利于优化，也可以考虑先降维，或者对 ID 类特征使用 Embedding 的方式；</p>
+</li>
+<li><p>对于稠密型特征，推荐使用 XGBoost 进行建模，简单易用效果好；</p>
+</li>
+<li>数据中既有稀疏特征，又有稠密特征，可以考虑使用线性模型对稀疏特征进行建模，将其输出与稠密特征一起再输入 XGBoost/DNN 建模。</li>
+</ul>
+<p>最后理论是要用“好而不同”的模型进行集成的，不过作为基模型lightGBM初期就够用了。</p>
+<h3 id="5-学习"><a href="#5-学习" class="headerlink" title="5 学习"></a>5 学习</h3><p>大佬们的特征工程：</p>
+<p>统计特征：当天广告曝光次数，当天用户曝光次数，当天广告主ID相对用户出现的次数，当天广告位相对用户出现的次数。</p>
+<p>unique特征，用户相对广告的唯一ID，广告相对用户的唯一ID。</p>
+<p>Ratio点击率特征：一维二维的点击率特征。</p>
+<p>低频数据：置None，lightGBM对NULL数据处理友好。</p>
+<p>序列数据：deepwalk或word2vec方法（Uid和广告id）</p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，seaborn 可视化 <a href="http://seaborn.pydata.org/tutorial.html" target="_blank" rel="noopener">http://seaborn.pydata.org/tutorial.html</a></p>
+<p>2，个人印象笔记《复赛答辩学习》</p>
+
     </div>
 
     
@@ -520,7 +562,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-赛题介绍"><span class="nav-number">1.</span> <span class="nav-text">1 赛题介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-数据预处理"><span class="nav-number">2.</span> <span class="nav-text">2 数据预处理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-分析数据"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 分析数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-缺失值处理"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 缺失值处理</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-赛题介绍"><span class="nav-number">1.</span> <span class="nav-text">1 赛题介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-数据预处理"><span class="nav-number">2.</span> <span class="nav-text">2 数据预处理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-分析数据"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 分析数据</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2-1-分布情况"><span class="nav-number">2.1.1.</span> <span class="nav-text">2.2.1 分布情况</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2-2-可视化分析"><span class="nav-number">2.1.2.</span> <span class="nav-text">2.2.2 可视化分析</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-数据处理"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 数据处理</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-特征工程"><span class="nav-number">3.</span> <span class="nav-text">3 特征工程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-模型"><span class="nav-number">4.</span> <span class="nav-text">4 模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-学习"><span class="nav-number">5.</span> <span class="nav-text">5 学习</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reference"><span class="nav-number">6.</span> <span class="nav-text">Reference</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
