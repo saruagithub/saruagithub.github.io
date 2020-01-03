@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>2019HUAWEI_DiGiX_CTR</title>
-    <url>/2020/01/03/2019HUAWEI-DiGiX-CTR/</url>
-    <content><![CDATA[]]></content>
-  </entry>
-  <entry>
     <title>20191231面试2</title>
     <url>/2020/01/02/20191231%E7%9F%A5%E4%B9%8E%E9%9D%A2%E8%AF%95/</url>
     <content><![CDATA[<h3 id="1，项目介绍"><a href="#1，项目介绍" class="headerlink" title="1，项目介绍"></a>1，项目介绍</h3><p>首先自我介绍。再介绍异常检测项目。在介绍广告CTR项目。</p>
@@ -223,8 +218,8 @@
         <category>AIOps</category>
       </categories>
       <tags>
-        <tag>AIOps</tag>
         <tag>机器学习</tag>
+        <tag>AIOps</tag>
       </tags>
   </entry>
   <entry>
@@ -402,8 +397,191 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
         <category>深度学习</category>
       </categories>
       <tags>
-        <tag>配置</tag>
         <tag>深度学习</tag>
+        <tag>配置</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>2019HUAWEI_DiGiX_CTR</title>
+    <url>/2019/07/20/2019HUAWEI-DiGiX-CTR/</url>
+    <content><![CDATA[<h3 id="1-赛题介绍"><a href="#1-赛题介绍" class="headerlink" title="1 赛题介绍"></a>1 赛题介绍</h3><p>比赛是广告CTR预估问题。 数据如下：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>train.zip</th>
+<th>zip（2.62GB）</th>
+<th>2019-05-18 00:00:00</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>test.zip</td>
+<td>zip（15MB）</td>
+<td>2019-05-18 00:00:00</td>
+<td></td>
+</tr>
+<tr>
+<td>user_info.zip</td>
+<td>zip（291MB）</td>
+<td>2019-05-18 00:00:00</td>
+<td></td>
+</tr>
+<tr>
+<td>ad_info.zip</td>
+<td>zip（17.9KB）</td>
+<td>2019-05-18 00:00:00</td>
+<td></td>
+</tr>
+<tr>
+<td>content_info.zip</td>
+<td>zip（8.16KB）</td>
+<td>2019-05-18 00:00:00</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p> 时间范围是某连续6天的行为数据。总体而言，数据集包含： 训练集数据文件、测试集数据文件、用户特征文件、广告任务特征文件、素材信息数据文件。train表和test表里的字段：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>label</th>
+<th>是否点击，1表示点击，0表示未点击</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>uId</td>
+<td>匿名化处理后的用户唯一标识(示例：u100000001)</td>
+</tr>
+<tr>
+<td>adId</td>
+<td>广告任务唯一标识</td>
+</tr>
+<tr>
+<td>operTime</td>
+<td>操作时间(精确到毫秒，示例: “2019-04-01 10:45:20:257”)</td>
+</tr>
+<tr>
+<td>siteId</td>
+<td>媒体Id</td>
+</tr>
+<tr>
+<td>slotId</td>
+<td>广告位Id</td>
+</tr>
+<tr>
+<td>contentId</td>
+<td>素材Id</td>
+</tr>
+<tr>
+<td>netType</td>
+<td>网络连接类型(示例：1, 2, 3, 4, 5, 6)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>user_info表</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>uId</th>
+<th>匿名化处理后的用户唯一标识(示例：u100000001)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>age</td>
+<td>年龄段(示例：1, 2, 3, 4, 5, 6)</td>
+</tr>
+<tr>
+<td>gender</td>
+<td>性别(示例：1, 2, 3)</td>
+</tr>
+<tr>
+<td>city</td>
+<td>常住城市编码(示例：1, 2, 3…)</td>
+</tr>
+<tr>
+<td>province</td>
+<td>常驻省份编码(示例：1, 2, 3…)</td>
+</tr>
+<tr>
+<td>phoneType</td>
+<td>设备型号(示例：1, 2, 3…)</td>
+</tr>
+<tr>
+<td>carrier</td>
+<td>运营商编号</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p> 广告任务特征文件ad_info.csv：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>adId</th>
+<th>广告任务唯一标识(示例：2556)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>billId</td>
+<td>计费类型(示例：cpc, cpm, cpd)</td>
+</tr>
+<tr>
+<td>primId</td>
+<td>广告主唯一编号Id</td>
+</tr>
+<tr>
+<td>creativeType</td>
+<td>创意类型(示例：1. 文字广告，2. 图片广告，3. 图文广告，4. gif广告，5. 无具体创意类型)</td>
+</tr>
+<tr>
+<td>intertype</td>
+<td>交互类型(示例：0. 无交互，点击无响应，1. 点击后打开网，2. 点击下载应用，3. 点击后打开App)</td>
+</tr>
+<tr>
+<td>spreadAppId</td>
+<td>广告对应的appId</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p> 素材信息数据文件content_info.csv:</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>contentId</th>
+<th>素材唯一标识Id</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>firstClass</td>
+<td>素材内容文本的一级分类(示例：电商)</td>
+</tr>
+<tr>
+<td>secondClass</td>
+<td>素材内容文本的二级分类，多值使用‘#’分割</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="2-数据预处理"><a href="#2-数据预处理" class="headerlink" title="2 数据预处理"></a>2 数据预处理</h3><h4 id="2-1-分析数据"><a href="#2-1-分析数据" class="headerlink" title="2.1 分析数据"></a>2.1 分析数据</h4><p>1，首先查看每个表里数据的分布情况。尤其注意训练集与测试集的分布情况。pd.des查看平均值、中值、</p>
+]]></content>
+      <categories>
+        <category>机器学习</category>
+      </categories>
+      <tags>
+        <tag>机器学习</tag>
+        <tag>华为比赛</tag>
       </tags>
   </entry>
   <entry>
