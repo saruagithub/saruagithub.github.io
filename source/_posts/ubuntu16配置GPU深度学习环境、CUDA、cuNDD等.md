@@ -5,11 +5,11 @@ tags:
 - 配置
 - 深度学习
 categories:
-- 深度学习DL
+- 深度学习
 ---
 ### 1、准备
  1. 请先看好各种软件的版本对应要求，这仨一定要对应好。
- 	 [Tensorflow不同版本要求与CUDA及CUDNN版本对应关系](https://blog.csdn.net/omodao1/article/details/83241074)
+	 	 [Tensorflow不同版本要求与CUDA及CUDNN版本对应关系](https://blog.csdn.net/omodao1/article/details/83241074)
  2. 知道要下哪些版本了，就预先做好各种软件下载工作。
      首先下载好英伟达的驱动 [NVIDIA驱动下载](https://www.nvidia.cn/Download/index.aspx?lang=cn)
      注意！！！下载好跟自己显卡对应的驱动。显卡的产品类型、系列那些如果之前已经装好了驱动，则可以通过命令 nvidia-smi查询到。没有装刚买来就自己查。
@@ -17,7 +17,7 @@ categories:
     即使你的机器之前已经装过驱动，那也最好重新装一遍驱动，因为那个CUDA一定要对应起来。不然后面有坑！
     
     下载CUDA，链接 [cuda-toolkit-archive](https://developer.nvidia.com/cuda-toolkit-archive)
-  ![下载CUDA9.0版本](https://img-blog.csdnimg.cn/20190519154540803.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNjczNDUz,size_1,color_FFFFFF,t_70)
+    ![下载CUDA9.0版本](https://img-blog.csdnimg.cn/20190519154540803.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNjczNDUz,size_1,color_FFFFFF,t_70)
 请注意这里一定要选择下载runfilw文件，不是deb！，不然会覆盖之前的显卡驱动带来问题。
 ![对应操作系统下载CUDA](https://img-blog.csdnimg.cn/20190519154709423.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzMyNjczNDUz,size_1,color_FFFFFF,t_70)
 最后下载cuDNN，[cuDNN下载地址](https://developer.nvidia.com/rdp/cudnn-archive)，我下的7.0.5版本
