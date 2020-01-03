@@ -575,7 +575,7 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
 </table>
 </div>
 <h3 id="2-数据预处理"><a href="#2-数据预处理" class="headerlink" title="2 数据预处理"></a>2 数据预处理</h3><h4 id="2-1-分析数据"><a href="#2-1-分析数据" class="headerlink" title="2.1 分析数据"></a>2.1 分析数据</h4><p>1，首先查看每个表里数据的分布情况。尤其注意训练集与测试集的分布情况。pd.des查看平均值、中值、</p>
-]]></content>
+<h4 id="2-2-缺失值处理"><a href="#2-2-缺失值处理" class="headerlink" title="2.2 缺失值处理"></a>2.2 缺失值处理</h4>]]></content>
       <categories>
         <category>机器学习</category>
       </categories>
