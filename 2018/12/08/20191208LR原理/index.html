@@ -47,13 +47,13 @@
   };
 </script>
 
-  <meta name="description" content="1、线性回归1.1 单变量线性回归x ——&amp;gt; hypothesis（假设）——&amp;gt; y，此处假设为线性函数，y输出为数值（若是分类则为0或1） h_{\theta}{(x)} = \theta^Tx为了让hypothesis尽量根据数据拟合好曲线，需要设计损失函数，并对此损失函数优化。损失函数是参数$\theta$ 的 Cost function:  J(\theta)=\min \fr">
+  <meta name="description" content="1、线性回归1.1 单变量线性回归x ——&amp;gt; hypothesis（假设）——&amp;gt; y，此处假设为线性函数，y输出为数值（若是分类则为0或1）h_{\theta}{(x)} = \theta^Tx为了让hypothesis尽量根据数据拟合好曲线，需要设计损失函数，并对此损失函数优化。损失函数是参数$\theta$ 的 Cost function:">
 <meta name="keywords" content="机器学习">
 <meta property="og:type" content="article">
 <meta property="og:title" content="LR原理">
 <meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2018&#x2F;12&#x2F;08&#x2F;20191208LR%E5%8E%9F%E7%90%86&#x2F;index.html">
 <meta property="og:site_name" content="WangXue">
-<meta property="og:description" content="1、线性回归1.1 单变量线性回归x ——&amp;gt; hypothesis（假设）——&amp;gt; y，此处假设为线性函数，y输出为数值（若是分类则为0或1） h_{\theta}{(x)} = \theta^Tx为了让hypothesis尽量根据数据拟合好曲线，需要设计损失函数，并对此损失函数优化。损失函数是参数$\theta$ 的 Cost function:  J(\theta)=\min \fr">
+<meta property="og:description" content="1、线性回归1.1 单变量线性回归x ——&amp;gt; hypothesis（假设）——&amp;gt; y，此处假设为线性函数，y输出为数值（若是分类则为0或1）h_{\theta}{(x)} = \theta^Tx为了让hypothesis尽量根据数据拟合好曲线，需要设计损失函数，并对此损失函数优化。损失函数是参数$\theta$ 的 Cost function:">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20191209overfit.jpg">
 <meta property="og:updated_time" content="2019-12-25T12:07:43.560Z">
@@ -287,8 +287,8 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h3 id="1、线性回归"><a href="#1、线性回归" class="headerlink" title="1、线性回归"></a>1、线性回归</h3><h4 id="1-1-单变量线性回归"><a href="#1-1-单变量线性回归" class="headerlink" title="1.1 单变量线性回归"></a>1.1 单变量线性回归</h4><p>x ——&gt; hypothesis（假设）——&gt; y，此处假设为线性函数，y输出为数值（若是分类则为0或1）</p>
-<script type="math/tex; mode=display">h_{\theta}{(x)} = \theta^Tx</script><p>为了让hypothesis尽量根据数据拟合好曲线，需要设计损失函数，并对此损失函数优化。损失函数是参数$\theta$ 的 Cost function: </p>
+        <h3 id="1、线性回归"><a href="#1、线性回归" class="headerlink" title="1、线性回归"></a>1、线性回归</h3><h4 id="1-1-单变量线性回归"><a href="#1-1-单变量线性回归" class="headerlink" title="1.1 单变量线性回归"></a>1.1 单变量线性回归</h4><p>x ——&gt; hypothesis（假设）——&gt; y，此处假设为线性函数，y输出为数值（若是分类则为0或1）</p><script type="math/tex; mode=display">h_{\theta}{(x)} = \theta^Tx</script><p>为了让hypothesis尽量根据数据拟合好曲线，需要设计损失函数，并对此损失函数优化。损失函数是参数$\theta$ 的 Cost function: </p><a id="more"></a>
+
 <script type="math/tex; mode=display">J(\theta)=\min \frac{1}{2m} \sum_{i=1}^{m}\left(h_{\theta}(x)-y\right)^{2}</script><p>优化损失函数用到梯度下降法：</p>
 <p>为了 $min J(\theta)$，我们采用随机梯度下降方法。（其实也可以用一些矩阵直接计算的方法，最优化里的牛顿法、BFGS等等）</p>
 <p>repeat until convergence{</p>

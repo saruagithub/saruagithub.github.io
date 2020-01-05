@@ -47,13 +47,13 @@
   };
 </script>
 
-  <meta name="description" content="1 简介EM算法是一种迭代算法，用于含有隐变量的概率模型参数的极大似然估计。  E步：求期望；M步，求极大。  1.1 例子P176三硬币模型：  p_{(y&#x2F;\theta)}=\sum_{\mathcal{Z}} P(y, z | \theta)=\sum_{\mathcal{Z}} P(z | \theta) P(y | z, \theta)= \pi p^y(1-p)^{(1-y)} + (">
+  <meta name="description" content="1 简介EM算法是一种迭代算法，用于含有隐变量的概率模型参数的极大似然估计。 E步：求期望；M步，求极大。 1.1 例子P176三硬币模型： p_{(y&#x2F;\theta)}=\sum_{\mathcal{Z}} P(y, z | \theta)=\sum_{\mathcal{Z}} P(z | \theta) P(y | z, \theta)">
 <meta name="keywords" content="机器学习">
 <meta property="og:type" content="article">
 <meta property="og:title" content="EM算法">
 <meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2018&#x2F;12&#x2F;25&#x2F;20200104EM%E7%AE%97%E6%B3%95&#x2F;index.html">
 <meta property="og:site_name" content="WangXue">
-<meta property="og:description" content="1 简介EM算法是一种迭代算法，用于含有隐变量的概率模型参数的极大似然估计。  E步：求期望；M步，求极大。  1.1 例子P176三硬币模型：  p_{(y&#x2F;\theta)}=\sum_{\mathcal{Z}} P(y, z | \theta)=\sum_{\mathcal{Z}} P(z | \theta) P(y | z, \theta)= \pi p^y(1-p)^{(1-y)} + (">
+<meta property="og:description" content="1 简介EM算法是一种迭代算法，用于含有隐变量的概率模型参数的极大似然估计。 E步：求期望；M步，求极大。 1.1 例子P176三硬币模型： p_{(y&#x2F;\theta)}=\sum_{\mathcal{Z}} P(y, z | \theta)=\sum_{\mathcal{Z}} P(z | \theta) P(y | z, \theta)">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2020-01-04T04:22:23.924Z">
 <meta name="twitter:card" content="summary">
@@ -285,10 +285,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h3 id="1-简介"><a href="#1-简介" class="headerlink" title="1 简介"></a>1 简介</h3><p>EM算法是一种迭代算法，用于含有隐变量的概率模型参数的极大似然估计。 </p>
-<p>E步：求期望；M步，求极大。 </p>
-<h4 id="1-1-例子"><a href="#1-1-例子" class="headerlink" title="1.1 例子"></a>1.1 例子</h4><p>P176三硬币模型： </p>
-<script type="math/tex; mode=display">p_{(y/\theta)}=\sum_{\mathcal{Z}} P(y, z | \theta)=\sum_{\mathcal{Z}} P(z | \theta) P(y | z, \theta)</script><script type="math/tex; mode=display">= \pi p^y(1-p)^{(1-y)} + (1-\pi)q^y (1-q)^{(1-y)}</script><p>y是观测变量，表示一次试验结果是1或0； </p>
+        <h3 id="1-简介"><a href="#1-简介" class="headerlink" title="1 简介"></a>1 简介</h3><p>EM算法是一种迭代算法，用于含有隐变量的概率模型参数的极大似然估计。 </p><p>E步：求期望；M步，求极大。 </p><h4 id="1-1-例子"><a href="#1-1-例子" class="headerlink" title="1.1 例子"></a>1.1 例子</h4><p>P176三硬币模型： </p><script type="math/tex; mode=display">p_{(y/\theta)}=\sum_{\mathcal{Z}} P(y, z | \theta)=\sum_{\mathcal{Z}} P(z | \theta) P(y | z, \theta)</script><a id="more"></a>
+
+
+<script type="math/tex; mode=display">= \pi p^y(1-p)^{(1-y)} + (1-\pi)q^y (1-q)^{(1-y)}</script><p>y是观测变量，表示一次试验结果是1或0； </p>
 <p>z（随机变量）是隐变量，表示未观测到的抛硬币A的结果 </p>
 <p>$\theta = (\pi,p,q)$ 是模型参数。 </p>
 <p>这个模型是以上数据的生成模型 </p>

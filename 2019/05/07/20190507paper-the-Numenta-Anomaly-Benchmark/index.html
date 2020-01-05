@@ -47,13 +47,13 @@
   };
 </script>
 
-  <meta name="description" content="1 ABS &amp;amp; Introduction1.1 Abstract对象：streams, time-series data, sequence 异常检测难点：real-time processing NAB是一个测试评估针对流数据的异常检测算法的开源工具。 理想的异常检测器   检测到所有出现的异常   尽早检测出异常，最好在人们看到异常之前   no FP 不误报   实时检测、没有前瞻（">
+  <meta name="description" content="1 ABS &amp;amp; Introduction1.1 Abstract对象：streams, time-series data, sequence异常检测难点：real-time processingNAB是一个测试评估针对流数据的异常检测算法的开源工具。理想的异常检测器  检测到所有出现的异常   尽早检测出异常，最好在人们看到异常之前   no FP 不误报   实时检测、没有前瞻（不看前面">
 <meta name="keywords" content="时间序列,AIOps">
 <meta property="og:type" content="article">
 <meta property="og:title" content="20190507paper the Numenta Anomaly Benchmark">
 <meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;05&#x2F;07&#x2F;20190507paper-the-Numenta-Anomaly-Benchmark&#x2F;index.html">
 <meta property="og:site_name" content="WangXue">
-<meta property="og:description" content="1 ABS &amp;amp; Introduction1.1 Abstract对象：streams, time-series data, sequence 异常检测难点：real-time processing NAB是一个测试评估针对流数据的异常检测算法的开源工具。 理想的异常检测器   检测到所有出现的异常   尽早检测出异常，最好在人们看到异常之前   no FP 不误报   实时检测、没有前瞻（">
+<meta property="og:description" content="1 ABS &amp;amp; Introduction1.1 Abstract对象：streams, time-series data, sequence异常检测难点：real-time processingNAB是一个测试评估针对流数据的异常检测算法的开源工具。理想的异常检测器  检测到所有出现的异常   尽早检测出异常，最好在人们看到异常之前   no FP 不误报   实时检测、没有前瞻（不看前面">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20191210anomaly.jpg">
 <meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20191210AnomalyWindow.jpg">
@@ -289,11 +289,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h3 id="1-ABS-amp-Introduction"><a href="#1-ABS-amp-Introduction" class="headerlink" title="1 ABS &amp; Introduction"></a>1 ABS &amp; Introduction</h3><h4 id="1-1-Abstract"><a href="#1-1-Abstract" class="headerlink" title="1.1 Abstract"></a>1.1 Abstract</h4><p>对象：streams, time-series data, sequence</p>
-<p>异常检测难点：real-time processing</p>
-<p>NAB是一个测试评估针对流数据的异常检测算法的开源工具。</p>
-<p>理想的异常检测器 </p>
-<ol>
+        <h3 id="1-ABS-amp-Introduction"><a href="#1-ABS-amp-Introduction" class="headerlink" title="1 ABS &amp; Introduction"></a>1 ABS &amp; Introduction</h3><h4 id="1-1-Abstract"><a href="#1-1-Abstract" class="headerlink" title="1.1 Abstract"></a>1.1 Abstract</h4><p>对象：streams, time-series data, sequence</p><p>异常检测难点：real-time processing</p><p>NAB是一个测试评估针对流数据的异常检测算法的开源工具。</p><p>理想的异常检测器 </p><ol>
 <li><p>检测到所有出现的异常 </p>
 </li>
 <li><p>尽早检测出异常，最好在人们看到异常之前 </p>
@@ -305,7 +301,11 @@
 <li><p>自动化检测、无人工调节</p>
 </li>
 <li>适用性广泛，具有泛化性</li>
-</ol>
+</ol><a id="more"></a>
+
+
+
+
 <h4 id="1-2-Intro"><a href="#1-2-Intro" class="headerlink" title="1.2 Intro"></a>1.2 Intro</h4><p>静态基准不适合用于实时性算法。Precision和Recall无法反应出早检测这个效果。人工划分训练集测试集不适合流场景。NAB设计了新的评价标准，整合了各类数据集。其他数据集还有the UC- Irvine dataset ，Yahoo Labs。本论文比较了HTM、Skyline、与Twitter的两种方法<a href="https://blog.twitter.com/engineering/en_us/a/2015/introducing-practical-and-robust-anomaly-detection-in-a-time-series.html" target="_blank" rel="noopener">Twitter 方法，翻</a> （AnomalyDetectionTs and AnomalyDetectionVec. ）。</p>
 <h3 id="2，NAB-scoring"><a href="#2，NAB-scoring" class="headerlink" title="2，NAB scoring"></a>2，NAB scoring</h3><h4 id="2-1-基础"><a href="#2-1-基础" class="headerlink" title="2.1 基础"></a>2.1 基础</h4><p>异常定义：We define anomalies in a data stream to be patterns that do not conform to past patterns of behavior for the stream. 包括空间异常和时间异常。</p>
 <p><img src="/images/20191210anomaly.jpg" alt="20191210anomaly"></p>

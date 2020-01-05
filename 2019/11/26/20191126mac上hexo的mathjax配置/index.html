@@ -47,13 +47,13 @@
   };
 </script>
 
-  <meta name="description" content="博文中要写公式是难免的，因为配置hexo支持数学公式是必要的。 Next 主题提供了两个渲染引擎，分别是 mathjax 和 katex，后者相对前者来说渲染速度更快，而且支持更丰富的公式。我这里hexo是4.0版本了，因此又折腾了下。 1，更改next下的config配置next主题里的_config如下，只需要改一个地方就是mathjax的enable为true。 12345678910111">
+  <meta name="description" content="博文中要写公式是难免的，因为配置hexo支持数学公式是必要的。 Next 主题提供了两个渲染引擎，分别是 mathjax 和 katex，后者相对前者来说渲染速度更快，而且支持更丰富的公式。我这里hexo是4.0版本了，因此又折腾了下。1，更改next下的config配置next主题里的_config如下，只需要改一个地方就是mathjax的enable为true。">
 <meta name="keywords" content="配置">
 <meta property="og:type" content="article">
 <meta property="og:title" content="mac上hexo的mathjax配置">
 <meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;11&#x2F;26&#x2F;20191126mac%E4%B8%8Ahexo%E7%9A%84mathjax%E9%85%8D%E7%BD%AE&#x2F;index.html">
 <meta property="og:site_name" content="WangXue">
-<meta property="og:description" content="博文中要写公式是难免的，因为配置hexo支持数学公式是必要的。 Next 主题提供了两个渲染引擎，分别是 mathjax 和 katex，后者相对前者来说渲染速度更快，而且支持更丰富的公式。我这里hexo是4.0版本了，因此又折腾了下。 1，更改next下的config配置next主题里的_config如下，只需要改一个地方就是mathjax的enable为true。 12345678910111">
+<meta property="og:description" content="博文中要写公式是难免的，因为配置hexo支持数学公式是必要的。 Next 主题提供了两个渲染引擎，分别是 mathjax 和 katex，后者相对前者来说渲染速度更快，而且支持更丰富的公式。我这里hexo是4.0版本了，因此又折腾了下。1，更改next下的config配置next主题里的_config如下，只需要改一个地方就是mathjax的enable为true。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2019-12-10T01:46:28.124Z">
 <meta name="twitter:card" content="summary">
@@ -285,8 +285,8 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>博文中要写公式是难免的，因为配置hexo支持数学公式是必要的。 Next 主题提供了两个渲染引擎，分别是 mathjax 和 katex，后者相对前者来说渲染速度更快，而且支持更丰富的公式。我这里hexo是4.0版本了，因此又折腾了下。</p>
-<h6 id="1，更改next下的config"><a href="#1，更改next下的config" class="headerlink" title="1，更改next下的config"></a>1，更改next下的config</h6><p>配置next主题里的_config如下，只需要改一个地方就是mathjax的enable为true。</p>
+        <p>博文中要写公式是难免的，因为配置hexo支持数学公式是必要的。 Next 主题提供了两个渲染引擎，分别是 mathjax 和 katex，后者相对前者来说渲染速度更快，而且支持更丰富的公式。我这里hexo是4.0版本了，因此又折腾了下。</p><h6 id="1，更改next下的config"><a href="#1，更改next下的config" class="headerlink" title="1，更改next下的config"></a>1，更改next下的config</h6><p>配置next主题里的_config如下，只需要改一个地方就是mathjax的enable为true。</p><a id="more"></a>
+
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># Math Formulas Render Support</span><br><span class="line">math:</span><br><span class="line">  # Default (true) will load mathjax / katex script on demand.</span><br><span class="line">  # That is it only render those page which has `mathjax: true` in Front-matter.</span><br><span class="line">  # If you set it to false, it will load mathjax / katex srcipt EVERY PAGE.</span><br><span class="line">  per_page: true</span><br><span class="line"></span><br><span class="line">  # hexo-renderer-pandoc (or hexo-renderer-kramed) required for full MathJax support.</span><br><span class="line">  mathjax:</span><br><span class="line">    enable: true</span><br><span class="line">    # See: https://mhchem.github.io/MathJax-mhchem/</span><br><span class="line">    mhchem: false</span><br></pre></td></tr></table></figure>
 <h6 id="2-去掉hexo自带的数学渲染"><a href="#2-去掉hexo自带的数学渲染" class="headerlink" title="2, 去掉hexo自带的数学渲染"></a>2, 去掉hexo自带的数学渲染</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm uninstall hexo-renderer-marked --save</span><br><span class="line">npm install hexo-renderer-kramed --save</span><br></pre></td></tr></table></figure>
 <p>在修改下源文件。打开<code>node_modules/hexo-renderer-kramed/lib/renderer.js</code>，将</p>

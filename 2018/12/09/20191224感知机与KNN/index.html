@@ -47,13 +47,13 @@
   };
 </script>
 
-  <meta name="description" content="1 感知机1.1 简介感知机是二分类线性分类模型，感知机对输入空间中将实例划分为正负两类的分离超平面，属于判别模型。使用基于误分类的损失函数，利用梯度下降法对损失函数进行最小化。 感知机： f(x)=\operatorname{sign}(w \cdot x+b)\operatorname{sign}(x)=\left\{\begin{array}{ll}{+1,} &amp; {x \geqslant">
+  <meta name="description" content="1 感知机1.1 简介感知机是二分类线性分类模型，感知机对输入空间中将实例划分为正负两类的分离超平面，属于判别模型。使用基于误分类的损失函数，利用梯度下降法对损失函数进行最小化。感知机：f(x)=\operatorname{sign}(w \cdot x+b)\operatorname{sign}(x)=\left\{\begin{array}{ll}{+1,} &amp; {x \geqslant 0}">
 <meta name="keywords" content="机器学习">
 <meta property="og:type" content="article">
 <meta property="og:title" content="感知机 &amp; KNN">
 <meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2018&#x2F;12&#x2F;09&#x2F;20191224%E6%84%9F%E7%9F%A5%E6%9C%BA%E4%B8%8EKNN&#x2F;index.html">
 <meta property="og:site_name" content="WangXue">
-<meta property="og:description" content="1 感知机1.1 简介感知机是二分类线性分类模型，感知机对输入空间中将实例划分为正负两类的分离超平面，属于判别模型。使用基于误分类的损失函数，利用梯度下降法对损失函数进行最小化。 感知机： f(x)=\operatorname{sign}(w \cdot x+b)\operatorname{sign}(x)=\left\{\begin{array}{ll}{+1,} &amp; {x \geqslant">
+<meta property="og:description" content="1 感知机1.1 简介感知机是二分类线性分类模型，感知机对输入空间中将实例划分为正负两类的分离超平面，属于判别模型。使用基于误分类的损失函数，利用梯度下降法对损失函数进行最小化。感知机：f(x)=\operatorname{sign}(w \cdot x+b)\operatorname{sign}(x)=\left\{\begin{array}{ll}{+1,} &amp; {x \geqslant 0}">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20181204InceptionMachine.jpg">
 <meta property="og:updated_time" content="2019-12-25T09:45:18.376Z">
@@ -287,9 +287,9 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h3 id="1-感知机"><a href="#1-感知机" class="headerlink" title="1 感知机"></a>1 感知机</h3><h4 id="1-1-简介"><a href="#1-1-简介" class="headerlink" title="1.1 简介"></a>1.1 简介</h4><p>感知机是二分类<u>线性分类</u>模型，感知机对输入空间中将实例划分为正负两类的分离超平面，属于判别模型。使用基于误分类的损失函数，利用梯度下降法对损失函数进行最小化。</p>
-<p>感知机：</p>
-<script type="math/tex; mode=display">f(x)=\operatorname{sign}(w \cdot x+b)</script><script type="math/tex; mode=display">\operatorname{sign}(x)=\left\{\begin{array}{ll}{+1,} & {x \geqslant 0} \\ {-1,} & {x<0}\end{array}\right.</script><p><img src="/images/20181204InceptionMachine.jpg" alt="20181204InceptionMachine"></p>
+        <h3 id="1-感知机"><a href="#1-感知机" class="headerlink" title="1 感知机"></a>1 感知机</h3><h4 id="1-1-简介"><a href="#1-1-简介" class="headerlink" title="1.1 简介"></a>1.1 简介</h4><p>感知机是二分类<u>线性分类</u>模型，感知机对输入空间中将实例划分为正负两类的分离超平面，属于判别模型。使用基于误分类的损失函数，利用梯度下降法对损失函数进行最小化。</p><p>感知机：</p><script type="math/tex; mode=display">f(x)=\operatorname{sign}(w \cdot x+b)</script><script type="math/tex; mode=display">\operatorname{sign}(x)=\left\{\begin{array}{ll}{+1,} & {x \geqslant 0} \\ {-1,} & {x<0}\end{array}\right.</script><a id="more"></a>
+
+<p><img src="/images/20181204InceptionMachine.jpg" alt="20181204InceptionMachine"></p>
 <h4 id="1-2-学习策略"><a href="#1-2-学习策略" class="headerlink" title="1.2 学习策略"></a>1.2 学习策略</h4><p>损失函数的自然选择是误分类点的总数（但这样$w,b$不是连续可导函数，不易优化）</p>
 <p>故采用误分类点到超平面$S$的总距离：</p>
 <script type="math/tex; mode=display">\frac{1}{\|w\|}\left|w \cdot x_{0}+b\right|</script><p>由于对于一个误分类的数据$(x_i,y_i)$来说：</p>

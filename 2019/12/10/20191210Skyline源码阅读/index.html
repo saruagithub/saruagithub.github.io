@@ -47,13 +47,13 @@
   };
 </script>
 
-  <meta name="description" content="1 基类结构首先看异常检测基类base.py，所有检测器都是由它继承而来： 1，init() ：初始化dataSet，probationaryPercent 数据的最初一部分数据不做测试。inputMin, inputMax初始化最大最小值。 2，initialize()：多进程问题。进程池pool（它默认调用的是CPU的核数） 3，handleRecord(): 返回每一个时间点的异常分数值，R">
+  <meta name="description" content="1 基类结构首先看异常检测基类base.py，所有检测器都是由它继承而来：1，init() ：初始化dataSet，probationaryPercent 数据的最初一部分数据不做测试。inputMin, inputMax初始化最大最小值。2，initialize()：多进程问题。进程池pool（它默认调用的是CPU的核数）">
 <meta name="keywords" content="机器学习,AIOps">
 <meta property="og:type" content="article">
 <meta property="og:title" content="20191210Skyline源码阅读">
 <meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;12&#x2F;10&#x2F;20191210Skyline%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB&#x2F;index.html">
 <meta property="og:site_name" content="WangXue">
-<meta property="og:description" content="1 基类结构首先看异常检测基类base.py，所有检测器都是由它继承而来： 1，init() ：初始化dataSet，probationaryPercent 数据的最初一部分数据不做测试。inputMin, inputMax初始化最大最小值。 2，initialize()：多进程问题。进程池pool（它默认调用的是CPU的核数） 3，handleRecord(): 返回每一个时间点的异常分数值，R">
+<meta property="og:description" content="1 基类结构首先看异常检测基类base.py，所有检测器都是由它继承而来：1，init() ：初始化dataSet，probationaryPercent 数据的最初一部分数据不做测试。inputMin, inputMax初始化最大最小值。2，initialize()：多进程问题。进程池pool（它默认调用的是CPU的核数）">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2019-12-31T10:33:24.904Z">
 <meta name="twitter:card" content="summary">
@@ -285,9 +285,9 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h3 id="1-基类结构"><a href="#1-基类结构" class="headerlink" title="1 基类结构"></a>1 基类结构</h3><p>首先看异常检测基类base.py，所有检测器都是由它继承而来：</p>
-<p>1，init() ：初始化dataSet，probationaryPercent 数据的最初一部分数据不做测试。inputMin, inputMax初始化最大最小值。</p>
-<p>2，initialize()：多进程问题。进程池pool（它默认调用的是CPU的核数）</p>
+        <h3 id="1-基类结构"><a href="#1-基类结构" class="headerlink" title="1 基类结构"></a>1 基类结构</h3><p>首先看异常检测基类base.py，所有检测器都是由它继承而来：</p><p>1，init() ：初始化dataSet，probationaryPercent 数据的最初一部分数据不做测试。inputMin, inputMax初始化最大最小值。</p><p>2，initialize()：多进程问题。进程池pool（它默认调用的是CPU的核数）</p><a id="more"></a>
+
+
 <p>3，handleRecord(): 返回每一个时间点的异常分数值，Returns a list [anomalyScore, *]。这个函数子类必须继承。</p>
 <p>4，getAdditionalHeaders()：如HTM检测器里会添加’anomalyscore’ , ‘rawscore’。添加并返回列名的，run函数中调用它拼接最后返回的dataframe。</p>
 <p>5，detectDataSet(): 在运行给定检测器的每个检测器进程中调用的函数。参数 (i, detectorInstance, detectorName, labels, outputDir, relativePath) = args，主要是创建保存文件的路径，调用detectorInstance.initialize()，results = detectorInstance.run() </p>

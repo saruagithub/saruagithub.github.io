@@ -47,13 +47,13 @@
   };
 </script>
 
-  <meta name="description" content="1 题目leecode142，给定一个链表，返回链表开始入环的第一个节点。 如果链表无环，则返回NULL。 2 hash法与快慢指针法快慢指针法有意思的推导： x：link起点到入环点距离 y: 入环点到相遇点距离 c：circle的长度 相遇时候，慢指针走了x+n1 c  + y （n1假设走了n1圈），快指针走了2倍(x+ n1c+y) 快指针比慢指针多走的路程一定是环长度的整数倍，有2(x+">
+  <meta name="description" content="1 题目leecode142，给定一个链表，返回链表开始入环的第一个节点。 如果链表无环，则返回NULL。2 hash法与快慢指针法快慢指针法有意思的推导：x：link起点到入环点距离y: 入环点到相遇点距离c：circle的长度相遇时候，慢指针走了x+n1 c  + y （n1假设走了n1圈），快指针走了2倍(x+ n1c+y)">
 <meta name="keywords" content="leecode">
 <meta property="og:type" content="article">
 <meta property="og:title" content="20191219leecode142快慢指针学习">
 <meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;12&#x2F;19&#x2F;20191219leecode142%E5%BF%AB%E6%85%A2%E6%8C%87%E9%92%88%E5%AD%A6%E4%B9%A0&#x2F;index.html">
 <meta property="og:site_name" content="WangXue">
-<meta property="og:description" content="1 题目leecode142，给定一个链表，返回链表开始入环的第一个节点。 如果链表无环，则返回NULL。 2 hash法与快慢指针法快慢指针法有意思的推导： x：link起点到入环点距离 y: 入环点到相遇点距离 c：circle的长度 相遇时候，慢指针走了x+n1 c  + y （n1假设走了n1圈），快指针走了2倍(x+ n1c+y) 快指针比慢指针多走的路程一定是环长度的整数倍，有2(x+">
+<meta property="og:description" content="1 题目leecode142，给定一个链表，返回链表开始入环的第一个节点。 如果链表无环，则返回NULL。2 hash法与快慢指针法快慢指针法有意思的推导：x：link起点到入环点距离y: 入环点到相遇点距离c：circle的长度相遇时候，慢指针走了x+n1 c  + y （n1假设走了n1圈），快指针走了2倍(x+ n1c+y)">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2019-12-19T13:39:55.918Z">
 <meta name="twitter:card" content="summary">
@@ -279,12 +279,12 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h3 id="1-题目"><a href="#1-题目" class="headerlink" title="1 题目"></a>1 题目</h3><p>leecode142，给定一个链表，返回链表开始入环的第一个节点。 如果链表无环，则返回NULL。</p>
-<h3 id="2-hash法与快慢指针法"><a href="#2-hash法与快慢指针法" class="headerlink" title="2 hash法与快慢指针法"></a>2 hash法与快慢指针法</h3><p>快慢指针法有意思的推导：</p>
-<p>x：link起点到入环点距离</p>
-<p>y: 入环点到相遇点距离</p>
-<p>c：circle的长度</p>
-<p>相遇时候，慢指针走了x+n1 c  + y （n1假设走了n1圈），快指针走了2倍(x+ n1c+y)</p>
+        <h3 id="1-题目"><a href="#1-题目" class="headerlink" title="1 题目"></a>1 题目</h3><p>leecode142，给定一个链表，返回链表开始入环的第一个节点。 如果链表无环，则返回NULL。</p><h3 id="2-hash法与快慢指针法"><a href="#2-hash法与快慢指针法" class="headerlink" title="2 hash法与快慢指针法"></a>2 hash法与快慢指针法</h3><p>快慢指针法有意思的推导：</p><p>x：link起点到入环点距离</p><p>y: 入环点到相遇点距离</p><p>c：circle的长度</p><p>相遇时候，慢指针走了x+n1 c  + y （n1假设走了n1圈），快指针走了2倍(x+ n1c+y)</p><a id="more"></a>
+
+
+
+
+
 <p>快指针比慢指针多走的路程一定是环长度的整数倍，有2(x+ n1c+y) - (x+ n1c+y) = n2 c </p>
 <p>所以又x + y = (n2 - n1) c</p>
 <p>可以相遇时快指针从起点再走（1倍速），慢指针也走，则相遇点就是入环点。</p>
