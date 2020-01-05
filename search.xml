@@ -1,6 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>20200103LightGBM_paper</title>
+    <url>/2020/01/03/20200103LightGBM-paper/</url>
+    <content><![CDATA[<h3 id="1-摘要简介"><a href="#1-摘要简介" class="headerlink" title="1 摘要简介"></a>1 摘要简介</h3><h4 id="1-1-简介"><a href="#1-1-简介" class="headerlink" title="1.1 简介"></a>1.1 简介</h4><p>GBDT的实现有XGBoost，pGBRT等。但当特征维度高，数据集size大的时候有效性还不够。主要原因在于对每一个特征，都要扫描所有实例并估计所有可能的划分节点的信息增益。</p><p>LightGBM提出的方法是：Gradient-based one-side sampling (GOSS) ，Exclusive feature bundling (EFB)。</p><a id="more"></a>
+
+<h4 id="1-2-GOSS"><a href="#1-2-GOSS" class="headerlink" title="1.2 GOSS"></a>1.2 GOSS</h4><p>GOSS的作用排除相当一部分小的梯度的数据实例（instance），只使用剩下的来估计信息增益。<strong>更大的梯度的数据实例在计算信息增益上起到更重要的作用</strong>。</p>
+<p>GBDT中没有数据实例权重。但具有不同梯度的数据实例在信息增益的计算中起着不同的作用。根据信息增益的定义，<u>那些具有较大梯度的实例（即训练不足的实例）将为信息增益做出更大的贡献</u>。下采样那些梯度大的实例（阈值or百分比），并随机丢弃那些小的梯度的实例。</p>
+<h4 id="1-3-EFB的作用"><a href="#1-3-EFB的作用" class="headerlink" title="1.3 EFB的作用"></a>1.3 EFB的作用</h4><p>EFB的作用：捆绑互斥特征（即，他们很少同时采用非零值）贪心策略来找最优互斥特征。</p>
+<p>现实中，特征空间稀疏。这为我们提供了一种设计几乎无损方法以减少有效特征数量的可能性。在稀疏特征空间中，许多特征几乎是互斥的，即他们很少同时采用非零值（文本挖掘里one hot词表征）。我们可以很安全的捆绑这些互斥特征。</p>
+<p>设计了一个以恒定近似比率的贪心算法将最优特征捆绑问题转换为图着色问题。通过将特征作为顶点并为每两个特征（如果它们之间不是互斥的话）添加边。</p>
+<p><strong>而Hitogram算法的主要作用是减少候选分裂点数量，GOSS算法的作用是减少样本的数量，EFB算法的作用是减少特征的数量。</strong></p>
+<h3 id="2-GBDT回顾"><a href="#2-GBDT回顾" class="headerlink" title="2 GBDT回顾"></a>2 GBDT回顾</h3><p>GBDT是决策树的集成模型。每次迭代GBDT通过拟合负梯度（残差）学习决策树。他的主要成本是在于学习决策树。划分节点的选择是非常耗时的，之前有预排序算法，它每次枚举所有可能的划分点，基于预排序的特征值，从而找到最优划分节点。</p>
+<p>另一种是基于直方图的算法。他将连续特征值分桶为离散的bins，利用bins来构建特征直方图。（内存消耗更少，训练速度更快）。直方图建立是 O(#data <em> #feature)，划分节点是 O(#bin </em> #feature)。</p>
+<p>实际应用中使用的大规模数据集通常很少。 带有预排序算法的GBDT可以通过忽略零值的特征来降低训练成本[13]。 但是，具有基于直方图的算法的GBDT没有有效的稀疏优化解决方案。 原因是，无论特征值是否为零，基于直方图的算法都需要为每个数据实例检索特征仓值（请参阅算法1）。</p>
+<p><img src="/images/20200104GBDT_Algo.jpg" alt="20200104GBDT_Algo"></p>
+<center>图1</center>
+
+<h4 id="2-1-直方图算法"><a href="#2-1-直方图算法" class="headerlink" title="2.1 直方图算法"></a>2.1 直方图算法</h4><p><img src="/images/20200105Histogram.jpg" alt="20200105Histogram"></p>
+<center>图2</center>
+
+<p>for node in nodeSet (for all leaf p in Tc-1(x)) 这里是对当前层的叶子节点遍历。（需要遍历所有的特征，来找到增益最大的特征及其划分值，以此来分裂该叶子节点。）</p>
+<p>for k=1 to m (for all f in X.Features) 这里是对所有特征进行遍历。<strong>对于每个特征，为其创建一个直方图</strong>。</p>
+<p>for j in usedRows do ( for i in (0, num_of_row)) 这里是对此节点的样本row进行统计计算。这个直方图存储了两类信息，分别是每个bin中样本的梯度之和 $H[f \cdot b i n s[i]] \cdot g$, 还有就是每个bin中样本数量$H[f . \text { bins }[i]] . n$ 。下面图2的循环 for i in (0, len(H)) 是遍历所有bin，分别以当前bin作为分割点，累加其左边的bin至当前bin的梯度和$S_L$以及样本数量$n_L$，与父节点的梯度和$S_p,n_p$ 相减得到右边的。然后计算增益，在遍历过程中取最大的增益，以此时的特征和bin的特征值作为分裂节点的特征和分裂特征取值。</p>
+<p>连续特征的分桶和离散特征的分桶是不一样的。先把连续的浮点特征值离散化成k个整数（其实又是分桶的思想，而这些桶称为bin，比如[0,0.1)→0, [0.1,0.3)→1），同时构造一个宽度为k的直方图。离散特征直接对特征的每个取值进行计数。</p>
+<p>对比Xgboost的预排序算法：预排序算法首先将样本按照特征取值排序，然后从全部特征取值中找到最优的分裂点位，该算法的候选分裂点数量与样本数量成正比。</p>
+<h3 id="3-Gradient-based-One-side-Sampling"><a href="#3-Gradient-based-One-side-Sampling" class="headerlink" title="3 Gradient-based One-side Sampling"></a>3 Gradient-based One-side Sampling</h3><p>在AdaBoost中，样本权重可以很好地表明数据实例的重要性。但GBDT里面就没有这个权重，但我们注意到GBDT中每个数据实例的梯度为我们提供了有用的数据采样信息。如果实例与较小的坡度关联，则该实例的训练误差很小，并且已经过良好训练。 一个简单的主意是丢弃那些梯度小的数据实例。 但是，这样做会改变数据分布，这会损害学习模型的准确性。 为避免此问题，我们提出基于梯度的单边采样（GOSS）。</p>
+<p>GOSS保留所有具有大梯度的实例，并对具有小梯度的实例执行随机采样。为了补偿对数据分布的影响，在计算信息增益时，GOSS为具有较小梯度的数据实例引入了一个常数乘法器（constant multiplier）。</p>
+<p>GOSS首先根据数据实例的梯度绝对值进行排序，选出最高的 $a <em> 100%$ 的实例。随机从剩余的数据实例中采样出 $b </em> 100%$  的数据。GOSS放大采样的梯度较小的数据实例，乘常量因子$\frac{1-a}{b}$。</p>
+<h4 id="3-1-理论分析"><a href="#3-1-理论分析" class="headerlink" title="3.1 理论分析"></a>3.1 理论分析</h4><p>$\mathcal{X}$ 输入空间</p>
+<p>$\mathcal{G}$ 是梯度空间</p>
+<p>$n$ 是样本实例个数。</p>
+<p>$\{g_1,g_2…g_n\}$ 是损失函数关于模型输出（即$f_{m-1}的预测值$）的负梯度。</p>
+<p>对于GBDT，信息增益经常是由划分后的方差度量的。</p>
+<p>定义：令$O$ 是在决策树的一个固定节点的训练数据集training dataset，划分特征 $j$ 在点 $d$ （我的理解是特征取值d）的方差增益定义是（理解一下就是划分的两边的平均负梯度的平方的平均）：</p>
+<script type="math/tex; mode=display">V_{j | O}(d)=\frac{1}{n_{O}}\left(\frac{\left(\sum_{\left\{x_{i} \in O: x_{i j} \leq d\right\}} g_{i}\right)^{2}}{n_{l | O}^{j}(d)}+\frac{\left(\sum_{\left\{x_{i} \in O: x_{i j}>d\right\}} g_{i}\right)^{2}}{n_{r | O}^{j}(d)}\right)</script><script type="math/tex; mode=display">n_{O}=\sum I\left[x_{i} \in O\right], n_{l | O}^{j}(d)=\sum I\left[x_{i} \in O: x_{i j} \leq d\right] \text { and } n_{r | O}^{j}(d)=\sum I\left[x_{i} \in O: x_{i j}>d\right]</script><p>对于特征 $j$ ，决策树算法选择：</p>
+<script type="math/tex; mode=display">d_{j}^{*}=\operatorname{argmax}_{d} V_{j}(d)</script><p>并计算最大增益：$V_{j}\left(d_{j}^{*}\right)$</p>
+<p>然后数据由特征 $j^{\star}$ 在划分点 $d_{j^{\star}}$ 为左右子节点。</p>
+<p>在我们提出的GOSS方法中，首先，我们将训练实例根据其梯度的绝对值按降序排列。然后保存前 $a * 100%$ 的数据实例子集 $A$ ，剩下的数据 $A^c$ 是随机采样大小为 $b \times\left|A^{c}\right|$子集$B$。 最后通过在数据 $A \cup B$对估计的方差增益 $\tilde{V}_{j}(d)$ 划分数据实例</p>
+<script type="math/tex; mode=display">\tilde{V}_{j}(d)=\frac{1}{n}\left(\frac{\left(\sum_{x_{i} \in A_{l}} g_{i}+\frac{1-a}{b} \sum_{x_{i} \in B_{l}} g_{i}\right)^{2}}{n_{l}^{j}(d)}+\frac{\left(\sum_{x_{i} \in A_{r}} g_{i}+\frac{1-a}{b} \sum_{x_{i} \in B_{r}} g_{i}\right)^{2}}{n_{r}^{j}(d)}\right)</script><script type="math/tex; mode=display">A_{l}=\left\{x_{i} \in A: x_{i j} \leq d\right\}, A_{r}=\left\{x_{i} \in A: x_{i j}>d\right\}, B_{l}=\left\{x_{i} \in B: x_{i j} \leq d\right\}, B_{r}=\left\{x_{i} \in B: x_{ij} > d\right.</script><p>该系数$\frac{1-a}{b}$用于将B上的梯度总和归一化为A的大小，GOSS放大采样的梯度较小的数据实例</p>
+<h4 id="3-2-近似误差证明"><a href="#3-2-近似误差证明" class="headerlink" title="3.2 近似误差证明"></a>3.2 近似误差证明</h4><h3 id="4-Exclusive-feature-Bundling"><a href="#4-Exclusive-feature-Bundling" class="headerlink" title="4 Exclusive feature Bundling"></a>4 Exclusive feature Bundling</h3><h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>LightGBM的优化点总结</p>
+<ul>
+<li>基于Histogram的决策树算法。</li>
+<li>带深度限制的Leaf-wise的叶子生长策略</li>
+<li>直方图做差加速直接</li>
+<li>支持类别特征(Categorical Feature)</li>
+<li>Cache命中率优化</li>
+<li>基于直方图的稀疏特征优化多线程优化。</li>
+</ul>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，论文 LightGBM: A highly efficient gradient boosting decision tree.</p>
+<p>2，<a href="https://blog.csdn.net/anshuai_aw1/article/details/83040541" target="_blank" rel="noopener">LightGBM直方图优化算法</a></p>
+<p>3，<a href="https://juejin.im/post/5d25e1d0e51d4556da53d151" target="_blank" rel="noopener">一些面试问题</a></p>
+<p>4，<a href="https://zhuanlan.zhihu.com/p/91167170" target="_blank" rel="noopener">LightGBM</a></p>
+]]></content>
+      <categories>
+        <category>机器学习</category>
+      </categories>
+      <tags>
+        <tag>机器学习</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>20191231面试2</title>
     <url>/2020/01/02/20191231%E7%9F%A5%E4%B9%8E%E9%9D%A2%E8%AF%95/</url>
     <content><![CDATA[<h3 id="1，项目介绍"><a href="#1，项目介绍" class="headerlink" title="1，项目介绍"></a>1，项目介绍</h3><p>首先自我介绍。再介绍异常检测项目。在介绍广告CTR项目。</p><p>1，对每个项目的细节梳理清楚：</p><p>如lightGBM如何对类别特征进行节点分裂的？（<a href="http://papers.nips.cc/paper/6907-lightgbm-a-highly-efficient-gradi" target="_blank" rel="noopener">lightGBM论文</a>）</p><p>2，然后就是要仔细思考进一步的优化的地方在哪。</p><p>如何进一步提高点云的识别率呢？当时做了实验加多卷积层并没有明显的提升效果了，物体结构的特征点已经提取充分，所以并没用更深的网络。另一方面继续优化的点可以考虑点与点之间的领域结构，就像图像主要是考虑了相对位置关系，才可以用一些高反差核之类的卷积核提取图像的局部信息。</p><a id="more"></a>
@@ -218,8 +278,8 @@
         <category>AIOps</category>
       </categories>
       <tags>
-        <tag>机器学习</tag>
         <tag>AIOps</tag>
+        <tag>机器学习</tag>
       </tags>
   </entry>
   <entry>
