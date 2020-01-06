@@ -25,7 +25,7 @@
 <p>对比Xgboost的预排序算法：预排序算法首先将样本按照特征取值排序，然后从全部特征取值中找到最优的分裂点位，该算法的候选分裂点数量与样本数量成正比。</p>
 <h3 id="3-Gradient-based-One-side-Sampling"><a href="#3-Gradient-based-One-side-Sampling" class="headerlink" title="3 Gradient-based One-side Sampling"></a>3 Gradient-based One-side Sampling</h3><p>在AdaBoost中，样本权重可以很好地表明数据实例的重要性。但GBDT里面就没有这个权重，但我们注意到GBDT中每个数据实例的梯度为我们提供了有用的数据采样信息。如果实例与较小的坡度关联，则该实例的训练误差很小，并且已经过良好训练。 一个简单的主意是丢弃那些梯度小的数据实例。 但是，这样做会改变数据分布，这会损害学习模型的准确性。 为避免此问题，我们提出基于梯度的单边采样（GOSS）。</p>
 <p>GOSS保留所有具有大梯度的实例，并对具有小梯度的实例执行随机采样。为了补偿对数据分布的影响，在计算信息增益时，GOSS为具有较小梯度的数据实例引入了一个常数乘法器（constant multiplier）。</p>
-<p>GOSS首先根据数据实例的梯度绝对值进行排序，选出最高的 $a <em> 100\%$ 的实例。随机从剩余的数据实例中采样出 $b </em> 100\%$  的数据。GOSS放大采样的梯度较小的数据实例，乘常量因子$\frac{1-a}{b}$。</p>
+<p>GOSS首先根据数据实例的梯度绝对值进行排序，选出最高的 $a \times 100\%$ 的实例。随机从剩余的数据实例中采样出 $b \times 100\%$  的数据。GOSS放大采样的梯度较小的数据实例，乘常量因子$\frac{1-a}{b}$。</p>
 <h4 id="3-1-理论分析"><a href="#3-1-理论分析" class="headerlink" title="3.1 理论分析"></a>3.1 理论分析</h4><p>$\mathcal{X}$ 输入空间</p>
 <p>$\mathcal{G}$ 是梯度空间</p>
 <p>$n$ 是样本实例个数。</p>
@@ -43,7 +43,7 @@
 <p>有趣的是，对于类别特征，如果转换成onehot编码，则这些onehot编码后的多个特征相互之间是互斥的，从而可以被捆绑成为一个特征。we can build the same feature histograms from the feature bundles as those from individual features. </p>
 <h4 id="4-1-绑哪些feature"><a href="#4-1-绑哪些feature" class="headerlink" title="4.1 绑哪些feature"></a>4.1 绑哪些feature</h4><p>背景图着色问题：给顶点着色，相连的顶点颜色都不同，最少需要多少颜色，这是NP难问题。</p>
 <p>给定$G = (V,E)$。$V$ 是特征数，通过将特征作为顶点并为每两个特征（如果它们之间不是互斥的话）添加边。则互斥特征是有着相同颜色的节点。最后采用贪心策略来产生bundle。</p>
-<p><img src="/Users/wangxue/gitpro/20191105MyBlog/saruagithub/source/images/20200105EFB.jpg" alt="20200105EFB"></p>
+<p><img src="/images/20200105EFB.jpg" alt="20200105EFB"></p>
 <p>算法过程：</p>
 <p>1,首先，我们构造一个具有加权边的图，其权重对应于特征之间的总冲突（特征并不是100%的互斥，只要很少很少的同时为非零值也可 allow a small fraction of conflicts）。 </p>
 <p>2, 其次，我们按特征在图中的降序对特征进行排序。 </p>
@@ -58,7 +58,7 @@
 <li>基于Histogram的决策树算法。</li>
 <li>带深度限制的Leaf-wise的叶子生长策略</li>
 <li>直方图做差加速直接</li>
-<li>支持类别特征(Categorical Feature)</li>
+<li>支持类别特征(Categorical Feature)：类别特征最优分割</li>
 <li>基于梯度的单边采样算法</li>
 <li>特征捆绑策略</li>
 </ul>
@@ -66,6 +66,7 @@
 <p>2，<a href="https://blog.csdn.net/anshuai_aw1/article/details/83040541" target="_blank" rel="noopener">LightGBM直方图优化算法</a></p>
 <p>3，<a href="https://juejin.im/post/5d25e1d0e51d4556da53d151" target="_blank" rel="noopener">一些面试问题</a></p>
 <p>4，<a href="https://zhuanlan.zhihu.com/p/91167170" target="_blank" rel="noopener">LightGBM</a></p>
+<p>5， <a href="https://zhuanlan.zhihu.com/p/87885678" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/87885678</a></p>
 ]]></content>
       <categories>
         <category>机器学习</category>
@@ -779,8 +780,8 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
         <category>AIOps</category>
       </categories>
       <tags>
-        <tag>AIOps</tag>
         <tag>时间序列</tag>
+        <tag>AIOps</tag>
       </tags>
   </entry>
   <entry>
@@ -845,8 +846,8 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
         <category>AIOps</category>
       </categories>
       <tags>
-        <tag>AIOps</tag>
         <tag>异常检测</tag>
+        <tag>AIOps</tag>
       </tags>
   </entry>
   <entry>
