@@ -39,16 +39,15 @@
 <script type="math/tex; mode=display">\tilde{V}_{j}(d)=\frac{1}{n}\left(\frac{\left(\sum_{x_{i} \in A_{l}} g_{i}+\frac{1-a}{b} \sum_{x_{i} \in B_{l}} g_{i}\right)^{2}}{n_{l}^{j}(d)}+\frac{\left(\sum_{x_{i} \in A_{r}} g_{i}+\frac{1-a}{b} \sum_{x_{i} \in B_{r}} g_{i}\right)^{2}}{n_{r}^{j}(d)}\right)</script><script type="math/tex; mode=display">A_{l}=\left\{x_{i} \in A: x_{i j} \leq d\right\}, A_{r}=\left\{x_{i} \in A: x_{i j}>d\right\}, B_{l}=\left\{x_{i} \in B: x_{i j} \leq d\right\}, B_{r}=\left\{x_{i} \in B: x_{ij} > d \}\right.</script><p>该系数$\frac{1-a}{b}$用于将B上的梯度总和归一化为A的大小，GOSS放大采样的梯度较小的数据实例。</p>
 <h3 id="4-Exclusive-feature-Bundling"><a href="#4-Exclusive-feature-Bundling" class="headerlink" title="4 Exclusive feature Bundling"></a>4 Exclusive feature Bundling</h3><p>目的：减少特征数量。</p>
 <p>高维数据经常是稀疏的，特征空间的稀疏性为我们提供了一种设计几乎无损方法以减少特征数量的可能性。在稀疏的特征空间中，许多特征是互斥的，即它们永远不会同时采用非零值（意思是所有样本在这两特征的取值不是同时采用非零值），因此可以绑定这俩特征为一个单特征。</p>
-<p>可以</p>
-<p>有趣的是，对于类别特征，如果转换成onehot编码，则这些onehot编码后的多个特征相互之间是互斥的，从而可以被捆绑成为一个特征。we can build the same feature histograms from the feature bundles as those from individual features. </p>
+<p>可以有趣的是，对于类别特征，如果转换成onehot编码，则这些onehot编码后的多个特征相互之间是互斥的，从而可以被捆绑成为一个特征。we can build the same feature histograms from the feature bundles as those from individual features. </p>
 <h4 id="4-1-绑哪些feature"><a href="#4-1-绑哪些feature" class="headerlink" title="4.1 绑哪些feature"></a>4.1 绑哪些feature</h4><p>背景图着色问题：给顶点着色，相连的顶点颜色都不同，最少需要多少颜色，这是NP难问题。</p>
 <p>给定$G = (V,E)$。$V$ 是特征数，通过将特征作为顶点并为每两个特征（如果它们之间不是互斥的话）添加边。则互斥特征是有着相同颜色的节点。最后采用贪心策略来产生bundle。</p>
 <p><img src="/images/20200105EFB.jpg" alt="20200105EFB"></p>
 <p>算法过程：</p>
 <p>1,首先，我们构造一个具有加权边的图，其权重对应于特征之间的总冲突（特征并不是100%的互斥，只要很少很少的同时为非零值也可 allow a small fraction of conflicts）。 </p>
-<p>2, 其次，我们按特征在图中的降序对特征进行排序。 </p>
-<p>3, 最后，我们检查排序列表中的每个feature，然后将其分配给冲突很小（由γ控制）的现有bundle，或创建一个新包bundle。 Alg的时间复杂度。Alo3的复杂度是$O(feature^2)$，在训练之前仅处理一次。</p>
-<p> 当特征数量不是很大时，这种复杂性是可以接受的，但如果有数百万个特征，则可能仍然会受到影响。 为了进一步提高效率，我们提出了一种更有效的排序策略，而无需构建图表：通过非零值的计数进行排序，这类似于按度排序，因为更多的非零值通常会导致发生冲突的可能性更高。</p>
+<p>2, 其次，我们按特征在图中的度（degrees ）降序对特征进行排序。 </p>
+<p>3, 最后，我们依次检查排序列表中的每个feature，要么将其分配给冲突很小（由γ控制）的现有bundle，或创建一个新包bundle。 Alg.3 的时间复杂度是$O(feature^2)$，在训练之前仅处理一次。</p>
+<p>​    当特征数量不是很大时，这种复杂性是可以接受的，但如果有数百万个特征，则可能仍然会受到影响。 为了进一步提高效率，我们提出了一种更有效的排序策略，而无需构建图表：通过非零值的计数进行排序，这类似于按度排序，因为更多的非零值通常会导致发生冲突的可能性更高（类似于根据度degree排序）。</p>
 <h4 id="4-2-如何捆绑bundle"><a href="#4-2-如何捆绑bundle" class="headerlink" title="4.2 如何捆绑bundle"></a>4.2 如何捆绑bundle</h4><p>对于第二个问题，我们需要一种很好的方法来合并同一捆绑bundle中的特征，以减少相应的训练复杂性。 关键是要确保可以从feature bundles中识别原始feature的值。</p>
 <p>由于基于直方图的算法存储的是离散的bin而不是特征feature的连续值，因此我们可以通过让互斥特征驻留在不同的bin中来构造feature bundle。 这可以通过向特征原始值添加偏移量来完成。 例如，假设我们在feature bundle中有两个特征。 最初，特征A取值[0，10），特征B取值[0，20）。 然后，我们向特征B的值添加10的偏移量，以使经过改进的特征采用[10，30）中的值。 之后，可以安全地合并特征A和B，并使用范围为[0，30]的feature bundle替换原始特征A和B。详细算法在Alg 4。</p>
 <p>EFB算法可以将许多互斥特征捆绑到少得多的密集特征上，从而可以有效避免零特征值的不必要计算。</p>
@@ -161,8 +160,8 @@
         <category>深度学习</category>
       </categories>
       <tags>
-        <tag>深度学习</tag>
         <tag>机器学习</tag>
+        <tag>深度学习</tag>
       </tags>
   </entry>
   <entry>
@@ -293,8 +292,8 @@
         <category>AIOps</category>
       </categories>
       <tags>
-        <tag>机器学习</tag>
         <tag>AIOps</tag>
+        <tag>机器学习</tag>
       </tags>
   </entry>
   <entry>
