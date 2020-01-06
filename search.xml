@@ -25,7 +25,7 @@
 <p>对比Xgboost的预排序算法：预排序算法首先将样本按照特征取值排序，然后从全部特征取值中找到最优的分裂点位，该算法的候选分裂点数量与样本数量成正比。</p>
 <h3 id="3-Gradient-based-One-side-Sampling"><a href="#3-Gradient-based-One-side-Sampling" class="headerlink" title="3 Gradient-based One-side Sampling"></a>3 Gradient-based One-side Sampling</h3><p>在AdaBoost中，样本权重可以很好地表明数据实例的重要性。但GBDT里面就没有这个权重，但我们注意到GBDT中每个数据实例的梯度为我们提供了有用的数据采样信息。如果实例与较小的坡度关联，则该实例的训练误差很小，并且已经过良好训练。 一个简单的主意是丢弃那些梯度小的数据实例。 但是，这样做会改变数据分布，这会损害学习模型的准确性。 为避免此问题，我们提出基于梯度的单边采样（GOSS）。</p>
 <p>GOSS保留所有具有大梯度的实例，并对具有小梯度的实例执行随机采样。为了补偿对数据分布的影响，在计算信息增益时，GOSS为具有较小梯度的数据实例引入了一个常数乘法器（constant multiplier）。</p>
-<p>GOSS首先根据数据实例的梯度绝对值进行排序，选出最高的 $a \times 100\%$ 的实例。随机从剩余的数据实例中采样出 $b \times 100\%$  的数据。GOSS放大采样的梯度较小的数据实例，乘常量因子$\frac{1-a}{b}$。</p>
+<p>GOSS首先根据数据实例的梯度绝对值进行排序，选出最高的a%的实例。随机从剩余的数据实例中采样出 b% 的数据。GOSS放大采样的梯度较小的数据实例，乘常量因子$\frac{1-a}{b}$。</p>
 <h4 id="3-1-理论分析"><a href="#3-1-理论分析" class="headerlink" title="3.1 理论分析"></a>3.1 理论分析</h4><p>$\mathcal{X}$ 输入空间</p>
 <p>$\mathcal{G}$ 是梯度空间</p>
 <p>$n$ 是样本实例个数。</p>
@@ -780,8 +780,8 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
         <category>AIOps</category>
       </categories>
       <tags>
-        <tag>AIOps</tag>
         <tag>时间序列</tag>
+        <tag>AIOps</tag>
       </tags>
   </entry>
   <entry>
@@ -846,8 +846,8 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
         <category>AIOps</category>
       </categories>
       <tags>
-        <tag>AIOps</tag>
         <tag>异常检测</tag>
+        <tag>AIOps</tag>
       </tags>
   </entry>
   <entry>
