@@ -38,7 +38,7 @@
 <p>在我们提出的GOSS方法中，首先，我们将训练实例根据其梯度的绝对值按降序排列。然后保存前 $a * 100%$ 的数据实例子集 $A$ ，剩下的数据 $A^c$ 是随机采样大小为 $b \times\left|A^{c}\right|$子集$B$。 最后通过在数据 $A \cup B$对估计的方差增益 $\tilde{V}_{j}(d)$ 划分数据实例</p>
 <script type="math/tex; mode=display">\tilde{V}_{j}(d)=\frac{1}{n}\left(\frac{\left(\sum_{x_{i} \in A_{l}} g_{i}+\frac{1-a}{b} \sum_{x_{i} \in B_{l}} g_{i}\right)^{2}}{n_{l}^{j}(d)}+\frac{\left(\sum_{x_{i} \in A_{r}} g_{i}+\frac{1-a}{b} \sum_{x_{i} \in B_{r}} g_{i}\right)^{2}}{n_{r}^{j}(d)}\right)</script><script type="math/tex; mode=display">A_{l}=\left\{x_{i} \in A: x_{i j} \leq d\right\}, A_{r}=\left\{x_{i} \in A: x_{i j}>d\right\}, B_{l}=\left\{x_{i} \in B: x_{i j} \leq d\right\}, B_{r}=\left\{x_{i} \in B: x_{ij} > d \}\right.</script><p>该系数$\frac{1-a}{b}$用于将B上的梯度总和归一化为A的大小，GOSS放大采样的梯度较小的数据实例。</p>
 <h3 id="4-Exclusive-feature-Bundling"><a href="#4-Exclusive-feature-Bundling" class="headerlink" title="4 Exclusive feature Bundling"></a>4 Exclusive feature Bundling</h3><p>目的：减少特征数量。</p>
-<p>高维数据经常是稀疏的，特征空间的稀疏性为我们提供了一种设计几乎无损方法以减少特征数量的可能性。在稀疏的特征空间中，许多特征是互斥的，即它们永远不会同时采用非零值（意思是所有样本在这两特征的取值不是同时采用非零值），因此可以绑定这俩特征为一个单特征。</p>
+<p>高维数据经常是稀疏的，特征空间的稀疏性为我们提供了一种设计几乎无损方法以减少特征数量的可能性。在稀疏的特征空间中，许多特征是互斥的，即它们永远不会同时采用非零值（意思是所有样本在这两特征的取值不是同时采用非零值，这个很像我之前看的HTM里的SDR），因此可以绑定这俩特征为一个单特征。</p>
 <p>可以有趣的是，对于类别特征，如果转换成onehot编码，则这些onehot编码后的多个特征相互之间是互斥的，从而可以被捆绑成为一个特征。we can build the same feature histograms from the feature bundles as those from individual features. </p>
 <h4 id="4-1-绑哪些feature"><a href="#4-1-绑哪些feature" class="headerlink" title="4.1 绑哪些feature"></a>4.1 绑哪些feature</h4><p>背景图着色问题：给顶点着色，相连的顶点颜色都不同，最少需要多少颜色，这是NP难问题。</p>
 <p>给定$G = (V,E)$。$V$ 是特征数，通过将特征作为顶点并为每两个特征（如果它们之间不是互斥的话）添加边。则互斥特征是有着相同颜色的节点。最后采用贪心策略来产生bundle。</p>
@@ -75,7 +75,7 @@
   </entry>
   <entry>
     <title>20191231面试2</title>
-    <url>/2020/01/02/20191231%E7%9F%A5%E4%B9%8E%E9%9D%A2%E8%AF%95/</url>
+    <url>/2020/01/02/20191231%E9%9D%A2%E8%AF%952_%E7%9F%A5%E4%B9%8E%E7%BD%91%E6%98%93/</url>
     <content><![CDATA[<h3 id="1，项目介绍"><a href="#1，项目介绍" class="headerlink" title="1，项目介绍"></a>1，项目介绍</h3><p>首先自我介绍。再介绍异常检测项目。在介绍广告CTR项目。</p><p>1，对每个项目的细节梳理清楚：</p><p>如lightGBM如何对类别特征进行节点分裂的？（<a href="http://papers.nips.cc/paper/6907-lightgbm-a-highly-efficient-gradi" target="_blank" rel="noopener">lightGBM论文</a>）</p><p>2，然后就是要仔细思考进一步的优化的地方在哪。</p><p>如何进一步提高点云的识别率呢？当时做了实验加多卷积层并没有明显的提升效果了，物体结构的特征点已经提取充分，所以并没用更深的网络。另一方面继续优化的点可以考虑点与点之间的领域结构，就像图像主要是考虑了相对位置关系，才可以用一些高反差核之类的卷积核提取图像的局部信息。</p><a id="more"></a>
 
 
@@ -88,8 +88,9 @@
 <script type="math/tex; mode=display">H^{o o b}(\boldsymbol{x})=\underset{y \in \mathcal{Y}}{\arg \max } \sum_{t=1}^{T} \mathbb{I}\left(h_{t}(\boldsymbol{x})=y\right) \cdot \mathbb{I}\left(\boldsymbol{x} \notin D_{t}\right)</script><p>Bagging的泛化误差包外估计是：</p>
 <script type="math/tex; mode=display">\epsilon^{o o b}=\frac{1}{|D|} \sum_{(\boldsymbol{x}, y) \in D} \mathbb{I}\left(H^{o o b}(\boldsymbol{x}) \neq y\right)</script><p>包外估计可以辅助剪枝。</p>
 <p>Bagging可以降低方差。</p>
-<p>（2）另外RF引入了随机特征选择。就是每个结点都会随机选择一些特征来构建树。如下图的算法流程。第5行，先选取了部分特征用来构建树，然后每个结点都有选择特征子集（line 5）来计算Gini impurity或均方误差，以此挑选最优划分特征（line 6），计算最优划分点（line7）。</p>
+<p>（2）另外RF引入了随机特征选择。就是每个结点都会随机选择一些特征来构建树。如下图的算法流程。第5行，先选取了部分特征用来构建树（森林中每棵树都只随机的选择特征集中的一部分特征进行训练，因而森林中的每棵树都不会全都关注某些有很强预测性的特征上面），然后每个结点都有选择特征子集（line 5）来计算Gini impurity或均方误差，以此挑选最优划分特征（line 6），计算最优划分点（line7）。</p>
 <p>（额额额，后面我居然给直接忘了，还有后面算法题短路得不行，捂脸）</p>
+<p>每个结点的特征子集的好处：如果特征A1,A2彼此相关。树根据信息增益选择了A1后，A2的信息增益一定会变得很小，因为A1和A2所引起的不确定度是同一个不确定度，确定了A1后那么这个不确定度就没有了，确定A2后数据集的不确定性不会再减小了，因而造成的结果就是虽然说A1和A2同等重要，但是所有的树每次选择A1后就不会选择A2了。</p>
 <p><img src="/images/20200102RandomForest.jpg" alt="20200102RandomForest"></p>
 <p>（3）其他</p>
 <p>随机森林的结合策略有：平均法（简单平均、加权平均），投票法，stacking（先从初始数据集训练出初始学习器，然后生成一个新数据集用于训练次级学习器，交叉验证）</p>
@@ -109,6 +110,7 @@
 <p>2，深度模型CTR（DeepCTR入手）</p>
 <p>3，leecode刷题系列</p>
 <p>4，其他（印象笔记搬迁到博客，kaggle比赛开源代码读读）</p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p><a href="https://blog.csdn.net/weixin_37688445/article/details/79272319" target="_blank" rel="noopener">https://blog.csdn.net/weixin_37688445/article/details/79272319</a></p>
 ]]></content>
       <tags>
         <tag>面试</tag>
@@ -778,8 +780,8 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
         <category>AIOps</category>
       </categories>
       <tags>
-        <tag>AIOps</tag>
         <tag>时间序列</tag>
+        <tag>AIOps</tag>
       </tags>
   </entry>
   <entry>
@@ -844,8 +846,8 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
         <category>AIOps</category>
       </categories>
       <tags>
-        <tag>AIOps</tag>
         <tag>异常检测</tag>
+        <tag>AIOps</tag>
       </tags>
   </entry>
   <entry>
@@ -1198,6 +1200,36 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
       </tags>
   </entry>
   <entry>
+    <title>模型选择</title>
+    <url>/2018/12/07/20191207%E6%A8%A1%E5%9E%8B%E9%80%89%E6%8B%A9/</url>
+    <content><![CDATA[<h3 id="1-偏差与方差"><a href="#1-偏差与方差" class="headerlink" title="1 偏差与方差"></a>1 偏差与方差</h3><p>偏差：学习算法的期望预测与真实结果的偏离程度，与真实世界的偏离。</p><p>高偏差 —— 欠拟合：模型有偏离。模型偏简单。</p><p>方差：同样大小的训练集的变动所导致的学习性能的变化，接受不同数据后的模型输出的稳定程度。</p><p>高方差 —— 过拟合：完全拟合训练数据。模型可能偏向复杂。</p><p><strong>噪声</strong>表达了当前任务上任何学习算法所能达到的期望泛化误差的下界，也就是最小值。</p><a id="more"></a>
+
+
+
+
+<p>eg：RF减少的是方差。Adaboost是减小偏差，尽量去拟合数据。</p>
+<p>当交叉验证和测试集误差都很大的时候，怎么判断是bias problem还是variance problem呢？</p>
+<p>bias problem：训练误差大，交叉验证误差大。</p>
+<p>variance problem：则是训练误差小，交叉验证误差远远比训练误差大。</p>
+<h3 id="2-正则化"><a href="#2-正则化" class="headerlink" title="2 正则化"></a>2 正则化</h3><script type="math/tex; mode=display">J(\theta)=\frac{1}{2 m} \sum_{i=1}^{m}\left(h_{\theta}\left(x^{(i)}\right)-y^{(i)}\right)^{2}+\frac{\lambda}{2 m} \sum_{j=1}^{m} \theta_{j}^{2}</script><p>正则化中的$\lambda$和偏差，方差的关系。</p>
+<p>训练误差：随着$\lambda$ 增大的时候，训练损失增大，$\lambda$ 太大的时候对参数惩罚过重，因此容易有高偏差问题。此时对训练集都无法很好拟合。当$\lambda$ 太小的时候，非常容易的去拟合训练集。</p>
+<p>交叉验证集的误差：$\lambda$ 过大，欠拟合，高偏差时交叉验证的误差也很大。在最左边是高方差问题，$\lambda$ 小，对数据过拟合交叉验证的误差也很大。</p>
+<p><img src="/images/20200107lambda.jpg" alt="20200107lambda"></p>
+<h3 id="3-学习曲线"><a href="#3-学习曲线" class="headerlink" title="3 学习曲线"></a>3 学习曲线</h3><h4 id="3-1-曲线随样本量变化"><a href="#3-1-曲线随样本量变化" class="headerlink" title="3.1 曲线随样本量变化"></a>3.1 曲线随样本量变化</h4><p>高偏差：训练误差随着样本数据逐渐增大。交叉验证误差随着样本数量减小（样本量越来越多无助于改善算法）。</p>
+<p><img src="/images/20200107high_bias.jpg" alt="20200107high_bias"></p>
+<p>高方差：样本增大训练误差也增大，但相对而言误差小一点（因为一直在尽量拟合数据）。交叉验证的误差也慢慢下降，但总的来说样本越多训练得越好。</p>
+<p><img src="/images/20200107high_var.jpg" alt="20200107high_var"></p>
+<h4 id="3-2-解决方法"><a href="#3-2-解决方法" class="headerlink" title="3.2 解决方法"></a>3.2 解决方法</h4><p>高方差：用更多数据训练，更少量的feature（做），增加正则项$\lambda$。</p>
+<p>高偏差：加更多的特征，减小正则项 $\lambda$ ，用更复杂的神经网络，对误分类的数据增加权重Adaboost。</p>
+]]></content>
+      <categories>
+        <category>机器学习</category>
+      </categories>
+      <tags>
+        <tag>机器学习</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>《浪潮之巅》—— IT浮沉</title>
     <url>/2018/10/30/20181030%E6%B5%AA%E6%BD%AE%E4%B9%8B%E5%B7%85%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/</url>
     <content><![CDATA[<h2 id="1-行业历史"><a href="#1-行业历史" class="headerlink" title="1 行业历史"></a>1 行业历史</h2><h4 id="AT-amp-T-通信技术"><a href="#AT-amp-T-通信技术" class="headerlink" title="AT&amp;T-通信技术"></a>AT&amp;T-通信技术</h4><p><strong>兴衰</strong>：AT&amp;T是个百年老人，他技术实力在当时贼强。AT&amp;T贝尔电话的发明首先引领通信浪潮，同时，AT&amp;T下贝尔实验室创造了众多世界级发明，如射电天文望远镜、晶体管、数字交换机，半导体，Unix操作系统、C语言，香农信息论等，奠定了整个信息通信领域的基础技术。</p><a id="more"></a>
@@ -1291,7 +1323,7 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
 
 
 
-<p>浩瀚大河山，学海亦无涯。 </p>
+<p>浩瀚大河山，苍茫一粟人。 </p>
 <p>劝君昔少年，朝海好读书！ </p>
 <p>2019/03/10 香港科大的朝海图书馆真是好啊，若可一直读书多好</p>
 <h3 id="4-南京凌冬"><a href="#4-南京凌冬" class="headerlink" title="4 南京凌冬"></a>4 南京凌冬</h3><p>冬雨凉</p>

@@ -47,18 +47,22 @@
   };
 </script>
 
-  <meta name="description" content="1 基类结构首先看异常检测基类base.py，所有检测器都是由它继承而来：1，init() ：初始化dataSet，probationaryPercent 数据的最初一部分数据不做测试。inputMin, inputMax初始化最大最小值。2，initialize()：多进程问题。进程池pool（它默认调用的是CPU的核数）">
-<meta name="keywords" content="机器学习,AIOps">
+  <meta name="description" content="1 偏差与方差偏差：学习算法的期望预测与真实结果的偏离程度，与真实世界的偏离。高偏差 —— 欠拟合：模型有偏离。模型偏简单。方差：同样大小的训练集的变动所导致的学习性能的变化，接受不同数据后的模型输出的稳定程度。高方差 —— 过拟合：完全拟合训练数据。模型可能偏向复杂。噪声表达了当前任务上任何学习算法所能达到的期望泛化误差的下界，也就是最小值。">
+<meta name="keywords" content="机器学习">
 <meta property="og:type" content="article">
-<meta property="og:title" content="20191210Skyline源码阅读">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;12&#x2F;10&#x2F;20191210Skyline%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB&#x2F;index.html">
+<meta property="og:title" content="模型选择">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2018&#x2F;12&#x2F;07&#x2F;20191207%E6%A8%A1%E5%9E%8B%E9%80%89%E6%8B%A9&#x2F;index.html">
 <meta property="og:site_name" content="WangXue">
-<meta property="og:description" content="1 基类结构首先看异常检测基类base.py，所有检测器都是由它继承而来：1，init() ：初始化dataSet，probationaryPercent 数据的最初一部分数据不做测试。inputMin, inputMax初始化最大最小值。2，initialize()：多进程问题。进程池pool（它默认调用的是CPU的核数）">
+<meta property="og:description" content="1 偏差与方差偏差：学习算法的期望预测与真实结果的偏离程度，与真实世界的偏离。高偏差 —— 欠拟合：模型有偏离。模型偏简单。方差：同样大小的训练集的变动所导致的学习性能的变化，接受不同数据后的模型输出的稳定程度。高方差 —— 过拟合：完全拟合训练数据。模型可能偏向复杂。噪声表达了当前任务上任何学习算法所能达到的期望泛化误差的下界，也就是最小值。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-12-31T10:33:24.904Z">
+<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200107lambda.jpg">
+<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200107high_bias.jpg">
+<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200107high_var.jpg">
+<meta property="og:updated_time" content="2020-01-07T11:49:53.339Z">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200107lambda.jpg">
 
-<link rel="canonical" href="http://yoursite.com/2019/12/10/20191210Skyline%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/">
+<link rel="canonical" href="http://yoursite.com/2018/12/07/20191207%E6%A8%A1%E5%9E%8B%E9%80%89%E6%8B%A9/">
 
 
 <script id="page-configurations">
@@ -72,7 +76,7 @@
   };
 </script>
 
-  <title>20191210Skyline源码阅读 | WangXue</title>
+  <title>模型选择 | WangXue</title>
   
 
 
@@ -209,7 +213,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/10/20191210Skyline%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/07/20191207%E6%A8%A1%E5%9E%8B%E9%80%89%E6%8B%A9/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -222,7 +226,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          20191210Skyline源码阅读
+          模型选择
         </h1>
 
         <div class="post-meta">
@@ -232,14 +236,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2019-12-10 09:32:49" itemprop="dateCreated datePublished" datetime="2019-12-10T09:32:49+08:00">2019-12-10</time>
+              <time title="创建时间：2018-12-07 16:34:41" itemprop="dateCreated datePublished" datetime="2018-12-07T16:34:41+08:00">2018-12-07</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-12-31 18:33:24" itemprop="dateModified" datetime="2019-12-31T18:33:24+08:00">2019-12-31</time>
+                <time title="修改时间：2020-01-07 19:49:53" itemprop="dateModified" datetime="2020-01-07T19:49:53+08:00">2020-01-07</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -247,8 +251,8 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/AIOps/" itemprop="url" rel="index">
-                    <span itemprop="name">AIOps</span>
+                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习</span>
                   </a>
                 </span>
             </span>
@@ -269,8 +273,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2019/12/10/20191210Skyline%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/#comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2019/12/10/20191210Skyline%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" itemprop="commentCount"></span>
+    <a title="valine" href="/2018/12/07/20191207%E6%A8%A1%E5%9E%8B%E9%80%89%E6%8B%A9/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2018/12/07/20191207%E6%A8%A1%E5%9E%8B%E9%80%89%E6%8B%A9/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -285,26 +289,25 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h3 id="1-基类结构"><a href="#1-基类结构" class="headerlink" title="1 基类结构"></a>1 基类结构</h3><p>首先看异常检测基类base.py，所有检测器都是由它继承而来：</p><p>1，init() ：初始化dataSet，probationaryPercent 数据的最初一部分数据不做测试。inputMin, inputMax初始化最大最小值。</p><p>2，initialize()：多进程问题。进程池pool（它默认调用的是CPU的核数）</p><a id="more"></a>
+        <h3 id="1-偏差与方差"><a href="#1-偏差与方差" class="headerlink" title="1 偏差与方差"></a>1 偏差与方差</h3><p>偏差：学习算法的期望预测与真实结果的偏离程度，与真实世界的偏离。</p><p>高偏差 —— 欠拟合：模型有偏离。模型偏简单。</p><p>方差：同样大小的训练集的变动所导致的学习性能的变化，接受不同数据后的模型输出的稳定程度。</p><p>高方差 —— 过拟合：完全拟合训练数据。模型可能偏向复杂。</p><p><strong>噪声</strong>表达了当前任务上任何学习算法所能达到的期望泛化误差的下界，也就是最小值。</p><a id="more"></a>
 
 
-<p>3，handleRecord(): 返回每一个时间点的异常分数值，Returns a list [anomalyScore, *]。这个函数子类必须继承。</p>
-<p>4，getAdditionalHeaders()：如HTM检测器里会添加’anomalyscore’ , ‘rawscore’。添加并返回列名的，run函数中调用它拼接最后返回的dataframe。</p>
-<p>5，detectDataSet(): 在运行给定检测器的每个检测器进程中调用的函数。参数 (i, detectorInstance, detectorName, labels, outputDir, relativePath) = args，主要是创建保存文件的路径，调用detectorInstance.initialize()，results = detectorInstance.run() </p>
-<p>6，run()：为整个dataSet打分并返回结果（dataframe格式）</p>
-<h3 id="2-Etsy的Skyline算法"><a href="#2-Etsy的Skyline算法" class="headerlink" title="2 Etsy的Skyline算法"></a>2 Etsy的Skyline算法</h3><p>继承异常检测器基类。另外它的算法是根据几个小算法各自的评分进行平均投票得到。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">self.algorithms =   [median_absolute_deviation,</span><br><span class="line">                     first_hour_average,</span><br><span class="line">                     stddev_from_average,</span><br><span class="line">                     stddev_from_moving_average,</span><br><span class="line">                     mean_subtraction_cumulation,</span><br><span class="line">                     least_squares,</span><br><span class="line">                     histogram_bins]</span><br></pre></td></tr></table></figure>
-<h5 id="median-absolute-deviation"><a href="#median-absolute-deviation" class="headerlink" title="median_absolute_deviation"></a>median_absolute_deviation</h5><p>计算数据的中位数，偏差 = 每个值-中位数，得到偏差中位数</p>
-<script type="math/tex; mode=display">\mathrm{MAD}=\operatorname{median}\left(\left|X_{i}-\operatorname{median}(X)\right|\right)</script><p>MAD对数据集中的异常值比标准偏差更具弹性。在标准偏差中，与均值的距离的平方，较大的异常值会影响更大。可以通过判断一个点的偏差是否过于偏离MAD来判断异常，此处是如果偏差6倍大于中位数，则判断为异常。</p>
-<h5 id="first-hour-average"><a href="#first-hour-average" class="headerlink" title="first_hour_average"></a>first_hour_average</h5><p>上一天的这个时间段1h的均值是$mean$，标准差是$std$，如果$|X_t - mean| &gt; 3 * std$ 则是异常。</p>
-<h5 id="stddev-from-average"><a href="#stddev-from-average" class="headerlink" title="stddev_from_average"></a>stddev_from_average</h5><p>值减去移动平均值大于平均值的三个标准偏差则为异常。</p>
-<script type="math/tex; mode=display">|X_t - mean| > 3 * std</script><h5 id="stddev-from-moving-average"><a href="#stddev-from-moving-average" class="headerlink" title="stddev_from_moving_average"></a>stddev_from_moving_average</h5><p>值减去指数加权移动平均值大于平均值的三个标准偏差则为异常。</p>
-<p>expAvg = series.ewm().mean()</p>
-<p>stdDev = series.ewm().std()</p>
-<script type="math/tex; mode=display">| X_t - expAvg | > 3 * stdDev</script><h5 id="mean-subtraction-cumulation"><a href="#mean-subtraction-cumulation" class="headerlink" title="mean_subtraction_cumulation"></a>mean_subtraction_cumulation</h5><p>从每个数据源点减去过去历史平均值之后，如果该序列中下一个数据点的值比累积项中的三个标准差远，则该时间序列是异常的。</p>
-<h5 id="least-squares"><a href="#least-squares" class="headerlink" title="least_squares"></a>least_squares</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#X——代表时间 timestamp，Y——代表 value</span><br><span class="line">results = np.linalg.lstsq(A, Y)</span><br><span class="line">residual = results[1] #残差</span><br><span class="line">m, c = np.linalg.lstsq(A, Y)[0] #斜率与截距</span><br><span class="line">  for i, value in enumerate(y):</span><br><span class="line">    projected = m * X[i] + c</span><br><span class="line">    error = value - projected</span><br><span class="line">    errors.append(error)</span><br></pre></td></tr></table></figure>
-<p>最后点投影到最小二乘上误差大于所有误差的std的3sigma时，判断为异常。</p>
-<script type="math/tex; mode=display">Error_t > ErrorsStd</script><h5 id="histogram-bins"><a href="#histogram-bins" class="headerlink" title="histogram_bins"></a>histogram_bins</h5><p>最后时间点的值落入带有少于threshold个其他数据点的直方图bin中，则时间序列是异常的。</p>
+
+
+<p>eg：RF减少的是方差。Adaboost是减小偏差，尽量去拟合数据。</p>
+<p>当交叉验证和测试集误差都很大的时候，怎么判断是bias problem还是variance problem呢？</p>
+<p>bias problem：训练误差大，交叉验证误差大。</p>
+<p>variance problem：则是训练误差小，交叉验证误差远远比训练误差大。</p>
+<h3 id="2-正则化"><a href="#2-正则化" class="headerlink" title="2 正则化"></a>2 正则化</h3><script type="math/tex; mode=display">J(\theta)=\frac{1}{2 m} \sum_{i=1}^{m}\left(h_{\theta}\left(x^{(i)}\right)-y^{(i)}\right)^{2}+\frac{\lambda}{2 m} \sum_{j=1}^{m} \theta_{j}^{2}</script><p>正则化中的$\lambda$和偏差，方差的关系。</p>
+<p>训练误差：随着$\lambda$ 增大的时候，训练损失增大，$\lambda$ 太大的时候对参数惩罚过重，因此容易有高偏差问题。此时对训练集都无法很好拟合。当$\lambda$ 太小的时候，非常容易的去拟合训练集。</p>
+<p>交叉验证集的误差：$\lambda$ 过大，欠拟合，高偏差时交叉验证的误差也很大。在最左边是高方差问题，$\lambda$ 小，对数据过拟合交叉验证的误差也很大。</p>
+<p><img src="/images/20200107lambda.jpg" alt="20200107lambda"></p>
+<h3 id="3-学习曲线"><a href="#3-学习曲线" class="headerlink" title="3 学习曲线"></a>3 学习曲线</h3><h4 id="3-1-曲线随样本量变化"><a href="#3-1-曲线随样本量变化" class="headerlink" title="3.1 曲线随样本量变化"></a>3.1 曲线随样本量变化</h4><p>高偏差：训练误差随着样本数据逐渐增大。交叉验证误差随着样本数量减小（样本量越来越多无助于改善算法）。</p>
+<p><img src="/images/20200107high_bias.jpg" alt="20200107high_bias"></p>
+<p>高方差：样本增大训练误差也增大，但相对而言误差小一点（因为一直在尽量拟合数据）。交叉验证的误差也慢慢下降，但总的来说样本越多训练得越好。</p>
+<p><img src="/images/20200107high_var.jpg" alt="20200107high_var"></p>
+<h4 id="3-2-解决方法"><a href="#3-2-解决方法" class="headerlink" title="3.2 解决方法"></a>3.2 解决方法</h4><p>高方差：用更多数据训练，更少量的feature（做），增加正则项$\lambda$。</p>
+<p>高偏差：加更多的特征，减小正则项 $\lambda$ ，用更复杂的神经网络，对误分类的数据增加权重Adaboost。</p>
 
     </div>
 
@@ -315,7 +318,6 @@
       <footer class="post-footer">
           <div class="post-tags">
               <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag"># 机器学习</a>
-              <a href="/tags/AIOps/" rel="tag"># AIOps</a>
           </div>
 
         
@@ -324,12 +326,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2019/11/26/20191126mac%E4%B8%8Ahexo%E7%9A%84mathjax%E9%85%8D%E7%BD%AE/" rel="prev" title="mac上hexo的mathjax配置">
-      <i class="fa fa-chevron-left"></i> mac上hexo的mathjax配置
+    <a href="/2018/10/30/20181030%E6%B5%AA%E6%BD%AE%E4%B9%8B%E5%B7%85%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="prev" title="《浪潮之巅》—— IT浮沉">
+      <i class="fa fa-chevron-left"></i> 《浪潮之巅》—— IT浮沉
     </a></div>
       <div class="post-nav-item">
-    <a href="/2019/12/17/20191216%E5%AD%97%E8%8A%82%E9%9D%A2%E8%AF%95%E4%B8%8E%E5%8D%8E%E4%B8%BA%E5%9B%BE%E8%AE%BA%E9%97%AE%E9%A2%98/" rel="next" title="20191216面试1&图论问题回顾">
-      20191216面试1&图论问题回顾 <i class="fa fa-chevron-right"></i>
+    <a href="/2018/12/08/20191208LR%E5%8E%9F%E7%90%86/" rel="next" title="LR原理">
+      LR原理 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -369,7 +371,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-基类结构"><span class="nav-number">1.</span> <span class="nav-text">1 基类结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Etsy的Skyline算法"><span class="nav-number">2.</span> <span class="nav-text">2 Etsy的Skyline算法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#median-absolute-deviation"><span class="nav-number">2.0.1.</span> <span class="nav-text">median_absolute_deviation</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#first-hour-average"><span class="nav-number">2.0.2.</span> <span class="nav-text">first_hour_average</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#stddev-from-average"><span class="nav-number">2.0.3.</span> <span class="nav-text">stddev_from_average</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#stddev-from-moving-average"><span class="nav-number">2.0.4.</span> <span class="nav-text">stddev_from_moving_average</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#mean-subtraction-cumulation"><span class="nav-number">2.0.5.</span> <span class="nav-text">mean_subtraction_cumulation</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#least-squares"><span class="nav-number">2.0.6.</span> <span class="nav-text">least_squares</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#histogram-bins"><span class="nav-number">2.0.7.</span> <span class="nav-text">histogram_bins</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-偏差与方差"><span class="nav-number">1.</span> <span class="nav-text">1 偏差与方差</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-正则化"><span class="nav-number">2.</span> <span class="nav-text">2 正则化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-学习曲线"><span class="nav-number">3.</span> <span class="nav-text">3 学习曲线</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-曲线随样本量变化"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 曲线随样本量变化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-解决方法"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 解决方法</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

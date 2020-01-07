@@ -51,17 +51,17 @@
 <meta name="keywords" content="面试,算法">
 <meta property="og:type" content="article">
 <meta property="og:title" content="20191231面试2">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;01&#x2F;02&#x2F;20191231%E7%9F%A5%E4%B9%8E%E9%9D%A2%E8%AF%95&#x2F;index.html">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;01&#x2F;02&#x2F;20191231%E9%9D%A2%E8%AF%952_%E7%9F%A5%E4%B9%8E%E7%BD%91%E6%98%93&#x2F;index.html">
 <meta property="og:site_name" content="WangXue">
 <meta property="og:description" content="1，项目介绍首先自我介绍。再介绍异常检测项目。在介绍广告CTR项目。1，对每个项目的细节梳理清楚：如lightGBM如何对类别特征进行节点分裂的？（lightGBM论文）2，然后就是要仔细思考进一步的优化的地方在哪。如何进一步提高点云的识别率呢？当时做了实验加多卷积层并没有明显的提升效果了，物体结构的特征点已经提取充分，所以并没用更深的网络。另一方面继续优化的点可以考虑点与点之间的领域结构，就像图">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200102RandomForest.jpg">
 <meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200102Stacking.jpg">
-<meta property="og:updated_time" content="2020-01-05T07:22:44.909Z">
+<meta property="og:updated_time" content="2020-01-07T09:16:22.788Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200102RandomForest.jpg">
 
-<link rel="canonical" href="http://yoursite.com/2020/01/02/20191231%E7%9F%A5%E4%B9%8E%E9%9D%A2%E8%AF%95/">
+<link rel="canonical" href="http://yoursite.com/2020/01/02/20191231%E9%9D%A2%E8%AF%952_%E7%9F%A5%E4%B9%8E%E7%BD%91%E6%98%93/">
 
 
 <script id="page-configurations">
@@ -212,7 +212,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/02/20191231%E7%9F%A5%E4%B9%8E%E9%9D%A2%E8%AF%95/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/02/20191231%E9%9D%A2%E8%AF%952_%E7%9F%A5%E4%B9%8E%E7%BD%91%E6%98%93/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -242,7 +242,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-01-05 15:22:44" itemprop="dateModified" datetime="2020-01-05T15:22:44+08:00">2020-01-05</time>
+                <time title="修改时间：2020-01-07 17:16:22" itemprop="dateModified" datetime="2020-01-07T17:16:22+08:00">2020-01-07</time>
               </span>
 
           
@@ -261,8 +261,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2020/01/02/20191231%E7%9F%A5%E4%B9%8E%E9%9D%A2%E8%AF%95/#comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/01/02/20191231%E7%9F%A5%E4%B9%8E%E9%9D%A2%E8%AF%95/" itemprop="commentCount"></span>
+    <a title="valine" href="/2020/01/02/20191231%E9%9D%A2%E8%AF%952_%E7%9F%A5%E4%B9%8E%E7%BD%91%E6%98%93/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/01/02/20191231%E9%9D%A2%E8%AF%952_%E7%9F%A5%E4%B9%8E%E7%BD%91%E6%98%93/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -289,8 +289,9 @@
 <script type="math/tex; mode=display">H^{o o b}(\boldsymbol{x})=\underset{y \in \mathcal{Y}}{\arg \max } \sum_{t=1}^{T} \mathbb{I}\left(h_{t}(\boldsymbol{x})=y\right) \cdot \mathbb{I}\left(\boldsymbol{x} \notin D_{t}\right)</script><p>Bagging的泛化误差包外估计是：</p>
 <script type="math/tex; mode=display">\epsilon^{o o b}=\frac{1}{|D|} \sum_{(\boldsymbol{x}, y) \in D} \mathbb{I}\left(H^{o o b}(\boldsymbol{x}) \neq y\right)</script><p>包外估计可以辅助剪枝。</p>
 <p>Bagging可以降低方差。</p>
-<p>（2）另外RF引入了随机特征选择。就是每个结点都会随机选择一些特征来构建树。如下图的算法流程。第5行，先选取了部分特征用来构建树，然后每个结点都有选择特征子集（line 5）来计算Gini impurity或均方误差，以此挑选最优划分特征（line 6），计算最优划分点（line7）。</p>
+<p>（2）另外RF引入了随机特征选择。就是每个结点都会随机选择一些特征来构建树。如下图的算法流程。第5行，先选取了部分特征用来构建树（森林中每棵树都只随机的选择特征集中的一部分特征进行训练，因而森林中的每棵树都不会全都关注某些有很强预测性的特征上面），然后每个结点都有选择特征子集（line 5）来计算Gini impurity或均方误差，以此挑选最优划分特征（line 6），计算最优划分点（line7）。</p>
 <p>（额额额，后面我居然给直接忘了，还有后面算法题短路得不行，捂脸）</p>
+<p>每个结点的特征子集的好处：如果特征A1,A2彼此相关。树根据信息增益选择了A1后，A2的信息增益一定会变得很小，因为A1和A2所引起的不确定度是同一个不确定度，确定了A1后那么这个不确定度就没有了，确定A2后数据集的不确定性不会再减小了，因而造成的结果就是虽然说A1和A2同等重要，但是所有的树每次选择A1后就不会选择A2了。</p>
 <p><img src="/images/20200102RandomForest.jpg" alt="20200102RandomForest"></p>
 <p>（3）其他</p>
 <p>随机森林的结合策略有：平均法（简单平均、加权平均），投票法，stacking（先从初始数据集训练出初始学习器，然后生成一个新数据集用于训练次级学习器，交叉验证）</p>
@@ -310,6 +311,7 @@
 <p>2，深度模型CTR（DeepCTR入手）</p>
 <p>3，leecode刷题系列</p>
 <p>4，其他（印象笔记搬迁到博客，kaggle比赛开源代码读读）</p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p><a href="https://blog.csdn.net/weixin_37688445/article/details/79272319" target="_blank" rel="noopener">https://blog.csdn.net/weixin_37688445/article/details/79272319</a></p>
 
     </div>
 
@@ -374,7 +376,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1，项目介绍"><span class="nav-number">1.</span> <span class="nav-text">1，项目介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-基础知识"><span class="nav-number">2.</span> <span class="nav-text">2 基础知识</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-算法题"><span class="nav-number">3.</span> <span class="nav-text">3 算法题</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1，项目介绍"><span class="nav-number">1.</span> <span class="nav-text">1，项目介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-基础知识"><span class="nav-number">2.</span> <span class="nav-text">2 基础知识</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-算法题"><span class="nav-number">3.</span> <span class="nav-text">3 算法题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reference"><span class="nav-number">4.</span> <span class="nav-text">Reference</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -390,7 +392,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-count">32</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
