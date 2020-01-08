@@ -47,18 +47,22 @@
   };
 </script>
 
-  <meta name="description" content="1 简介EM算法是一种迭代算法，用于含有隐变量的概率模型参数的极大似然估计。 E步：求期望；M步，求极大。 1.1 例子P176三硬币模型： p_{(y&#x2F;\theta)}=\sum_{\mathcal{Z}} P(y, z | \theta)=\sum_{\mathcal{Z}} P(z | \theta) P(y | z, \theta)">
+  <meta name="description" content="1 偏差与方差1.1 点估计对参数$\theta$ 的一个预测，记为$\hat{\theta}$ ，假设$\left\{x_{1}, x_{2}, \cdots, x_{m}\right\}$ 是独立同分布的数据点，该分布由参数$\theta$ 决定，则参数$\theta$ 的点估计为某个函数：\hat{\theta}_{m}=g\left(x_{1}, x_{2}, \cdots, x_{m}\">
 <meta name="keywords" content="机器学习">
 <meta property="og:type" content="article">
-<meta property="og:title" content="EM算法">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2018&#x2F;12&#x2F;25&#x2F;20200104EM%E7%AE%97%E6%B3%95&#x2F;index.html">
+<meta property="og:title" content="模型选择">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2018&#x2F;12&#x2F;07&#x2F;20200107%E6%A8%A1%E5%9E%8B%E9%80%89%E6%8B%A9&#x2F;index.html">
 <meta property="og:site_name" content="WangXue">
-<meta property="og:description" content="1 简介EM算法是一种迭代算法，用于含有隐变量的概率模型参数的极大似然估计。 E步：求期望；M步，求极大。 1.1 例子P176三硬币模型： p_{(y&#x2F;\theta)}=\sum_{\mathcal{Z}} P(y, z | \theta)=\sum_{\mathcal{Z}} P(z | \theta) P(y | z, \theta)">
+<meta property="og:description" content="1 偏差与方差1.1 点估计对参数$\theta$ 的一个预测，记为$\hat{\theta}$ ，假设$\left\{x_{1}, x_{2}, \cdots, x_{m}\right\}$ 是独立同分布的数据点，该分布由参数$\theta$ 决定，则参数$\theta$ 的点估计为某个函数：\hat{\theta}_{m}=g\left(x_{1}, x_{2}, \cdots, x_{m}\">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-01-04T04:22:23.924Z">
+<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200107lambda.jpg">
+<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200107high_bias.jpg">
+<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200107high_var.jpg">
+<meta property="og:updated_time" content="2020-01-08T12:05:20.379Z">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200107lambda.jpg">
 
-<link rel="canonical" href="http://yoursite.com/2018/12/25/20200104EM%E7%AE%97%E6%B3%95/">
+<link rel="canonical" href="http://yoursite.com/2018/12/07/20200107%E6%A8%A1%E5%9E%8B%E9%80%89%E6%8B%A9/">
 
 
 <script id="page-configurations">
@@ -72,7 +76,7 @@
   };
 </script>
 
-  <title>EM算法 | WangXue</title>
+  <title>模型选择 | WangXue</title>
   
 
 
@@ -209,7 +213,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/25/20200104EM%E7%AE%97%E6%B3%95/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/07/20200107%E6%A8%A1%E5%9E%8B%E9%80%89%E6%8B%A9/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -222,7 +226,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          EM算法
+          模型选择
         </h1>
 
         <div class="post-meta">
@@ -232,14 +236,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2018-12-25 10:02:19" itemprop="dateCreated datePublished" datetime="2018-12-25T10:02:19+08:00">2018-12-25</time>
+              <time title="创建时间：2018-12-07 16:34:41" itemprop="dateCreated datePublished" datetime="2018-12-07T16:34:41+08:00">2018-12-07</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-01-04 12:22:23" itemprop="dateModified" datetime="2020-01-04T12:22:23+08:00">2020-01-04</time>
+                <time title="修改时间：2020-01-08 20:05:20" itemprop="dateModified" datetime="2020-01-08T20:05:20+08:00">2020-01-08</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -269,8 +273,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2018/12/25/20200104EM%E7%AE%97%E6%B3%95/#comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2018/12/25/20200104EM%E7%AE%97%E6%B3%95/" itemprop="commentCount"></span>
+    <a title="valine" href="/2018/12/07/20200107%E6%A8%A1%E5%9E%8B%E9%80%89%E6%8B%A9/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2018/12/07/20200107%E6%A8%A1%E5%9E%8B%E9%80%89%E6%8B%A9/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -285,30 +289,34 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h3 id="1-简介"><a href="#1-简介" class="headerlink" title="1 简介"></a>1 简介</h3><p>EM算法是一种迭代算法，用于含有隐变量的概率模型参数的极大似然估计。 </p><p>E步：求期望；M步，求极大。 </p><h4 id="1-1-例子"><a href="#1-1-例子" class="headerlink" title="1.1 例子"></a>1.1 例子</h4><p>P176三硬币模型： </p><script type="math/tex; mode=display">p_{(y/\theta)}=\sum_{\mathcal{Z}} P(y, z | \theta)=\sum_{\mathcal{Z}} P(z | \theta) P(y | z, \theta)</script><a id="more"></a>
-
-
-<script type="math/tex; mode=display">= \pi p^y(1-p)^{(1-y)} + (1-\pi)q^y (1-q)^{(1-y)}</script><p>y是观测变量，表示一次试验结果是1或0； </p>
-<p>z（随机变量）是隐变量，表示未观测到的抛硬币A的结果 </p>
-<p>$\theta = (\pi,p,q)$ 是模型参数。 </p>
-<p>这个模型是以上数据的生成模型 </p>
-<h4 id="1-2-模型"><a href="#1-2-模型" class="headerlink" title="1.2 模型"></a>1.2 模型</h4><p>观测数据是$Y=\left(Y_{1}, Y_{2}, \cdots, Y_{n}\right)^{\mathrm{T}}$，未观测数据表示为$Z=(Z_1,Z_2…Z_n)^{\mathrm{T}}$，则观测数据的似然函数是： </p>
-<script type="math/tex; mode=display">P(Y | \theta)=\sum_{Z} P(Z | \theta) P(Y | Z, \theta)</script><p>即： </p>
-<script type="math/tex; mode=display">P(Y | \theta)=\prod_{j=1}^{n}\left[\pi p^{y_{j}}(1-p)^{1-y_{j}}+(1-\pi) q^{y_{j}}(1-q)^{1-y_{j}}\right]</script><p>求模型参数 $\theta = (\pi,p,q)$的极大似然估计是： </p>
-<script type="math/tex; mode=display">\hat{\theta} = argmax_{\theta} log(P(Y|\theta))</script><h4 id="1-3-迭代算法"><a href="#1-3-迭代算法" class="headerlink" title="1.3 迭代算法"></a>1.3 迭代算法</h4><p>这个问题只能通过迭代的方法求解，EM算法就是用于求解这个问题的一种迭代算法。 </p>
-<p>1，选取参数的初值，记作 $\theta^0 = (\pi^0,p^0,q^0)$，然后迭代计算参数的估计值，直至收敛为止。第i次迭代的参数估计值是 $\theta^i = (\pi^i,p^i,q^i)$ </p>
-<p>2, E步，计算在模型参数$\theta^i$下观测数据$y_i$来自硬币B的概率： </p>
-<script type="math/tex; mode=display">\mu_{j}^{(i+1)}=\frac{\pi^{(i)}\left(p^{(i)}\right)^{y_{j}}\left(1-p^{(i)}\right)^{1-y_{j}}}{\pi^{(i)}\left(p^{(i)}\right)^{y_{j}}\left(1-p^{(i)}\right)^{1-y_{j}}+\left(1-\pi^{(i)}\right)\left(q^{(i)}\right)^{y_{j}}\left(1-q^{(i)}\right)^{1-y_{j}}}</script><p>M步计算模型参数的新估计值(n是独立重复n次实验)：</p>
-<script type="math/tex; mode=display">\pi^{i+1} = \frac{1}{n}\sum_{j=1}^n \mu_j^{i+1}</script><script type="math/tex; mode=display">p^{(i+1)}=\frac{\sum_{j=1}^{n} \mu_{j}^{(i+1)} y_{j}}{\sum_{j=1}^{n} \mu_{j}^{(i+1)}}</script><script type="math/tex; mode=display">q^{(i+1)}=\frac{\sum_{j=1}^{n}\left(1-\mu_{j}^{(i+1)}\right) y_{j}}{\sum_{j=1}^{n}\left(1-\mu_{j}^{(i+1)}\right)}</script><p>P177的计算例子，不同的初值得到不同的参数估计值。</p>
-<h3 id="2-EM算法"><a href="#2-EM算法" class="headerlink" title="2 EM算法"></a>2 EM算法</h3><p>Y表示观测随机变量的数据，Z表示隐随机变量的数据。Y和Z连到一起称为完全数据。不完全数据Y的似然函数是$P(Y|\theta)$，Y和Z的联合概率分布是$P(Y,Z|\theta)$，完全数据的对数似然函数是$logP(Y,Z|\theta)$，EM算法通过迭代求$L(\theta) = logP(Y|\theta)$</p>
-<p>(1) 选择参数初始值$\theta^{(0)}$，开始迭代。</p>
-<p>(2) <strong>E步</strong>，记$\theta^i$是第i次迭代参数$\theta$的估计值，在第i+1次迭代的E步，计算：</p>
-<script type="math/tex; mode=display">Q\left(\theta, \theta^{(i)}\right)=E_{Z}\left[\log P(Y, Z | \theta) | Y, \theta^{(i)}\right] = \sum_{Z} \log P(Y, Z | \theta) P\left(Z | Y, \theta^{(i)}\right)</script><p>这离的$P(Z|Y,\theta^{(i)})$是在给定观测数据Y和当前参数估计$\theta^{(i)}$下隐变量数据Z的条件分布。</p>
-<p>(3) <strong>M步</strong>，求使得$Q\left(\theta, \theta^{(i)}\right)$ 极大化的$\theta$，确定第i+1次迭代的参数估计值$\theta^{(i+1)}$。</p>
-<script type="math/tex; mode=display">\theta^{(i+1)}=\arg \max _{\theta} Q\left(\theta, \theta^{(i)}\right)</script><p>(4) 重复2、3步直到收敛。Q函数是EM算法的核心。</p>
-<p>EM算法也是要先假设数据分布的。EM算法就是当抽取得到的每个样本都不知道是从哪个分布来的时候，通过迭代计算的方法来近似实现对观测数据的极大似然估计。EM 算法解决这个的思路是使用启发式的迭代方法，既然我们无法直接求出模型分布参数，那么我们可以先猜想隐含参数（EM 算法的 E 步），接着基于观察数据和猜测的隐含参数一起来极大化对数似然，求解我们的模型参数（EM算法的M步)。</p>
-<h3 id="3-Reference"><a href="#3-Reference" class="headerlink" title="3 Reference"></a>3 Reference</h3><p>1，<a href="https://zhuanlan.zhihu.com/p/36331115" target="_blank" rel="noopener">知乎 EM算法</a></p>
-<p>2，《李航 统计学习方法》</p>
+        <h3 id="1-偏差与方差"><a href="#1-偏差与方差" class="headerlink" title="1 偏差与方差"></a>1 偏差与方差</h3><h4 id="1-1-点估计"><a href="#1-1-点估计" class="headerlink" title="1.1 点估计"></a>1.1 点估计</h4><p>对参数$\theta$ 的一个预测，记为$\hat{\theta}$ ，假设$\left\{x_{1}, x_{2}, \cdots, x_{m}\right\}$ 是独立同分布的数据点，该分布由参数$\theta$ 决定，则参数$\theta$ 的点估计为某个函数：</p><script type="math/tex; mode=display">\hat{\theta}_{m}=g\left(x_{1}, x_{2}, \cdots, x_{m}\right)</script><a id="more"></a>
+<p>频率学派：真实参数$\theta$ 是固定的，但是未知。$\hat{\theta_m}$ 是数据点的函数（可以用极大似然估计计算）。</p>
+<h4 id="1-2-偏差"><a href="#1-2-偏差" class="headerlink" title="1.2 偏差"></a>1.2 偏差</h4><p>偏差：学习算法的期望预测与真实结果的偏离程度，与真实世界的偏离。偏差衡量的是偏离真实值的误差的期望。</p>
+<script type="math/tex; mode=display">\operatorname{bias}\left(\hat{\theta}_{m}\right)=\mathbb{E}\left(\hat{\theta}_{m}\right)-\theta</script><p>高偏差 —— 欠拟合：模型有偏离。模型偏简单。</p>
+<p>如果$\operatorname{bias}\left(\hat{\theta}_{m}\right)=0$ 则估计量$\hat{\theta_m}$是无偏的。如果$\lim _{m \rightarrow \infty} \operatorname{bias}\left(\hat{\theta}_{m}\right)=0$ 则估计量$\hat{\theta_m}$是渐进无偏的。</p>
+<h4 id="1-3-方差"><a href="#1-3-方差" class="headerlink" title="1.3 方差"></a>1.3 方差</h4><p>方差：理解1，同样大小的训练集的变动所导致的学习性能的变化，接受不同数据后的模型输出的稳定程度。理解2，从潜在的数据分布中独立的获取样本集时，估计量的变化程度。理解3，方差衡量的是由于数据采样的随机性可能导致的估计值的波动。</p>
+<script type="math/tex; mode=display">\operatorname{Var}(\hat{\theta})</script><p>高方差 —— 过拟合：完全拟合训练数据。模型可能偏向复杂。</p>
+<p><strong>噪声</strong>表达了当前任务上任何学习算法所能达到的期望泛化误差的下界，也就是最小值。</p>
+<p>eg：RF减少的是方差。Adaboost是减小偏差，尽量去拟合数据。</p>
+<p>当交叉验证和测试集误差都很大的时候，怎么判断是bias problem还是variance problem呢？</p>
+<p>bias problem：训练误差大，交叉验证误差大。</p>
+<p>variance problem：则是训练误差小，交叉验证误差远远比训练误差大。</p>
+<p>统计理论表明：如果训练集和测试集中的样本都是独立同分布产生的，则有 <strong>模型的训练误差的期望等于模型的测试误差的期望</strong> 。</p>
+<p>机器学习的“没有免费的午餐定理”表明：在所有可能的数据生成分布上，没有一个机器学习算法总是比其他的要好。意思是特点任务的数据的分布往往满足某类假设，从而设计在这类分布上效果好的算法。</p>
+<h3 id="2-正则化"><a href="#2-正则化" class="headerlink" title="2 正则化"></a>2 正则化</h3><script type="math/tex; mode=display">J(\theta)=\frac{1}{2 m} \sum_{i=1}^{m}\left(h_{\theta}\left(x^{(i)}\right)-y^{(i)}\right)^{2}+\frac{\lambda}{2 m} \sum_{j=1}^{m} \theta_{j}^{2}</script><p>正则化中的$\lambda$和偏差，方差的关系。</p>
+<p>训练误差：随着$\lambda$ 增大的时候，训练损失增大，$\lambda$ 太大的时候对参数惩罚过重，因此容易有高偏差问题。此时对训练集都无法很好拟合。当$\lambda$ 太小的时候，非常容易的去拟合训练集。</p>
+<p>交叉验证集的误差：$\lambda$ 过大，欠拟合，高偏差时交叉验证的误差也很大。在最左边是高方差问题，$\lambda$ 小，对数据过拟合交叉验证的误差也很大。</p>
+<p><img src="/images/20200107lambda.jpg" alt="20200107lambda"></p>
+<h3 id="3-学习曲线"><a href="#3-学习曲线" class="headerlink" title="3 学习曲线"></a>3 学习曲线</h3><h4 id="3-1-曲线随样本量变化"><a href="#3-1-曲线随样本量变化" class="headerlink" title="3.1 曲线随样本量变化"></a>3.1 曲线随样本量变化</h4><p>高偏差：训练误差随着样本数据逐渐增大。交叉验证误差随着样本数量减小（样本量越来越多无助于改善算法）。</p>
+<p><img src="/images/20200107high_bias.jpg" alt="20200107high_bias"></p>
+<p>高方差：样本增大训练误差也增大，但相对而言误差小一点（因为一直在尽量拟合数据）。交叉验证的误差也慢慢下降，但总的来说样本越多训练得越好。</p>
+<p><img src="/images/20200107high_var.jpg" alt="20200107high_var"></p>
+<h4 id="3-2-解决方法"><a href="#3-2-解决方法" class="headerlink" title="3.2 解决方法"></a>3.2 解决方法</h4><p>高方差：缓解过拟合。</p>
+<p>用更多数据训练（数据增强，更多训练数据），更少量的feature（做），增加正则项$\lambda$（贝叶斯估计中，正则化项对应于模型的先验概率$\log \frac{1}{g(\theta)}$），噪声注入（输入、输出、权重噪声等）、早停法。</p>
+<p>高偏差：缓解欠拟合。</p>
+<p>加更多的特征，减小正则项 $\lambda$ ，用更复杂的神经网络，对误分类的数据增加权重Adaboost。</p>
+<h4 id="3-3-误差分析"><a href="#3-3-误差分析" class="headerlink" title="3.3 误差分析"></a>3.3 误差分析</h4><p>首先构建一个baseline，画出学习曲线，分析是否有高方差偏差的问题，关注那些被分错的数据（共同的特征和规律）。关注交叉验证的结果。</p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1， <a href="http://www.huaxiaozhuan.com/" target="_blank" rel="noopener">http://www.huaxiaozhuan.com/</a> </p>
 
     </div>
 
@@ -327,12 +335,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2018/12/24/20191224%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF/" rel="prev" title="朴素贝叶斯">
-      <i class="fa fa-chevron-left"></i> 朴素贝叶斯
+    <a href="/2018/10/30/20181030%E6%B5%AA%E6%BD%AE%E4%B9%8B%E5%B7%85%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="prev" title="《浪潮之巅》—— IT浮沉">
+      <i class="fa fa-chevron-left"></i> 《浪潮之巅》—— IT浮沉
     </a></div>
       <div class="post-nav-item">
-    <a href="/2018/12/25/20191225%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0/" rel="next" title="集成学习">
-      集成学习 <i class="fa fa-chevron-right"></i>
+    <a href="/2018/12/08/20191208LR%E5%8E%9F%E7%90%86/" rel="next" title="LR原理">
+      LR原理 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -372,7 +380,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-简介"><span class="nav-number">1.</span> <span class="nav-text">1 简介</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-例子"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 例子</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-模型"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-迭代算法"><span class="nav-number">1.3.</span> <span class="nav-text">1.3 迭代算法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-EM算法"><span class="nav-number">2.</span> <span class="nav-text">2 EM算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-Reference"><span class="nav-number">3.</span> <span class="nav-text">3 Reference</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-偏差与方差"><span class="nav-number">1.</span> <span class="nav-text">1 偏差与方差</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-点估计"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 点估计</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-偏差"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 偏差</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-方差"><span class="nav-number">1.3.</span> <span class="nav-text">1.3 方差</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-正则化"><span class="nav-number">2.</span> <span class="nav-text">2 正则化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-学习曲线"><span class="nav-number">3.</span> <span class="nav-text">3 学习曲线</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-曲线随样本量变化"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 曲线随样本量变化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-解决方法"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 解决方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-误差分析"><span class="nav-number">3.3.</span> <span class="nav-text">3.3 误差分析</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reference"><span class="nav-number">4.</span> <span class="nav-text">Reference</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
