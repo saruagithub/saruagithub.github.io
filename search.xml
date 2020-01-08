@@ -1229,7 +1229,8 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
 <p>高偏差：缓解欠拟合。</p>
 <p>加更多的特征，减小正则项 $\lambda$ ，用更复杂的神经网络，对误分类的数据增加权重Adaboost。</p>
 <h4 id="3-3-误差分析"><a href="#3-3-误差分析" class="headerlink" title="3.3 误差分析"></a>3.3 误差分析</h4><p>首先构建一个baseline，画出学习曲线，分析是否有高方差偏差的问题，关注那些被分错的数据（共同的特征和规律）。关注交叉验证的结果。</p>
-<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1， <a href="http://www.huaxiaozhuan.com/" target="_blank" rel="noopener">http://www.huaxiaozhuan.com/</a> </p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1， <a href="http://www.huaxiaozhuan.com/" target="_blank" rel="noopener">http://www.huaxiaozhuan.com/</a>  参考资料太棒了</p>
+<p>2，吴恩达《机器学习》</p>
 ]]></content>
       <categories>
         <category>机器学习</category>
