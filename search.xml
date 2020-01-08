@@ -780,8 +780,8 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
         <category>AIOps</category>
       </categories>
       <tags>
-        <tag>时间序列</tag>
         <tag>AIOps</tag>
+        <tag>时间序列</tag>
       </tags>
   </entry>
   <entry>
@@ -846,8 +846,8 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
         <category>AIOps</category>
       </categories>
       <tags>
-        <tag>异常检测</tag>
         <tag>AIOps</tag>
+        <tag>异常检测</tag>
       </tags>
   </entry>
   <entry>
@@ -1202,7 +1202,7 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
   <entry>
     <title>模型选择</title>
     <url>/2018/12/07/20200107%E6%A8%A1%E5%9E%8B%E9%80%89%E6%8B%A9/</url>
-    <content><![CDATA[<h3 id="1-偏差与方差"><a href="#1-偏差与方差" class="headerlink" title="1 偏差与方差"></a>1 偏差与方差</h3><h4 id="1-1-点估计"><a href="#1-1-点估计" class="headerlink" title="1.1 点估计"></a>1.1 点估计</h4><p>对参数$\theta$ 的一个预测，记为$\hat{\theta}$ ，假设$\left\{x_{1}, x_{2}, \cdots, x_{m}\right\}$ 是独立同分布的数据点，该分布由参数$\theta$ 决定，则参数$\theta$ 的点估计为某个函数：</p><script type="math/tex; mode=display">\hat{\theta}_{m}=g\left(x_{1}, x_{2}, \cdots, x_{m}\right)</script><a id="more"></a>
+    <content><![CDATA[<h3 id="1-偏差与方差"><a href="#1-偏差与方差" class="headerlink" title="1 偏差与方差"></a>1 偏差与方差</h3><h4 id="1-1-点估计"><a href="#1-1-点估计" class="headerlink" title="1.1 点估计"></a>1.1 点估计</h4><p>对参数$\theta$ 的一个预测，记为$\hat{\theta}$ ，假设$\left\{x_{1}, x_{2}, \cdots, x_{m}\right\}$ 是独立同分布的数s据点，该分布由参数$\theta$ 决定，则参数$\theta$ 的点估计为某个函数：</p><script type="math/tex; mode=display">\hat{\theta}_{m}=g\left(x_{1}, x_{2}, \cdots, x_{m}\right)</script><a id="more"></a>
 <p>频率学派：真实参数$\theta$ 是固定的，但是未知。$\hat{\theta_m}$ 是数据点的函数（可以用极大似然估计计算）。</p>
 <h4 id="1-2-偏差"><a href="#1-2-偏差" class="headerlink" title="1.2 偏差"></a>1.2 偏差</h4><p>偏差：学习算法的期望预测与真实结果的偏离程度，与真实世界的偏离。偏差衡量的是偏离真实值的误差的期望。</p>
 <script type="math/tex; mode=display">\operatorname{bias}\left(\hat{\theta}_{m}\right)=\mathbb{E}\left(\hat{\theta}_{m}\right)-\theta</script><p>高偏差 —— 欠拟合：模型有偏离。模型偏简单。</p>
