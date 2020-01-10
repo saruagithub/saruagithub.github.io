@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-01-10T11:11:21.853Z</updated>
+  <updated>2020-01-10T13:39:44.301Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -21,9 +21,9 @@
     <link href="http://yoursite.com/2020/01/08/20180914pointnet%E8%AE%BA%E6%96%87/"/>
     <id>http://yoursite.com/2020/01/08/20180914pointnet%E8%AE%BA%E6%96%87/</id>
     <published>2020-01-08T12:26:29.000Z</published>
-    <updated>2020-01-10T11:11:21.853Z</updated>
+    <updated>2020-01-10T13:39:44.301Z</updated>
     
-    <content type="html"><![CDATA[<h3 id="1-Abs-amp-Intro"><a href="#1-Abs-amp-Intro" class="headerlink" title="1 Abs &amp; Intro"></a>1 Abs &amp; Intro</h3><p>点云是一种重要的几何数据结构（自动驾驶的数据），由于不规则性许多研究者之前用3D体素网络 voxel grids（体积CNN：[28、17、18]是在体素化形状上应用3D卷积神经网络的先驱。由于数据稀疏性和3D卷积的计算成本，体积表示受到其分辨率的限制。）或图片集合（将点云数据投影到二维平面，扩展性以及提取特征的表示能力的限制。）来进行识别，但这使得数据变庞大，引入了量化伪像，这些伪像会掩盖数据的自然不变性。</p><a id="more"></a><p>本文设计了一种新颖的神经网络，直接输入点云，该网络很好地考虑了输入中点的排列不变性（点云是无序向量集。）。POINTNET可以用于分类，零件分割，场景语义分割等。典型的卷积体系结构需要高度规则的输入数据格式，例如图像网格或3D体素，以执行权重共享和其他内核优化。点云是简单统一的结构，避免了网格的组合不规则性和复杂性，因此更易于学习。但是，PointNet仍然必须尊重这样一个事实，即点云只是一组点，因此其成员的排列是不变的，因此在网络计算中必须具有一定的对称性。</p><p><strong>（核心原理）我们方法的关键是使用一个简单的对称函数，即最大池化max pool。 网络有效地学习了一组最优标准，它选择了点云的有趣点或信息点，并对选择它们的原因进行了编码。</strong> 网络的最终全连接层将这些学习的最优值汇总到整个描述符的全局描述符中（如上所述）（形状分类），或用于预测每个点云的类别标签（形状分割）。我们的网络<strong>学会了通过稀疏的一组关键点来总结输入点云，根据可视化，这些关键点大致对应于对象的骨架。</strong></p><p>我们的输入格式易应用于刚性或仿射变换，因为每个点都是独立变换的。 因此，我们可以添加一个依赖数据的空间转换器网络，该网络尝试在PointNet处理数据之前对数据进行规范化，以进一步改善结果。</p><p>文章主要贡献：1，我们设计了可以直接对3D无序点云处理的深度网络架构。2，这个网络如何被训练执行3D形状分类，零件分割和场景分割。3，经验与理论分析其稳定性与有效性。4，说明选定的神经元在网络中计算出的3D特征，并对其性能进行直观的解释。</p><h3 id="2-Problem"><a href="#2-Problem" class="headerlink" title="2 Problem"></a>2 Problem</h3><p>深度学习架构，直接将无序点云输入。一个点云表示为3D点的集合$\left\{P_{i} | i=1, \dots, n\right\}$，其中每个点$P_i$ 是其坐标(x,y,z) 的坐标（也可以加上另外的特征，如颜色，法向量等）。</p><p>对于对象分类任务，可以直接从形状中采样输入点云，也可以从场景点云中预先分割输入点云。 我们建议的深度网络针对所有k个候选类输出k个分数。</p><p> 对于语义分割，输入可以是用于部分零件区域分割的单个对象，也可以是3D场景中的用于对象区域分割。 我们的模型输出n×m分数，即输出每n个点云的每一个m个语义子类别。</p><h3 id="3-点集上的深度学习"><a href="#3-点集上的深度学习" class="headerlink" title="3 点集上的深度学习"></a>3 点集上的深度学习</h3><h4 id="3-1-点集属性"><a href="#3-1-点集属性" class="headerlink" title="3.1 点集属性"></a>3.1 点集属性</h4><p>1，无序性。 与图像中的像素阵列或体积网格中的体素阵列不同，点云是一组没有特定顺序的点。换句话说，消耗N个3D点集的网络需要对于输入集的N个排列按数据馈送顺序保持不变。（无论点如何顺序输入，都要能够识别）</p><p>2，点之间的相互作用。 这些点来自具有距离度量的空间。 这意味着这些点不是孤立的，相邻点形成一个有意义的子集。 因此，模型需要能够从附近的点捕获局部结构，以及局部结构之间的组合相互作用。</p><p>3，变换下的不变性。 作为几何对象，学习到的点集表示应不变于某些变换。 例如，一起旋转和平移点都不应修改全局点云类别或点的分割。</p><h4 id="3-2-点云架构"><a href="#3-2-点云架构" class="headerlink" title="3.2 点云架构"></a>3.2 点云架构</h4><p><img src="/Users/wangxue/gitpro/20191105MyBlog/saruagithub/source/images/20180914pointnet.jpg" alt="20180914pointnet"></p><p>我们的网络具有<strong>三个关键模块：最大池层（作为对称函数，用于汇总来自所有点的信息），一个局部和全局信息组合结构，以及两个对齐输入点集和点特征的联合对齐网络。</strong></p><p>无序输入的对称函数为了使模型对输入排列不变，存在以下三种策略：</p><p>1）按规范顺序对输入进行排序； </p><p>尽管排序听起来很简单，但实际上在高维空间中不存在稳定的排序，关于一般意义上的点扰动。 矛盾很容易说明。 如果存在这种排序策略，它将在高维空间和1d实线之间定义一个双射映射（输入的点不论顺序，通过一一对应的函数映射到高维空间）。 不难发现，关于点扰动要求顺序是稳定的，就等同于要求此映射随着维度减小而保留空间邻近性，这是一般情况下无法实现的任务。</p><p>因此，排序无法完全解决ordering问题，并且随着ordering问题的持续存在，网络很难学习从输入到输出的一致映射。 如实验所示（图5），我们发现直接在排序点集上应用MLP效果较差，尽管比直接处理未排序的输入要好一些。</p><p>2）将输入作为训练RNN的序列，但通过各种排列来增强训练数据； </p><p>使用RNN的想法将点集视为序列信号，并希望通过用随机排列的序列训练RNN，RNN将对输入顺序不变。 但是，在“ OrderMatters” [25]中，作者表明顺序确实很重要，不能完全省略。 尽管RNN对长度较短（数十个）的序列的输入排序具有相对较好的鲁棒性，但很难扩展到数千个输入元素，这是点集的常见大小。 根据经验，我们还表明，基于RNN的模型的性能不如我们提出的方法。</p><p>3）使用简单的<strong>对称函数</strong>汇总每个点的信息。 在此，对称函数将n个向量作为输入，并输出一个与输入顺序不变的新向量。 例如，+和∗运算符是对称二进制函数。</p><script type="math/tex; mode=display">f\left(\left\{x_{1}, \ldots, x_{n}\right\}\right) \approx g\left(h\left(x_{1}\right), \ldots, h\left(x_{n}\right)\right)</script><script type="math/tex; mode=display">f: 2^{\mathrm{R}^{N}} \rightarrow \mathbb{R}, h \quad: \mathbb{R}^{N} \rightarrow \mathbb{R}^{K}</script><p>g是一个对称函数。</p><p>从经验上讲，我们的基本模块非常简单：我们通过多层感知器网络近似h，通过单个变量函数和最大池函数的组合来近似g。 通过实验发现这种方法效果很好。 通过收集h，我们可以学习多个f来捕获集合的不同属性。</p><h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，知乎解读 <a href="https://zhuanlan.zhihu.com/p/44809266" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/44809266</a></p><p>2，Point perception <a href="http://mech.fsv.cvut.cz/~dr/papers/CC05/node6.html" target="_blank" rel="noopener">http://mech.fsv.cvut.cz/~dr/papers/CC05/node6.html</a></p>]]></content>
+    <content type="html"><![CDATA[<h3 id="1-Abs-amp-Intro"><a href="#1-Abs-amp-Intro" class="headerlink" title="1 Abs &amp; Intro"></a>1 Abs &amp; Intro</h3><p>点云是一种重要的几何数据结构（自动驾驶的数据），由于不规则性许多研究者之前用3D体素网络 voxel grids（体积CNN：[28、17、18]是在体素化形状上应用3D卷积神经网络的先驱。由于数据稀疏性和3D卷积的计算成本，体积表示受到其分辨率的限制。）或图片集合（将点云数据投影到二维平面，扩展性以及提取特征的表示能力的限制。）来进行识别，但这使得数据变庞大，引入了量化伪像，这些伪像会掩盖数据的自然不变性。</p><a id="more"></a><p>本文设计了一种新颖的神经网络，直接输入点云，该网络很好地考虑了输入中点的排列不变性（点云是无序向量集。）。POINTNET可以用于分类，零件分割，场景语义分割等。典型的卷积体系结构需要高度规则的输入数据格式，例如图像网格或3D体素，以执行权重共享和其他内核优化。点云是简单统一的结构，避免了网格的组合不规则性和复杂性，因此更易于学习。但是，PointNet仍然必须尊重这样一个事实，即点云只是一组点，因此其成员的排列是不变的，因此在网络计算中必须具有一定的对称性。</p><p><strong>（核心原理）我们方法的关键是使用一个简单的对称函数，即最大池化max pool。 网络有效地学习了一组最优标准，它选择了点云的有趣点或信息点，并对选择它们的原因进行了编码。</strong> 网络的最终全连接层将这些学习的最优值汇总到整个描述符的全局描述符中（如上所述）（形状分类），或用于预测每个点云的类别标签（形状分割）。我们的网络<strong>学会了通过稀疏的一组关键点来总结输入点云，根据可视化，这些关键点大致对应于对象的骨架。</strong></p><p>我们的输入格式易应用于刚性或仿射变换，因为每个点都是独立变换的。 因此，我们可以添加一个依赖数据的空间转换器网络，该网络尝试在PointNet处理数据之前对数据进行规范化，以进一步改善结果。</p><p>文章主要贡献：1，我们设计了可以直接对3D无序点云处理的深度网络架构。2，这个网络如何被训练执行3D形状分类，零件分割和场景分割。3，经验与理论分析其稳定性与有效性。4，说明选定的神经元在网络中计算出的3D特征，并对其性能进行直观的解释。</p><h3 id="2-Problem"><a href="#2-Problem" class="headerlink" title="2 Problem"></a>2 Problem</h3><p>深度学习架构，直接将无序点云输入。一个点云表示为3D点的集合$\left\{P_{i} | i=1, \dots, n\right\}$，其中每个点$P_i$ 是其坐标(x,y,z) 的坐标（也可以加上另外的特征，如颜色，法向量等）。</p><p>对于对象分类任务，可以直接从形状中采样输入点云，也可以从场景点云中预先分割输入点云。 我们建议的深度网络针对所有k个候选类输出k个分数。</p><p> 对于语义分割，输入可以是用于部分零件区域分割的单个对象，也可以是3D场景中的用于对象区域分割。 我们的模型输出n×m分数，即输出每n个点云的每一个m个语义子类别。</p><h3 id="3-点集上的深度学习"><a href="#3-点集上的深度学习" class="headerlink" title="3 点集上的深度学习"></a>3 点集上的深度学习</h3><h4 id="3-1-点集属性"><a href="#3-1-点集属性" class="headerlink" title="3.1 点集属性"></a>3.1 点集属性</h4><p>1，无序性。 与图像中的像素阵列或体积网格中的体素阵列不同，点云是一组没有特定顺序的点。换句话说，消耗N个3D点集的网络需要对于输入集的N个排列按数据馈送顺序保持不变。（无论点如何顺序输入，都要能够识别）</p><p>2，点之间的相互作用。 这些点来自具有距离度量的空间。 这意味着这些点不是孤立的，相邻点形成一个有意义的子集。 因此，模型需要能够从附近的点捕获局部结构，以及局部结构之间的组合相互作用。</p><p>3，变换下的不变性。 作为几何对象，学习到的点集表示应不变于某些变换。 例如，一起旋转和平移点都不应修改全局点云类别或点的分割。</p><h4 id="3-2-点云架构"><a href="#3-2-点云架构" class="headerlink" title="3.2 点云架构"></a>3.2 点云架构</h4><p><img src="/images/20180914pointnet.jpg" alt="20180914pointnet"></p><p>我们的网络具有<strong>三个关键模块：最大池层（作为对称函数，用于汇总来自所有点的信息），一个局部和全局信息组合结构，以及两个对齐输入点集和点特征的联合对齐网络。</strong></p><h5 id="3-2-1-无序输入的对称函数！！！"><a href="#3-2-1-无序输入的对称函数！！！" class="headerlink" title="3.2.1 无序输入的对称函数！！！"></a>3.2.1 无序输入的对称函数！！！</h5><p>为了使模型对输入排列不变，存在以下三种策略：</p><p>1）按规范顺序对输入进行排序； </p><p>尽管排序听起来很简单，但实际上在高维空间中不存在稳定的排序，关于一般意义上的点扰动。 矛盾很容易说明。 如果存在这种排序策略，它将在高维空间和1d实线之间定义一个双射映射（输入的点不论顺序，通过一一对应的函数映射到高维空间）。 不难发现，关于点扰动要求顺序是稳定的，就等同于要求此映射随着维度减小而保留空间邻近性，这是一般情况下无法实现的任务。</p><p>因此，排序无法完全解决ordering问题，并且随着ordering问题的持续存在，网络很难学习从输入到输出的一致映射。 如实验所示（图5），我们发现直接在排序点集上应用MLP效果较差，尽管比直接处理未排序的输入要好一些。</p><p>2）将输入作为训练RNN的序列，但通过各种排列来增强训练数据； </p><p>使用RNN的想法将点集视为序列信号，并希望通过用随机排列的序列训练RNN，RNN将对输入顺序不变。 但是，在“ OrderMatters” [25]中，作者表明顺序确实很重要，不能完全省略。 尽管RNN对长度较短（数十个）的序列的输入排序具有相对较好的鲁棒性，但很难扩展到数千个输入元素，这是点集的常见大小。 根据经验，我们还表明，基于RNN的模型的性能不如我们提出的方法。</p><p>3）使用简单的<strong>对称函数</strong>汇总每个点的信息。 在此，对称函数将n个向量作为输入，并输出一个与输入顺序不变的新向量。 例如，+和∗运算符是对称二进制函数。</p><script type="math/tex; mode=display">f\left(\left\{x_{1}, \ldots, x_{n}\right\}\right) \approx g\left(h\left(x_{1}\right), \ldots, h\left(x_{n}\right)\right)</script><script type="math/tex; mode=display">f: 2^{\mathrm{R}^{N}} \rightarrow \mathbb{R}, h \quad: \mathbb{R}^{N} \rightarrow \mathbb{R}^{K}</script><p>g是一个对称函数。</p><p>从经验上讲，我们的基本模块非常简单：我们通过多层感知器网络近似h，通过单个变量函数和最大池函数的组合来近似g。 通过实验发现这种方法效果很好。 通过收集h，我们可以学习多个f来捕获集合的不同属性。</p><h5 id="3-2-2-局部与全局信息汇总"><a href="#3-2-2-局部与全局信息汇总" class="headerlink" title="3.2.2 局部与全局信息汇总"></a>3.2.2 局部与全局信息汇总</h5><p>点云的识别：轻松地在形状全局特征向量上训练SVM或多层感知器分类器以进行分类。</p><p>点云的分割：需要结合局部信息和全局信息。将全局特征向量与每一个点的特征联合起来再送回每个点特征（feed it back to per point features）。再基于此提取每个新点的特征，这样每个点特征既了解本地信息又了解全局信息。</p><p>通过这种修改，我们的网络能够预测依赖于局部几何和全局语义的每点数量。 例如，我们可以准确地预测每个点的法线（补充图），从而验证网络能够汇总该点的局部邻域的信息。 </p><h5 id="3-2-3-对齐网络-Joint-Alignment-Network"><a href="#3-2-3-对齐网络-Joint-Alignment-Network" class="headerlink" title="3.2.3 对齐网络 Joint Alignment Network"></a>3.2.3 对齐网络 Joint Alignment Network</h5><p>如果点云经过某些几何变换（例如刚性变换），则该点云的语义标记必须不变。因此，我们期望通过网络学习到的表征（特征）对于这些变换是不变的。</p><p>我们通过<strong>微型网络（图2中的T-net）预测仿射变换矩阵</strong>（仿射变换前是直线，仿射变换后还是直线，直线比例保持不变。），并将该变换直接应用于输入点的坐标。 T-net网络本身类似于大型网络，由点独立特征提取（point independent feature extraction），最大池化和完全连接层的基本模块组成。 </p><p>这个想法也可以进一步扩展到特征空间的对齐。 我们可以在点特征（point features）上插入另一个对齐网络，并预测一个特征转换矩阵以对齐来自不同输入点云（point clouds）的特征（理解：对齐特征有利于分类）。 然而，特征空间中的变换矩阵具有比空间变换矩阵高（much higher）的维数，这大大增加了优化的难度。 因此，我们在softmax训练损失中添加了一个正则化项。 我们约束特征变换矩阵使其接近正交矩阵</p><script type="math/tex; mode=display">L_{r e g}=\left\|I-A A^{T}\right\|_{F}^{2}</script><p>$A$ 是特征对齐矩阵（由a mini-network预测的），正交变换将不会丢失输入中的信息，因此是需要的。 我们发现通过添加正则项，优化变得更加稳定，并且我们的模型获得了更好的性能。</p><h3 id="4-理论分析"><a href="#4-理论分析" class="headerlink" title="4 理论分析"></a>4 理论分析</h3><p>令$\mathcal{X}=\left\{S: S \subseteq[0,1]^{m} \text { and }|S|=n\right\}$，$f: \mathcal{X} \rightarrow \mathbb{R}$ 是一个在$\mathcal{X}$ 上关于豪斯多夫距离的连续集合函数（set function），即$\forall \epsilon&gt;0, \exists \delta&gt;0, \text { for any } S, S^{\prime} \in \mathcal{X}$，如果$d_{H}\left(S, S^{\prime}\right)&lt;\delta$ ，则$\left|f(S)-f\left(S^{\prime}\right)\right|&lt;\epsilon$。我们的定理说，在最大池化层有足够的神经元的情况下，我们的网络可以任意近似f。PointNet模型的表征能力和maxpooling操作输出的数据维度(K)相关，K值越大，模型的表征能力越强。</p><p>假设$f: \mathcal{X} \rightarrow \mathbb{R}$ 是一个关于豪斯多夫距离 $d_{H}(\cdot, \cdot)$ 的连续集合函数，对$\forall \epsilon&gt;0, \exists$ 一个连续函数 $h$ 和一个对称函数 $g\left(x_{1}, \ldots, x_{n}\right)=\gamma \circ M A X$，对任何$S \in \mathcal{X}$ ，</p><script type="math/tex; mode=display">\left|f(S)-\gamma\left(\underset{x_{i} \in S}{\operatorname{MAX}}\left\{h\left(x_{i}\right)\right\}\right)\right|<\epsilon</script><p>此处 $x_1, \dots,x_n$ 是任意顺序的S的全部元素。$\gamma$ 是一个连续函数，MAX是一个向量最大操作。</p><p>定理证明看论文补充材料（ supplementary material. ）</p><p>个人理解：表达式的意思是可以找出一个函数r，向量元素$x_i$经过$h$，足够多的神经元的MAX操作和r函数后任意近似原函数 $f(S)$，而$h$  在文章里值的是许多的卷积函数，MAX是最大池化函数，r是全连接分类映射网络。原函数$f(S)$ 可以想成是S是原所有点的特征空间，f是对原特征空间映射为点云物体的函数。</p><h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，知乎PointNet解读 <a href="https://zhuanlan.zhihu.com/p/44809266" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/44809266</a></p><p>2，Point perception <a href="http://mech.fsv.cvut.cz/~dr/papers/CC05/node6.html" target="_blank" rel="noopener">http://mech.fsv.cvut.cz/~dr/papers/CC05/node6.html</a></p><p>3，仿射变换概念：<a href="https://www.zhihu.com/question/20666664" target="_blank" rel="noopener">https://www.zhihu.com/question/20666664</a></p><p>4，豪斯多夫距离 <a href="https://www.cnblogs.com/icmzn/p/8531719.html" target="_blank" rel="noopener">https://www.cnblogs.com/icmzn/p/8531719.html</a> （即 A集合中的任一点ai 到集合B中的任意点的最短的距离di，然后在这些距离di中选择距离<strong>最长（远）</strong>的，即作为两个集合A与B之间的Hausdoff Distance。豪斯多夫距离量度度量空间中紧子集之间的距离。）</p><p>5，</p>]]></content>
     
     <summary type="html">
     
@@ -106,9 +106,9 @@
       <category term="深度学习" scheme="http://yoursite.com/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
     
     
-      <category term="机器学习" scheme="http://yoursite.com/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
-    
       <category term="深度学习" scheme="http://yoursite.com/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+    
+      <category term="机器学习" scheme="http://yoursite.com/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
     
   </entry>
   
@@ -202,9 +202,9 @@
       <category term="AIOps" scheme="http://yoursite.com/categories/AIOps/"/>
     
     
-      <category term="AIOps" scheme="http://yoursite.com/tags/AIOps/"/>
-    
       <category term="机器学习" scheme="http://yoursite.com/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
+    
+      <category term="AIOps" scheme="http://yoursite.com/tags/AIOps/"/>
     
   </entry>
   
@@ -450,9 +450,9 @@
       <category term="AIOps" scheme="http://yoursite.com/categories/AIOps/"/>
     
     
-      <category term="AIOps" scheme="http://yoursite.com/tags/AIOps/"/>
-    
       <category term="时间序列" scheme="http://yoursite.com/tags/%E6%97%B6%E9%97%B4%E5%BA%8F%E5%88%97/"/>
+    
+      <category term="AIOps" scheme="http://yoursite.com/tags/AIOps/"/>
     
   </entry>
   
@@ -513,9 +513,9 @@
       <category term="AIOps" scheme="http://yoursite.com/categories/AIOps/"/>
     
     
-      <category term="AIOps" scheme="http://yoursite.com/tags/AIOps/"/>
-    
       <category term="异常检测" scheme="http://yoursite.com/tags/%E5%BC%82%E5%B8%B8%E6%A3%80%E6%B5%8B/"/>
+    
+      <category term="AIOps" scheme="http://yoursite.com/tags/AIOps/"/>
     
   </entry>
   
