@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-01-07T08:04:49.187Z</updated>
+  <updated>2020-01-10T11:11:21.853Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>20180914pointnet论文</title>
+    <link href="http://yoursite.com/2020/01/08/20180914pointnet%E8%AE%BA%E6%96%87/"/>
+    <id>http://yoursite.com/2020/01/08/20180914pointnet%E8%AE%BA%E6%96%87/</id>
+    <published>2020-01-08T12:26:29.000Z</published>
+    <updated>2020-01-10T11:11:21.853Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="1-Abs-amp-Intro"><a href="#1-Abs-amp-Intro" class="headerlink" title="1 Abs &amp; Intro"></a>1 Abs &amp; Intro</h3><p>点云是一种重要的几何数据结构（自动驾驶的数据），由于不规则性许多研究者之前用3D体素网络 voxel grids（体积CNN：[28、17、18]是在体素化形状上应用3D卷积神经网络的先驱。由于数据稀疏性和3D卷积的计算成本，体积表示受到其分辨率的限制。）或图片集合（将点云数据投影到二维平面，扩展性以及提取特征的表示能力的限制。）来进行识别，但这使得数据变庞大，引入了量化伪像，这些伪像会掩盖数据的自然不变性。</p><a id="more"></a><p>本文设计了一种新颖的神经网络，直接输入点云，该网络很好地考虑了输入中点的排列不变性（点云是无序向量集。）。POINTNET可以用于分类，零件分割，场景语义分割等。典型的卷积体系结构需要高度规则的输入数据格式，例如图像网格或3D体素，以执行权重共享和其他内核优化。点云是简单统一的结构，避免了网格的组合不规则性和复杂性，因此更易于学习。但是，PointNet仍然必须尊重这样一个事实，即点云只是一组点，因此其成员的排列是不变的，因此在网络计算中必须具有一定的对称性。</p><p><strong>（核心原理）我们方法的关键是使用一个简单的对称函数，即最大池化max pool。 网络有效地学习了一组最优标准，它选择了点云的有趣点或信息点，并对选择它们的原因进行了编码。</strong> 网络的最终全连接层将这些学习的最优值汇总到整个描述符的全局描述符中（如上所述）（形状分类），或用于预测每个点云的类别标签（形状分割）。我们的网络<strong>学会了通过稀疏的一组关键点来总结输入点云，根据可视化，这些关键点大致对应于对象的骨架。</strong></p><p>我们的输入格式易应用于刚性或仿射变换，因为每个点都是独立变换的。 因此，我们可以添加一个依赖数据的空间转换器网络，该网络尝试在PointNet处理数据之前对数据进行规范化，以进一步改善结果。</p><p>文章主要贡献：1，我们设计了可以直接对3D无序点云处理的深度网络架构。2，这个网络如何被训练执行3D形状分类，零件分割和场景分割。3，经验与理论分析其稳定性与有效性。4，说明选定的神经元在网络中计算出的3D特征，并对其性能进行直观的解释。</p><h3 id="2-Problem"><a href="#2-Problem" class="headerlink" title="2 Problem"></a>2 Problem</h3><p>深度学习架构，直接将无序点云输入。一个点云表示为3D点的集合$\left\{P_{i} | i=1, \dots, n\right\}$，其中每个点$P_i$ 是其坐标(x,y,z) 的坐标（也可以加上另外的特征，如颜色，法向量等）。</p><p>对于对象分类任务，可以直接从形状中采样输入点云，也可以从场景点云中预先分割输入点云。 我们建议的深度网络针对所有k个候选类输出k个分数。</p><p> 对于语义分割，输入可以是用于部分零件区域分割的单个对象，也可以是3D场景中的用于对象区域分割。 我们的模型输出n×m分数，即输出每n个点云的每一个m个语义子类别。</p><h3 id="3-点集上的深度学习"><a href="#3-点集上的深度学习" class="headerlink" title="3 点集上的深度学习"></a>3 点集上的深度学习</h3><h4 id="3-1-点集属性"><a href="#3-1-点集属性" class="headerlink" title="3.1 点集属性"></a>3.1 点集属性</h4><p>1，无序性。 与图像中的像素阵列或体积网格中的体素阵列不同，点云是一组没有特定顺序的点。换句话说，消耗N个3D点集的网络需要对于输入集的N个排列按数据馈送顺序保持不变。（无论点如何顺序输入，都要能够识别）</p><p>2，点之间的相互作用。 这些点来自具有距离度量的空间。 这意味着这些点不是孤立的，相邻点形成一个有意义的子集。 因此，模型需要能够从附近的点捕获局部结构，以及局部结构之间的组合相互作用。</p><p>3，变换下的不变性。 作为几何对象，学习到的点集表示应不变于某些变换。 例如，一起旋转和平移点都不应修改全局点云类别或点的分割。</p><h4 id="3-2-点云架构"><a href="#3-2-点云架构" class="headerlink" title="3.2 点云架构"></a>3.2 点云架构</h4><p><img src="/Users/wangxue/gitpro/20191105MyBlog/saruagithub/source/images/20180914pointnet.jpg" alt="20180914pointnet"></p><p>我们的网络具有<strong>三个关键模块：最大池层（作为对称函数，用于汇总来自所有点的信息），一个局部和全局信息组合结构，以及两个对齐输入点集和点特征的联合对齐网络。</strong></p><p>无序输入的对称函数为了使模型对输入排列不变，存在以下三种策略：</p><p>1）按规范顺序对输入进行排序； </p><p>尽管排序听起来很简单，但实际上在高维空间中不存在稳定的排序，关于一般意义上的点扰动。 矛盾很容易说明。 如果存在这种排序策略，它将在高维空间和1d实线之间定义一个双射映射（输入的点不论顺序，通过一一对应的函数映射到高维空间）。 不难发现，关于点扰动要求顺序是稳定的，就等同于要求此映射随着维度减小而保留空间邻近性，这是一般情况下无法实现的任务。</p><p>因此，排序无法完全解决ordering问题，并且随着ordering问题的持续存在，网络很难学习从输入到输出的一致映射。 如实验所示（图5），我们发现直接在排序点集上应用MLP效果较差，尽管比直接处理未排序的输入要好一些。</p><p>2）将输入作为训练RNN的序列，但通过各种排列来增强训练数据； </p><p>使用RNN的想法将点集视为序列信号，并希望通过用随机排列的序列训练RNN，RNN将对输入顺序不变。 但是，在“ OrderMatters” [25]中，作者表明顺序确实很重要，不能完全省略。 尽管RNN对长度较短（数十个）的序列的输入排序具有相对较好的鲁棒性，但很难扩展到数千个输入元素，这是点集的常见大小。 根据经验，我们还表明，基于RNN的模型的性能不如我们提出的方法。</p><p>3）使用简单的<strong>对称函数</strong>汇总每个点的信息。 在此，对称函数将n个向量作为输入，并输出一个与输入顺序不变的新向量。 例如，+和∗运算符是对称二进制函数。</p><script type="math/tex; mode=display">f\left(\left\{x_{1}, \ldots, x_{n}\right\}\right) \approx g\left(h\left(x_{1}\right), \ldots, h\left(x_{n}\right)\right)</script><script type="math/tex; mode=display">f: 2^{\mathrm{R}^{N}} \rightarrow \mathbb{R}, h \quad: \mathbb{R}^{N} \rightarrow \mathbb{R}^{K}</script><p>g是一个对称函数。</p><p>从经验上讲，我们的基本模块非常简单：我们通过多层感知器网络近似h，通过单个变量函数和最大池函数的组合来近似g。 通过实验发现这种方法效果很好。 通过收集h，我们可以学习多个f来捕获集合的不同属性。</p><h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，知乎解读 <a href="https://zhuanlan.zhihu.com/p/44809266" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/44809266</a></p><p>2，Point perception <a href="http://mech.fsv.cvut.cz/~dr/papers/CC05/node6.html" target="_blank" rel="noopener">http://mech.fsv.cvut.cz/~dr/papers/CC05/node6.html</a></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;1-Abs-amp-Intro&quot;&gt;&lt;a href=&quot;#1-Abs-amp-Intro&quot; class=&quot;headerlink&quot; title=&quot;1 Abs &amp;amp; Intro&quot;&gt;&lt;/a&gt;1 Abs &amp;amp; Intro&lt;/h3&gt;&lt;p&gt;点云是一种重要的几何数据结构（自动驾驶的数据），由于不规则性许多研究者之前用3D体素网络 voxel grids（体积CNN：[28、17、18]是在体素化形状上应用3D卷积神经网络的先驱。由于数据稀疏性和3D卷积的计算成本，体积表示受到其分辨率的限制。）或图片集合（将点云数据投影到二维平面，扩展性以及提取特征的表示能力的限制。）来进行识别，但这使得数据变庞大，引入了量化伪像，这些伪像会掩盖数据的自然不变性。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="深度学习" scheme="http://yoursite.com/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+      <category term="深度学习" scheme="http://yoursite.com/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+    
+      <category term="三维点云" scheme="http://yoursite.com/tags/%E4%B8%89%E7%BB%B4%E7%82%B9%E4%BA%91/"/>
+    
+  </entry>
   
   <entry>
     <title>LightGBM_paper</title>
@@ -81,9 +106,9 @@
       <category term="深度学习" scheme="http://yoursite.com/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
     
     
-      <category term="深度学习" scheme="http://yoursite.com/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
-    
       <category term="机器学习" scheme="http://yoursite.com/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
+    
+      <category term="深度学习" scheme="http://yoursite.com/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
     
   </entry>
   
@@ -177,9 +202,9 @@
       <category term="AIOps" scheme="http://yoursite.com/categories/AIOps/"/>
     
     
-      <category term="机器学习" scheme="http://yoursite.com/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
-    
       <category term="AIOps" scheme="http://yoursite.com/tags/AIOps/"/>
+    
+      <category term="机器学习" scheme="http://yoursite.com/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
     
   </entry>
   
@@ -513,9 +538,9 @@
       <category term="深度学习" scheme="http://yoursite.com/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
     
     
-      <category term="配置" scheme="http://yoursite.com/tags/%E9%85%8D%E7%BD%AE/"/>
-    
       <category term="三维点云" scheme="http://yoursite.com/tags/%E4%B8%89%E7%BB%B4%E7%82%B9%E4%BA%91/"/>
+    
+      <category term="配置" scheme="http://yoursite.com/tags/%E9%85%8D%E7%BD%AE/"/>
     
   </entry>
   
@@ -554,29 +579,6 @@
     <summary type="html">
     
       &lt;h3 id=&quot;1-简介&quot;&gt;&lt;a href=&quot;#1-简介&quot; class=&quot;headerlink&quot; title=&quot;1 简介&quot;&gt;&lt;/a&gt;1 简介&lt;/h3&gt;&lt;p&gt;集成学习（Ensemble learning）通过组合几种模型来提高机器学习的效果。构建并结合多个学习器，个体学习器要“好而不同”，一定的准确性/多样性。&lt;/p&gt;&lt;h3 id=&quot;2-提升方法&quot;&gt;&lt;a href=&quot;#2-提升方法&quot; class=&quot;headerlink&quot; title=&quot;2 提升方法&quot;&gt;&lt;/a&gt;2 提升方法&lt;/h3&gt;&lt;h4 id=&quot;2-1-提升方法之Adaboost&quot;&gt;&lt;a href=&quot;#2-1-提升方法之Adaboost&quot; class=&quot;headerlink&quot; title=&quot;2.1 提升方法之Adaboost&quot;&gt;&lt;/a&gt;2.1 提升方法之Adaboost&lt;/h4&gt;&lt;p&gt;一般过程：训练—基学习器—调整训练样本分布—重复得到更多基学习器 T个—将这T个基学习器加权结合。代表是Adaboost：提高那些被前一轮弱分类器分错的样本的权值。最后加权多数表决方法、加大分类误差率小的弱分类器的权值。属于序列集成。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="机器学习" scheme="http://yoursite.com/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-      <category term="机器学习" scheme="http://yoursite.com/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>朴素贝叶斯</title>
-    <link href="http://yoursite.com/2018/12/24/20191224%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF/"/>
-    <id>http://yoursite.com/2018/12/24/20191224%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF/</id>
-    <published>2018-12-24T12:36:12.000Z</published>
-    <updated>2019-12-24T14:32:48.966Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="1-简介"><a href="#1-简介" class="headerlink" title="1 简介"></a>1 简介</h3><p>朴素贝叶斯法基于<u>贝叶斯定理</u>与<u>特征条件独立</u>假设的分类方法。对于给定的训练数据集，首先基于特征条件独立假设学习输入输出的联合概率分布（学习到生成数据的机制，是生成模型），然后基于此模型，对给定的输入x，利用贝叶斯定理求出后验概率最大的输出 $y$。</p><p>输入空间 $\mathcal{X} \subseteq \mathbf{R}^{n}$ 为n维向量的集合。</p><a id="more"></a><p>输出空间 $\mathcal{Y} = \left\{c_{1}, c_{2}, \cdots, c_{K}\right\}$</p><p>输入特征向量 $x$，输出类标记 $y$</p><p>随机向量$X$是定义在输入空间 $\mathcal{X}$，$Y$是定义在输出空间 $\mathcal{Y}$ 的随机变量。</p><p>训练数据集 $T=\left\{\left(x_{1}, y_{1}\right),\left(x_{2}, y_{2}\right), \cdots,\left(x_{N}, y_{N}\right)\right\}$ 由$P(X,Y)$ 独立同分布产生。</p><h4 id="1-1-学习"><a href="#1-1-学习" class="headerlink" title="1.1 学习"></a>1.1 学习</h4><p>朴素贝叶斯法先学习先验概率分布及条件概率分布。</p><p>先验概率分布：</p><script type="math/tex; mode=display">P(Y = c_k), k=1,2 \cdots K</script><p>条件概率分布：它有指数级数量的参数，基于条件独立性假设</p><script type="math/tex; mode=display">P\left(X=x | Y=c_{k}\right)=P\left(X^{(1)}=x^{(1)}, \cdots, X^{(n)}=x^{(n)} | Y=c_{k}\right), \quad k=1,2, \cdots, K</script><script type="math/tex; mode=display">=\prod_{j=1}^{n} P\left(X^{(j)}=x^{(j)} | Y=c_{k}\right)</script><p>条件独立假设：用于分类的特征在类确定的条件下，都是属于条件独立的</p><h4 id="1-2-预测"><a href="#1-2-预测" class="headerlink" title="1.2 预测"></a>1.2 预测</h4><p>对给定的输入$x$，通过学习到的模型计算后验概率，最大的类作为预测结果。</p><p>后验概率计算根据的是贝叶斯定理：</p><script type="math/tex; mode=display">P\left(Y=c_{k} | X=x\right)=\frac{P\left(X=x | Y=c_{k}\right) P\left(Y=c_{k}\right)}{\sum_{k} P\left(X=x | Y=c_{k}\right) P\left(Y=c_{k}\right)}</script><p>将前面学习到的代入得：</p><script type="math/tex; mode=display">P\left(Y=c_{k} | X=x\right)=\frac{P\left(Y=c_{k}\right) \prod_{j}^n P\left(X^{(j)}=x^{(j)} | Y=c_{k}\right)}{\sum_{k} P\left(Y=c_{k}\right) \prod_{j}^n P\left(X^{(j)}=x^{(j)} | Y=c_{k}\right)}, \quad k=1,2, \cdots, K</script><p>！！！因此<strong>朴素贝叶斯分类器</strong>就是这样子了：</p><script type="math/tex; mode=display">y = f(x)=argmin_{c_k} \frac{P\left(Y=c_{k}\right) \prod_{j}^n P\left(X^{(j)}=x^{(j)} | Y=c_{k}\right)}{\sum_{k} P\left(Y=c_{k}\right) \prod_{j}^n P\left(X^{(j)}=x^{(j)} | Y=c_{k}\right)}, \quad k=1,2, \cdots, K</script><h4 id="1-3-后验概率最大化的含义"><a href="#1-3-后验概率最大化的含义" class="headerlink" title="1.3 后验概率最大化的含义"></a>1.3 后验概率最大化的含义</h4><p>将实例分到后验概率最大的类中，等价于期望风险最小化。</p><p>假设损失函数：</p><script type="math/tex; mode=display">L(Y, f(X))=\left\{\begin{array}{ll}{1,} & {Y \neq f(X)} \\ {0,} & {Y=f(X)}\end{array}\right.</script><p>期望风险函数:</p><script type="math/tex; mode=display">R_{\mathrm{exp}}(f)=E[L(Y, f(X))]</script><p>取条件期望</p><script type="math/tex; mode=display">R_{\exp }(f)=E_{X} \sum_{k=1}^{K}\left[L\left(c_{k}, f(X)\right)\right] P\left(c_{k} | X\right)</script><p>为了使得期望风险最小化，需要对$X = x$ 逐个极小化:</p><script type="math/tex; mode=display">f(x)=\arg \min _{y \in \mathcal{Y}} \sum_{k=1}^{K} L\left(c_{k}, y\right) P\left(c_{k} | X=x\right)</script><script type="math/tex; mode=display">= \arg \min _{y \in \mathcal{Y}} \sum_{k=1}^{K} P\left(y \neq c_{k} | X=x\right)</script><script type="math/tex; mode=display">= \arg \max _{y \in \mathcal{Y}} P\left(y=c_{k} | X=x\right)</script><h3 id="2-极大似然估计"><a href="#2-极大似然估计" class="headerlink" title="2 极大似然估计"></a>2 极大似然估计</h3><p>学习即估计先验概率分布与条件概率分布：</p><script type="math/tex; mode=display">P\left(Y=c_{k}\right)=\frac{\sum_{i=1}^{N} I\left(y_{i}=c_{k}\right)}{N}, \quad k=1,2, \cdots, K</script><p>设第$j$个特征$x^{(j)}$的可能取值的集合为 $\left\{a_{j 1}, a_{j 2}, \cdots, a_{j S_{j}}\right\}$，条件概率 $P\left(X^{(j)}=a_{j l} | Y = c_k )\right.$ 的极大似然估计是：</p><script type="math/tex; mode=display">P\left(X^{(j)}=a_{j l} | Y=c_{k}\right)=\frac{\sum_{i=1}^{N} I\left(x_{i}^{(j)}=a_{j l}, y_{i}=c_{k}\right)}{\sum_{i=1}^{N} I\left(y_{i}=c_{k}\right)}</script><script type="math/tex; mode=display">j=1,2, \cdots, n ; \quad l=1,2, \cdots, S_{j} ; \quad k=1,2, \cdots, K</script><h3 id="3-算法过程"><a href="#3-算法过程" class="headerlink" title="3 算法过程"></a>3 算法过程</h3><p>(1) 计算先验概率和条件概率（见2，极大似然估计部分）</p><p>(2) 对于给定实例 $x=\left(x^{(1)}, x^{(2)}, \cdots, x^{(n)}\right)^{\mathrm{T}}$计算，取最大值</p><script type="math/tex; mode=display">y = f(x)=argmin_{c_k} \frac{P\left(Y=c_{k}\right) \prod_{j}^n P\left(X^{(j)}=x^{(j)} | Y=c_{k}\right)}{\sum_{k} P\left(Y=c_{k}\right) \prod_{j}^n P\left(X^{(j)}=x^{(j)} | Y=c_{k}\right)}, \quad k=1,2, \cdots, K</script>]]></content>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;1-简介&quot;&gt;&lt;a href=&quot;#1-简介&quot; class=&quot;headerlink&quot; title=&quot;1 简介&quot;&gt;&lt;/a&gt;1 简介&lt;/h3&gt;&lt;p&gt;朴素贝叶斯法基于&lt;u&gt;贝叶斯定理&lt;/u&gt;与&lt;u&gt;特征条件独立&lt;/u&gt;假设的分类方法。对于给定的训练数据集，首先基于特征条件独立假设学习输入输出的联合概率分布（学习到生成数据的机制，是生成模型），然后基于此模型，对给定的输入x，利用贝叶斯定理求出后验概率最大的输出 $y$。&lt;/p&gt;&lt;p&gt;输入空间 $\mathcal{X} \subseteq \mathbf{R}^{n}$ 为n维向量的集合。&lt;/p&gt;
     
     </summary>
     

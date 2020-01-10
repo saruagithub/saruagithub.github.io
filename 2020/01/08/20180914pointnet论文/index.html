@@ -47,26 +47,20 @@
   };
 </script>
 
-  <meta name="description" content="1, Numenta的HTM简介Hierarchical Temporal Memeory(HTM,层级时间记忆，皮质学习) 是一种基于脑神经科学来模拟大脑进行学习和信息处理的神经网络。新皮质就是大脑里褶皱的皮层部分（图1），这只有哺乳动物有。将皮层纵向切开，不论是视觉还是听觉部分，切开后的结构是相似的（图2），很有可能大脑处理不同信息的方法是类似的。">
-<meta name="keywords" content="AIOps,神经网络">
+  <meta name="description" content="1 Abs &amp;amp; Intro点云是一种重要的几何数据结构（自动驾驶的数据），由于不规则性许多研究者之前用3D体素网络 voxel grids（体积CNN：[28、17、18]是在体素化形状上应用3D卷积神经网络的先驱。由于数据稀疏性和3D卷积的计算成本，体积表示受到其分辨率的限制。）或图片集合（将点云数据投影到二维平面，扩展性以及提取特征的表示能力的限制。）来进行识别，但这使得数据变庞大，引">
+<meta name="keywords" content="深度学习,三维点云">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Numenta的HTM简介">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;11&#x2F;25&#x2F;20191125Numenta%E7%9A%84HTM%E7%AE%80%E4%BB%8B&#x2F;index.html">
+<meta property="og:title" content="20180914pointnet论文">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;01&#x2F;08&#x2F;20180914pointnet%E8%AE%BA%E6%96%87&#x2F;index.html">
 <meta property="og:site_name" content="WangXue">
-<meta property="og:description" content="1, Numenta的HTM简介Hierarchical Temporal Memeory(HTM,层级时间记忆，皮质学习) 是一种基于脑神经科学来模拟大脑进行学习和信息处理的神经网络。新皮质就是大脑里褶皱的皮层部分（图1），这只有哺乳动物有。将皮层纵向切开，不论是视觉还是听觉部分，切开后的结构是相似的（图2），很有可能大脑处理不同信息的方法是类似的。">
+<meta property="og:description" content="1 Abs &amp;amp; Intro点云是一种重要的几何数据结构（自动驾驶的数据），由于不规则性许多研究者之前用3D体素网络 voxel grids（体积CNN：[28、17、18]是在体素化形状上应用3D卷积神经网络的先驱。由于数据稀疏性和3D卷积的计算成本，体积表示受到其分辨率的限制。）或图片集合（将点云数据投影到二维平面，扩展性以及提取特征的表示能力的限制。）来进行识别，但这使得数据变庞大，引">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20191125head.jpg">
-<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20191125cells.png">
-<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20191125HierarchicalMode1.png">
-<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20191125featureRepresentation1.png">
-<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20191125SDR_Define.png">
-<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20191125NoiseTolerant.jpg">
-<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20191204SDR_Stack.jpg">
-<meta property="og:updated_time" content="2019-12-04T04:18:05.801Z">
+<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;Users&#x2F;wangxue&#x2F;gitpro&#x2F;20191105MyBlog&#x2F;saruagithub&#x2F;source&#x2F;images&#x2F;20180914pointnet.jpg">
+<meta property="og:updated_time" content="2020-01-10T11:11:21.853Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20191125head.jpg">
+<meta name="twitter:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;Users&#x2F;wangxue&#x2F;gitpro&#x2F;20191105MyBlog&#x2F;saruagithub&#x2F;source&#x2F;images&#x2F;20180914pointnet.jpg">
 
-<link rel="canonical" href="http://yoursite.com/2019/11/25/20191125Numenta%E7%9A%84HTM%E7%AE%80%E4%BB%8B/">
+<link rel="canonical" href="http://yoursite.com/2020/01/08/20180914pointnet%E8%AE%BA%E6%96%87/">
 
 
 <script id="page-configurations">
@@ -80,7 +74,7 @@
   };
 </script>
 
-  <title>Numenta的HTM简介 | WangXue</title>
+  <title>20180914pointnet论文 | WangXue</title>
   
 
 
@@ -217,7 +211,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/11/25/20191125Numenta%E7%9A%84HTM%E7%AE%80%E4%BB%8B/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/08/20180914pointnet%E8%AE%BA%E6%96%87/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -230,7 +224,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Numenta的HTM简介
+          20180914pointnet论文
         </h1>
 
         <div class="post-meta">
@@ -240,14 +234,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2019-11-25 16:26:49" itemprop="dateCreated datePublished" datetime="2019-11-25T16:26:49+08:00">2019-11-25</time>
+              <time title="创建时间：2020-01-08 20:26:29" itemprop="dateCreated datePublished" datetime="2020-01-08T20:26:29+08:00">2020-01-08</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-12-04 12:18:05" itemprop="dateModified" datetime="2019-12-04T12:18:05+08:00">2019-12-04</time>
+                <time title="修改时间：2020-01-10 19:11:21" itemprop="dateModified" datetime="2020-01-10T19:11:21+08:00">2020-01-10</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -255,8 +249,8 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/AIOps/" itemprop="url" rel="index">
-                    <span itemprop="name">AIOps</span>
+                  <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index">
+                    <span itemprop="name">深度学习</span>
                   </a>
                 </span>
             </span>
@@ -277,8 +271,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2019/11/25/20191125Numenta%E7%9A%84HTM%E7%AE%80%E4%BB%8B/#comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2019/11/25/20191125Numenta%E7%9A%84HTM%E7%AE%80%E4%BB%8B/" itemprop="commentCount"></span>
+    <a title="valine" href="/2020/01/08/20180914pointnet%E8%AE%BA%E6%96%87/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/01/08/20180914pointnet%E8%AE%BA%E6%96%87/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -293,30 +287,30 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h4 id="1-Numenta的HTM简介"><a href="#1-Numenta的HTM简介" class="headerlink" title="1, Numenta的HTM简介"></a>1, Numenta的HTM简介</h4><p>Hierarchical Temporal Memeory(HTM,层级时间记忆，皮质学习) 是一种基于脑神经科学来模拟大脑进行学习和信息处理的神经网络。新皮质就是大脑里褶皱的皮层部分（图1），这只有哺乳动物有。将皮层纵向切开，不论是视觉还是听觉部分，切开后的结构是相似的（图2），很有可能大脑处理不同信息的方法是类似的。</p><a id="more"></a>
-<p><img src="/images/20191125head.jpg" width="250"><br><img src="/images/20191125cells.png" width="200"> </p>
-<p><center>图1 大脑皮层，图2 细胞图</center><br>新皮质分化为很多个区域（region，图3），这些区域通过神经纤维连接。这些区域以层次结构的方式连接在一起。低层级信息收集基础信号，经过不同层级逐渐加工，提取并理解更抽象信息，更高级的话或许可以关联到想法、事物活动等信息。这个有点类似卷积神经网络，低层级的网络提取图像边界等信息，高层级的网络识别物体类型等等。</p>
-<p><img src="/images/20191125HierarchicalMode1.png" width="400"></p>
-<p><center> 图 3 HTM分层示意图</center><br>目前，<strong>Numenta的HTM设计介绍讲解主要针对一个区域，即一层（图3，如黄色层），说明其数据输入方式，数据表征方式，神经元激活，以及时间记忆表示方式</strong>。HTM大概的原理是，首先将输入的数据编码为0、1稀疏数组，将这些稀疏数组经过空间池化转换为稀疏分布表征（SDR），然后时序记忆，建立突触，存储信息，进行预测等。</p>
-<h4 id="2-数据输入"><a href="#2-数据输入" class="headerlink" title="2, 数据输入"></a>2, 数据输入</h4><p>数据输入一般有数字，日期，温度等，将这些数据编码为01稀疏数组（bit数组）。这在计算机领域十分常见，如一个字符的ASCⅡ表示，使用8bit表示的。n个bit可以表示$2^n$容量（capacity）的信息，bit数组可以有许多运算，与或非与异或等等。</p>
-<p><img src="/images/20191125featureRepresentation1.png" width="400"></p>
-<p>在HTM里，稀疏的每一个1可能表示了一个信息。在通过稀疏bit数组的压缩存储（只存1的下标位置），可以表示非常多的数据信息了。</p>
-<h4 id="3-空间池化Spatial-Pooler"><a href="#3-空间池化Spatial-Pooler" class="headerlink" title="3, 空间池化Spatial Pooler"></a>3, 空间池化Spatial Pooler</h4><h5 id="3-1-稀疏分布表征-SDR"><a href="#3-1-稀疏分布表征-SDR" class="headerlink" title="3.1 稀疏分布表征 SDR"></a>3.1 稀疏分布表征 SDR</h5><p>稀疏分布表征（SDR）是空间池化的结果，通俗来看有点像大脑的数据结构，我们先看看SDR的一些特性，如图。计算SDR的容量:</p>
-<script type="math/tex; mode=display">
-capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac { n! } { w! ( n - w )! } = C_n^w （组合数）</script><p>也就是说可以表示这么多的信息量。</p>
-<p><img src="/images/20191125SDR_Define.png" width="400"></p>
-<p>1，SDR的一些基本运算。overlap交集，两个SDR交起来，相同的激活的bit越多，表明这俩SDR越相似。判断俩SDR是否匹配，可以设置一定的阈值。当俩SDR overlap之后，交集bit  $&gt;=\theta$ (阈值)，则俩SDR匹配。</p>
-<p>2，SDR的噪声容忍度（noise tolerant）强。在下图中，选取29%的比例翻转bit的值，对比两个SDR，重叠分数为30。当30大于等于$\theta=30$ 则匹配。意思是说如果俩SDR是原本一致，就算其中一个SDR不完全准确有噪声，则还是会匹配上的。当然也有可能确实两SDR不一致，但又因为噪声导致其匹配上了，这样的误报可能有，但是概率很低 $FP = 交集的基数 / 原始SDR的n w的组合数 $ </p>
-<p><img src="/images/20191125NoiseTolerant.jpg" width="400"></p>
-<h5 id="3-2-SDR的重叠集"><a href="#3-2-SDR的重叠集" class="headerlink" title="3.2 SDR的重叠集"></a>3.2 SDR的重叠集</h5><p>如果俩同样大小的SDR（即$n,w$ 分别相等），所有bit匹配，则匹配的SDR必然跟原SDR一模一样，就只有一个。那如果降低匹配阈值 $\theta$ ，当相同激活的bit数目为$\theta$时，可以有多少个SDR与原SDR相匹配呢？ 这是个排列组合问题。</p>
-<script type="math/tex; mode=display">\left|\Omega(n, w, \theta)\right|=\left(\begin{array}{c}{w} \\ {\theta}\end{array}\right) \times\left(\begin{array}{l}{n-w} \\ {w-\theta}\end{array}\right)</script><p>相匹配的SDR，左边从原SDR里$w$里选出$\theta$个bit来激活，这是俩SDR相同激活的bit。右边从原SDR里没有激活的$n-w$ 个bit里选出 $w-\theta$ 来激活即可。若 $n=600, w=40, \theta = 39$，算一算可以有 $40 * 560$个不同的SDR与原SDR匹配，是不是很多呀。</p>
-<p>这有个好处就是，SDR可以表示很多相似的信息，而且可以直接通过俩SDR的交集来判断是否相似，误报率也很低。</p>
-<h5 id="3-3-SDR栈"><a href="#3-3-SDR栈" class="headerlink" title="3.3 SDR栈"></a>3.3 SDR栈</h5><p>随着时间序列值逐步产生，即SDR也逐步产生。我们模拟看到SDR进行匹配的过程。new SDR与栈里的SDRs匹配，看看之前是不是见到过。匹配的SDR会有很多重叠的bit。</p>
-<p><img src="/images/20191204SDR_Stack.jpg" width="400"></p>
-<p>为了加快计算，之前的所有SDR采用Union合并到一起进行匹配。其实由于$n$很大，错误匹配的概率还是很小的。</p>
-<h4 id="5-时序记忆-Temporal-Memory"><a href="#5-时序记忆-Temporal-Memory" class="headerlink" title="5, 时序记忆 Temporal Memory"></a>5, 时序记忆 Temporal Memory</h4><h4 id="6-总结"><a href="#6-总结" class="headerlink" title="6, 总结"></a>6, 总结</h4><h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><p>1，<a href="https://www.bilibili.com/video/av35735228?from=search&amp;seid=7001690129614399170" target="_blank" rel="noopener">bilibili的翻译HTM school</a></p>
-<p>2，<a href="https://numenta.org/htm-school/" target="_blank" rel="noopener">numenta的YouTube视频</a></p>
-<p>3， Ahmad S, Lavin A, Purdy S, et al. Unsupervised real-time anomaly detection for streaming data[J]. Neurocomputing, 2017, 262: 134-147.</p>
+        <h3 id="1-Abs-amp-Intro"><a href="#1-Abs-amp-Intro" class="headerlink" title="1 Abs &amp; Intro"></a>1 Abs &amp; Intro</h3><p>点云是一种重要的几何数据结构（自动驾驶的数据），由于不规则性许多研究者之前用3D体素网络 voxel grids（体积CNN：[28、17、18]是在体素化形状上应用3D卷积神经网络的先驱。由于数据稀疏性和3D卷积的计算成本，体积表示受到其分辨率的限制。）或图片集合（将点云数据投影到二维平面，扩展性以及提取特征的表示能力的限制。）来进行识别，但这使得数据变庞大，引入了量化伪像，这些伪像会掩盖数据的自然不变性。</p><a id="more"></a>
+<p>本文设计了一种新颖的神经网络，直接输入点云，该网络很好地考虑了输入中点的排列不变性（点云是无序向量集。）。POINTNET可以用于分类，零件分割，场景语义分割等。典型的卷积体系结构需要高度规则的输入数据格式，例如图像网格或3D体素，以执行权重共享和其他内核优化。点云是简单统一的结构，避免了网格的组合不规则性和复杂性，因此更易于学习。但是，PointNet仍然必须尊重这样一个事实，即点云只是一组点，因此其成员的排列是不变的，因此在网络计算中必须具有一定的对称性。</p>
+<p><strong>（核心原理）我们方法的关键是使用一个简单的对称函数，即最大池化max pool。 网络有效地学习了一组最优标准，它选择了点云的有趣点或信息点，并对选择它们的原因进行了编码。</strong> 网络的最终全连接层将这些学习的最优值汇总到整个描述符的全局描述符中（如上所述）（形状分类），或用于预测每个点云的类别标签（形状分割）。我们的网络<strong>学会了通过稀疏的一组关键点来总结输入点云，根据可视化，这些关键点大致对应于对象的骨架。</strong></p>
+<p>我们的输入格式易应用于刚性或仿射变换，因为每个点都是独立变换的。 因此，我们可以添加一个依赖数据的空间转换器网络，该网络尝试在PointNet处理数据之前对数据进行规范化，以进一步改善结果。</p>
+<p>文章主要贡献：1，我们设计了可以直接对3D无序点云处理的深度网络架构。2，这个网络如何被训练执行3D形状分类，零件分割和场景分割。3，经验与理论分析其稳定性与有效性。4，说明选定的神经元在网络中计算出的3D特征，并对其性能进行直观的解释。</p>
+<h3 id="2-Problem"><a href="#2-Problem" class="headerlink" title="2 Problem"></a>2 Problem</h3><p>深度学习架构，直接将无序点云输入。一个点云表示为3D点的集合$\left\{P_{i} | i=1, \dots, n\right\}$，其中每个点$P_i$ 是其坐标(x,y,z) 的坐标（也可以加上另外的特征，如颜色，法向量等）。</p>
+<p>对于对象分类任务，可以直接从形状中采样输入点云，也可以从场景点云中预先分割输入点云。 我们建议的深度网络针对所有k个候选类输出k个分数。</p>
+<p> 对于语义分割，输入可以是用于部分零件区域分割的单个对象，也可以是3D场景中的用于对象区域分割。 我们的模型输出n×m分数，即输出每n个点云的每一个m个语义子类别。</p>
+<h3 id="3-点集上的深度学习"><a href="#3-点集上的深度学习" class="headerlink" title="3 点集上的深度学习"></a>3 点集上的深度学习</h3><h4 id="3-1-点集属性"><a href="#3-1-点集属性" class="headerlink" title="3.1 点集属性"></a>3.1 点集属性</h4><p>1，无序性。 与图像中的像素阵列或体积网格中的体素阵列不同，点云是一组没有特定顺序的点。换句话说，消耗N个3D点集的网络需要对于输入集的N个排列按数据馈送顺序保持不变。（无论点如何顺序输入，都要能够识别）</p>
+<p>2，点之间的相互作用。 这些点来自具有距离度量的空间。 这意味着这些点不是孤立的，相邻点形成一个有意义的子集。 因此，模型需要能够从附近的点捕获局部结构，以及局部结构之间的组合相互作用。</p>
+<p>3，变换下的不变性。 作为几何对象，学习到的点集表示应不变于某些变换。 例如，一起旋转和平移点都不应修改全局点云类别或点的分割。</p>
+<h4 id="3-2-点云架构"><a href="#3-2-点云架构" class="headerlink" title="3.2 点云架构"></a>3.2 点云架构</h4><p><img src="/Users/wangxue/gitpro/20191105MyBlog/saruagithub/source/images/20180914pointnet.jpg" alt="20180914pointnet"></p>
+<p>我们的网络具有<strong>三个关键模块：最大池层（作为对称函数，用于汇总来自所有点的信息），一个局部和全局信息组合结构，以及两个对齐输入点集和点特征的联合对齐网络。</strong></p>
+<p>无序输入的对称函数为了使模型对输入排列不变，存在以下三种策略：</p>
+<p>1）按规范顺序对输入进行排序； </p>
+<p>尽管排序听起来很简单，但实际上在高维空间中不存在稳定的排序，关于一般意义上的点扰动。 矛盾很容易说明。 如果存在这种排序策略，它将在高维空间和1d实线之间定义一个双射映射（输入的点不论顺序，通过一一对应的函数映射到高维空间）。 不难发现，关于点扰动要求顺序是稳定的，就等同于要求此映射随着维度减小而保留空间邻近性，这是一般情况下无法实现的任务。</p>
+<p>因此，排序无法完全解决ordering问题，并且随着ordering问题的持续存在，网络很难学习从输入到输出的一致映射。 如实验所示（图5），我们发现直接在排序点集上应用MLP效果较差，尽管比直接处理未排序的输入要好一些。</p>
+<p>2）将输入作为训练RNN的序列，但通过各种排列来增强训练数据； </p>
+<p>使用RNN的想法将点集视为序列信号，并希望通过用随机排列的序列训练RNN，RNN将对输入顺序不变。 但是，在“ OrderMatters” [25]中，作者表明顺序确实很重要，不能完全省略。 尽管RNN对长度较短（数十个）的序列的输入排序具有相对较好的鲁棒性，但很难扩展到数千个输入元素，这是点集的常见大小。 根据经验，我们还表明，基于RNN的模型的性能不如我们提出的方法。</p>
+<p>3）使用简单的<strong>对称函数</strong>汇总每个点的信息。 在此，对称函数将n个向量作为输入，并输出一个与输入顺序不变的新向量。 例如，+和∗运算符是对称二进制函数。</p>
+<script type="math/tex; mode=display">f\left(\left\{x_{1}, \ldots, x_{n}\right\}\right) \approx g\left(h\left(x_{1}\right), \ldots, h\left(x_{n}\right)\right)</script><script type="math/tex; mode=display">f: 2^{\mathrm{R}^{N}} \rightarrow \mathbb{R}, h \quad: \mathbb{R}^{N} \rightarrow \mathbb{R}^{K}</script><p>g是一个对称函数。</p>
+<p>从经验上讲，我们的基本模块非常简单：我们通过多层感知器网络近似h，通过单个变量函数和最大池函数的组合来近似g。 通过实验发现这种方法效果很好。 通过收集h，我们可以学习多个f来捕获集合的不同属性。</p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，知乎解读 <a href="https://zhuanlan.zhihu.com/p/44809266" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/44809266</a></p>
+<p>2，Point perception <a href="http://mech.fsv.cvut.cz/~dr/papers/CC05/node6.html" target="_blank" rel="noopener">http://mech.fsv.cvut.cz/~dr/papers/CC05/node6.html</a></p>
 
     </div>
 
@@ -326,8 +320,8 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/AIOps/" rel="tag"># AIOps</a>
-              <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag"># 神经网络</a>
+              <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" rel="tag"># 深度学习</a>
+              <a href="/tags/%E4%B8%89%E7%BB%B4%E7%82%B9%E4%BA%91/" rel="tag"># 三维点云</a>
           </div>
 
         
@@ -336,13 +330,10 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2019/11/06/paper-2019-11-06AIOps-Real-World-Challenges-and-Research-Innovations/" rel="prev" title="[paper]2019/11/06AIOps: Real-World Challenges and Research Innovations">
-      <i class="fa fa-chevron-left"></i> [paper]2019/11/06AIOps: Real-World Challenges and Research Innovations
+    <a href="/2020/01/03/20200103LightGBM-paper/" rel="prev" title="LightGBM_paper">
+      <i class="fa fa-chevron-left"></i> LightGBM_paper
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2019/11/26/20191126mac%E4%B8%8Ahexo%E7%9A%84mathjax%E9%85%8D%E7%BD%AE/" rel="next" title="mac上hexo的mathjax配置">
-      mac上hexo的mathjax配置 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -381,7 +372,7 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-Numenta的HTM简介"><span class="nav-number">1.</span> <span class="nav-text">1, Numenta的HTM简介</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-数据输入"><span class="nav-number">2.</span> <span class="nav-text">2, 数据输入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-空间池化Spatial-Pooler"><span class="nav-number">3.</span> <span class="nav-text">3, 空间池化Spatial Pooler</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#3-1-稀疏分布表征-SDR"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 稀疏分布表征 SDR</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-2-SDR的重叠集"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 SDR的重叠集</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-3-SDR栈"><span class="nav-number">3.3.</span> <span class="nav-text">3.3 SDR栈</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-时序记忆-Temporal-Memory"><span class="nav-number">4.</span> <span class="nav-text">5, 时序记忆 Temporal Memory</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-总结"><span class="nav-number">5.</span> <span class="nav-text">6, 总结</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#参考"><span class="nav-number">6.</span> <span class="nav-text">参考</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Abs-amp-Intro"><span class="nav-number">1.</span> <span class="nav-text">1 Abs &amp; Intro</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Problem"><span class="nav-number">2.</span> <span class="nav-text">2 Problem</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-点集上的深度学习"><span class="nav-number">3.</span> <span class="nav-text">3 点集上的深度学习</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-点集属性"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 点集属性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-点云架构"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 点云架构</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reference"><span class="nav-number">4.</span> <span class="nav-text">Reference</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
