@@ -1,8 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>20180915pointnet论文2——实验部分</title>
+    <url>/2020/01/11/20180915pointnet%E8%AE%BA%E6%96%872/</url>
+    <content><![CDATA[<h3 id="1-论文中实验"><a href="#1-论文中实验" class="headerlink" title="1 论文中实验"></a>1 论文中实验</h3><h4 id="1-1-点云分类classification"><a href="#1-1-点云分类classification" class="headerlink" title="1.1 点云分类classification"></a>1.1 点云分类classification</h4><p>数据集：ModelNet40，12311CAD模型，40个类别，9843个训练，2468测试。</p><p>我们根据网格区域对网格表面上的1024个点进行统一采样，并将其标准化为单位球体。</p><p>数据增强：1，沿上轴随机旋转对象（随机旋转 or 旋转某一角度）。2，通过具有零均值和0.02标准偏差的高斯噪声使每个点的位置抖动来动态地增加点云。</p><a id="more"></a>
+
+
+<p>对比实验，table1中SPH[11]，3DShapeNets[28]，VoxNet[17]，Subvolume[18]，LFD[28]，MVCNN[23]（这个的平均每个类别的准确率达到了90.1%，很好诶）与我们的基模型（卷积+最大池化+全连接），PointNet（总体分类准确率89.2 %）的分类准确率比较。</p>
+<p>比MVCNN的效果差可能原因是：认为这是由于可以通过渲染图像捕获的精细几何细节的丢失。</p>
+<h4 id="1-2-点云零件分割"><a href="#1-2-点云零件分割" class="headerlink" title="1.2 点云零件分割"></a>1.2 点云零件分割</h4><p>3D对象零件分割零件分割是一项具有挑战性的细粒度3D识别任务。</p>
+<p>我们对来自[29]的ShapeNet零件数据集进行评估，该数据集包含16个类别的16,881个形状，总共标注了50个零件。</p>
+<p>我们将零件分割公式化为每个点的分类问题。 评估指标是按点计算。 对于类别C（如杯子）的每个形状S（杯柄与内杯），要计算形状S的mIoU：如果groundtruth（真实标记）和预测点的并集为空，则将零件IoU计为1。然后，我们对类别C中所有零件类型的IoU进行平均，以得到该形状的mIoU。 要计算类别的mIoU，我们对该类别中所有形状的mIoU取平均值。</p>
+<p>Table2，我们报告每个类别，并表示IoU（％）得分。 我们观察到平均IoU改善了2.3％，我们的网络在大多数类别中都超过了基本方法。</p>
+<h3 id="2-关键部分"><a href="#2-关键部分" class="headerlink" title="2 关键部分"></a>2 关键部分</h3><h3 id="3-源码阅读"><a href="#3-源码阅读" class="headerlink" title="3 源码阅读"></a>3 源码阅读</h3>]]></content>
+      <categories>
+        <category>深度学习</category>
+      </categories>
+      <tags>
+        <tag>深度学习</tag>
+        <tag>三维点云</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>20180914pointnet论文1——论文部分</title>
-    <url>/2020/01/08/20180914pointnet%E8%AE%BA%E6%96%87/</url>
+    <url>/2020/01/08/20180914pointnet%E8%AE%BA%E6%96%871/</url>
     <content><![CDATA[<h3 id="1-Abs-amp-Intro"><a href="#1-Abs-amp-Intro" class="headerlink" title="1 Abs &amp; Intro"></a>1 Abs &amp; Intro</h3><p>点云是一种重要的几何数据结构（自动驾驶的数据），由于不规则性许多研究者之前用3D体素网络 voxel grids（体积CNN：[28、17、18]是在体素化形状上应用3D卷积神经网络的先驱。由于数据稀疏性和3D卷积的计算成本，体积表示受到其分辨率的限制。）或图片集合（将点云数据投影到二维平面，扩展性以及提取特征的表示能力的限制。）来进行识别，但这使得数据变庞大，引入了量化伪像，这些伪像会掩盖数据的自然不变性。</p><a id="more"></a>
 <p>本文设计了一种新颖的神经网络，直接输入点云，该网络很好地考虑了输入中点的排列不变性（点云是无序向量集。）。POINTNET可以用于分类，零件分割，场景语义分割等。典型的卷积体系结构需要高度规则的输入数据格式，例如图像网格或3D体素，以执行权重共享和其他内核优化。点云是简单统一的结构，避免了网格的组合不规则性和复杂性，因此更易于学习。但是，PointNet仍然必须尊重这样一个事实，即点云只是一组点，因此其成员的排列是不变的，因此在网络计算中必须具有一定的对称性。</p>
 <p><strong>（核心原理）我们方法的关键是使用一个简单的对称函数，即最大池化max pool。 网络有效地学习了一组最优标准，它选择了点云的有趣点或信息点，并对选择它们的原因进行了编码。</strong> 网络的最终全连接层将这些学习的最优值汇总到整个描述符的全局描述符中（如上所述）（形状分类），或用于预测每个点云的类别标签（形状分割）。我们的网络<strong>学会了通过稀疏的一组关键点来总结输入点云，根据可视化，这些关键点大致对应于对象的骨架。</strong></p>
@@ -216,8 +237,8 @@
         <category>深度学习</category>
       </categories>
       <tags>
-        <tag>深度学习</tag>
         <tag>机器学习</tag>
+        <tag>深度学习</tag>
       </tags>
   </entry>
   <entry>
@@ -348,8 +369,8 @@
         <category>AIOps</category>
       </categories>
       <tags>
-        <tag>机器学习</tag>
         <tag>AIOps</tag>
+        <tag>机器学习</tag>
       </tags>
   </entry>
   <entry>
