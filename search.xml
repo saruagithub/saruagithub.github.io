@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>20180914pointnet论文</title>
+    <title>20180914pointnet论文1——论文部分</title>
     <url>/2020/01/08/20180914pointnet%E8%AE%BA%E6%96%87/</url>
     <content><![CDATA[<h3 id="1-Abs-amp-Intro"><a href="#1-Abs-amp-Intro" class="headerlink" title="1 Abs &amp; Intro"></a>1 Abs &amp; Intro</h3><p>点云是一种重要的几何数据结构（自动驾驶的数据），由于不规则性许多研究者之前用3D体素网络 voxel grids（体积CNN：[28、17、18]是在体素化形状上应用3D卷积神经网络的先驱。由于数据稀疏性和3D卷积的计算成本，体积表示受到其分辨率的限制。）或图片集合（将点云数据投影到二维平面，扩展性以及提取特征的表示能力的限制。）来进行识别，但这使得数据变庞大，引入了量化伪像，这些伪像会掩盖数据的自然不变性。</p><a id="more"></a>
 <p>本文设计了一种新颖的神经网络，直接输入点云，该网络很好地考虑了输入中点的排列不变性（点云是无序向量集。）。POINTNET可以用于分类，零件分割，场景语义分割等。典型的卷积体系结构需要高度规则的输入数据格式，例如图像网格或3D体素，以执行权重共享和其他内核优化。点云是简单统一的结构，避免了网格的组合不规则性和复杂性，因此更易于学习。但是，PointNet仍然必须尊重这样一个事实，即点云只是一组点，因此其成员的排列是不变的，因此在网络计算中必须具有一定的对称性。</p>
 <p><strong>（核心原理）我们方法的关键是使用一个简单的对称函数，即最大池化max pool。 网络有效地学习了一组最优标准，它选择了点云的有趣点或信息点，并对选择它们的原因进行了编码。</strong> 网络的最终全连接层将这些学习的最优值汇总到整个描述符的全局描述符中（如上所述）（形状分类），或用于预测每个点云的类别标签（形状分割）。我们的网络<strong>学会了通过稀疏的一组关键点来总结输入点云，根据可视化，这些关键点大致对应于对象的骨架。</strong></p>
 <p>我们的输入格式易应用于刚性或仿射变换，因为每个点都是独立变换的。 因此，我们可以添加一个依赖数据的空间转换器网络，该网络尝试在PointNet处理数据之前对数据进行规范化，以进一步改善结果。</p>
 <p>文章主要贡献：1，我们设计了可以直接对3D无序点云处理的深度网络架构。2，这个网络如何被训练执行3D形状分类，零件分割和场景分割。3，经验与理论分析其稳定性与有效性。4，说明选定的神经元在网络中计算出的3D特征，并对其性能进行直观的解释。</p>
-<h3 id="2-Problem"><a href="#2-Problem" class="headerlink" title="2 Problem"></a>2 Problem</h3><p>深度学习架构，直接将无序点云输入。一个点云表示为3D点的集合$\left\{P_{i} | i=1, \dots, n\right\}$，其中每个点$P_i$ 是其坐标(x,y,z) 的坐标（也可以加上另外的特征，如颜色，法向量等）。</p>
+<h3 id="2-Problem-Statement"><a href="#2-Problem-Statement" class="headerlink" title="2 Problem Statement"></a>2 Problem Statement</h3><p>深度学习架构，直接将无序点云输入。一个点云表示为3D点的集合$\left\{P_{i} | i=1, \dots, n\right\}$，其中每个点$P_i$ 是其坐标(x,y,z) 的坐标（也可以加上另外的特征，如颜色，法向量等）。</p>
 <p>对于对象分类任务，可以直接从形状中采样输入点云，也可以从场景点云中预先分割输入点云。 我们建议的深度网络针对所有k个候选类输出k个分数。</p>
 <p> 对于语义分割，输入可以是用于部分零件区域分割的单个对象，也可以是3D场景中的用于对象区域分割。 我们的模型输出n×m分数，即输出每n个点云的每一个m个语义子类别。</p>
 <h3 id="3-点集上的深度学习"><a href="#3-点集上的深度学习" class="headerlink" title="3 点集上的深度学习"></a>3 点集上的深度学习</h3><h4 id="3-1-点集属性"><a href="#3-1-点集属性" class="headerlink" title="3.1 点集属性"></a>3.1 点集属性</h4><p>1，无序性。 与图像中的像素阵列或体积网格中的体素阵列不同，点云是一组没有特定顺序的点。换句话说，消耗N个3D点集的网络需要对于输入集的N个排列按数据馈送顺序保持不变。（无论点如何顺序输入，都要能够识别）</p>
@@ -32,16 +32,20 @@
 <p>我们通过<strong>微型网络（图2中的T-net）预测仿射变换矩阵</strong>（仿射变换前是直线，仿射变换后还是直线，直线比例保持不变。），并将该变换直接应用于输入点的坐标。 T-net网络本身类似于大型网络，由点独立特征提取（point independent feature extraction），最大池化和完全连接层的基本模块组成。 </p>
 <p>这个想法也可以进一步扩展到特征空间的对齐。 我们可以在点特征（point features）上插入另一个对齐网络，并预测一个特征转换矩阵以对齐来自不同输入点云（point clouds）的特征（理解：对齐特征有利于分类）。 然而，特征空间中的变换矩阵具有比空间变换矩阵高（much higher）的维数，这大大增加了优化的难度。 因此，我们在softmax训练损失中添加了一个正则化项。 我们约束特征变换矩阵使其接近正交矩阵</p>
 <script type="math/tex; mode=display">L_{r e g}=\left\|I-A A^{T}\right\|_{F}^{2}</script><p>$A$ 是特征对齐矩阵（由a mini-network预测的），正交变换将不会丢失输入中的信息，因此是需要的。 我们发现通过添加正则项，优化变得更加稳定，并且我们的模型获得了更好的性能。</p>
-<h3 id="4-理论分析"><a href="#4-理论分析" class="headerlink" title="4 理论分析"></a>4 理论分析</h3><p>令$\mathcal{X}=\left\{S: S \subseteq[0,1]^{m} \text { and }|S|=n\right\}$，$f: \mathcal{X} \rightarrow \mathbb{R}$ 是一个在$\mathcal{X}$ 上关于豪斯多夫距离的连续集合函数（set function），即$\forall \epsilon&gt;0, \exists \delta&gt;0, \text { for any } S, S^{\prime} \in \mathcal{X}$，如果$d_{H}\left(S, S^{\prime}\right)&lt;\delta$ ，则$\left|f(S)-f\left(S^{\prime}\right)\right|&lt;\epsilon$。我们的定理说，在最大池化层有足够的神经元的情况下，我们的网络可以任意近似f。PointNet模型的表征能力和maxpooling操作输出的数据维度(K)相关，K值越大，模型的表征能力越强。</p>
-<p>假设$f: \mathcal{X} \rightarrow \mathbb{R}$ 是一个关于豪斯多夫距离 $d_{H}(\cdot, \cdot)$ 的连续集合函数，对$\forall \epsilon&gt;0, \exists$ 一个连续函数 $h$ 和一个对称函数 $g\left(x_{1}, \ldots, x_{n}\right)=\gamma \circ M A X$，对任何$S \in \mathcal{X}$ ，</p>
+<h3 id="4-理论分析"><a href="#4-理论分析" class="headerlink" title="4 理论分析"></a>4 理论分析</h3><h4 id="4-1-函数逼近"><a href="#4-1-函数逼近" class="headerlink" title="4.1 函数逼近"></a>4.1 函数逼近</h4><p>令$\mathcal{X}=\left\{S: S \subseteq[0,1]^{m} \text { and }|S|=n\right\}$，$f: \mathcal{X} \rightarrow \mathbb{R}$ 是一个在$\mathcal{X}$ 上关于豪斯多夫距离的连续集合函数（set function），即$\forall \epsilon&gt;0, \exists \delta&gt;0, \text { for any } S, S^{\prime} \in \mathcal{X}$，如果$d_{H}\left(S, S^{\prime}\right)&lt;\delta$ ，则$\left|f(S)-f\left(S^{\prime}\right)\right|&lt;\epsilon$。我们的定理说，在最大池化层有足够的神经元的情况下，我们的网络可以任意近似f。PointNet模型的表征能力和maxpooling操作输出的数据维度(K)相关，K值越大，模型的表征能力越强。</p>
+<p>Theorem 1：假设$f: \mathcal{X} \rightarrow \mathbb{R}$ 是一个关于豪斯多夫距离 $d_{H}(\cdot, \cdot)$ 的连续集合函数，对$\forall \epsilon&gt;0, \exists$ 一个连续函数 $h$ 和一个对称函数 $g\left(x_{1}, \ldots, x_{n}\right)=\gamma \circ M A X$，对任何$S \in \mathcal{X}$ ，</p>
 <script type="math/tex; mode=display">\left|f(S)-\gamma\left(\underset{x_{i} \in S}{\operatorname{MAX}}\left\{h\left(x_{i}\right)\right\}\right)\right|<\epsilon</script><p>此处 $x_1, \dots,x_n$ 是任意顺序的S的全部元素。$\gamma$ 是一个连续函数，MAX是一个向量最大操作。</p>
 <p>定理证明看论文补充材料（ supplementary material. ）</p>
 <p>个人理解：表达式的意思是可以找出一个函数r，向量元素$x_i$经过$h$，足够多的神经元的MAX操作和r函数后任意近似原函数 $f(S)$，而$h$  在文章里值的是许多的卷积函数，MAX是最大池化函数，r是全连接分类映射网络。原函数$f(S)$ 可以想成是S是原所有点的特征空间，f是对原特征空间映射为点云物体的函数。</p>
+<h4 id="4-2-瓶颈与稳定性"><a href="#4-2-瓶颈与稳定性" class="headerlink" title="4.2 瓶颈与稳定性"></a>4.2 瓶颈与稳定性</h4><p>理论上和实验上，我们发现网络的表现力受到最大池化层的尺寸（即（1）中的K）的强烈影响。</p>
+<p>定义：$\mathbf{u}=\underset{x_{i} \in S}{\operatorname{MAX}}\left\{h\left(x_{i}\right)\right\}$ 是f的子网络，它映射 a point set in $[0,1]^m$ 为K维的向量。输入集中的小损坏或额外的噪声点不太可能改变网络的输出：</p>
+<p>Theorem 2：假设$\mathbf{u}: \mathcal{X} \rightarrow \mathbb{R}^{K}$ ，$\mathbf{u} = {MAX}_{x_{i} \in S}\left\{h\left(x_{i}\right)\right\}$ 且 $f=\gamma \circ \mathbf{u}$ ，则：</p>
+<script type="math/tex; mode=display">\text { (a) } \forall S, \exists \mathcal{C}_{S}, \mathcal{N}_{S} \subseteq \mathcal{X}, f(T)=f(S) \text { if } \mathcal{C}_{S} \subseteq T \subseteq \mathcal{N}_{S}</script><script type="math/tex; mode=display">(b)\left|\mathcal{C}_{S}\right| \leq K</script><p>a说明对于任何输入数据集S，可以找到最小集Cs和一个最大集Ns，使得对Cs和Ns之间的任何集合T，其网络输出都和S一样。模型对输入数据在有噪声(引入额外的数据点，趋于Ns)和有数据损坏(缺少数据点，趋于Cs)的情况都是<strong>鲁棒</strong>的。定理2(b)说明了最小集Cs的数据多少由maxpooling操作输出数据的维度K给出上界。</p>
+<p>直观地，我们的网络学习通过稀疏的关键点来总结形状。在实验部分，我们看到关键点形成了对象的骨架。（实验部分请参考下一篇博客）</p>
 <h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，知乎PointNet解读 <a href="https://zhuanlan.zhihu.com/p/44809266" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/44809266</a></p>
 <p>2，Point perception <a href="http://mech.fsv.cvut.cz/~dr/papers/CC05/node6.html" target="_blank" rel="noopener">http://mech.fsv.cvut.cz/~dr/papers/CC05/node6.html</a></p>
 <p>3，仿射变换概念：<a href="https://www.zhihu.com/question/20666664" target="_blank" rel="noopener">https://www.zhihu.com/question/20666664</a></p>
 <p>4，豪斯多夫距离 <a href="https://www.cnblogs.com/icmzn/p/8531719.html" target="_blank" rel="noopener">https://www.cnblogs.com/icmzn/p/8531719.html</a> （即 A集合中的任一点ai 到集合B中的任意点的最短的距离di，然后在这些距离di中选择距离<strong>最长（远）</strong>的，即作为两个集合A与B之间的Hausdoff Distance。豪斯多夫距离量度度量空间中紧子集之间的距离。）</p>
-<p>5，</p>
 ]]></content>
       <categories>
         <category>深度学习</category>
