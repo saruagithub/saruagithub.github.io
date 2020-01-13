@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>20200112剑指OfferP41</title>
+    <title>剑指OfferP41与哈希散列</title>
     <url>/2020/01/12/20200112%E5%89%91%E6%8C%87OfferP41/</url>
     <content><![CDATA[<h3 id="数组中重复的数字"><a href="#数组中重复的数字" class="headerlink" title="数组中重复的数字"></a>数组中重复的数字</h3><p>思路1：排序，然后比较当前个与下一个是否相同，相同则为重复元素。</p><p>思路2：一遍遍历，hash表将数组元素存起来，每次判断是否在hash里出现过。t:O(n)，space: O(n)</p><p>思路3：题目限制得比较死，数字在0~n-1的范围。所以可以采取书中的特殊交换解法。交换有限次即可找到，因此time O(n)。</p><a id="more"></a>
 
