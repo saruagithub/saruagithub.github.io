@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-01-13T09:09:30.508Z</updated>
+  <updated>2020-01-13T14:27:45.499Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>二分查找题目</title>
+    <link href="http://yoursite.com/2020/01/13/20200113%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE%E9%A2%98%E7%9B%AE/"/>
+    <id>http://yoursite.com/2020/01/13/20200113%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE%E9%A2%98%E7%9B%AE/</id>
+    <published>2020-01-13T14:13:32.000Z</published>
+    <updated>2020-01-13T14:27:45.499Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="基本二分查找"><a href="#基本二分查找" class="headerlink" title="基本二分查找"></a>基本二分查找</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// return index of target</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">binarySearch</span><span class="params">(<span class="keyword">int</span> numbers[],<span class="keyword">int</span> length, <span class="keyword">int</span> target)</span></span>&#123;</span><br><span class="line">  <span class="keyword">int</span> low = <span class="number">0</span>, high = length<span class="number">-1</span>, middle = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">while</span>(low &lt; high)&#123;</span><br><span class="line">    middle = (low + high) / <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">if</span>(target == numbers[middle]) <span class="keyword">return</span> middle;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(target &lt; numbers[middle]) high = middle;</span><br><span class="line">    <span class="keyword">else</span> low = middle + <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><a id="more"></a><p>二分查找的时间复杂度是 $O(logn)$</p><p>基于二分查找的题目很多，但基本很多情况都是给排序好的数组之类的进行查找。</p><h3 id="SwordToOffer"><a href="#SwordToOffer" class="headerlink" title="SwordToOffer"></a>SwordToOffer</h3><p>每次选取数组的右上角元素，如果目标值较小，就逐渐往左下走。</p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// P47 题目s4，二维数组查找数字</span></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">find_num</span><span class="params">(<span class="keyword">int</span>* matrix, <span class="keyword">int</span> rows, <span class="keyword">int</span> columns, <span class="keyword">int</span> number)</span></span>&#123;</span><br><span class="line">    <span class="keyword">bool</span> found = <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">if</span> (matrix != <span class="literal">nullptr</span> &amp;&amp; rows&gt;<span class="number">0</span> &amp;&amp; columns&gt;<span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">int</span> row = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> col = columns - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span> (row &lt; rows &amp;&amp; col &gt;=<span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> (matrix[row * columns + col] == number) &#123;</span><br><span class="line">                found = <span class="literal">true</span>;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (matrix[row * columns + col] &gt; number) --col;</span><br><span class="line">            <span class="keyword">else</span> ++row;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> found;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>其实我觉得这里也可以考虑用二分查找法来解，毕竟二维数组从左到右，从上到下是排序了的。</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;基本二分查找&quot;&gt;&lt;a href=&quot;#基本二分查找&quot; class=&quot;headerlink&quot; title=&quot;基本二分查找&quot;&gt;&lt;/a&gt;基本二分查找&lt;/h3&gt;&lt;figure class=&quot;highlight c++&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;// return index of target&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;binarySearch&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; numbers[],&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; length, &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; target)&lt;/span&gt;&lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; low = &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;, high = length&lt;span class=&quot;number&quot;&gt;-1&lt;/span&gt;, middle = &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;keyword&quot;&gt;while&lt;/span&gt;(low &amp;lt; high)&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    middle = (low + high) / &lt;span class=&quot;number&quot;&gt;2&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt;(target == numbers[middle]) &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; middle;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt;(target &amp;lt; numbers[middle]) high = middle;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt; low = middle + &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;-1&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+    
+    </summary>
+    
+    
+      <category term="算法" scheme="http://yoursite.com/categories/%E7%AE%97%E6%B3%95/"/>
+    
+    
+      <category term="算法" scheme="http://yoursite.com/tags/%E7%AE%97%E6%B3%95/"/>
+    
+      <category term="SwordToOffer" scheme="http://yoursite.com/tags/SwordToOffer/"/>
+    
+  </entry>
   
   <entry>
     <title>剑指OfferP41与哈希散列</title>
@@ -525,9 +550,9 @@
       <category term="AIOps" scheme="http://yoursite.com/categories/AIOps/"/>
     
     
-      <category term="AIOps" scheme="http://yoursite.com/tags/AIOps/"/>
-    
       <category term="时间序列" scheme="http://yoursite.com/tags/%E6%97%B6%E9%97%B4%E5%BA%8F%E5%88%97/"/>
+    
+      <category term="AIOps" scheme="http://yoursite.com/tags/AIOps/"/>
     
   </entry>
   
@@ -566,31 +591,6 @@
       <category term="装系统" scheme="http://yoursite.com/tags/%E8%A3%85%E7%B3%BB%E7%BB%9F/"/>
     
       <category term="ubuntu" scheme="http://yoursite.com/tags/ubuntu/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>20190408AnomalyDetectionBackground</title>
-    <link href="http://yoursite.com/2019/04/08/20190408AnomalyDetectionBackground/"/>
-    <id>http://yoursite.com/2019/04/08/20190408AnomalyDetectionBackground/</id>
-    <published>2019-04-08T04:35:30.000Z</published>
-    <updated>2019-12-12T04:37:18.785Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="1-背景"><a href="#1-背景" class="headerlink" title="1 背景"></a>1 背景</h3><h4 id="1-1-企业背景"><a href="#1-1-企业背景" class="headerlink" title="1.1 企业背景"></a>1.1 企业背景</h4><p>分布式系统结构的广泛应用。具有高并发，低时延，高可靠性等特点，但同时由于需求的增长，其规模，复杂性和动态生成的数据也急剧增加，这使其可靠性降低。为了避免系统故障，因此异常检测故障预判很重要。</p><p>简单来说目前的一些应用痛点，也是我企业调研的结果：</p><p>1，测试人员时间有限，不能有效测试，全覆盖测试。系统BUG是难免的。</p><a id="more"></a><p>2，系统故障后排查困难，需要及时定位。</p><p>3，运维人员希望可以提前预测故障，越早越好，从而进行排查。</p><p>4，目前企业的监控数据是有的，如何利用起来对系统更好的运维。</p><h4 id="2-1-研究背景"><a href="#2-1-研究背景" class="headerlink" title="2.1 研究背景"></a>2.1 研究背景</h4><p>流数据的异常检测难点有：</p><p>1，流数据高速实时产生  ，传统的对整个数据集离线学习很难。</p><p>2，异常行为很少发生，异常检测器训练困难，难以学习对于重要的不平衡数据集的满意模型。</p><p>3，流数据的时变特性。两类异常，空间异常和上下文异常。概念漂移问题。</p><p>4，Precision与Recall之前的权衡问题。</p><p>5，不同的时序数据有不同属性。周期性，平稳性，非平稳性等等性质，对不同的方法有要求。</p><p>6，异常数据的标记很难得。</p><p>7，提前检测很重要，也很困难。</p><h4 id="2-2-智能运维背景"><a href="#2-2-智能运维背景" class="headerlink" title="2.2 智能运维背景"></a>2.2 智能运维背景</h4><p>于是Gartner首先推出了人工智能运算（AIOP，这个方向国内还有清华大学的裴丹老师），包括性能监视，异常检测和系统故障检测任务等。理想的智能运维具有以下能力：历史数据管理、流数据（即时序数据）管理、日志数据提取、网络数据提取、性能数据提取、文本数据提取、自动化模型的发现和预测、异常检测、根因分析、按需交付等  </p><blockquote><p>AIOps is the application of artificial intelligence for IT operations. It is the future of ITOps, combining algorithmic and human intelligence to provide full visibility into the state and performance of the IT systems that businesses rely on.</p></blockquote><p>性能监控里包括了对系统的CPU、memory，storage，网络，进程等资源使用的监控信息。通过对性能监控的时间序列进行异常检测，发现故障之前的征兆。</p><h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1, “Everything you need to know about AIOps”, from <a href="https://www.moogsoft.com/resources/aiops/guide/everything-aiops/" target="_blank" rel="noopener">https://www.moogsoft.com/resources/aiops/guide/everything-aiops/</a> (retrieved as of Feb. 12, 2019)</p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;1-背景&quot;&gt;&lt;a href=&quot;#1-背景&quot; class=&quot;headerlink&quot; title=&quot;1 背景&quot;&gt;&lt;/a&gt;1 背景&lt;/h3&gt;&lt;h4 id=&quot;1-1-企业背景&quot;&gt;&lt;a href=&quot;#1-1-企业背景&quot; class=&quot;headerlink&quot; title=&quot;1.1 企业背景&quot;&gt;&lt;/a&gt;1.1 企业背景&lt;/h4&gt;&lt;p&gt;分布式系统结构的广泛应用。具有高并发，低时延，高可靠性等特点，但同时由于需求的增长，其规模，复杂性和动态生成的数据也急剧增加，这使其可靠性降低。为了避免系统故障，因此异常检测故障预判很重要。&lt;/p&gt;&lt;p&gt;简单来说目前的一些应用痛点，也是我企业调研的结果：&lt;/p&gt;&lt;p&gt;1，测试人员时间有限，不能有效测试，全覆盖测试。系统BUG是难免的。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="AIOps" scheme="http://yoursite.com/categories/AIOps/"/>
-    
-    
-      <category term="AIOps" scheme="http://yoursite.com/tags/AIOps/"/>
-    
-      <category term="异常检测" scheme="http://yoursite.com/tags/%E5%BC%82%E5%B8%B8%E6%A3%80%E6%B5%8B/"/>
     
   </entry>
   
