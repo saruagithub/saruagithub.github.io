@@ -34,6 +34,38 @@
       </tags>
   </entry>
   <entry>
+    <title>20180915pointnet论文3——TensorFlow源码阅读</title>
+    <url>/2020/01/11/20180915pointnet%E8%AE%BA%E6%96%873%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/</url>
+    <content><![CDATA[<h3 id="目录说明"><a href="#目录说明" class="headerlink" title="目录说明"></a>目录说明</h3><p>根目录下：</p><p>train.py用于点云分类训练</p><p>provider.py 用于点云的数据预处理（旋转，抖动等）</p><p>evaluate用于评估训练结果。</p><p>其他目录：<strong>data</strong>目录下存放用于训练的样例文件h5，test_files与train_files中列举的用于训练及测试的文件路径。<strong>log</strong> 存放的是训练结果，默认情况下只存放最近一次训练结果。<strong>models</strong>存放的是模型文件，pointnet_cls.py（POINTNET）和pointnet_cls_basic.py（baseline模型）中的MLP是分类模型结构。pointnet_seg.py是点云分割模型网络；transform_nets.py为原始点云对称变换以及特征变换，即论文中的T-net网络。</p><a id="more"></a>
+
+
+
+
+<h3 id="1，数据预处理provider"><a href="#1，数据预处理provider" class="headerlink" title="1，数据预处理provider"></a>1，数据预处理provider</h3><p>前面下载数据以及后面的hdf5格式加载数据就略过了。说一说数据预处理部分干了些什么。</p>
+<p>1，shuffle_data函数</p>
+<p>根据labels的长度创建idx下标集合，对下标集合随机打乱，返回打乱的数据data[idx,…] 和labels[idx]。</p>
+<p>2，随机旋转点云rotate_point_cloud（参数batch_data）</p>
+<p>遍历这批点云物体batch_data.shape[0] 即B的大小。</p>
+<p>旋转角度是随机生成的，乘以2$\pi$ ，即使角度多大都没关系，反正按角度算。</p>
+<p>计算cos和sin值。</p>
+<p>注意此处的旋转矩阵。原一个点云物体k的大小的n*3与旋转矩阵做点积。其实就是物体逆时针旋转那么多角度。对这一批点云物体都做这一个随机旋转角度值。</p>
+<script type="math/tex; mode=display">\left[\begin{array}{lll}{cosval} & {0} & {sinval} \\ {0} & {1} & {0} \\ {-sinval} & {0} & {cosval}\end{array}\right]</script><p>rotate_point_cloud_by_angle旋转也是同理，不过是指定角度旋转。角度作为参赛输入函数。</p>
+<p>3，jitter_point_cloud随机抖动点云</p>
+<p>sigma = 0.01， clip = 0.05</p>
+<p>sigma <em> sigma </em> np.random.randn(B, N, C) 是均值为sigma的正态分布数据，大小是$B\times N \times C$</p>
+<p>将这些数值切割到-0.05到0.05之间，并与原始点云的坐标数据相加。</p>
+<p>相当于给点云数据加微小的噪声。</p>
+<h3 id="2，基础模型baseline"><a href="#2，基础模型baseline" class="headerlink" title="2，基础模型baseline"></a>2，基础模型baseline</h3><p>pointnet_cla_basic.py 函数</p>
+<h3 id="3，POINTNET网络"><a href="#3，POINTNET网络" class="headerlink" title="3，POINTNET网络"></a>3，POINTNET网络</h3><h3 id="4，训练与评估"><a href="#4，训练与评估" class="headerlink" title="4，训练与评估"></a>4，训练与评估</h3><h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3>]]></content>
+      <categories>
+        <category>深度学习</category>
+      </categories>
+      <tags>
+        <tag>深度学习</tag>
+        <tag>三维点云</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>20180915pointnet论文2——实验部分</title>
     <url>/2020/01/11/20180915pointnet%E8%AE%BA%E6%96%872/</url>
     <content><![CDATA[<h3 id="1-论文中实验"><a href="#1-论文中实验" class="headerlink" title="1 论文中实验"></a>1 论文中实验</h3><h4 id="1-1-点云分类classification"><a href="#1-1-点云分类classification" class="headerlink" title="1.1 点云分类classification"></a>1.1 点云分类classification</h4><p>数据集：ModelNet40，12311CAD模型，40个类别，9843个训练，2468测试。</p><p>我们根据网格区域对网格表面上的1024个点进行统一采样，并将其标准化为单位球体。</p><p>数据增强：1，沿上轴随机旋转对象（随机旋转 or 旋转某一角度）。2，通过具有零均值和0.02标准偏差的高斯噪声使每个点的位置抖动来动态地增加点云。</p><a id="more"></a>

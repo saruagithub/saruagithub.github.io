@@ -42,6 +42,31 @@
   </entry>
   
   <entry>
+    <title>20180915pointnet论文3——TensorFlow源码阅读</title>
+    <link href="http://yoursite.com/2020/01/11/20180915pointnet%E8%AE%BA%E6%96%873%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/"/>
+    <id>http://yoursite.com/2020/01/11/20180915pointnet%E8%AE%BA%E6%96%873%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/</id>
+    <published>2020-01-11T12:59:40.000Z</published>
+    <updated>2020-01-13T08:28:14.670Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="目录说明"><a href="#目录说明" class="headerlink" title="目录说明"></a>目录说明</h3><p>根目录下：</p><p>train.py用于点云分类训练</p><p>provider.py 用于点云的数据预处理（旋转，抖动等）</p><p>evaluate用于评估训练结果。</p><p>其他目录：<strong>data</strong>目录下存放用于训练的样例文件h5，test_files与train_files中列举的用于训练及测试的文件路径。<strong>log</strong> 存放的是训练结果，默认情况下只存放最近一次训练结果。<strong>models</strong>存放的是模型文件，pointnet_cls.py（POINTNET）和pointnet_cls_basic.py（baseline模型）中的MLP是分类模型结构。pointnet_seg.py是点云分割模型网络；transform_nets.py为原始点云对称变换以及特征变换，即论文中的T-net网络。</p><a id="more"></a><h3 id="1，数据预处理provider"><a href="#1，数据预处理provider" class="headerlink" title="1，数据预处理provider"></a>1，数据预处理provider</h3><p>前面下载数据以及后面的hdf5格式加载数据就略过了。说一说数据预处理部分干了些什么。</p><p>1，shuffle_data函数</p><p>根据labels的长度创建idx下标集合，对下标集合随机打乱，返回打乱的数据data[idx,…] 和labels[idx]。</p><p>2，随机旋转点云rotate_point_cloud（参数batch_data）</p><p>遍历这批点云物体batch_data.shape[0] 即B的大小。</p><p>旋转角度是随机生成的，乘以2$\pi$ ，即使角度多大都没关系，反正按角度算。</p><p>计算cos和sin值。</p><p>注意此处的旋转矩阵。原一个点云物体k的大小的n*3与旋转矩阵做点积。其实就是物体逆时针旋转那么多角度。对这一批点云物体都做这一个随机旋转角度值。</p><script type="math/tex; mode=display">\left[\begin{array}{lll}{cosval} & {0} & {sinval} \\ {0} & {1} & {0} \\ {-sinval} & {0} & {cosval}\end{array}\right]</script><p>rotate_point_cloud_by_angle旋转也是同理，不过是指定角度旋转。角度作为参赛输入函数。</p><p>3，jitter_point_cloud随机抖动点云</p><p>sigma = 0.01， clip = 0.05</p><p>sigma <em> sigma </em> np.random.randn(B, N, C) 是均值为sigma的正态分布数据，大小是$B\times N \times C$</p><p>将这些数值切割到-0.05到0.05之间，并与原始点云的坐标数据相加。</p><p>相当于给点云数据加微小的噪声。</p><h3 id="2，基础模型baseline"><a href="#2，基础模型baseline" class="headerlink" title="2，基础模型baseline"></a>2，基础模型baseline</h3><p>pointnet_cla_basic.py 函数</p><h3 id="3，POINTNET网络"><a href="#3，POINTNET网络" class="headerlink" title="3，POINTNET网络"></a>3，POINTNET网络</h3><h3 id="4，训练与评估"><a href="#4，训练与评估" class="headerlink" title="4，训练与评估"></a>4，训练与评估</h3><h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;目录说明&quot;&gt;&lt;a href=&quot;#目录说明&quot; class=&quot;headerlink&quot; title=&quot;目录说明&quot;&gt;&lt;/a&gt;目录说明&lt;/h3&gt;&lt;p&gt;根目录下：&lt;/p&gt;&lt;p&gt;train.py用于点云分类训练&lt;/p&gt;&lt;p&gt;provider.py 用于点云的数据预处理（旋转，抖动等）&lt;/p&gt;&lt;p&gt;evaluate用于评估训练结果。&lt;/p&gt;&lt;p&gt;其他目录：&lt;strong&gt;data&lt;/strong&gt;目录下存放用于训练的样例文件h5，test_files与train_files中列举的用于训练及测试的文件路径。&lt;strong&gt;log&lt;/strong&gt; 存放的是训练结果，默认情况下只存放最近一次训练结果。&lt;strong&gt;models&lt;/strong&gt;存放的是模型文件，pointnet_cls.py（POINTNET）和pointnet_cls_basic.py（baseline模型）中的MLP是分类模型结构。pointnet_seg.py是点云分割模型网络；transform_nets.py为原始点云对称变换以及特征变换，即论文中的T-net网络。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="深度学习" scheme="http://yoursite.com/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+      <category term="深度学习" scheme="http://yoursite.com/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+    
+      <category term="三维点云" scheme="http://yoursite.com/tags/%E4%B8%89%E7%BB%B4%E7%82%B9%E4%BA%91/"/>
+    
+  </entry>
+  
+  <entry>
     <title>20180915pointnet论文2——实验部分</title>
     <link href="http://yoursite.com/2020/01/11/20180915pointnet%E8%AE%BA%E6%96%872/"/>
     <id>http://yoursite.com/2020/01/11/20180915pointnet%E8%AE%BA%E6%96%872/</id>
@@ -566,31 +591,6 @@
       <category term="异常检测" scheme="http://yoursite.com/tags/%E5%BC%82%E5%B8%B8%E6%A3%80%E6%B5%8B/"/>
     
       <category term="AIOps" scheme="http://yoursite.com/tags/AIOps/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>PCL库升级问题</title>
-    <link href="http://yoursite.com/2019/03/27/20190327PCL%E5%BA%93%E5%8D%87%E7%BA%A7%E9%97%AE%E9%A2%98/"/>
-    <id>http://yoursite.com/2019/03/27/20190327PCL%E5%BA%93%E5%8D%87%E7%BA%A7%E9%97%AE%E9%A2%98/</id>
-    <published>2019-03-27T02:58:04.000Z</published>
-    <updated>2020-01-02T02:59:52.383Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="PCL库"><a href="#PCL库" class="headerlink" title="PCL库"></a>PCL库</h3><h6 id="1、安装过程参考官网，环境是Mac10-14-4，mojave"><a href="#1、安装过程参考官网，环境是Mac10-14-4，mojave" class="headerlink" title="1、安装过程参考官网，环境是Mac10.14.4，mojave"></a>1、安装过程参考官网，环境是Mac10.14.4，mojave</h6><p><a href="http://www.pointclouds.org/documentation/tutorials/installing_homebrew.php" target="_blank" rel="noopener">pcl install on Mac</a><br><code>brew install pcl</code> ，一直装就好了</p><h6 id="2、使用xcode创建pcl工程"><a href="#2、使用xcode创建pcl工程" class="headerlink" title="2、使用xcode创建pcl工程"></a>2、使用xcode创建pcl工程</h6><p><a href="http://dragonwood-blastevil.blogspot.com/2013/02/install-pcl-and-first-project-in-xcode.html" target="_blank" rel="noopener">翻墙搜的pcl project in xcode</a><br>此处注意编译器的选择，Switch Compiler for C/C++/Objective-C from Apple LLVM compiler 4.2 -&gt; LLVM GCC 4.2，注意”Header Search Paths”的配置，链接里没有全部配置完全，项目要用到的库都应该加进去。</p><a id="more"></a><p><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly91cGxvYWQtaW1hZ2VzLmppYW5zaHUuaW8vdXBsb2FkX2ltYWdlcy8xNTQyNjUxLThhYzQxZGFkYjIyNjA0MzEucG5n?x-oss-process=image/format,png" alt="工程配置"></p><p>然后注意还有添加Link binary with libraries，点击下面的加号，add other把lib文件夹里的都加进来，只要你用到boost库，其他库类似这样处理。<br><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly91cGxvYWQtaW1hZ2VzLmppYW5zaHUuaW8vdXBsb2FkX2ltYWdlcy8xNTQyNjUxLTg1NzNiNjZmMThiYzdjNmEucG5n?x-oss-process=image/format,png" alt="lib库添加1"><br><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly91cGxvYWQtaW1hZ2VzLmppYW5zaHUuaW8vdXBsb2FkX2ltYWdlcy8xNTQyNjUxLTYzNDA3MDZhYTIyMGUyODAucG5n?x-oss-process=image/format,png" alt="lib库添加2"></p><h6 id="3、问题1：undifine-symbols-基本就是下面提示的库没有添加进去"><a href="#3、问题1：undifine-symbols-基本就是下面提示的库没有添加进去" class="headerlink" title="3、问题1：undifine symbols 基本就是下面提示的库没有添加进去"></a>3、问题1：undifine symbols 基本就是下面提示的库没有添加进去</h6><p><code>Undefined symbols for architecture x86_64:   &quot;boost::this_thread::interruption_point()</code><br><code>&quot;vtkSphereSource::New()&quot;, referenced from:  vtkSmartPointer&lt;vtkSphereSource&gt;::New() in 4viewtest.o</code><br>一般这种报错就是因为上面的lib库没有加进去的原因。这个问题，我居然被困了半天，气死了。。。。</p><h6 id="4、由于我升级了Mac到mojave，出现问题Reason-image-not-found"><a href="#4、由于我升级了Mac到mojave，出现问题Reason-image-not-found" class="headerlink" title="4、由于我升级了Mac到mojave，出现问题Reason: image not found"></a>4、由于我升级了Mac到mojave，出现问题Reason: image not found</h6><p><code>dylid: Library not loaded: /opt/X11/lib/libglut.3.dylib  Referenced from: /usr/local/opt/pcl/lib/libpcl_simulation_io.1.9.dylib  Reason: image not found</code><br><a href="https://tex.stackexchange.com/questions/208001/cant-compile-image-after-upgrading-to-os-x-yosemite" target="_blank" rel="noopener">X11 is not erased but moved to /opt/X11</a><br>还要安装 <a href="http://xquartz.macosforge.org/landing" target="_blank" rel="noopener">installing the latest XQuartz</a></p><p>升级就是麻烦多，各位开发者别随便升级了</p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;PCL库&quot;&gt;&lt;a href=&quot;#PCL库&quot; class=&quot;headerlink&quot; title=&quot;PCL库&quot;&gt;&lt;/a&gt;PCL库&lt;/h3&gt;&lt;h6 id=&quot;1、安装过程参考官网，环境是Mac10-14-4，mojave&quot;&gt;&lt;a href=&quot;#1、安装过程参考官网，环境是Mac10-14-4，mojave&quot; class=&quot;headerlink&quot; title=&quot;1、安装过程参考官网，环境是Mac10.14.4，mojave&quot;&gt;&lt;/a&gt;1、安装过程参考官网，环境是Mac10.14.4，mojave&lt;/h6&gt;&lt;p&gt;&lt;a href=&quot;http://www.pointclouds.org/documentation/tutorials/installing_homebrew.php&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;pcl install on Mac&lt;/a&gt;&lt;br&gt;&lt;code&gt;brew install pcl&lt;/code&gt; ，一直装就好了&lt;/p&gt;&lt;h6 id=&quot;2、使用xcode创建pcl工程&quot;&gt;&lt;a href=&quot;#2、使用xcode创建pcl工程&quot; class=&quot;headerlink&quot; title=&quot;2、使用xcode创建pcl工程&quot;&gt;&lt;/a&gt;2、使用xcode创建pcl工程&lt;/h6&gt;&lt;p&gt;&lt;a href=&quot;http://dragonwood-blastevil.blogspot.com/2013/02/install-pcl-and-first-project-in-xcode.html&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;翻墙搜的pcl project in xcode&lt;/a&gt;&lt;br&gt;此处注意编译器的选择，Switch Compiler for C/C++/Objective-C from Apple LLVM compiler 4.2 -&amp;gt; LLVM GCC 4.2，注意”Header Search Paths”的配置，链接里没有全部配置完全，项目要用到的库都应该加进去。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="深度学习" scheme="http://yoursite.com/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-      <category term="三维点云" scheme="http://yoursite.com/tags/%E4%B8%89%E7%BB%B4%E7%82%B9%E4%BA%91/"/>
-    
-      <category term="配置" scheme="http://yoursite.com/tags/%E9%85%8D%E7%BD%AE/"/>
     
   </entry>
   
