@@ -23,7 +23,7 @@
 <figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> Key, <span class="keyword">typename</span> E&gt;</span><br><span class="line"><span class="keyword">void</span> hashdict&lt;Key,E&gt;::hashInsert(<span class="keyword">const</span> Key&amp;k, <span class="keyword">const</span> E&amp;e)&#123;</span><br><span class="line">  <span class="keyword">int</span> <span class="built_in">home</span>; <span class="comment">// home position for k</span></span><br><span class="line">  <span class="keyword">int</span> pos = <span class="built_in">home</span> = h(k); <span class="comment">//Init proble sequence</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">1</span>; EMPTYKEY!=(HT[pos]).key(); i++)&#123;</span><br><span class="line">    pos = (<span class="built_in">home</span> + p(k,i) % M); <span class="comment">// probe</span></span><br><span class="line">    Assert(k != (HT[pos]).key(), <span class="string">"Duplication not allowed!"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  KVpair&lt;Key,E&gt; temp(k,e);</span><br><span class="line">  HT[pos] = temp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>第i次对P调用，返回第i次要用到的偏移量。</p>
 <p>探测函数：线性探测，避免聚集可P(k,i) = ci</p>
-<p>好的探测序列是在回到基槽之前，把散列表的所有槽都走一遍。</p>
+<p>好的探测序列是在回到基槽之前，把散列表的所有槽都走一遍。理想的探测函数应该在探查序列中随机的从未走过的槽中选择下一个位置，即探查序列应当是散列表位置的随机排列。如伪随机探查。$( h(K) + r_i ) mod M$, $r_i$ 是1到M-1之间的数的随机排列。</p>
 ]]></content>
       <categories>
         <category>算法</category>
