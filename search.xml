@@ -34,11 +34,6 @@
       </tags>
   </entry>
   <entry>
-    <title>20180915pointnet论文3——源码阅读</title>
-    <url>/2020/01/11/20180915pointnet%E8%AE%BA%E6%96%873%E2%80%94%E2%80%94%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/</url>
-    <content><![CDATA[]]></content>
-  </entry>
-  <entry>
     <title>20180915pointnet论文2——实验部分</title>
     <url>/2020/01/11/20180915pointnet%E8%AE%BA%E6%96%872/</url>
     <content><![CDATA[<h3 id="1-论文中实验"><a href="#1-论文中实验" class="headerlink" title="1 论文中实验"></a>1 论文中实验</h3><h4 id="1-1-点云分类classification"><a href="#1-1-点云分类classification" class="headerlink" title="1.1 点云分类classification"></a>1.1 点云分类classification</h4><p>数据集：ModelNet40，12311CAD模型，40个类别，9843个训练，2468测试。</p><p>我们根据网格区域对网格表面上的1024个点进行统一采样，并将其标准化为单位球体。</p><p>数据增强：1，沿上轴随机旋转对象（随机旋转 or 旋转某一角度）。2，通过具有零均值和0.02标准偏差的高斯噪声使每个点的位置抖动来动态地增加点云。</p><a id="more"></a>
