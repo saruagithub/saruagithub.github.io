@@ -61,14 +61,17 @@
 
 <h3 id="1，数据预处理provider"><a href="#1，数据预处理provider" class="headerlink" title="1，数据预处理provider"></a>1，数据预处理provider</h3><p>前面下载数据以及后面的hdf5格式加载数据就略过了。说一说数据预处理部分干了些什么。</p>
 <p>1，shuffle_data函数</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">shuffle_data</span><span class="params">(data, labels)</span>:</span></span><br><span class="line">    idx = np.arange(len(labels))</span><br><span class="line">    np.random.shuffle(idx)</span><br><span class="line">    <span class="keyword">return</span> data[idx, ...], labels[idx], idx</span><br></pre></td></tr></table></figure>
 <p>根据labels的长度创建idx下标集合，对下标集合随机打乱，返回打乱的数据data[idx,…] 和labels[idx]。</p>
 <p>2，随机旋转点云rotate_point_cloud（参数batch_data）</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">rotate_point_cloud</span><span class="params">(batch_data)</span>:</span></span><br><span class="line">    rotated_data = np.zeros(batch_data.shape, dtype=np.float32)</span><br><span class="line">    <span class="keyword">for</span> k <span class="keyword">in</span> range(batch_data.shape[<span class="number">0</span>]):</span><br><span class="line">        rotation_angle = np.random.uniform() * <span class="number">2</span> * np.pi</span><br><span class="line">        cosval = np.cos(rotation_angle)</span><br><span class="line">        sinval = np.sin(rotation_angle)</span><br><span class="line">        rotation_matrix = np.array([[cosval, <span class="number">0</span>, sinval],</span><br><span class="line">                                    [<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>],</span><br><span class="line">                                    [-sinval, <span class="number">0</span>, cosval]])</span><br><span class="line">        shape_pc = batch_data[k, ...]</span><br><span class="line">        rotated_data[k, ...] = np.dot(shape_pc.reshape((<span class="number">-1</span>, <span class="number">3</span>)), rotation_matrix)</span><br><span class="line">    <span class="keyword">return</span> rotated_data</span><br></pre></td></tr></table></figure>
 <p>遍历这批点云物体batch_data.shape[0] 即B的大小。</p>
 <p>旋转角度是随机生成的，乘以2$\pi$ ，即使角度多大都没关系，反正按角度算。</p>
 <p>计算cos和sin值。</p>
 <p>注意此处的旋转矩阵。原一个点云物体k的大小的n*3与旋转矩阵做点积。其实就是物体逆时针旋转那么多角度。对这一批点云物体都做这一个随机旋转角度值。</p>
 <script type="math/tex; mode=display">\left[\begin{array}{lll}{cosval} & {0} & {sinval} \\ {0} & {1} & {0} \\ {-sinval} & {0} & {cosval}\end{array}\right]</script><p>rotate_point_cloud_by_angle旋转也是同理，不过是指定角度旋转。角度作为参赛输入函数。</p>
 <p>3，jitter_point_cloud随机抖动点云</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">jitter_point_cloud</span><span class="params">(batch_data, sigma=<span class="number">0.01</span>, clip=<span class="number">0.05</span>)</span>:</span></span><br><span class="line">    B, N, C = batch_data.shape</span><br><span class="line">    <span class="keyword">assert</span>(clip &gt; <span class="number">0</span>)</span><br><span class="line">    jittered_data = np.clip(sigma * np.random.randn(B, N, C), <span class="number">-1</span>*clip, clip)</span><br><span class="line">    jittered_data += batch_data</span><br><span class="line">    <span class="keyword">return</span> jittered_data</span><br></pre></td></tr></table></figure>
 <p>sigma = 0.01， clip = 0.05</p>
 <p>sigma <em> sigma </em> np.random.randn(B, N, C) 是均值为sigma的正态分布数据，大小是$B\times N \times C$</p>
 <p>将这些数值切割到-0.05到0.05之间，并与原始点云的坐标数据相加。</p>
@@ -85,7 +88,8 @@
 <p>最后的三个全连接网络，大小分别是512，256，40。最后的40输出类别的one hot向量。激活函数为softmax输出概率，哪个概率大则输出就是哪个类别的物体。全连接网络好理解，就是对特征点汇总为全局描述符，最后用于分类。</p>
 <h3 id="3，POINTNET网络"><a href="#3，POINTNET网络" class="headerlink" title="3，POINTNET网络"></a>3，POINTNET网络</h3><p>T-Net的作用：我们期望通过网络学习到的表征（特征）对于这些仿射变换是不变的。</p>
 <h4 id="3-1-Input-Transform网络"><a href="#3-1-Input-Transform网络" class="headerlink" title="3.1 Input Transform网络"></a>3.1 Input Transform网络</h4><h5 id="3-1-1-论文原理"><a href="#3-1-1-论文原理" class="headerlink" title="3.1.1 论文原理"></a>3.1.1 论文原理</h5><p>我们通过<strong>微型网络（图2中的T-net）预测仿射变换矩阵</strong>，将该变换直接应用于输入点的坐标。</p>
-<h5 id="3-1-2-源码"><a href="#3-1-2-源码" class="headerlink" title="3.1.2 源码"></a>3.1.2 源码</h5><h4 id="3-2-Feature-Transform网络"><a href="#3-2-Feature-Transform网络" class="headerlink" title="3.2 Feature Transform网络"></a>3.2 Feature Transform网络</h4><h5 id="3-2-1-论文原理"><a href="#3-2-1-论文原理" class="headerlink" title="3.2.1 论文原理"></a>3.2.1 论文原理</h5><p>可以在点特征（point features）上插入另一个对齐网络，并预测一个特征转换矩阵以对齐来自不同输入点云（point clouds）的特征。由于特征空间中的变换矩阵具有比空间变换矩阵高（much higher）的维数，这大大增加了优化的难度。 因此，我们在softmax训练损失中添加了一个正则化项。</p>
+<h5 id="3-1-2-源码"><a href="#3-1-2-源码" class="headerlink" title="3.1.2 源码"></a>3.1.2 源码</h5><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">transform = input_transform_net(point_cloud, is_training, bn_decay, K=<span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+<h4 id="3-2-Feature-Transform网络"><a href="#3-2-Feature-Transform网络" class="headerlink" title="3.2 Feature Transform网络"></a>3.2 Feature Transform网络</h4><h5 id="3-2-1-论文原理"><a href="#3-2-1-论文原理" class="headerlink" title="3.2.1 论文原理"></a>3.2.1 论文原理</h5><p>可以在点特征（point features）上插入另一个对齐网络，并预测一个特征转换矩阵以对齐来自不同输入点云（point clouds）的特征。由于特征空间中的变换矩阵具有比空间变换矩阵高（much higher）的维数，这大大增加了优化的难度。 因此，我们在softmax训练损失中添加了一个正则化项。</p>
 <p> 我们约束特征变换矩阵使其接近正交矩阵</p>
 <script type="math/tex; mode=display">L_{r e g}=\left\|I-A A^{T}\right\|_{F}^{2}</script><p>$A$ 是特征对齐矩阵（由a mini-network T-net预测的），正交变换将不会丢失输入中的信息，因此是需要的。 我们发现通过添加正则项，优化变得更加稳定，并且我们的模型获得了更好的性能。</p>
 <h5 id="3-1-3-源码"><a href="#3-1-3-源码" class="headerlink" title="3.1.3 源码"></a>3.1.3 源码</h5><h3 id="4，训练与评估"><a href="#4，训练与评估" class="headerlink" title="4，训练与评估"></a>4，训练与评估</h3><h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1, 开源代码 <a href="https://github.com/charlesq34/pointnet" target="_blank" rel="noopener">https://github.com/charlesq34/pointnet</a></p>
@@ -984,8 +988,8 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
         <category>AIOps</category>
       </categories>
       <tags>
-        <tag>AIOps</tag>
         <tag>时间序列</tag>
+        <tag>AIOps</tag>
       </tags>
   </entry>
   <entry>
@@ -1050,8 +1054,8 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
         <category>AIOps</category>
       </categories>
       <tags>
-        <tag>AIOps</tag>
         <tag>异常检测</tag>
+        <tag>AIOps</tag>
       </tags>
   </entry>
   <entry>
@@ -1550,6 +1554,7 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
 <p>忽得一夜伤客心。 </p>
 <p>不见多难笑登临。 </p>
 <p>终是浮云总归尘。 </p>
+<p>2020/01/14 读书好，读书好</p>
 <p>（持续更）</p>
 ]]></content>
       <categories>
