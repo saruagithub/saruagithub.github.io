@@ -56,7 +56,7 @@
 <meta property="og:description" content="目录说明根目录下：train.py用于点云分类训练provider.py 用于点云的数据预处理（旋转，抖动等）evaluate用于评估训练结果。其他目录：data目录下存放用于训练的样例文件h5，test_files与train_files中列举的用于训练及测试的文件路径。log 存放的是训练结果，默认情况下只存放最近一次训练结果。models存放的是模型文件，pointnet_cls.py（PO">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;Users&#x2F;wangxue&#x2F;gitpro&#x2F;20191105MyBlog&#x2F;saruagithub&#x2F;source&#x2F;images&#x2F;20200114POINTNET_CNN.png">
-<meta property="og:updated_time" content="2020-01-14T10:04:46.006Z">
+<meta property="og:updated_time" content="2020-01-14T12:59:52.438Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;Users&#x2F;wangxue&#x2F;gitpro&#x2F;20191105MyBlog&#x2F;saruagithub&#x2F;source&#x2F;images&#x2F;20200114POINTNET_CNN.png">
 
@@ -241,7 +241,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-01-14 18:04:46" itemprop="dateModified" datetime="2020-01-14T18:04:46+08:00">2020-01-14</time>
+                <time title="修改时间：2020-01-14 20:59:52" itemprop="dateModified" datetime="2020-01-14T20:59:52+08:00">2020-01-14</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -313,12 +313,15 @@
 <p>然后就是点云的卷积网络多层感知层MLP，卷积层的卷积核个数为64，大小是$1 \times 3$ ，步长是 $1 \times 1$，padding = valid 不补0，激活函数是Relu。 这几个参数，其中卷积核个数为64表示卷积中输出滤波器filter的数量。卷积核就会在训练过程中逐步得到一些与点云物体的特殊的特征点。</p>
 <p><img src="/Users/wangxue/gitpro/20191105MyBlog/saruagithub/source/images/20200114POINTNET_CNN.png" alt="20200114POINTNET_CNN"></p>
 <p>同理，后续的卷积核大小都是(1,1)，步长也是(1,1) 都是为了挑选这些特征点（信息点，有趣点），即局部感知。</p>
-<p>然后经过5个卷积层之后，采用了最大池化。MaxPooling2D(pool_size=(NUM_POINT,1),strides=[2,2],padding=’valid’)。最大池化采用大小为(2,2) 将特征地图缩小一半。这里的最大池化将特征点起了对称作用，将全局的特征进行聚合。</p>
+<p>然后经过5个卷积层之后，采用了最大池化。MaxPooling2D(pool_size=(NUM_POINT,1),strides=[2,2],padding=’valid’)。最大池化采用大小为(2,2) 将特征地图缩小一半。这里的最大池化将特征点起了对称作用，最后将全局的特征进行聚合。</p>
 <script type="math/tex; mode=display">f\left(\left\{x_{1}, \ldots, x_{n}\right\}\right) \approx g\left(h\left(x_{1}\right), \ldots, h\left(x_{n}\right)\right)</script><script type="math/tex; mode=display">f: 2^{\mathrm{R}^{N}} \rightarrow \mathbb{R}, h \quad: \mathbb{R}^{N} \rightarrow \mathbb{R}^{K}</script><p>g是一个对称函数，即maxpool。</p>
 <p>最后的三个全连接网络，大小分别是512，256，40。最后的40输出类别的one hot向量。激活函数为softmax输出概率，哪个概率大则输出就是哪个类别的物体。全连接网络好理解，就是对特征点汇总为全局描述符，最后用于分类。</p>
-<h3 id="3，POINTNET网络"><a href="#3，POINTNET网络" class="headerlink" title="3，POINTNET网络"></a>3，POINTNET网络</h3><p>Input Transform网络</p>
-<p>Feature Transform网络</p>
-<h3 id="4，训练与评估"><a href="#4，训练与评估" class="headerlink" title="4，训练与评估"></a>4，训练与评估</h3><h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1, 开源代码 <a href="https://github.com/charlesq34/pointnet" target="_blank" rel="noopener">https://github.com/charlesq34/pointnet</a></p>
+<h3 id="3，POINTNET网络"><a href="#3，POINTNET网络" class="headerlink" title="3，POINTNET网络"></a>3，POINTNET网络</h3><p>T-Net的作用：我们期望通过网络学习到的表征（特征）对于这些仿射变换是不变的。</p>
+<h4 id="3-1-Input-Transform网络"><a href="#3-1-Input-Transform网络" class="headerlink" title="3.1 Input Transform网络"></a>3.1 Input Transform网络</h4><h5 id="3-1-1-论文原理"><a href="#3-1-1-论文原理" class="headerlink" title="3.1.1 论文原理"></a>3.1.1 论文原理</h5><p>我们通过<strong>微型网络（图2中的T-net）预测仿射变换矩阵</strong>，将该变换直接应用于输入点的坐标。</p>
+<h5 id="3-1-2-源码"><a href="#3-1-2-源码" class="headerlink" title="3.1.2 源码"></a>3.1.2 源码</h5><h4 id="3-2-Feature-Transform网络"><a href="#3-2-Feature-Transform网络" class="headerlink" title="3.2 Feature Transform网络"></a>3.2 Feature Transform网络</h4><h5 id="3-2-1-论文原理"><a href="#3-2-1-论文原理" class="headerlink" title="3.2.1 论文原理"></a>3.2.1 论文原理</h5><p>可以在点特征（point features）上插入另一个对齐网络，并预测一个特征转换矩阵以对齐来自不同输入点云（point clouds）的特征。由于特征空间中的变换矩阵具有比空间变换矩阵高（much higher）的维数，这大大增加了优化的难度。 因此，我们在softmax训练损失中添加了一个正则化项。</p>
+<p> 我们约束特征变换矩阵使其接近正交矩阵</p>
+<script type="math/tex; mode=display">L_{r e g}=\left\|I-A A^{T}\right\|_{F}^{2}</script><p>$A$ 是特征对齐矩阵（由a mini-network T-net预测的），正交变换将不会丢失输入中的信息，因此是需要的。 我们发现通过添加正则项，优化变得更加稳定，并且我们的模型获得了更好的性能。</p>
+<h5 id="3-1-3-源码"><a href="#3-1-3-源码" class="headerlink" title="3.1.3 源码"></a>3.1.3 源码</h5><h3 id="4，训练与评估"><a href="#4，训练与评估" class="headerlink" title="4，训练与评估"></a>4，训练与评估</h3><h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1, 开源代码 <a href="https://github.com/charlesq34/pointnet" target="_blank" rel="noopener">https://github.com/charlesq34/pointnet</a></p>
 <p>2，1*1 的卷积核 <a href="https://zhuanlan.zhihu.com/p/40050371" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/40050371</a></p>
 <p>3，卷积神经网络 <a href="https://zhuanlan.zhihu.com/p/47184529" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/47184529</a></p>
 
@@ -405,7 +408,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#目录说明"><span class="nav-number">1.</span> <span class="nav-text">目录说明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1，数据预处理provider"><span class="nav-number">2.</span> <span class="nav-text">1，数据预处理provider</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2，基础模型baseline"><span class="nav-number">3.</span> <span class="nav-text">2，基础模型baseline</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3，POINTNET网络"><span class="nav-number">4.</span> <span class="nav-text">3，POINTNET网络</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4，训练与评估"><span class="nav-number">5.</span> <span class="nav-text">4，训练与评估</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reference"><span class="nav-number">6.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#目录说明"><span class="nav-number">1.</span> <span class="nav-text">目录说明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1，数据预处理provider"><span class="nav-number">2.</span> <span class="nav-text">1，数据预处理provider</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2，基础模型baseline"><span class="nav-number">3.</span> <span class="nav-text">2，基础模型baseline</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3，POINTNET网络"><span class="nav-number">4.</span> <span class="nav-text">3，POINTNET网络</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-Input-Transform网络"><span class="nav-number">4.1.</span> <span class="nav-text">3.1 Input Transform网络</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#3-1-1-论文原理"><span class="nav-number">4.1.1.</span> <span class="nav-text">3.1.1 论文原理</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-1-2-源码"><span class="nav-number">4.1.2.</span> <span class="nav-text">3.1.2 源码</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-Feature-Transform网络"><span class="nav-number">4.2.</span> <span class="nav-text">3.2 Feature Transform网络</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#3-2-1-论文原理"><span class="nav-number">4.2.1.</span> <span class="nav-text">3.2.1 论文原理</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-1-3-源码"><span class="nav-number">4.2.2.</span> <span class="nav-text">3.1.3 源码</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4，训练与评估"><span class="nav-number">5.</span> <span class="nav-text">4，训练与评估</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reference"><span class="nav-number">6.</span> <span class="nav-text">Reference</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

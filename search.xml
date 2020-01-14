@@ -80,12 +80,15 @@
 <p>然后就是点云的卷积网络多层感知层MLP，卷积层的卷积核个数为64，大小是$1 \times 3$ ，步长是 $1 \times 1$，padding = valid 不补0，激活函数是Relu。 这几个参数，其中卷积核个数为64表示卷积中输出滤波器filter的数量。卷积核就会在训练过程中逐步得到一些与点云物体的特殊的特征点。</p>
 <p><img src="/Users/wangxue/gitpro/20191105MyBlog/saruagithub/source/images/20200114POINTNET_CNN.png" alt="20200114POINTNET_CNN"></p>
 <p>同理，后续的卷积核大小都是(1,1)，步长也是(1,1) 都是为了挑选这些特征点（信息点，有趣点），即局部感知。</p>
-<p>然后经过5个卷积层之后，采用了最大池化。MaxPooling2D(pool_size=(NUM_POINT,1),strides=[2,2],padding=’valid’)。最大池化采用大小为(2,2) 将特征地图缩小一半。这里的最大池化将特征点起了对称作用，将全局的特征进行聚合。</p>
+<p>然后经过5个卷积层之后，采用了最大池化。MaxPooling2D(pool_size=(NUM_POINT,1),strides=[2,2],padding=’valid’)。最大池化采用大小为(2,2) 将特征地图缩小一半。这里的最大池化将特征点起了对称作用，最后将全局的特征进行聚合。</p>
 <script type="math/tex; mode=display">f\left(\left\{x_{1}, \ldots, x_{n}\right\}\right) \approx g\left(h\left(x_{1}\right), \ldots, h\left(x_{n}\right)\right)</script><script type="math/tex; mode=display">f: 2^{\mathrm{R}^{N}} \rightarrow \mathbb{R}, h \quad: \mathbb{R}^{N} \rightarrow \mathbb{R}^{K}</script><p>g是一个对称函数，即maxpool。</p>
 <p>最后的三个全连接网络，大小分别是512，256，40。最后的40输出类别的one hot向量。激活函数为softmax输出概率，哪个概率大则输出就是哪个类别的物体。全连接网络好理解，就是对特征点汇总为全局描述符，最后用于分类。</p>
-<h3 id="3，POINTNET网络"><a href="#3，POINTNET网络" class="headerlink" title="3，POINTNET网络"></a>3，POINTNET网络</h3><p>Input Transform网络</p>
-<p>Feature Transform网络</p>
-<h3 id="4，训练与评估"><a href="#4，训练与评估" class="headerlink" title="4，训练与评估"></a>4，训练与评估</h3><h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1, 开源代码 <a href="https://github.com/charlesq34/pointnet" target="_blank" rel="noopener">https://github.com/charlesq34/pointnet</a></p>
+<h3 id="3，POINTNET网络"><a href="#3，POINTNET网络" class="headerlink" title="3，POINTNET网络"></a>3，POINTNET网络</h3><p>T-Net的作用：我们期望通过网络学习到的表征（特征）对于这些仿射变换是不变的。</p>
+<h4 id="3-1-Input-Transform网络"><a href="#3-1-Input-Transform网络" class="headerlink" title="3.1 Input Transform网络"></a>3.1 Input Transform网络</h4><h5 id="3-1-1-论文原理"><a href="#3-1-1-论文原理" class="headerlink" title="3.1.1 论文原理"></a>3.1.1 论文原理</h5><p>我们通过<strong>微型网络（图2中的T-net）预测仿射变换矩阵</strong>，将该变换直接应用于输入点的坐标。</p>
+<h5 id="3-1-2-源码"><a href="#3-1-2-源码" class="headerlink" title="3.1.2 源码"></a>3.1.2 源码</h5><h4 id="3-2-Feature-Transform网络"><a href="#3-2-Feature-Transform网络" class="headerlink" title="3.2 Feature Transform网络"></a>3.2 Feature Transform网络</h4><h5 id="3-2-1-论文原理"><a href="#3-2-1-论文原理" class="headerlink" title="3.2.1 论文原理"></a>3.2.1 论文原理</h5><p>可以在点特征（point features）上插入另一个对齐网络，并预测一个特征转换矩阵以对齐来自不同输入点云（point clouds）的特征。由于特征空间中的变换矩阵具有比空间变换矩阵高（much higher）的维数，这大大增加了优化的难度。 因此，我们在softmax训练损失中添加了一个正则化项。</p>
+<p> 我们约束特征变换矩阵使其接近正交矩阵</p>
+<script type="math/tex; mode=display">L_{r e g}=\left\|I-A A^{T}\right\|_{F}^{2}</script><p>$A$ 是特征对齐矩阵（由a mini-network T-net预测的），正交变换将不会丢失输入中的信息，因此是需要的。 我们发现通过添加正则项，优化变得更加稳定，并且我们的模型获得了更好的性能。</p>
+<h5 id="3-1-3-源码"><a href="#3-1-3-源码" class="headerlink" title="3.1.3 源码"></a>3.1.3 源码</h5><h3 id="4，训练与评估"><a href="#4，训练与评估" class="headerlink" title="4，训练与评估"></a>4，训练与评估</h3><h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1, 开源代码 <a href="https://github.com/charlesq34/pointnet" target="_blank" rel="noopener">https://github.com/charlesq34/pointnet</a></p>
 <p>2，1*1 的卷积核 <a href="https://zhuanlan.zhihu.com/p/40050371" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/40050371</a></p>
 <p>3，卷积神经网络 <a href="https://zhuanlan.zhihu.com/p/47184529" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/47184529</a></p>
 ]]></content>
@@ -115,7 +118,7 @@
 <p>在训练时，我们会在每个飞行块中随机抽取4096个点。在测试时，我们对所有方面进行测试。我们将我们的方法与使用手工制作的点特征的基线进行比较。基线提取相同的9-dim局部特征和三个附加特征：局部点密度，局部曲率和法线。我们使用标准的MLP作为分类器。结果显示在表3中，其中我们的PointNet方法明显优于基线方法。</p>
 <h3 id="2-我的理解"><a href="#2-我的理解" class="headerlink" title="2 我的理解"></a>2 我的理解</h3><p>1，卷积的过程</p>
 <p>如何对点进行卷积，提取关键点（信息点）</p>
-<p>在卷积的时候，把点云看做是（2048,3,1）的一张灰度图来进行卷积计算。但第一步的卷积核大小是(1,3)  是对点进行计算，提取他的特征点。</p>
+<p>在卷积的时候，把点云看做是（2048,3,1）的一张灰度图来进行卷积计算。但第一步的卷积核大小是(1,3)  是对点进行计算，提取他的特征点。后续的卷积卷积核也是(1,1)的，也是提取一些关键点。</p>
 <p><img src="/images/20200114POINTNET_CNN.png" alt="20200114POINTNET_CNN"></p>
 <p>2，对称函数 max pool的作用</p>
 <p>解决无序性问题（为什么可以解决无序性）</p>
@@ -163,13 +166,13 @@
 <p>使用RNN的想法将点集视为序列信号，并希望通过用随机排列的序列训练RNN，RNN将对输入顺序不变。 但是，在“ OrderMatters” [25]中，作者表明顺序确实很重要，不能完全省略。 尽管RNN对长度较短（数十个）的序列的输入排序具有相对较好的鲁棒性，但很难扩展到数千个输入元素，这是点集的常见大小。 根据经验，我们还表明，基于RNN的模型的性能不如我们提出的方法。</p>
 <p>3）使用简单的<strong>对称函数</strong>汇总每个点的信息。 在此，对称函数将n个向量作为输入，并输出一个与输入顺序不变的新向量。 例如，+和∗运算符是对称二进制函数。</p>
 <script type="math/tex; mode=display">f\left(\left\{x_{1}, \ldots, x_{n}\right\}\right) \approx g\left(h\left(x_{1}\right), \ldots, h\left(x_{n}\right)\right)</script><script type="math/tex; mode=display">f: 2^{\mathrm{R}^{N}} \rightarrow \mathbb{R}, h \quad: \mathbb{R}^{N} \rightarrow \mathbb{R}^{K}</script><p>g是一个对称函数。</p>
-<p>从经验上讲，我们的基本模块非常简单：我们通过多层感知器网络近似模拟h函数，通过单个变量函数和最大池函数的组合来近似g。 通过实验发现这种方法效果很好。 通过收集h，我们可以学习多个f来捕获集合的不同属性。</p>
-<h5 id="3-2-2-局部与全局信息汇总"><a href="#3-2-2-局部与全局信息汇总" class="headerlink" title="3.2.2 局部与全局信息汇总"></a>3.2.2 局部与全局信息汇总</h5><p>点云的分类：轻松地在形状全局特征向量上训练SVM或多层感知器分类器以进行分类。</p>
-<p>点云的分割：需要结合局部信息和全局信息。将全局特征向量与每一个点的特征联合起来再送回每个点特征（feed it back to per point features）。再基于此提取每个新点的特征，这样每个点特征既了解本地信息又了解全局信息。（个人理解：由于需要对逐点的语义分割，所以将<em>global feature</em> 与每一点的feature向量连接，作用是使每一个点都同时具有自身点的feature和global feature，更有利于进行逐点的分类。）</p>
+<p><strong>基本思想</strong>：从经验上讲，我们的基本模块非常简单，我们通过多层感知器网络近似模拟h函数，通过单个变量函数和最大池函数的组合来近似g。 通过实验发现这种方法效果很好。 通过收集h，我们可以学习多个f来捕获集合的不同属性。</p>
+<h5 id="3-2-2-分类、分割"><a href="#3-2-2-分类、分割" class="headerlink" title="3.2.2 分类、分割"></a>3.2.2 分类、分割</h5><p><strong>点云的分类</strong>：轻松地在形状全局特征向量上训练SVM或多层感知器分类器以进行分类。</p>
+<p><strong>点云的分割</strong>：需要结合局部信息和全局信息。将全局特征向量与每一个点的特征联合起来再送回每个点特征（feed it back to per point features）。再基于此提取每个新点的特征，这样每个点特征既了解本地信息又了解全局信息。（个人理解：由于需要对逐点的语义分割，所以将<em>global feature</em> 与每一点的feature向量连接，作用是使每一个点都同时具有自身点的feature和global feature，更有利于进行逐点的分类。）</p>
 <p>（附录）分割网络是分类网络的扩展。局部特征（第二个feature transform T-net 网络输出）和全局特征（最大池化的输出）联合到一起 for each point。分割网络没有Dropout，训练参数与分类网络一样。输出是每n个点的每一个m个语义子类别。</p>
 <p>对比实验：3D CNN Segmentation Network 模型：对于给定的点云，我们首先将其转换为具有32×32×32分辨率的占用网格的体积表示形式。然后，依次应用五个3D卷积运算，每个具有32个输出通道，步幅为1。 每个体素的感受野为19。 最后，将内核大小为1×1×1的3D卷积层序列附加到计算的特征图中，以预测每个体素的分割标签。</p>
 <p><img src="/images/20200111_3DCNN.jpg" alt="20200111_3DCNN"></p>
-<p>（附录）零件part分割。我们添加了一个ont-hot向量表明输入的类别，并将它和最大池化层的输出拼接。我们还在某些层layer增加神经元并添加了跳过链接以收集不同层中的局部点特征，并将它们连接起来以形成点特征输入到分割网络中。</p>
+<p>（附录）<strong>零件part分割</strong>。我们添加了一个ont-hot向量表明输入的类别，并将它和最大池化层的输出拼接。我们还在某些层layer增加神经元并添加了跳过链接以收集不同层中的局部点特征，并将它们连接起来以形成点特征输入到分割网络中。</p>
 <p><img src="/images/20200111PartSegmentation.jpg" alt="20200111PartSegmentation"></p>
 <p>通过这种修改，我们的网络能够预测依赖于局部几何和全局语义的每点数量。 例如，我们可以准确地预测每个点的法线（补充图），从而验证网络能够汇总该点的局部邻域的信息？。 </p>
 <h5 id="3-2-3-对齐网络-Joint-Alignment-Network"><a href="#3-2-3-对齐网络-Joint-Alignment-Network" class="headerlink" title="3.2.3 对齐网络 Joint Alignment Network"></a>3.2.3 对齐网络 Joint Alignment Network</h5><p>如果点云经过某些几何变换（例如刚性变换），则该点云的语义标记必须不变。因此，我们期望通过网络学习到的表征（特征）对于这些变换是不变的。</p>
@@ -362,8 +365,8 @@
         <category>深度学习</category>
       </categories>
       <tags>
-        <tag>深度学习</tag>
         <tag>机器学习</tag>
+        <tag>深度学习</tag>
       </tags>
   </entry>
   <entry>
@@ -494,8 +497,8 @@
         <category>AIOps</category>
       </categories>
       <tags>
-        <tag>机器学习</tag>
         <tag>AIOps</tag>
+        <tag>机器学习</tag>
       </tags>
   </entry>
   <entry>
@@ -1543,6 +1546,10 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
 <p>时事变</p>
 <p>多无常</p>
 <p>山河无疆天地长</p>
+<h3 id="5-平凡"><a href="#5-平凡" class="headerlink" title="5 平凡"></a>5 平凡</h3><p>寒窗十年不曾倦 </p>
+<p>忽得一夜伤客心。 </p>
+<p>不见多难笑登临。 </p>
+<p>终是浮云总归尘。 </p>
 <p>（持续更）</p>
 ]]></content>
       <categories>
