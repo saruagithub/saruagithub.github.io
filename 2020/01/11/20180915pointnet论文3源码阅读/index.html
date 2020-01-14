@@ -55,8 +55,10 @@
 <meta property="og:site_name" content="WangXue">
 <meta property="og:description" content="目录说明根目录下：train.py用于点云分类训练provider.py 用于点云的数据预处理（旋转，抖动等）evaluate用于评估训练结果。其他目录：data目录下存放用于训练的样例文件h5，test_files与train_files中列举的用于训练及测试的文件路径。log 存放的是训练结果，默认情况下只存放最近一次训练结果。models存放的是模型文件，pointnet_cls.py（PO">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-01-13T12:30:19.865Z">
+<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;Users&#x2F;wangxue&#x2F;gitpro&#x2F;20191105MyBlog&#x2F;saruagithub&#x2F;source&#x2F;images&#x2F;20200114POINTNET_CNN.png">
+<meta property="og:updated_time" content="2020-01-14T10:04:46.006Z">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;Users&#x2F;wangxue&#x2F;gitpro&#x2F;20191105MyBlog&#x2F;saruagithub&#x2F;source&#x2F;images&#x2F;20200114POINTNET_CNN.png">
 
 <link rel="canonical" href="http://yoursite.com/2020/01/11/20180915pointnet%E8%AE%BA%E6%96%873%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/">
 
@@ -239,7 +241,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-01-13 20:30:19" itemprop="dateModified" datetime="2020-01-13T20:30:19+08:00">2020-01-13</time>
+                <time title="修改时间：2020-01-14 18:04:46" itemprop="dateModified" datetime="2020-01-14T18:04:46+08:00">2020-01-14</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -307,8 +309,18 @@
 <h3 id="2，基础模型baseline"><a href="#2，基础模型baseline" class="headerlink" title="2，基础模型baseline"></a>2，基础模型baseline</h3><p>pointnet_cla_basic.py 函数</p>
 <p>placeholder_inputs() 根据点云物体一批大小，以及每个点云物体的点的数目声明变量占位。</p>
 <p>get_model() 输入大小BxNx3, 输出Bx40 （这个是40个类别分类向量</p>
-<p>其中</p>
-<h3 id="3，POINTNET网络"><a href="#3，POINTNET网络" class="headerlink" title="3，POINTNET网络"></a>3，POINTNET网络</h3><h3 id="4，训练与评估"><a href="#4，训练与评估" class="headerlink" title="4，训练与评估"></a>4，训练与评估</h3><h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1, 开源代码 <a href="https://github.com/charlesq34/pointnet" target="_blank" rel="noopener">https://github.com/charlesq34/pointnet</a></p>
+<p>其中input_image的shape是$B \times N \times 3 \times 1$ ， 而输出大小是$B \times 40$ 因为物体是40个类别。</p>
+<p>然后就是点云的卷积网络多层感知层MLP，卷积层的卷积核个数为64，大小是$1 \times 3$ ，步长是 $1 \times 1$，padding = valid 不补0，激活函数是Relu。 这几个参数，其中卷积核个数为64表示卷积中输出滤波器filter的数量。卷积核就会在训练过程中逐步得到一些与点云物体的特殊的特征点。</p>
+<p><img src="/Users/wangxue/gitpro/20191105MyBlog/saruagithub/source/images/20200114POINTNET_CNN.png" alt="20200114POINTNET_CNN"></p>
+<p>同理，后续的卷积核大小都是(1,1)，步长也是(1,1) 都是为了挑选这些特征点（信息点，有趣点），即局部感知。</p>
+<p>然后经过5个卷积层之后，采用了最大池化。MaxPooling2D(pool_size=(NUM_POINT,1),strides=[2,2],padding=’valid’)。最大池化采用大小为(2,2) 将特征地图缩小一半。这里的最大池化将特征点起了对称作用，将全局的特征进行聚合。</p>
+<script type="math/tex; mode=display">f\left(\left\{x_{1}, \ldots, x_{n}\right\}\right) \approx g\left(h\left(x_{1}\right), \ldots, h\left(x_{n}\right)\right)</script><script type="math/tex; mode=display">f: 2^{\mathrm{R}^{N}} \rightarrow \mathbb{R}, h \quad: \mathbb{R}^{N} \rightarrow \mathbb{R}^{K}</script><p>g是一个对称函数，即maxpool。</p>
+<p>最后的三个全连接网络，大小分别是512，256，40。最后的40输出类别的one hot向量。激活函数为softmax输出概率，哪个概率大则输出就是哪个类别的物体。全连接网络好理解，就是对特征点汇总为全局描述符，最后用于分类。</p>
+<h3 id="3，POINTNET网络"><a href="#3，POINTNET网络" class="headerlink" title="3，POINTNET网络"></a>3，POINTNET网络</h3><p>Input Transform网络</p>
+<p>Feature Transform网络</p>
+<h3 id="4，训练与评估"><a href="#4，训练与评估" class="headerlink" title="4，训练与评估"></a>4，训练与评估</h3><h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1, 开源代码 <a href="https://github.com/charlesq34/pointnet" target="_blank" rel="noopener">https://github.com/charlesq34/pointnet</a></p>
+<p>2，1*1 的卷积核 <a href="https://zhuanlan.zhihu.com/p/40050371" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/40050371</a></p>
+<p>3，卷积神经网络 <a href="https://zhuanlan.zhihu.com/p/47184529" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/47184529</a></p>
 
     </div>
 
