@@ -97,7 +97,7 @@
 <h5 id="3-1-2-源码"><a href="#3-1-2-源码" class="headerlink" title="3.1.2 源码"></a>3.1.2 源码</h5><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">transform = input_transform_net(point_cloud, is_training, bn_decay, K=<span class="number">3</span>)</span><br></pre></td></tr></table></figure>
 <p>这个T-net网络也是一个类似前面的baseline模型。这里point_cloud的输入大小是(B = 32, N = 2048, 3) 。然后分别由三个卷积层，大小是64（卷积核大小1×3），128（1×1），1024（1×1），一个最大池化层，两个全连接网络组成。</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">with</span> tf.variable_scope(<span class="string">'transform_XYZ'</span>) <span class="keyword">as</span> sc:</span><br><span class="line">    <span class="keyword">assert</span>(K==<span class="number">3</span>)</span><br><span class="line">    weights = tf.get_variable(<span class="string">'weights'</span>, [<span class="number">256</span>, <span class="number">3</span>*K],</span><br><span class="line">                              initializer=tf.constant_initializer(<span class="number">0.0</span>),</span><br><span class="line">                              dtype=tf.float32)</span><br><span class="line">    biases = tf.get_variable(<span class="string">'biases'</span>, [<span class="number">3</span>*K],</span><br><span class="line">                             initializer=tf.constant_initializer(<span class="number">0.0</span>),</span><br><span class="line">                             dtype=tf.float32)</span><br><span class="line">    biases += tf.constant([<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>], dtype=tf.float32)</span><br><span class="line">    transform = tf.matmul(net, weights)</span><br><span class="line">    transform = tf.nn.bias_add(transform, biases)</span><br><span class="line"></span><br><span class="line">transform = tf.reshape(transform, [batch_size, <span class="number">3</span>, K])</span><br><span class="line"><span class="keyword">return</span> transform</span><br></pre></td></tr></table></figure>
-<p>初始化weights是(256, 9) 大小，biases大小是(9,)，biases初始化加常量。transform将net网络于权重相乘。input transform是对空间中点云进行调整，直观上理解是旋转出一个更有利于分类或分割的角度，比如把物体转到正面。</p>
+<p>初始化weights是(256, 9) 大小，biases大小是(9,)，biases初始化加常量。transform将net网络于权重相乘。input transform是对空间中点云进行调整，直观上理解是旋转出一个更有利于分类或分割的角度，比如把物体转到正面？。</p>
 <h4 id="3-2-Feature-Transform网络"><a href="#3-2-Feature-Transform网络" class="headerlink" title="3.2 Feature Transform网络"></a>3.2 Feature Transform网络</h4><h5 id="3-2-1-论文原理"><a href="#3-2-1-论文原理" class="headerlink" title="3.2.1 论文原理"></a>3.2.1 论文原理</h5><p>可以在点特征（point features）上插入另一个对齐网络，并预测一个特征转换矩阵以对齐来自不同输入点云（point clouds）的特征。由于特征空间中的变换矩阵具有比空间变换矩阵高（much higher）的维数，这大大增加了优化的难度。 因此，我们在softmax训练损失中添加了一个正则化项。</p>
 <p> 我们约束特征变换矩阵使其接近正交矩阵</p>
 <script type="math/tex; mode=display">L_{r e g}=\left\|I-A A^{T}\right\|_{F}^{2}</script><p>$A$ 是特征对齐矩阵（由a mini-network T-net预测的），正交变换将不会丢失输入中的信息，因此是需要的。 我们发现通过添加正则项，优化变得更加稳定，并且我们的模型获得了更好的性能。</p>
@@ -385,8 +385,8 @@
         <category>深度学习</category>
       </categories>
       <tags>
-        <tag>深度学习</tag>
         <tag>机器学习</tag>
+        <tag>深度学习</tag>
       </tags>
   </entry>
   <entry>
@@ -517,8 +517,8 @@
         <category>AIOps</category>
       </categories>
       <tags>
-        <tag>机器学习</tag>
         <tag>AIOps</tag>
+        <tag>机器学习</tag>
       </tags>
   </entry>
   <entry>
