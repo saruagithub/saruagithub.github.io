@@ -82,7 +82,7 @@
 <p>get_model() 输入大小BxNx3, 输出Bx40 （这个是40个类别分类向量</p>
 <p>其中input_image的shape是$B \times N \times 3 \times 1$ ， 而输出大小是$B \times 40$ 因为物体是40个类别。</p>
 <p>然后就是点云的卷积网络多层感知层MLP，卷积层的卷积核个数为64，大小是$1 \times 3$ ，步长是 $1 \times 1$，padding = valid 不补0，激活函数是Relu。 这几个参数，其中卷积核个数为64表示卷积中输出滤波器filter的数量，$1 \times 3$  的卷积核大小是因为坐标为xyz。卷积核就会在训练过程中逐步得到一些与点云物体的特殊的特征点。</p>
-<p><img src="/Users/wangxue/gitpro/20191105MyBlog/saruagithub/source/images/20200114POINTNET_CNN.png" alt="20200114POINTNET_CNN"></p>
+<p><img src="/images/20200114POINTNET_CNN.png" alt="20200114POINTNET_CNN"></p>
 <center>卷积图，输入是2048 × 3，输出其实有64个特征地图，其实就是论文图中的 n × 64</center>
 
 <p>同理，后续的卷积核大小都是(1,1)，步长也是(1,1) 都是为了挑选这些特征点（信息点，有趣点），即局部感知，可以想这个网络只是把每个点连接起来而已。</p>
@@ -385,8 +385,8 @@
         <category>深度学习</category>
       </categories>
       <tags>
-        <tag>机器学习</tag>
         <tag>深度学习</tag>
+        <tag>机器学习</tag>
       </tags>
   </entry>
   <entry>
@@ -517,8 +517,8 @@
         <category>AIOps</category>
       </categories>
       <tags>
-        <tag>AIOps</tag>
         <tag>机器学习</tag>
+        <tag>AIOps</tag>
       </tags>
   </entry>
   <entry>
