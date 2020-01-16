@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>点云的三种可视化方法</title>
+    <url>/2020/01/16/20200116%E7%82%B9%E4%BA%91%E7%9A%84%E4%B8%89%E7%A7%8D%E5%8F%AF%E8%A7%86%E5%8C%96%E6%96%B9%E6%B3%95/</url>
+    <content><![CDATA[<h3 id="1-点云介绍"><a href="#1-点云介绍" class="headerlink" title="1 点云介绍"></a>1 点云介绍</h3><p>点云数据是来自斯坦福大学的HDF5格式数据。HDF5 格式是用于存储和分发科学数据的一种多对象文件格式。可以用 HDFView 打开文件，查看数据。 </p><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">www = &apos;https://shapenet.cs.stanford.edu/media/modelnet40_ply_hdf5_2048.zip</span><br></pre></td></tr></table></figure><a id="more"></a>
+
+<p>另外点云还有PCD格式：一种新的 3D 点云数据文件格式，是当初为了解决某些不支持 PCL 为 3D点云处理进行的文件扩展。他的文件头部具有固定格式，必须用 ASCII 编码，包含标题、对点云数据的某些属性的声明。PCD 文件可以使用 PCL 库里的 PCL_Viewer 打开，从而直接查看到点云的三维图像。</p>
+<p>MAC上的PCL_Viewer需要装PCL库，当时配置的一些问题记录在博客里了。</p>
+]]></content>
+      <categories>
+        <category>可视化</category>
+      </categories>
+      <tags>
+        <tag>三维点云</tag>
+        <tag>可视化</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>BatchNormalization理解</title>
     <url>/2020/01/16/20200116BatchNormalization%E7%90%86%E8%A7%A3/</url>
     <content><![CDATA[]]></content>
@@ -1050,8 +1066,8 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
       </categories>
       <tags>
         <tag>配置</tag>
-        <tag>装系统</tag>
         <tag>ubuntu</tag>
+        <tag>装系统</tag>
       </tags>
   </entry>
   <entry>
@@ -1087,6 +1103,28 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
       </tags>
   </entry>
   <entry>
+    <title>PCL在Mac上环境问题</title>
+    <url>/2019/03/27/PCL%E5%9C%A8Mac%E4%B8%8A%E7%8E%AF%E5%A2%83%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<h3 id="PCL库"><a href="#PCL库" class="headerlink" title="PCL库"></a>PCL库</h3><h6 id="1、安装过程参考官网，环境是Mac10-14-4，mojave"><a href="#1、安装过程参考官网，环境是Mac10-14-4，mojave" class="headerlink" title="1、安装过程参考官网，环境是Mac10.14.4，mojave"></a>1、安装过程参考官网，环境是Mac10.14.4，mojave</h6><p><a href="http://www.pointclouds.org/documentation/tutorials/installing_homebrew.php" target="_blank" rel="noopener">pcl install on Mac</a><br><code>brew install pcl</code> ，一直装就好了，我这里的版本是1.9.1_1</p><h6 id="2、使用xcode创建pcl工程"><a href="#2、使用xcode创建pcl工程" class="headerlink" title="2、使用xcode创建pcl工程"></a>2、使用xcode创建pcl工程</h6><p><a href="http://dragonwood-blastevil.blogspot.com/2013/02/install-pcl-and-first-project-in-xcode.html" target="_blank" rel="noopener">翻墙搜的pcl project in xcode</a><br>此处注意编译器的选择，Switch Compiler for C/C++/Objective-C from Apple LLVM compiler 4.2 -&gt; LLVM GCC 4.2，注意”Header Search Paths”的配置，链接里没有全部配置完全，项目要用到的库都应该加进去。</p><a id="more"></a>
+
+<p><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly91cGxvYWQtaW1hZ2VzLmppYW5zaHUuaW8vdXBsb2FkX2ltYWdlcy8xNTQyNjUxLThhYzQxZGFkYjIyNjA0MzEucG5n?x-oss-process=image/format,png" alt="工程配置"></p>
+<p>然后注意还有添加Link binary with libraries，点击下面的加号，add other把lib文件夹里的都加进来，只要你用到boost库，其他库类似这样处理。<br><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly91cGxvYWQtaW1hZ2VzLmppYW5zaHUuaW8vdXBsb2FkX2ltYWdlcy8xNTQyNjUxLTg1NzNiNjZmMThiYzdjNmEucG5n?x-oss-process=image/format,png" alt="lib库添加1"><br><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly91cGxvYWQtaW1hZ2VzLmppYW5zaHUuaW8vdXBsb2FkX2ltYWdlcy8xNTQyNjUxLTYzNDA3MDZhYTIyMGUyODAucG5n?x-oss-process=image/format,png" alt="lib库添加2"></p>
+<h6 id="3、问题1：undifine-symbols-基本就是下面提示的库没有添加进去"><a href="#3、问题1：undifine-symbols-基本就是下面提示的库没有添加进去" class="headerlink" title="3、问题1：undifine symbols 基本就是下面提示的库没有添加进去"></a>3、问题1：undifine symbols 基本就是下面提示的库没有添加进去</h6><p><code>Undefined symbols for architecture x86_64: 
+  &quot;boost::this_thread::interruption_point()</code><br><code>&quot;vtkSphereSource::New()&quot;, referenced from:
+  vtkSmartPointer&lt;vtkSphereSource&gt;::New() in 4viewtest.o</code><br>一般这种报错就是因为上面的lib库没有加进去的原因。这个问题，我居然被困了半天，气死了。。。。</p>
+<h6 id="4、由于我升级了Mac到mojave，出现问题Reason-image-not-found"><a href="#4、由于我升级了Mac到mojave，出现问题Reason-image-not-found" class="headerlink" title="4、由于我升级了Mac到mojave，出现问题Reason: image not found"></a>4、由于我升级了Mac到mojave，出现问题Reason: image not found</h6><p><code>dylid: Library not loaded: /opt/X11/lib/libglut.3.dylib
+  Referenced from: /usr/local/opt/pcl/lib/libpcl_simulation_io.1.9.dylib
+  Reason: image not found</code><br><a href="https://tex.stackexchange.com/questions/208001/cant-compile-image-after-upgrading-to-os-x-yosemite" target="_blank" rel="noopener">X11 is not erased but moved to /opt/X11</a><br>还要安装 <a href="http://xquartz.macosforge.org/landing" target="_blank" rel="noopener">installing the latest XQuartz</a><br>升级就是麻烦多，各位开发者别随便升级了</p>
+]]></content>
+      <categories>
+        <category>配置</category>
+      </categories>
+      <tags>
+        <tag>配置</tag>
+        <tag>三维点云</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>PCL库升级问题</title>
     <url>/2019/03/27/20190327PCL%E5%BA%93%E5%8D%87%E7%BA%A7%E9%97%AE%E9%A2%98/</url>
     <content><![CDATA[<h3 id="PCL库"><a href="#PCL库" class="headerlink" title="PCL库"></a>PCL库</h3><h6 id="1、安装过程参考官网，环境是Mac10-14-4，mojave"><a href="#1、安装过程参考官网，环境是Mac10-14-4，mojave" class="headerlink" title="1、安装过程参考官网，环境是Mac10.14.4，mojave"></a>1、安装过程参考官网，环境是Mac10.14.4，mojave</h6><p><a href="http://www.pointclouds.org/documentation/tutorials/installing_homebrew.php" target="_blank" rel="noopener">pcl install on Mac</a><br><code>brew install pcl</code> ，一直装就好了</p><h6 id="2、使用xcode创建pcl工程"><a href="#2、使用xcode创建pcl工程" class="headerlink" title="2、使用xcode创建pcl工程"></a>2、使用xcode创建pcl工程</h6><p><a href="http://dragonwood-blastevil.blogspot.com/2013/02/install-pcl-and-first-project-in-xcode.html" target="_blank" rel="noopener">翻墙搜的pcl project in xcode</a><br>此处注意编译器的选择，Switch Compiler for C/C++/Objective-C from Apple LLVM compiler 4.2 -&gt; LLVM GCC 4.2，注意”Header Search Paths”的配置，链接里没有全部配置完全，项目要用到的库都应该加进去。</p><a id="more"></a>
@@ -1105,8 +1143,8 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
         <category>深度学习</category>
       </categories>
       <tags>
-        <tag>三维点云</tag>
         <tag>配置</tag>
+        <tag>三维点云</tag>
       </tags>
   </entry>
   <entry>
@@ -1670,6 +1708,31 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
       <tags>
         <tag>创新创业</tag>
         <tag>经历</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>mac与virtualbox虚拟机的ubuntu文件共享</title>
+    <url>/2017/03/09/20170309MAC%E7%9A%84virtualbox%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%9A%84ubuntu%E6%96%87%E4%BB%B6%E5%85%B1%E4%BA%AB/</url>
+    <content><![CDATA[<p>1、坑是啥？</p><p>我在进行hadoop的配置的时候，需要从mac共享一个文件到ubuntu访问，并且也查了网上很多共享的方法。都试过了，先设置共享文件，路径，永久保存。然后在终端敲命令：sudo mount -t vboxsf share /home/wangxue/share （前一个是新建的文件夹，后一个是mac的文件夹）。</p><a id="more"></a>
+
+<p>坑就是“文件系统错误，共享文件有超级坏块。。。”我去，我搜了半天居然没解决，还是同学帮忙搞定了</p>
+<p>2、办法</p>
+<p>要卸载并重新安装 virtualbox-guest-utils virtualbox-guest-additions-iso，linux源有这个。我旧的出问题了。</p>
+<p>贴一下笔记：</p>
+<p>客户、宿主机共享目录</p>
+<p>设置 -&gt; 共享文件夹 -&gt; 固定分配 -&gt; 添加一个本地文件夹，并设置自动挂载或不挂载</p>
+<p>安装后有下面的文件</p>
+<p>/usr/share/virtualbox/VBoxGuestAdditions.iso</p>
+<p>之后再进行mount -t vboxsf share /home/wangxue/share</p>
+<p>virtualbox的ubuntu是关闭剪贴板共享，共享剪贴板需要选择 虚拟机 -&gt; 设置 -&gt; 常规 -&gt; 高级 -&gt; 共享剪贴板 -&gt; 双向</p>
+<p>好了，晚安！</p>
+]]></content>
+      <categories>
+        <category>配置</category>
+      </categories>
+      <tags>
+        <tag>配置</tag>
+        <tag>ubuntu</tag>
       </tags>
   </entry>
   <entry>
