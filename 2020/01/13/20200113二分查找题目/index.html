@@ -55,7 +55,7 @@
 <meta property="og:site_name" content="WangXue">
 <meta property="og:description" content="基本二分查找1234567891011&#x2F;&#x2F; return index of targetint binarySearch(int numbers[],int length, int target)&amp;#123;  int low = 0, high = length-1, middle = 0;  while(low &amp;lt; high)&amp;#123;    middle = (low + high)">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-01-13T14:27:45.499Z">
+<meta property="og:updated_time" content="2020-01-16T13:46:13.112Z">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="http://yoursite.com/2020/01/13/20200113%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE%E9%A2%98%E7%9B%AE/">
@@ -231,10 +231,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-01-13 22:13:32 / 修改时间：22:27:45" itemprop="dateCreated datePublished" datetime="2020-01-13T22:13:32+08:00">2020-01-13</time>
+              <time title="创建时间：2020-01-13 22:13:32" itemprop="dateCreated datePublished" datetime="2020-01-13T22:13:32+08:00">2020-01-13</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-01-16 21:46:13" itemprop="dateModified" datetime="2020-01-16T21:46:13+08:00">2020-01-16</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -282,9 +288,8 @@
         <h3 id="基本二分查找"><a href="#基本二分查找" class="headerlink" title="基本二分查找"></a>基本二分查找</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// return index of target</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">binarySearch</span><span class="params">(<span class="keyword">int</span> numbers[],<span class="keyword">int</span> length, <span class="keyword">int</span> target)</span></span>&#123;</span><br><span class="line">  <span class="keyword">int</span> low = <span class="number">0</span>, high = length<span class="number">-1</span>, middle = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">while</span>(low &lt; high)&#123;</span><br><span class="line">    middle = (low + high) / <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">if</span>(target == numbers[middle]) <span class="keyword">return</span> middle;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(target &lt; numbers[middle]) high = middle;</span><br><span class="line">    <span class="keyword">else</span> low = middle + <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><a id="more"></a>
 <p>二分查找的时间复杂度是 $O(logn)$</p>
 <p>基于二分查找的题目很多，但基本很多情况都是给排序好的数组之类的进行查找。</p>
-<h3 id="SwordToOffer"><a href="#SwordToOffer" class="headerlink" title="SwordToOffer"></a>SwordToOffer</h3><p>每次选取数组的右上角元素，如果目标值较小，就逐渐往左下走。</p>
+<h3 id="SwordToOffer"><a href="#SwordToOffer" class="headerlink" title="SwordToOffer"></a>SwordToOffer</h3><p>书P47，每次选取数组的右上角元素，如果目标值较小，就逐渐往左下走。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// P47 题目s4，二维数组查找数字</span></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">find_num</span><span class="params">(<span class="keyword">int</span>* matrix, <span class="keyword">int</span> rows, <span class="keyword">int</span> columns, <span class="keyword">int</span> number)</span></span>&#123;</span><br><span class="line">    <span class="keyword">bool</span> found = <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">if</span> (matrix != <span class="literal">nullptr</span> &amp;&amp; rows&gt;<span class="number">0</span> &amp;&amp; columns&gt;<span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">int</span> row = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> col = columns - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span> (row &lt; rows &amp;&amp; col &gt;=<span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> (matrix[row * columns + col] == number) &#123;</span><br><span class="line">                found = <span class="literal">true</span>;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (matrix[row * columns + col] &gt; number) --col;</span><br><span class="line">            <span class="keyword">else</span> ++row;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> found;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>其实我觉得这里也可以考虑用二分查找法来解，毕竟二维数组从左到右，从上到下是排序了的。</p>
 
     </div>
 
