@@ -116,14 +116,12 @@
 <p>其中input_image的shape是$B \times N \times 3 \times 1$ ， 而输出大小是$B \times 40$ 因为物体是40个类别。</p>
 <p>然后就是点云的卷积网络多层感知层MLP，卷积层的卷积核个数为64，大小是$1 \times 3$ ，步长是 $1 \times 1$，padding = valid 不补0，激活函数是Relu。 这几个参数，其中卷积核个数为64表示卷积中输出滤波器filter的数量，$1 \times 3$  的卷积核大小是因为坐标为xyz。卷积核就会在训练过程中逐步得到一些与点云物体的特殊的特征点。</p>
 <p><img src="/images/20200114POINTNET_CNN.png" alt="20200114POINTNET_CNN"></p>
-<center>卷积图，输入是2048 × 3，输出其实有64个特征地图，其实就是论文图中的 n × 64</center>
-
-<p>同理，后续的卷积核大小都是(1,1)，步长也是(1,1) 都是为了挑选这些特征点（信息点，有趣点），即局部感知，可以想这个网络只是把每个点连接起来而已。</p>
+<p><center>卷积图，输入是2048 × 3，输出其实有64个特征地图，其实就是论文图中的 n × 64</center><br>同理，后续的卷积核大小都是(1,1)，步长也是(1,1) 都是为了挑选这些特征点（信息点，有趣点），即局部感知，可以想这个网络只是把每个点连接起来而已。</p>
 <p>然后经过5个卷积层之后，采用了最大池化。</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">MaxPooling2D(pool_size=(NUM_POINT,<span class="number">1</span>),strides=[<span class="number">2</span>,<span class="number">2</span>],padding=<span class="string">'valid'</span>)</span><br></pre></td></tr></table></figure>
 <p>最大池化采用大小为(2,2) 将特征地图缩小一半，并提取关键信息点。同时这里的最大池化将特征点起了对称作用，最后将全局的特征进行聚合。</p>
 <script type="math/tex; mode=display">f\left(\left\{x_{1}, \ldots, x_{n}\right\}\right) \approx g\left(h\left(x_{1}\right), \ldots, h\left(x_{n}\right)\right)</script><script type="math/tex; mode=display">f: 2^{\mathrm{R}^{N}} \rightarrow \mathbb{R}, h \quad: \mathbb{R}^{N} \rightarrow \mathbb{R}^{K}</script><p>g是一个对称函数，即maxpool；h是卷积网络；下图中的$\gamma$ 是拟合分类函数（即全连接层逼近复杂函数）。</p>
-<p><img src="https://img-blog.csdn.net/20180507150427685?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzE1MzMyOTAz/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="POINTNET原理" style="zoom:50%;"></p>
+<p><img src="/images/20200114POINTNET_pic.jpg" alt="20200114POINTNET_pic"></p>
 <p>最后的三个全连接网络，大小分别是512，256，40。最后的40输出类别。激活函数为softmax输出概率，哪个概率大则输出就是哪个类别的物体。全连接网络好理解，就是对特征点汇总为全局描述符，最后用于分类。</p>
 <h3 id="3，POINTNET网络"><a href="#3，POINTNET网络" class="headerlink" title="3，POINTNET网络"></a>3，POINTNET网络</h3><p>T-Net的作用：我们期望通过网络学习到的表征（特征）对于这些仿射变换是不变的。</p>
 <h4 id="3-1-Input-Transform网络"><a href="#3-1-Input-Transform网络" class="headerlink" title="3.1 Input Transform网络"></a>3.1 Input Transform网络</h4><h5 id="3-1-1-论文原理"><a href="#3-1-1-论文原理" class="headerlink" title="3.1.1 论文原理"></a>3.1.1 论文原理</h5><p>我们通过<strong>微型网络（图2中的T-net）预测仿射变换矩阵</strong>，将该变换直接应用于输入点的坐标。</p>
@@ -425,8 +423,8 @@
         <category>深度学习</category>
       </categories>
       <tags>
-        <tag>深度学习</tag>
         <tag>机器学习</tag>
+        <tag>深度学习</tag>
       </tags>
   </entry>
   <entry>
@@ -718,8 +716,8 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
         <category>深度学习</category>
       </categories>
       <tags>
-        <tag>深度学习</tag>
         <tag>配置</tag>
+        <tag>深度学习</tag>
       </tags>
   </entry>
   <entry>
@@ -1044,8 +1042,8 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
         <category>AIOps</category>
       </categories>
       <tags>
-        <tag>AIOps</tag>
         <tag>时间序列</tag>
+        <tag>AIOps</tag>
       </tags>
   </entry>
   <entry>
@@ -1110,8 +1108,8 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
         <category>AIOps</category>
       </categories>
       <tags>
-        <tag>AIOps</tag>
         <tag>异常检测</tag>
+        <tag>AIOps</tag>
       </tags>
   </entry>
   <entry>
@@ -1132,8 +1130,8 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
         <category>配置</category>
       </categories>
       <tags>
-        <tag>三维点云</tag>
         <tag>配置</tag>
+        <tag>三维点云</tag>
       </tags>
   </entry>
   <entry>
