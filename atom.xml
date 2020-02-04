@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-01-19T11:58:51.535Z</updated>
+  <updated>2020-02-04T08:55:11.355Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,68 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>20200204统计学之辛普森悖论</title>
+    <link href="http://yoursite.com/2020/02/04/20200204%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%8B%E8%BE%9B%E6%99%AE%E6%A3%AE%E6%82%96%E8%AE%BA/"/>
+    <id>http://yoursite.com/2020/02/04/20200204%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%8B%E8%BE%9B%E6%99%AE%E6%A3%AE%E6%82%96%E8%AE%BA/</id>
+    <published>2020-02-04T07:51:52.000Z</published>
+    <updated>2020-02-04T08:55:11.355Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="1-例子引入"><a href="#1-例子引入" class="headerlink" title="1 例子引入"></a>1 例子引入</h3><p>医院A和医院B哪个更好？</p><p>医院A最近接收的1000个病人里，有900个活着，100个死了。</p><p>医院B最近接收的1000个病人里，有800个活着，200个死了。</p><p>粗略的看起来A的存活率更高，也许A更好。但是如果考虑更细致的重症病例存活情况呢？</p><div class="table-container"><table><thead><tr><th>病情</th><th>死亡</th><th>存活</th><th>总数</th><th>存活率</th></tr></thead><tbody><tr><td>严重</td><td>70</td><td>30</td><td>100</td><td>30%</td></tr><tr><td>不严重</td><td>30</td><td>870</td><td>900</td><td>96.7%</td></tr><tr><td>合计</td><td>100</td><td>900</td><td>1000</td><td>90%</td></tr></tbody></table></div><a id="more"></a><center> 医院A </center><div class="table-container"><table><thead><tr><th>病情</th><th>死亡</th><th>存活</th><th>总数</th><th>存活率</th></tr></thead><tbody><tr><td>严重</td><td>190</td><td>210</td><td>400</td><td>52.5%</td></tr><tr><td>不严重</td><td>10</td><td>590</td><td>600</td><td>98.3%</td></tr><tr><td>合计</td><td>200</td><td>800</td><td>1000</td><td>80%</td></tr></tbody></table></div><center> 医院B </center><p>这样来看是否B更好呢。</p><h3 id="2-统计学之辛普森悖论"><a href="#2-统计学之辛普森悖论" class="headerlink" title="2 统计学之辛普森悖论"></a>2 统计学之辛普森悖论</h3><p>这个例子就体现了统计学里的辛普森悖论（Simpson’s paradox）辛普森悖论最初是英国数学家爱德华·H·辛普森（Edward H. Simpson）在1951年发现的。</p><p><strong>辛普森悖论的不同解释：1，当你把数据拆开细看的时候，细节和整体趋势完全不同的现象。2，分组的数据点各自表现出某一个方向的相关性，在聚集时却表现出相反方向的相关性。</strong>说明数据不是绝对客观的。</p><p><img src="/Users/wangxue/gitpro/20191105MyBlog/saruagithub/source/images/20200204Data_SimpsonParadox.jpg" alt="20200204Data_SimpsonParadox"></p><p>从统计学家的观点来看，出现辛普森悖论的原因是因为这些数据中潜藏着一个魔鬼——潜在变量。比如在上面这个例子里，潜在变量就是病情严重程度不同的病人的占比。</p><p>我们能做的，就是仔细地研究分析各种影响因素。需要选择将数据分组或将它们聚合在一起。这似乎很简单，但我们如何决定做哪个？答案是<strong>学会思考因果关系</strong>：数据如何生成，基于此，哪些因素会影响我们未展示的结果？</p><p>仅有数据还不够。数据绝不是纯粹客观的，特别是当我们只看到最终的图表时，我们必须考虑是否明白整个事件。</p><p>为了避免辛普森悖论出现，就需要斟酌个别分组的权重，以一定的系数去消除以分组资料基数差异所造成的影响，同时必需了解该情境是否存在其他潜在要因而综合考虑。</p><h3 id="3-思考"><a href="#3-思考" class="headerlink" title="3 思考"></a>3 思考</h3><p>这个跟推荐系统里的隐变量很相似啊。直接数据只是用户表现（浏览数据，点击结果），而内在的隐变量则代表了同一类用户的行为习惯，其中不也是有因果关系的存在嘛。</p><h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1， <a href="https://zhuanlan.zhihu.com/p/47867414" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/47867414</a> 机器之心 辛普森悖论</p><p>2，公众号“把科学带回家”</p><p>3， <a href="[https://wiki.mbalib.com/wiki/%E8%BE%9B%E6%99%AE%E6%A3%AE%E6%82%96%E8%AE%BA](https://wiki.mbalib.com/wiki/辛普森悖论">MBA智库 辛普森悖论</a>)</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;1-例子引入&quot;&gt;&lt;a href=&quot;#1-例子引入&quot; class=&quot;headerlink&quot; title=&quot;1 例子引入&quot;&gt;&lt;/a&gt;1 例子引入&lt;/h3&gt;&lt;p&gt;医院A和医院B哪个更好？&lt;/p&gt;&lt;p&gt;医院A最近接收的1000个病人里，有900个活着，100个死了。&lt;/p&gt;&lt;p&gt;医院B最近接收的1000个病人里，有800个活着，200个死了。&lt;/p&gt;&lt;p&gt;粗略的看起来A的存活率更高，也许A更好。但是如果考虑更细致的重症病例存活情况呢？&lt;/p&gt;&lt;div class=&quot;table-container&quot;&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;病情&lt;/th&gt;
+&lt;th&gt;死亡&lt;/th&gt;
+&lt;th&gt;存活&lt;/th&gt;
+&lt;th&gt;总数&lt;/th&gt;
+&lt;th&gt;存活率&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;严重&lt;/td&gt;
+&lt;td&gt;70&lt;/td&gt;
+&lt;td&gt;30&lt;/td&gt;
+&lt;td&gt;100&lt;/td&gt;
+&lt;td&gt;30%&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;不严重&lt;/td&gt;
+&lt;td&gt;30&lt;/td&gt;
+&lt;td&gt;870&lt;/td&gt;
+&lt;td&gt;900&lt;/td&gt;
+&lt;td&gt;96.7%&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;合计&lt;/td&gt;
+&lt;td&gt;100&lt;/td&gt;
+&lt;td&gt;900&lt;/td&gt;
+&lt;td&gt;1000&lt;/td&gt;
+&lt;td&gt;90%&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+    
+    </summary>
+    
+    
+      <category term="统计学" scheme="http://yoursite.com/categories/%E7%BB%9F%E8%AE%A1%E5%AD%A6/"/>
+    
+    
+      <category term="AIOps" scheme="http://yoursite.com/tags/AIOps/"/>
+    
+      <category term="机器学习" scheme="http://yoursite.com/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
+    
+      <category term="统计学" scheme="http://yoursite.com/tags/%E7%BB%9F%E8%AE%A1%E5%AD%A6/"/>
+    
+  </entry>
   
   <entry>
     <title>点云的三种可视化方法</title>
@@ -452,9 +514,9 @@
       <category term="深度学习" scheme="http://yoursite.com/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
     
     
-      <category term="深度学习" scheme="http://yoursite.com/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
-    
       <category term="配置" scheme="http://yoursite.com/tags/%E9%85%8D%E7%BD%AE/"/>
+    
+      <category term="深度学习" scheme="http://yoursite.com/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
     
   </entry>
   
@@ -541,43 +603,6 @@
       <category term="读书笔记" scheme="http://yoursite.com/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
     
       <category term="历史" scheme="http://yoursite.com/tags/%E5%8E%86%E5%8F%B2/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>20190507paper the Numenta Anomaly Benchmark</title>
-    <link href="http://yoursite.com/2019/05/07/20190507paper-the-Numenta-Anomaly-Benchmark/"/>
-    <id>http://yoursite.com/2019/05/07/20190507paper-the-Numenta-Anomaly-Benchmark/</id>
-    <published>2019-05-07T13:38:23.000Z</published>
-    <updated>2019-12-11T09:31:32.856Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="1-ABS-amp-Introduction"><a href="#1-ABS-amp-Introduction" class="headerlink" title="1 ABS &amp; Introduction"></a>1 ABS &amp; Introduction</h3><h4 id="1-1-Abstract"><a href="#1-1-Abstract" class="headerlink" title="1.1 Abstract"></a>1.1 Abstract</h4><p>对象：streams, time-series data, sequence</p><p>异常检测难点：real-time processing</p><p>NAB是一个测试评估针对流数据的异常检测算法的开源工具。</p><p>理想的异常检测器 </p><ol><li><p>检测到所有出现的异常 </p></li><li><p>尽早检测出异常，最好在人们看到异常之前 </p></li><li><p>no FP 不误报 </p></li><li><p>实时检测、没有前瞻（不看前面的数据） </p></li><li><p>自动化检测、无人工调节</p></li><li>适用性广泛，具有泛化性</li></ol><a id="more"></a><h4 id="1-2-Intro"><a href="#1-2-Intro" class="headerlink" title="1.2 Intro"></a>1.2 Intro</h4><p>静态基准不适合用于实时性算法。Precision和Recall无法反应出早检测这个效果。人工划分训练集测试集不适合流场景。NAB设计了新的评价标准，整合了各类数据集。其他数据集还有the UC- Irvine dataset ，Yahoo Labs。本论文比较了HTM、Skyline、与Twitter的两种方法<a href="https://blog.twitter.com/engineering/en_us/a/2015/introducing-practical-and-robust-anomaly-detection-in-a-time-series.html" target="_blank" rel="noopener">Twitter 方法，翻</a> （AnomalyDetectionTs and AnomalyDetectionVec. ）。</p><h3 id="2，NAB-scoring"><a href="#2，NAB-scoring" class="headerlink" title="2，NAB scoring"></a>2，NAB scoring</h3><h4 id="2-1-基础"><a href="#2-1-基础" class="headerlink" title="2.1 基础"></a>2.1 基础</h4><p>异常定义：We define anomalies in a data stream to be patterns that do not conform to past patterns of behavior for the stream. 包括空间异常和时间异常。</p><p><img src="/images/20191210anomaly.jpg" alt="20191210anomaly"></p><p>Dataset：范围从IT指标（例如网络利用率）到工业机器上的传感器再到社交媒体聊天。我们还包括一些人工生成的数据文件，用于测试尚未在语料库的真实数据中表示的异常行为，以及几个没有任何异常的数据文件。当前的NAB数据集包含58个数据文件，每个文件具有1000-22,000个数据实例（github里有）</p><p>标记异常：按一定规则，标记ground truth label</p><h4 id="2-2-算法"><a href="#2-2-算法" class="headerlink" title="2.2 算法"></a>2.2 算法</h4><p>算法核心三个方面：anomaly Window，the scoring function，application Profiles（配置文件）</p><h5 id="2-2-1-异常窗口"><a href="#2-2-1-异常窗口" class="headerlink" title="2.2.1 异常窗口"></a>2.2.1 异常窗口</h5><p>异常窗口是代表一系列以真实异常标签（ a ground truth anomaly label ）为中心的数据点。</p><p>异常窗口的作用是判断真假检测，检测在窗外的话是FP。</p><p>评分函数基于窗口识别、加权TP，FP，FN。前面紫色部分只用来初始学习，不需测试。</p><p>1，窗口内最早的TP检测被计分，其他忽略。</p><p>2，sigmoidal scoring function 给早检测的TP高分。给FP负分数。</p><p>3，窗口大小 = 10%*总数据长度/异常数量。实验测试了5% - 20%，由于缩放评分函数，这个百分比对最后结果不敏感。</p><p><img src="/images/20191210AnomalyWindow.jpg" alt="20191210AnomalyWindow"></p><p>application profile配置：FN对工业机器来说会造成损失，FP要求技术人员查看。（对监视数据中心中各个服务器状态的应用程序可能对误报的数量敏感，并且由于大多数服务器群集都相对容错，因此偶尔会遗漏异常情况很好。）因此配置文件用于：对于TP，FP，FN和TN，NAB应用与每个配置文件相关的不同相对权重以获得每个配置文件的单独分数。</p><h5 id="2-2-2-计算过程"><a href="#2-2-2-计算过程" class="headerlink" title="2.2.2 计算过程"></a>2.2.2 计算过程</h5><p>1，配置权重$A$</p><script type="math/tex; mode=display">A_{T P}, A_{F P}, A_{F N}, A_{T N}, 0 \leq A_{TP},A_{TN} \leq 1, -1 \leq A_{FP},A_{FN} \leq 0</script><p>$D$ 是数据集，$Y_d$是数据 $d$ 中被检测出来的异常。$f_d$表示没有检测到任何异常的窗口数量，</p><p><img src="/images/20191210NABScoring.jpg" alt="20191210NABScoring"></p><p>2，单个窗口的得分计算</p><p>图中TP：早检测则，增加NAB score；点2：早检测的TP，贡献+0.999 。</p><p>FP：减分（窗外后面的FP的减分更大）；点1：FP，贡献-1，点4：权重为-0.8093是根据$\sigma^{A}(y)$得到的。5：5更有害，因此5贡献-1。</p><p>FN：完全没有检测到，减分。</p><p>总的来看这个窗口的得分就是：$−1.0A_{FP} + 0.9999A_{TP} −0.8093A_{FP} − 1.0A_{FP} $ ，公式是：</p><script type="math/tex; mode=display">\sigma^{A}(y)=\left(A_{T P}-A_{F P}\right)\left(\frac{1}{1+e^{5 y}}\right)-1</script><p>$\sigma^{A}(y)$中，y表示是检测在异常检测窗的相对位置，参数被设置为窗口右侧，$\sigma ( y = 0.0 ) = 0$。 </p><p>3，一个数据文件的得分计算</p><p>得分是每个检测的得分+错过的Window</p><script type="math/tex; mode=display">S_{d}^{A}=\left(\sum_{y \in Y_{d}} \sigma^{A}(y)\right)+A_{F N} f_{d}</script><p>4，一个异常检测算法对所有数据集的得分</p><script type="math/tex; mode=display">S ^ { A } = \sum _ { d \in D } S _ { d } ^ { A }</script><p>5，归一化这个算法的分数，normalized NAB score</p><script type="math/tex; mode=display">S _ { N A B } ^ { A } = 100 \cdot \frac { S ^ { A } - S _ { \text {null} } ^ { A } } { S _ { \text {perfect} } ^ { A } - S _ { \text {null} } ^ { A } }</script><p>完美检测器检测到所有TP，无FP。NULL检测器就是没有检测到任何异常。</p><h5 id="2-2-3-其他"><a href="#2-2-3-其他" class="headerlink" title="2.2.3 其他"></a>2.2.3 其他</h5><p>HTM算法，Skyline统计算法，Twitter统计算法等</p><p>每个异常检测器输出是0-1之间的分数，使用固定阈值对分数进行阈值处理，以检测异常。 NAB包括自动爬坡搜索，用于为每种算法选择最佳阈值。其中要最大化的目标函数是NAB评分函数。一个阈值针对所有的数据集dataset（The detection threshold is thus tuned based on the full NAB dataset）。</p><h3 id="3-result"><a href="#3-result" class="headerlink" title="3 result"></a>3 result</h3><p>见github首页</p><p>一些小结论</p><p>1，HTM和Skyline对漂移适应得更快</p><p>2，HTM和Skyline各自也有误报但HTM可以早检测（3h，机器温度传感器数据）</p><p>3，行为的时间变化通常先于容易检测到的大变化（做提前检测）。 </p><h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，Lavin A, Ahmad S. Evaluating Real-Time Anomaly Detection Algorithms—The Numenta Anomaly Benchmark[C]//2015 IEEE 14th International Conference on Machine Learning and Applications (ICMLA). IEEE, 2015: 38-44.</p><p>2, <a href="https://github.com/numenta/NAB" target="_blank" rel="noopener">https://github.com/numenta/NAB</a> 很好的学习项目</p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;1-ABS-amp-Introduction&quot;&gt;&lt;a href=&quot;#1-ABS-amp-Introduction&quot; class=&quot;headerlink&quot; title=&quot;1 ABS &amp;amp; Introduction&quot;&gt;&lt;/a&gt;1 ABS &amp;amp; Introduction&lt;/h3&gt;&lt;h4 id=&quot;1-1-Abstract&quot;&gt;&lt;a href=&quot;#1-1-Abstract&quot; class=&quot;headerlink&quot; title=&quot;1.1 Abstract&quot;&gt;&lt;/a&gt;1.1 Abstract&lt;/h4&gt;&lt;p&gt;对象：streams, time-series data, sequence&lt;/p&gt;&lt;p&gt;异常检测难点：real-time processing&lt;/p&gt;&lt;p&gt;NAB是一个测试评估针对流数据的异常检测算法的开源工具。&lt;/p&gt;&lt;p&gt;理想的异常检测器 &lt;/p&gt;&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;检测到所有出现的异常 &lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;尽早检测出异常，最好在人们看到异常之前 &lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;no FP 不误报 &lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;实时检测、没有前瞻（不看前面的数据） &lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;自动化检测、无人工调节&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;适用性广泛，具有泛化性&lt;/li&gt;
-&lt;/ol&gt;
-    
-    </summary>
-    
-    
-      <category term="AIOps" scheme="http://yoursite.com/categories/AIOps/"/>
-    
-    
-      <category term="时间序列" scheme="http://yoursite.com/tags/%E6%97%B6%E9%97%B4%E5%BA%8F%E5%88%97/"/>
-    
-      <category term="AIOps" scheme="http://yoursite.com/tags/AIOps/"/>
     
   </entry>
   
