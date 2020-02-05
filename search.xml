@@ -102,8 +102,8 @@
         <category>统计学</category>
       </categories>
       <tags>
-        <tag>AIOps</tag>
         <tag>机器学习</tag>
+        <tag>AIOps</tag>
         <tag>统计学</tag>
       </tags>
   </entry>
@@ -662,8 +662,8 @@
         <category>AIOps</category>
       </categories>
       <tags>
-        <tag>AIOps</tag>
         <tag>机器学习</tag>
+        <tag>AIOps</tag>
       </tags>
   </entry>
   <entry>
@@ -1149,8 +1149,8 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
         <category>AIOps</category>
       </categories>
       <tags>
-        <tag>AIOps</tag>
         <tag>时间序列</tag>
+        <tag>AIOps</tag>
       </tags>
   </entry>
   <entry>
@@ -1215,8 +1215,8 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
         <category>AIOps</category>
       </categories>
       <tags>
-        <tag>AIOps</tag>
         <tag>异常检测</tag>
+        <tag>AIOps</tag>
       </tags>
   </entry>
   <entry>

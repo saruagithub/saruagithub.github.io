@@ -70,9 +70,9 @@
       <category term="统计学" scheme="http://yoursite.com/categories/%E7%BB%9F%E8%AE%A1%E5%AD%A6/"/>
     
     
-      <category term="AIOps" scheme="http://yoursite.com/tags/AIOps/"/>
-    
       <category term="机器学习" scheme="http://yoursite.com/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
+    
+      <category term="AIOps" scheme="http://yoursite.com/tags/AIOps/"/>
     
       <category term="统计学" scheme="http://yoursite.com/tags/%E7%BB%9F%E8%AE%A1%E5%AD%A6/"/>
     
@@ -389,9 +389,9 @@
       <category term="AIOps" scheme="http://yoursite.com/categories/AIOps/"/>
     
     
-      <category term="AIOps" scheme="http://yoursite.com/tags/AIOps/"/>
-    
       <category term="机器学习" scheme="http://yoursite.com/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
+    
+      <category term="AIOps" scheme="http://yoursite.com/tags/AIOps/"/>
     
   </entry>
   
