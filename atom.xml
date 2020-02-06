@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-02-04T09:02:15.064Z</updated>
+  <updated>2020-02-06T01:10:43.273Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>20200205腾讯广告算法大赛——鱼佬方案</title>
+    <link href="http://yoursite.com/2020/02/05/20200205%E8%85%BE%E8%AE%AF%E5%B9%BF%E5%91%8A%E7%AE%97%E6%B3%95%E5%A4%A7%E8%B5%9B/"/>
+    <id>http://yoursite.com/2020/02/05/20200205%E8%85%BE%E8%AE%AF%E5%B9%BF%E5%91%8A%E7%AE%97%E6%B3%95%E5%A4%A7%E8%B5%9B/</id>
+    <published>2020-02-05T08:42:07.000Z</published>
+    <updated>2020-02-06T01:10:43.273Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="1-方案学习"><a href="#1-方案学习" class="headerlink" title="1 方案学习"></a>1 方案学习</h3><h4 id="1-1-赛题简介"><a href="#1-1-赛题简介" class="headerlink" title="1.1 赛题简介"></a>1.1 赛题简介</h4><p>题目：腾讯效果广告采用的是GSP（Generalized Second-Price）竞价机制，<strong>广告的实际曝光取决于广告的流量覆盖大小和在竞争广告中的相对竞争力水平</strong>。其中广告的流量覆盖取决于广告的人群定向（匹配对应特征的用户数量）、广告素材尺寸（匹配的广告位）以及投放时段、预算等设置项。而影响广告竞争力的主要有出价、广告质量等因素（如pctr/pcvr等）， 以及对用户体验的控制策略。 通常来说， 基本竞争力可以用ecpm = 1000 <em> cpc_bid </em> pctr = 1000 <em> cpa_bid </em> pctr * pcvr (cpc, cpa分别代表按点击付费模式和按转化付费模式)。综上，前者决定广告能参与竞争的次数以及竞争对象，后者决定在每次竞争中的胜出概率。二者最终决定广告每天的曝光量。</p><a id="more"></a><p> 本次竞赛将提供历史n天的曝光广告的数据（特定流量上采样）， 包括对应每次曝光的流量特征（用户属性和广告位等时空信息）以及曝光广告的设置和竞争力分数；测试集是新的一批广告设置（有完全新的广告id， 也有老的广告id修改了设置）。 </p><p>目标：预估测试集里这批广告的日曝光量。</p><h4 id="1-2-数据分析与清洗"><a href="#1-2-数据分析与清洗" class="headerlink" title="1.2 数据分析与清洗"></a>1.2 数据分析与清洗</h4><p>原始特征：原始训练特征有：广告id，素材大小，广告行业id，商品类型，商品id，广告账户id + 定点人群投放时间。测试集也包含这些特征，然后构造好的广告id和标签数据与广告静态数据经行合并。</p><p>查看数据与预处理：数据集大小，数据类型，数据干净，标签类型，离群点（散点图，删除或保留），缺失情况（背后的意义，业务含义考虑填充），错误值（删除样本，均值或中位数替换等，标签里的错误值 剔除or 标签log化），各类别分布（均值情况，方差情况），大概可以构造的特征，特征之间是否冗余，时间信息。</p><h4 id="1-3-特征工程"><a href="#1-3-特征工程" class="headerlink" title="1.3 特征工程"></a>1.3 特征工程</h4><p>类别特征：处理可以转为自然编码，onehot编码</p><p>1，计数count统计（热度啥的，注意特殊值；计数排序 异常值不敏感；label占比的比例（过拟合问题，交叉验证处理）；</p><p>2，目标编码：出价的均值，点击率均值，或ecpm均值构造（新的广告ID的话，中位数填充）</p><p>3，交叉组合（类别与类别组合，粒度更细；类别和数值特征组合，这个类别出价的均价，平均点击率之类的）），可以nunique统计。</p><p>4，时序：前一两天的曝光值，出价情况等。</p><p>为了避免过拟合，注意（5折）交叉统计构造特征。存在一个不存在的类别，缺失值的话用中位数或均值填充。</p><p>数值特征可以均值统计，最大最小，中位数等。时间序列考虑历史平均（d-1天的信息作为d天的特征）</p><h4 id="1-4-模型训练与验证"><a href="#1-4-模型训练与验证" class="headerlink" title="1.4 模型训练与验证"></a>1.4 模型训练与验证</h4><p>交叉验证：时序问题，为了避免数据泄露，常选择训练集最后一天进行线下验证，或者K-folds交叉验证。</p><h3 id="2-源码阅读"><a href="#2-源码阅读" class="headerlink" title="2 源码阅读"></a>2 源码阅读</h3><h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，<a href="https://algo.qq.com/application/home/rankinglist/rankingList.html" target="_blank" rel="noopener">https://algo.qq.com/application/home/rankinglist/rankingList.html</a> 腾讯算法大赛</p><p>2，<a href="https://zhuanlan.zhihu.com/p/63718151" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/63718151</a> 鱼佬知乎</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;1-方案学习&quot;&gt;&lt;a href=&quot;#1-方案学习&quot; class=&quot;headerlink&quot; title=&quot;1 方案学习&quot;&gt;&lt;/a&gt;1 方案学习&lt;/h3&gt;&lt;h4 id=&quot;1-1-赛题简介&quot;&gt;&lt;a href=&quot;#1-1-赛题简介&quot; class=&quot;headerlink&quot; title=&quot;1.1 赛题简介&quot;&gt;&lt;/a&gt;1.1 赛题简介&lt;/h4&gt;&lt;p&gt;题目：腾讯效果广告采用的是GSP（Generalized Second-Price）竞价机制，&lt;strong&gt;广告的实际曝光取决于广告的流量覆盖大小和在竞争广告中的相对竞争力水平&lt;/strong&gt;。其中广告的流量覆盖取决于广告的人群定向（匹配对应特征的用户数量）、广告素材尺寸（匹配的广告位）以及投放时段、预算等设置项。而影响广告竞争力的主要有出价、广告质量等因素（如pctr/pcvr等）， 以及对用户体验的控制策略。 通常来说， 基本竞争力可以用ecpm = 1000 &lt;em&gt; cpc_bid &lt;/em&gt; pctr = 1000 &lt;em&gt; cpa_bid &lt;/em&gt; pctr * pcvr (cpc, cpa分别代表按点击付费模式和按转化付费模式)。综上，前者决定广告能参与竞争的次数以及竞争对象，后者决定在每次竞争中的胜出概率。二者最终决定广告每天的曝光量。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="机器学习" scheme="http://yoursite.com/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+      <category term="机器学习" scheme="http://yoursite.com/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
+    
+      <category term="推荐算法" scheme="http://yoursite.com/tags/%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95/"/>
+    
+  </entry>
   
   <entry>
     <title>20200204统计学之辛普森悖论</title>
@@ -371,6 +396,33 @@
   </entry>
   
   <entry>
+    <title>20191210异常检测方法</title>
+    <link href="http://yoursite.com/2019/12/10/20191210%E5%BC%82%E5%B8%B8%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95/"/>
+    <id>http://yoursite.com/2019/12/10/20191210%E5%BC%82%E5%B8%B8%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95/</id>
+    <published>2019-12-10T08:24:27.000Z</published>
+    <updated>2020-02-05T08:57:05.777Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="2-异常检测方法总结与综述"><a href="#2-异常检测方法总结与综述" class="headerlink" title="2 异常检测方法总结与综述"></a>2 异常检测方法总结与综述</h3><h4 id="2-1-统计方法"><a href="#2-1-统计方法" class="headerlink" title="2.1 统计方法"></a>2.1 统计方法</h4><p>主要是对数据的分布做出假设，并找出假设下所定义的“异常”，因此往往会使用极值分析或者假设检验，概率密度函数值小于某个阈值的点判定为异常。 </p><h5 id="2-1-1，看图"><a href="#2-1-1，看图" class="headerlink" title="2.1.1，看图"></a>2.1.1，看图</h5><p>频率直方图， 点分布图</p><h5 id="2-1-2，高斯分布的-k-sigma"><a href="#2-1-2，高斯分布的-k-sigma" class="headerlink" title="2.1.2，高斯分布的 k-sigma"></a>2.1.2，高斯分布的 k-sigma</h5><p>概率密度函数为 $f(x)=\frac{1}{\sqrt{2 \pi} \sigma} e^{-\frac{(x-\mu)^{2}}{2 \sigma^{2}}}$</p><a id="more"></a><p>当点$X \notin ( { \mu } - 3 { \sigma } ,  { \mu } + 3  { \sigma } ) $ 则为异常，因为这个点出现的概率小于 1 - 99.74%。</p><p>延伸出滑动窗高斯模型，后续s表示为异常分数score：</p><script type="math/tex; mode=display">s =1-Q\left(\frac{\left|x_-\mu \right|}{\sigma}\right)</script><p>Q函数是标准正态分布的右尾函数：$Q(x)=\int_{x}^{\infty} \frac{1}{\sqrt{2 \pi}} e^{-\frac{t^{2}}{2}} d t$，Q函数又叫（标准正态分布的）互补累计分布函数，Q ( x )是正常(高斯)随机变量获得大于x标准差的值的概率。</p><h5 id="2-1-3，箱型图"><a href="#2-1-3，箱型图" class="headerlink" title="2.1.3，箱型图"></a>2.1.3，箱型图</h5><p><img src="/Users/wangxue/gitpro/20191105MyBlog/saruagithub/source/images/20191211BoxPlot.jpg" alt="20191211BoxPlot"></p><p>IQR (inter quartile range) = Q3 - Q1 ； 占据中心值周围50%数量的范围</p><p>LQR (lower quartile range) = median - Q1 ； IQR的下半部分</p><p>UQR (upper quartile range) = Q3 - median ； IQR的上半部分</p><p>若按3 σ来判断异常， 3 σ = 2.1 IQR，则异常在median的2.1 IQR之外，因此在Q1或者Q3再延伸1.5 IQR (3σ 之外)的点就很可能是outlier点了。</p><p>即$P &gt; Q3+1.5IQR$ or $P&lt; Q1 - 1.5IQR$</p><h5 id="2-1-4，假设检验类型"><a href="#2-1-4，假设检验类型" class="headerlink" title="2.1.4，假设检验类型"></a>2.1.4，假设检验类型</h5><p>如extreme studentized deviate（Grubb’s Test ）</p><p>提出假设H0:没有异常点，H1：至少有一个异常点。</p><p>根据样本的均值和标准差来计算最大 bias / standard deviation 比值。</p><script type="math/tex; mode=display">G=\frac{\max _{i=1, \ldots, N}\left|X_{i}-\bar{X}\right|}{s}</script><p>基于t-student分布定检出水平$\alpha$（置信概率$P=1- \alpha$）与检测次数$n$查找表格获得临界值$G_0$。当计算的$G&gt;G_0$则判断为异常点。</p><p>其他还有卡方检验（chi-square theory），Q_test等</p><h5 id="2-1-5，Skyline用到的几种统计方法"><a href="#2-1-5，Skyline用到的几种统计方法" class="headerlink" title="2.1.5，Skyline用到的几种统计方法"></a>2.1.5，Skyline用到的几种统计方法</h5><p><strong>median absolute deviation （MAD）</strong></p><p>计算数据的中位数，偏差 = 每个值-中位数，得到偏差中位数</p><script type="math/tex; mode=display">\mathrm{MAD}=\operatorname{median}\left(\left|X_{i}-\operatorname{median}(X)\right|\right)</script><p>MAD对数据集中的异常值比标准偏差更具弹性。在标准偏差中，与均值的距离的平方，较大的异常值会影响更大。可以通过判断一个点的偏差是否过于偏离MAD来判断异常。</p><p>least_squares</p><p>检测趋势分量</p><p>Histogram-based</p><p>统计学方法是可以用在时间序列上的，取最近的一段来计算可以实时计算。</p><h4 id="2-2-基于距离distanced-based"><a href="#2-2-基于距离distanced-based" class="headerlink" title="2.2 基于距离distanced-based"></a>2.2 基于距离distanced-based</h4><p>1，直接定义距离</p><p>2，KNN等基于邻居</p><p>3，聚类clustering</p><p>4，基于密度density</p><p>LOF方法</p><p>5，ABOD基于角度 </p><p>6，IsolationForest</p><p>random cut forest</p><p>iForest、SCiForest、RRCF</p><p>改进的iForestASD方法，流数据异常检测帧。。。</p><h4 id="2-3-回归模型"><a href="#2-3-回归模型" class="headerlink" title="2.3 回归模型"></a>2.3 回归模型</h4><p>1，自回归AR</p><script type="math/tex; mode=display">X_t = c + \sum_{i=1}^P \theta_{i}X_{t-i} + \varepsilon_t</script><p>其中$c$是常数项，$\theta_i$是自相关系数，$ \varepsilon_t$是随机误差项（平均数为0，标准差为$\sigma$的随机误差值，也称白噪声）。$X_t$的当前值是前几期的线性组合。$\theta_i$的变化将使得时间序列拥有不同的特征。</p><p>对于AR(1)而言：</p><p>当$\theta_1=0$, $X_t$相当于白噪声。</p><p>当$\theta_1=1, c=0$时，$X_t$相当于随机游走模型。</p><p>当$\theta_1=1, c\neq0$时，$X_t$相当于带漂移的随机游走模型。</p><p>当$\theta_1&lt;0$, $X_t$在正负值之间上下浮动。</p><p>P阶自回归模型的要求是时序数据具有平稳性，必须有自相关性（即自相关系数大于0.5），自回归只能适用于预测与自身前期相关的经济现象。</p><p>2，移动平均模型 MA</p><script type="math/tex; mode=display">X_{t}=c+\varepsilon_{t}+\sum_{i=1}^q \theta_i\varepsilon_{t-i}</script><p>移动平均模型MA(q)更关注自回归模型中的误差项的累加。每一个值都可以被认为是一个历史预测误差的加权移动平均值。</p><p>AR(1)可以用MA($\infty$) 表示：$y_{t}=\varepsilon_{t}+\phi_{1} \varepsilon_{t-1}+\phi_{1}^{2} \varepsilon_{t-2}+\phi_{1}^{3} \varepsilon_{t-3}+\cdots$</p><p>2.1 注意移动平均法和移动模型不同</p><p>移动平均法适用于即期预测。当产品需求既不快速增长也不快速下降，且不存在季节性因素时，移动平均法能有效地消除预测中的随机波动，非常有用的。移动平均法包括简单移动平均和加权移动平均。</p><p>简单移动平均：$X_t = \frac{\sum_{i=1}^n X_{t-i}}{n}$</p><p>加权移动平均：$X_t = \sum_{i=1}^n \theta_i X_{t-i}$ , 其中$\theta_i$是权重值，对近期的趋势反映较敏感，但不适合有季节性的数据。</p><p>根据同一个移动段内不同时间的数据对预测值的影响程度，分别给予不同的权数，然后再进行平均移动以预测未来值。</p><p>指数加权移动平均EWMA，指数移动平均EMA。</p><p>3，ARIMA模型</p><script type="math/tex; mode=display">y_{t}=\mu+\sum_{i=1}^{p} \gamma_{i} y_{t-i}+\epsilon_{t}+\sum_{i=1}^{q} \theta_{i} \epsilon_{t-i}</script><p>适合有季节性的数据</p><p>4，时间序列分解</p><p>STL季节性分解</p><p>论文：Online Conditional Outlier Detection in Nonstationary Time Series</p><p>STL分解（非参数分解方法）为三个要素：季节性、趋势、残差。 分析残差的偏差，然后引入残差阈值，这样就能得到一种异常检测得算法。</p><p>移动平均、指数平滑、ARMA、ARIMA</p><h4 id="2-4-线性模型（基于子空间subspace）"><a href="#2-4-线性模型（基于子空间subspace）" class="headerlink" title="2.4 线性模型（基于子空间subspace）"></a>2.4 线性模型（基于子空间subspace）</h4><p>主成分分析PCA</p><p>因子分析Factor Analysis</p><h4 id="2-3-机器学习"><a href="#2-3-机器学习" class="headerlink" title="2.3 机器学习"></a>2.3 机器学习</h4><p>分类模型（类别不平衡问题）</p><p>决策树</p><p>支持向量SVM </p><p>延伸出来的还有OneClass SVM，Support Vector Machine (SVM) with ant colony network[4]</p><p>随机森林等</p><p>Isolation Forest方法</p><p>GBDT方法 / XgBoost / Bagging等</p><p>Bayesiannetwork </p><h4 id="2-4-神经网络"><a href="#2-4-神经网络" class="headerlink" title="2.4 神经网络"></a>2.4 神经网络</h4><p>RNN、LSTM方法</p><p>论文：Anomaly detection in ECG time signals via deep long short-term memory networks</p><p>AutoEncoder</p><p>深度信念网络等</p><p>SOM自组织地图</p><p>HTM方法</p><p>频谱残差</p><h4 id="2-5-实时序列异常检测"><a href="#2-5-实时序列异常检测" class="headerlink" title="2.5 实时序列异常检测"></a>2.5 实时序列异常检测</h4><h5 id="2-5-1-NAB库有的"><a href="#2-5-1-NAB库有的" class="headerlink" title="2.5.1 NAB库有的"></a>2.5.1 NAB库有的</h5><p>期望相似性估计</p><h5 id="2-5-2-其他"><a href="#2-5-2-其他" class="headerlink" title="2.5.2 其他"></a>2.5.2 其他</h5><p>[4]里的Support Vector Machine (SVM) with ant colony network ，pcStream algorithm（stream clustering），random cut forest, </p><h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1, “Everything you need to know about AIOps”, from <a href="https://www.moogsoft.com/resources/aiops/guide/everything-aiops/" target="_blank" rel="noopener">https://www.moogsoft.com/resources/aiops/guide/everything-aiops/</a> (retrieved as of Feb. 12, 2019)</p><p>2，<a href="https://github.com/yzhao062/pyod#gopalan2019pidforest" target="_blank" rel="noopener">https://github.com/yzhao062/pyod#gopalan2019pidforest</a> pyod异常检测库</p><p>3，<a href="https://github.com/etsy/skyline" target="_blank" rel="noopener">https://github.com/etsy/skyline</a> Skyline，一些统计方法</p><p>4，Habeeb R A A, Nasaruddin F, Gani A, et al. Real-time big data processing for anomaly detection: A Survey[J]. International Journal of Information Management, 2019, 45: 289-307.</p><p>5，<a href="https://otexts.com/fppcn/MA.html" target="_blank" rel="noopener">https://otexts.com/fppcn/MA.html</a> 预测方法与实践</p><p>6，</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;2-异常检测方法总结与综述&quot;&gt;&lt;a href=&quot;#2-异常检测方法总结与综述&quot; class=&quot;headerlink&quot; title=&quot;2 异常检测方法总结与综述&quot;&gt;&lt;/a&gt;2 异常检测方法总结与综述&lt;/h3&gt;&lt;h4 id=&quot;2-1-统计方法&quot;&gt;&lt;a href=&quot;#2-1-统计方法&quot; class=&quot;headerlink&quot; title=&quot;2.1 统计方法&quot;&gt;&lt;/a&gt;2.1 统计方法&lt;/h4&gt;&lt;p&gt;主要是对数据的分布做出假设，并找出假设下所定义的“异常”，因此往往会使用极值分析或者假设检验，概率密度函数值小于某个阈值的点判定为异常。 &lt;/p&gt;&lt;h5 id=&quot;2-1-1，看图&quot;&gt;&lt;a href=&quot;#2-1-1，看图&quot; class=&quot;headerlink&quot; title=&quot;2.1.1，看图&quot;&gt;&lt;/a&gt;2.1.1，看图&lt;/h5&gt;&lt;p&gt;频率直方图， 点分布图&lt;/p&gt;&lt;h5 id=&quot;2-1-2，高斯分布的-k-sigma&quot;&gt;&lt;a href=&quot;#2-1-2，高斯分布的-k-sigma&quot; class=&quot;headerlink&quot; title=&quot;2.1.2，高斯分布的 k-sigma&quot;&gt;&lt;/a&gt;2.1.2，高斯分布的 k-sigma&lt;/h5&gt;&lt;p&gt;概率密度函数为 $f(x)=\frac{1}{\sqrt{2 \pi} \sigma} e^{-\frac{(x-\mu)^{2}}{2 \sigma^{2}}}$&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="AIOps" scheme="http://yoursite.com/categories/AIOps/"/>
+    
+    
+      <category term="异常检测" scheme="http://yoursite.com/tags/%E5%BC%82%E5%B8%B8%E6%A3%80%E6%B5%8B/"/>
+    
+      <category term="机器学习" scheme="http://yoursite.com/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
+    
+      <category term="AIOps" scheme="http://yoursite.com/tags/AIOps/"/>
+    
+  </entry>
+  
+  <entry>
     <title>20191210Skyline源码阅读</title>
     <link href="http://yoursite.com/2019/12/10/20191210Skyline%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/"/>
     <id>http://yoursite.com/2019/12/10/20191210Skyline%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/</id>
@@ -517,92 +569,6 @@
       <category term="配置" scheme="http://yoursite.com/tags/%E9%85%8D%E7%BD%AE/"/>
     
       <category term="深度学习" scheme="http://yoursite.com/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>2019HUAWEI_DiGiX_CTR</title>
-    <link href="http://yoursite.com/2019/07/20/20190810HUAWEI-DiGiX-CTR/"/>
-    <id>http://yoursite.com/2019/07/20/20190810HUAWEI-DiGiX-CTR/</id>
-    <published>2019-07-20T02:36:44.000Z</published>
-    <updated>2020-01-03T13:12:49.665Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="1-赛题介绍"><a href="#1-赛题介绍" class="headerlink" title="1 赛题介绍"></a>1 赛题介绍</h3><p>7月HUAWEI-DIGIX比赛是广告CTR预估问题。 数据如下：</p><div class="table-container"><table><thead><tr><th>train.zip</th><th>zip（2.62GB）</th><th>2019-05-18 00:00:00</th><th></th></tr></thead><tbody><tr><td>test.zip</td><td>zip（15MB）</td><td>2019-05-18 00:00:00</td><td></td></tr><tr><td>user_info.zip</td><td>zip（291MB）</td><td>2019-05-18 00:00:00</td><td></td></tr><tr><td>ad_info.zip</td><td>zip（17.9KB）</td><td>2019-05-18 00:00:00</td><td></td></tr><tr><td>content_info.zip</td><td>zip（8.16KB）</td><td>2019-05-18 00:00:00</td></tr></tbody></table></div><a id="more"></a><p> 时间范围是某连续6天的行为数据。总体而言，数据集包含： 训练集数据文件、测试集数据文件、用户特征文件、广告任务特征文件、素材信息数据文件。train表和test表里的字段：</p><div class="table-container"><table><thead><tr><th>label</th><th>是否点击，1表示点击，0表示未点击</th></tr></thead><tbody><tr><td>uId</td><td>匿名化处理后的用户唯一标识(示例：u100000001)</td></tr><tr><td>adId</td><td>广告任务唯一标识</td></tr><tr><td>operTime</td><td>操作时间(精确到毫秒，示例: “2019-04-01 10:45:20:257”)</td></tr><tr><td>siteId</td><td>媒体Id</td></tr><tr><td>slotId</td><td>广告位Id</td></tr><tr><td>contentId</td><td>素材Id</td></tr><tr><td>netType</td><td>网络连接类型(示例：1, 2, 3, 4, 5, 6)</td></tr></tbody></table></div><p>user_info表</p><div class="table-container"><table><thead><tr><th>uId</th><th>匿名化处理后的用户唯一标识(示例：u100000001)</th></tr></thead><tbody><tr><td>age</td><td>年龄段(示例：1, 2, 3, 4, 5, 6)</td></tr><tr><td>gender</td><td>性别(示例：1, 2, 3)</td></tr><tr><td>city</td><td>常住城市编码(示例：1, 2, 3…)</td></tr><tr><td>province</td><td>常驻省份编码(示例：1, 2, 3…)</td></tr><tr><td>phoneType</td><td>设备型号(示例：1, 2, 3…)</td></tr><tr><td>carrier</td><td>运营商编号</td></tr></tbody></table></div><p> 广告任务特征文件ad_info.csv：</p><div class="table-container"><table><thead><tr><th>adId</th><th>广告任务唯一标识(示例：2556)</th></tr></thead><tbody><tr><td>billId</td><td>计费类型(示例：cpc, cpm, cpd)</td></tr><tr><td>primId</td><td>广告主唯一编号Id</td></tr><tr><td>creativeType</td><td>创意类型(示例：1. 文字广告，2. 图片广告，3. 图文广告，4. gif广告，5. 无具体创意类型)</td></tr><tr><td>intertype</td><td>交互类型(示例：0. 无交互，点击无响应，1. 点击后打开网，2. 点击下载应用，3. 点击后打开App)</td></tr><tr><td>spreadAppId</td><td>广告对应的appId</td></tr></tbody></table></div><p> 素材信息数据文件content_info.csv:</p><div class="table-container"><table><thead><tr><th>contentId</th><th>素材唯一标识Id</th></tr></thead><tbody><tr><td>firstClass</td><td>素材内容文本的一级分类(示例：电商)</td></tr><tr><td>secondClass</td><td>素材内容文本的二级分类，多值使用‘#’分割</td></tr></tbody></table></div><h3 id="2-数据预处理"><a href="#2-数据预处理" class="headerlink" title="2 数据预处理"></a>2 数据预处理</h3><h4 id="2-1-分析数据"><a href="#2-1-分析数据" class="headerlink" title="2.1 分析数据"></a>2.1 分析数据</h4><h5 id="2-2-1-分布情况"><a href="#2-2-1-分布情况" class="headerlink" title="2.2.1 分布情况"></a>2.2.1 分布情况</h5><p>首先查看每个表里数据的分布情况。尤其注意训练集与测试集的分布情况。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pd.describe() # 查看计数，平均值、标准差，min max等值。</span><br></pre></td></tr></table></figure><p>有些特征取值频次低的考虑合并为其他类。</p><h5 id="2-2-2-可视化分析"><a href="#2-2-2-可视化分析" class="headerlink" title="2.2.2 可视化分析"></a>2.2.2 可视化分析</h5><p>对 Numerical Variable，可以用 Box Plot / 小提琴 来直观地查看它的分布。Categories Variable 用直方图。对于坐标类数据，可以用 Scatter Plot 来查看它们的分布趋势和是否有离群点的存在。（seaborn画图）</p><p>绘制变量之间两两的分布和相关度图表等，发现一些高相关和共线性的特征。</p><p>这些分析都有利于后续构造特征。</p><h4 id="2-2-数据处理"><a href="#2-2-数据处理" class="headerlink" title="2.2 数据处理"></a>2.2 数据处理</h4><p>1，缺失值处理</p><p>可以填补，丢弃等。</p><p>我在比赛中对content的firstclass和secondcalss根据spreadApp进行补全，因为广告类型可能会跟广告出现在哪类app有关系。 取出spreadApp相同的firstClass众数替换了少量缺失值。</p><p>2，异常值处理</p><p>比赛中，遇到了那种机器人用户，连续不停点击。这种数据应该在训练时过滤掉，在最后的提交结果也应该用规则处理下。</p><p>另外可以考虑分箱、均值、中位数、众数处理异常值缺失值等。</p><p>3，归一化和one hot的问题</p><p>SVM、LR模型等常常需要考虑归一化和one hot（dummy）的问题。</p><p>4，划分数据集</p><p>然后采用k折交叉验证。当线下的验证集和线上的测试集有同步的效果时最好，此时可以通过线下的验证集变化来验证线上情况。</p><p>比赛中我没有做到。但是后面问了大佬，做法是把训练集里的有点击广告行为的用户数据抽取出来作为的训练集。</p><h3 id="3-特征工程"><a href="#3-特征工程" class="headerlink" title="3 特征工程"></a>3 特征工程</h3><p>1，特征工程是最重要的。我们其实尝试用过自动特征工程，有一个featuretools，但这个做的所有统计特征都比较偏向数值类型的特征。做类别特征不太强。所以后面还是自己做特征。总的来说，我们应该生成尽量多的 Feature，相信 Model 能够挑出最有用的 Feature。</p><p>交叉特征：把俩取值连接起来，然后将str转换为数值。</p><p>俩俩特征之间的统计特征：比如用户看那些类别的广告数目，用户看广告主的次数等等。还有三个特征之间的统计特征。</p><p>还有就是word2ve的用户id和广告id序列特征（但这个效果不太好）。</p><p>2，筛选特征：</p><p>Random Forest 训练完以后得到的 Feature Importance。</p><p>也可以进行一些统计检验，卡方检验等。</p><p>直接观察CTR。比如特征对应的CTR数目。</p><h3 id="4-模型"><a href="#4-模型" class="headerlink" title="4 模型"></a>4 模型</h3><p>采用了lightGBM树模型。优点：基于直方图的树结点划分，内存消耗更少速度更快。lightGBM的论文阅读见博客。</p><p>注意一些模型选择：</p><ul><li><p>对于稀疏型特征（如文本特征，One-hot的ID类特征），我们一般使用线性模型，比如 Linear Regression 或者 Logistic Regression。Random Forest 和 GBDT 等树模型不太适用于稀疏的特征，但可以先对特征进行降维（如PCA，SVD/LSA等），再使用这些特征。稀疏特征直接输入 DNN 会导致网络 weight 较多，不利于优化，也可以考虑先降维，或者对 ID 类特征使用 Embedding 的方式；</p></li><li><p>对于稠密型特征，推荐使用 XGBoost 进行建模，简单易用效果好；</p></li><li>数据中既有稀疏特征，又有稠密特征，可以考虑使用线性模型对稀疏特征进行建模，将其输出与稠密特征一起再输入 XGBoost/DNN 建模。</li></ul><p>最后理论是要用“好而不同”的模型进行集成的，不过作为基模型lightGBM初期就够用了。</p><h3 id="5-学习"><a href="#5-学习" class="headerlink" title="5 学习"></a>5 学习</h3><p>大佬们的特征工程：</p><p>统计特征：当天广告曝光次数，当天用户曝光次数，当天广告主ID相对用户出现的次数，当天广告位相对用户出现的次数。</p><p>unique特征，用户相对广告的唯一ID，广告相对用户的唯一ID。</p><p>Ratio点击率特征：一维二维的点击率特征。</p><p>低频数据：置None，lightGBM对NULL数据处理友好。</p><p>序列数据：deepwalk或word2vec方法（Uid和广告id）</p><h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，seaborn 可视化 <a href="http://seaborn.pydata.org/tutorial.html" target="_blank" rel="noopener">http://seaborn.pydata.org/tutorial.html</a></p><p>2，个人印象笔记《复赛答辩学习》</p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;1-赛题介绍&quot;&gt;&lt;a href=&quot;#1-赛题介绍&quot; class=&quot;headerlink&quot; title=&quot;1 赛题介绍&quot;&gt;&lt;/a&gt;1 赛题介绍&lt;/h3&gt;&lt;p&gt;7月HUAWEI-DIGIX比赛是广告CTR预估问题。 数据如下：&lt;/p&gt;&lt;div class=&quot;table-container&quot;&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;train.zip&lt;/th&gt;
-&lt;th&gt;zip（2.62GB）&lt;/th&gt;
-&lt;th&gt;2019-05-18 00:00:00&lt;/th&gt;
-&lt;th&gt;&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;test.zip&lt;/td&gt;
-&lt;td&gt;zip（15MB）&lt;/td&gt;
-&lt;td&gt;2019-05-18 00:00:00&lt;/td&gt;
-&lt;td&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;user_info.zip&lt;/td&gt;
-&lt;td&gt;zip（291MB）&lt;/td&gt;
-&lt;td&gt;2019-05-18 00:00:00&lt;/td&gt;
-&lt;td&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;ad_info.zip&lt;/td&gt;
-&lt;td&gt;zip（17.9KB）&lt;/td&gt;
-&lt;td&gt;2019-05-18 00:00:00&lt;/td&gt;
-&lt;td&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;content_info.zip&lt;/td&gt;
-&lt;td&gt;zip（8.16KB）&lt;/td&gt;
-&lt;td&gt;2019-05-18 00:00:00&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;/div&gt;
-    
-    </summary>
-    
-    
-      <category term="机器学习" scheme="http://yoursite.com/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-      <category term="机器学习" scheme="http://yoursite.com/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
-    
-      <category term="华为比赛" scheme="http://yoursite.com/tags/%E5%8D%8E%E4%B8%BA%E6%AF%94%E8%B5%9B/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>20190707《明朝那些事1》明朝的建立</title>
-    <link href="http://yoursite.com/2019/07/07/20190707%E3%80%8A%E6%98%8E%E6%9C%9D%E9%82%A3%E4%BA%9B%E4%BA%8B1%E3%80%8B%E6%98%8E%E6%9C%9D%E7%9A%84%E5%BB%BA%E7%AB%8B/"/>
-    <id>http://yoursite.com/2019/07/07/20190707%E3%80%8A%E6%98%8E%E6%9C%9D%E9%82%A3%E4%BA%9B%E4%BA%8B1%E3%80%8B%E6%98%8E%E6%9C%9D%E7%9A%84%E5%BB%BA%E7%AB%8B/</id>
-    <published>2019-07-07T04:01:07.000Z</published>
-    <updated>2019-12-10T04:06:01.922Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="一、序言"><a href="#一、序言" class="headerlink" title="一、序言"></a>一、序言</h3><p>以前我小觑了明朝，看完此书方知其宏伟恢弘。一个持久了两三百年的王朝，中间既有繁荣、胜利、正气；亦有凋敝、惨败与阴邪。历史有趣的就是在这来来回回的博弈中，道义精神的永不磨灭，历史规律的永恒不变。在此，我存着对历史的温情与敬意，以人物性格的角度，记录二三。</p><h3 id="二、人物"><a href="#二、人物" class="headerlink" title="二、人物"></a>二、人物</h3><p>明太祖朱元璋，最初本是穷苦人家的放牛娃。为生计所迫曾辗转为和尚，后来饥荒和压迫，最终他连和尚也做不成了，云游了几年加入了红巾军。在农民军里，他是一个很突出的人，不但作战勇敢，而且很有计谋，处事冷静，思虑深远，还很讲义气，有危险的时候第一个上，这一切都让他有了崇高的威信。</p><a id="more"></a><p><strong>将军——统率之人，必有更多素质要求。其中战略、远见、理想、勇气、气量等等皆不可缺。</strong></p><p>后续，朱元璋大败陈友谅、消灭张士诚，这些都是很精彩的战役。他不仅个人强，周边的人也都很强。他有贤内助妻子马皇后；身边大将如云、徐达、常遇春、李文忠、冯胜、朱文正、耿炳文、参谋刘基、李善长等等，我仅选部分介绍，详细的还是看书吧。</p><p>陈友谅，敢作敢当，但心黑手狠，胆大妄为，不重义气、背信弃义、骄横暴力。最终被诱敌深入的伏击给干掉了。巧的是那场鄱阳湖决战真的很像赤壁之战，果真历史来回重现。</p><p>张士诚，有勇气、意志坚强、却无大志，但他的的确确是个大好人。他待人宽大，免除了江浙一带的赋税。但他的过于宽大和无主见也使得他无法成为枭雄，而只能做一个豪杰。乱世中小富即安的思想可是不够生存的，在这种历史的淘汰赛里，只有胜负。</p><p>此处引用下朱元璋的战略分析，果真知人知彼啊，所以最后的赢家是朱元璋。</p><blockquote><p>张士诚的特点是器小，陈友谅的特点是志骄；器小无远见，志骄好生事。如果我进攻陈友谅，张士诚必然不会救他；而进攻张士诚，陈友谅就一定会动员全国兵力来救，我就要两线作战，到时就很难说了。</p></blockquote><p>马皇后，一心一意对待朱元璋，贤良仁德。在朱元璋称帝后乱杀大臣，马皇后“刀下留人”救了众多开国功臣。在教育子女上，也是要求他们生活简朴、用功读书。</p><p><strong>这样的女子不知道为朱元璋笼络了多少人心、培养了多少子女人才啊。</strong></p><p>常遇春，先锋大将，冷静观察形势，勇猛敢站，擅长骑兵突破，但却嗜好杀戮。后来常遇春主动向陈友谅挑事，活埋了降兵三千，带来了很多麻烦。</p><p><strong>可见，一个人的缺陷会很有可能导致大问题出现。</strong></p><p>徐达、善谋略、身先士卒、令出无二、为人谨慎，刚毅武勇，持重有谋，纪律严明，屡统大军，转战南北，治军严整，功高不矜，名列功臣第一。他是大破元军的关键人物，他也是活到最后的人之一了。</p><p>朱文正，善防守、排兵布阵。有军事才能，却不懂为人，性格乖张，心胸狭隘，最后竟然因为分攻奖赏不满而勾结张士诚，最终被囚禁。</p><p>刘基，神机军事，年少好学，运筹帷幄，准确判断。陈友谅进攻，其他人都在建议撤退之时，只有他在坚持，并且提出了诱敌伏击的策略。在多次战役中，他的判断甚至比朱元璋的判断还要准确。“三分天下诸葛亮，一统江山刘伯温”，在我看来他甚至比诸葛亮的成就还要高呢。不过，可惜最终死于政治斗争中。</p><p><strong>学习和实践从来都是成为一个有所建树的人的前提条件。</strong></p><h3 id="三、总结"><a href="#三、总结" class="headerlink" title="三、总结"></a>三、总结</h3><p>最后引用下原文对优秀将领成长过程的总结：</p><blockquote><p>第一个年级要学习的是军事理论。所有想成为名将的人，必须要学习一些经典的理论知识，包括《孙子兵法》《吴子兵法》等等。<br>第二个年级学习的内容是实战。这是极为重要的，那些理论学习的优秀者如果不能过这一关，他们就将被授予一个光荣的称号——纸上谈兵。<br>三年级要学习的是冷酷。 成为一个名将，就必须和仁慈、温和之类的名词说再见。他必须心如铁石、冷酷无情。<br>四年级要学习的是理智。<br>五年级学习判断，准确判断并决策。<br>六年级学习坚强，那些最优秀的人能够从失败中爬起来，去挑战那个多次战胜自己的人，这就叫做坚强。</p></blockquote><p>明朝的建立，经历了好几场大战。战场千变万化，胜者的智慧，败者的教训都是值得学习借鉴的。毕竟从人性、历史规律上看，一切都还是有章可循的。</p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;一、序言&quot;&gt;&lt;a href=&quot;#一、序言&quot; class=&quot;headerlink&quot; title=&quot;一、序言&quot;&gt;&lt;/a&gt;一、序言&lt;/h3&gt;&lt;p&gt;以前我小觑了明朝，看完此书方知其宏伟恢弘。一个持久了两三百年的王朝，中间既有繁荣、胜利、正气；亦有凋敝、惨败与阴邪。历史有趣的就是在这来来回回的博弈中，道义精神的永不磨灭，历史规律的永恒不变。在此，我存着对历史的温情与敬意，以人物性格的角度，记录二三。&lt;/p&gt;&lt;h3 id=&quot;二、人物&quot;&gt;&lt;a href=&quot;#二、人物&quot; class=&quot;headerlink&quot; title=&quot;二、人物&quot;&gt;&lt;/a&gt;二、人物&lt;/h3&gt;&lt;p&gt;明太祖朱元璋，最初本是穷苦人家的放牛娃。为生计所迫曾辗转为和尚，后来饥荒和压迫，最终他连和尚也做不成了，云游了几年加入了红巾军。在农民军里，他是一个很突出的人，不但作战勇敢，而且很有计谋，处事冷静，思虑深远，还很讲义气，有危险的时候第一个上，这一切都让他有了崇高的威信。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="读书笔记" scheme="http://yoursite.com/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
-    
-    
-      <category term="读书笔记" scheme="http://yoursite.com/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
-    
-      <category term="历史" scheme="http://yoursite.com/tags/%E5%8E%86%E5%8F%B2/"/>
     
   </entry>
   
