@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-02-07T14:40:36.448Z</updated>
+  <updated>2020-02-07T14:41:39.290Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -21,9 +21,9 @@
     <link href="http://yoursite.com/2020/02/07/%E6%8A%80%E6%9C%AF%E6%80%9D%E8%80%83%EF%BC%88%E5%B8%B8%E6%9B%B4%EF%BC%89/"/>
     <id>http://yoursite.com/2020/02/07/%E6%8A%80%E6%9C%AF%E6%80%9D%E8%80%83%EF%BC%88%E5%B8%B8%E6%9B%B4%EF%BC%89/</id>
     <published>2020-02-07T13:07:25.000Z</published>
-    <updated>2020-02-07T14:40:36.448Z</updated>
+    <updated>2020-02-07T14:41:39.290Z</updated>
     
-    <content type="html"><![CDATA[<p>2020-02-07</p><p>1，其实机器学习目前来看绝大多数基于概率统计，比如说贝叶斯分类，根据数据类别的分布去推测出新数据更可能属于哪个类别。深度学习则更多的时候是拟合非线性函数，在数学上看都是模型，建模建模是要根据实际问题和实际数据情况来的，所以才有了奥卡姆剃刀规则。其实我觉得底层其实是数学，看了越多论文越觉得一切皆数学，包括目前跨院接触的运筹经管。</p><a id="more"></a><p>2，运筹优化领域应用十分广泛。始于线性规划（减少物料使用，减少费用这是目标，各种限制是约束条件），发展于各种决策甚至统计学习（线性回归SVM等优化函数）与深度学习（优化损失函数），我在想是否可以考虑一些运筹启发式的策略用于学习呢？比如说模拟退火？考虑一定的概率跳出当前解，重新搜索进行梯度优化？</p><p>3，</p>]]></content>
+    <content type="html"><![CDATA[<p>2020-02-07</p><p>1，其实机器学习目前来看绝大多数基于概率统计，比如说贝叶斯分类，根据数据类别的分布去推测出新数据更可能属于哪个类别。深度学习则更多的时候是拟合非线性函数，在数学上看都是模型，建模建模是要根据实际问题和实际数据情况来的，所以才有了奥卡姆剃刀规则。其实我觉得底层其实是数学，看了越多论文越觉得一切皆数学，包括目前跨院接触的运筹经管。</p><a id="more"></a><p>2，运筹优化领域：其实在管科里这个应用十分广泛，毕竟本质是数学。始于线性规划（减少物料使用，减少费用这是目标，各种限制是约束条件），发展于各种决策甚至统计学习（线性回归SVM等优化函数）与深度学习（优化损失函数），更深的数学还有组合优化，多目标优化等等。我在想是否可以考虑一些运筹启发式的策略用于学习呢？比如说模拟退火？考虑一定的概率跳出当前解，重新搜索进行梯度优化？</p><p>3，关于时间序列：</p>]]></content>
     
     <summary type="html">
     
@@ -439,9 +439,9 @@
       <category term="AIOps" scheme="http://yoursite.com/categories/AIOps/"/>
     
     
-      <category term="异常检测" scheme="http://yoursite.com/tags/%E5%BC%82%E5%B8%B8%E6%A3%80%E6%B5%8B/"/>
-    
       <category term="机器学习" scheme="http://yoursite.com/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
+    
+      <category term="异常检测" scheme="http://yoursite.com/tags/%E5%BC%82%E5%B8%B8%E6%A3%80%E6%B5%8B/"/>
     
       <category term="AIOps" scheme="http://yoursite.com/tags/AIOps/"/>
     
