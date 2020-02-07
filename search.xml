@@ -1,13 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>技术思考（常更）</title>
+    <url>/2020/02/07/%E6%8A%80%E6%9C%AF%E6%80%9D%E8%80%83%EF%BC%88%E5%B8%B8%E6%9B%B4%EF%BC%89/</url>
+    <content><![CDATA[<p>2020-02-07</p><p>1，其实机器学习目前来看绝大多数基于概率统计，比如说贝叶斯分类，根据数据类别的分布去推测出新数据更可能属于哪个类别。深度学习则更多的时候是拟合非线性函数，在数学上看都是模型，建模建模是要根据实际问题和实际数据情况来的，所以才有了奥卡姆剃刀规则。其实我觉得底层其实是数学，看了越多论文越觉得一切皆数学，包括目前跨院接触的运筹经管。</p>]]></content>
+      <categories>
+        <category>经历</category>
+      </categories>
+      <tags>
+        <tag>IT行业</tag>
+        <tag>计算机</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>20200205腾讯广告算法大赛——鱼佬方案</title>
     <url>/2020/02/05/20200205%E8%85%BE%E8%AE%AF%E5%B9%BF%E5%91%8A%E7%AE%97%E6%B3%95%E5%A4%A7%E8%B5%9B/</url>
     <content><![CDATA[<h3 id="1-方案学习"><a href="#1-方案学习" class="headerlink" title="1 方案学习"></a>1 方案学习</h3><h4 id="1-1-赛题简介"><a href="#1-1-赛题简介" class="headerlink" title="1.1 赛题简介"></a>1.1 赛题简介</h4><p>题目：腾讯效果广告采用的是GSP（Generalized Second-Price）竞价机制，<strong>广告的实际曝光取决于广告的流量覆盖大小和在竞争广告中的相对竞争力水平</strong>。其中广告的流量覆盖取决于广告的人群定向（匹配对应特征的用户数量）、广告素材尺寸（匹配的广告位）以及投放时段、预算等设置项。而影响广告竞争力的主要有出价、广告质量等因素（如pctr/pcvr等）， 以及对用户体验的控制策略。 通常来说， 基本竞争力可以用ecpm = 1000 <em> cpc_bid </em> pctr = 1000 <em> cpa_bid </em> pctr * pcvr (cpc, cpa分别代表按点击付费模式和按转化付费模式)。综上，前者决定广告能参与竞争的次数以及竞争对象，后者决定在每次竞争中的胜出概率。二者最终决定广告每天的曝光量。</p><a id="more"></a>
 <p> 本次竞赛将提供历史n天的曝光广告的数据（特定流量上采样）， 包括对应每次曝光的流量特征（用户属性和广告位等时空信息）以及曝光广告的设置和竞争力分数；测试集是新的一批广告设置（有完全新的广告id， 也有老的广告id修改了设置）。 </p>
 <p>目标：预估测试集里这批广告的日曝光量。</p>
-<h4 id="1-2-数据分析与清洗"><a href="#1-2-数据分析与清洗" class="headerlink" title="1.2 数据分析与清洗"></a>1.2 数据分析与清洗</h4><p>原始特征：原始训练特征有：广告id，素材大小，广告行业id，商品类型，商品id，广告账户id + 定点人群投放时间。测试集也包含这些特征，然后构造好的广告id和标签数据与广告静态数据经行合并。</p>
-<p>查看数据与预处理：数据集大小，数据类型，数据干净，标签类型，离群点（散点图，删除或保留），缺失情况（背后的意义，业务含义考虑填充），错误值（删除样本，均值或中位数替换等，标签里的错误值 剔除or 标签log化），各类别分布（均值情况，方差情况），大概可以构造的特征，特征之间是否冗余，时间信息。</p>
+<h4 id="1-2-数据分析与清洗"><a href="#1-2-数据分析与清洗" class="headerlink" title="1.2 数据分析与清洗"></a>1.2 数据分析与清洗</h4><h5 id="原始特征："><a href="#原始特征：" class="headerlink" title="原始特征："></a>原始特征：</h5><p>广告id，素材大小，广告行业id，商品类型，商品id；</p>
+<p>广告账户id，出价 定点人群投放时间。</p>
+<p>测试集也包含这些特征，然后构造好的广告id和标签数据与广告静态数据经行合并。</p>
+<h5 id="构造数据"><a href="#构造数据" class="headerlink" title="构造数据"></a>构造数据</h5><ol>
+<li><p>将广告操作表中出价、定向人群、投放时段信息与广告静态表merge。</p>
+</li>
+<li><p>对日志数据中的广告id构造日曝光量得到新的数据集。</p>
+</li>
+<li><p>将data与广告静态表进行merge，并给缺失的投放时段填充-999</p>
+</li>
+</ol>
+<h5 id="查看数据与预处理："><a href="#查看数据与预处理：" class="headerlink" title="查看数据与预处理："></a>查看数据与预处理：</h5><p>数据集大小，数据类型，数据是否干净，标签类型，离群点（散点图，删除或保留），缺失情况（背后的意义，业务含义考虑填充），错误值（删除样本，均值或中位数替换等，标签里的错误值 剔除or 标签log化），各类别分布（均值情况，方差情况），大概可以构造的特征，特征之间是否冗余，时间信息。</p>
 <h4 id="1-3-特征工程"><a href="#1-3-特征工程" class="headerlink" title="1.3 特征工程"></a>1.3 特征工程</h4><h5 id="类别特征"><a href="#类别特征" class="headerlink" title="类别特征"></a>类别特征</h5><p>先处理可以转为自然编码，onehot编码</p>
 <p>1，计数count统计（热度啥的，注意特殊值；计数排序 异常值不敏感；label占比的比例（过拟合问题，交叉验证处理）；</p>
 <p>2，目标编码：出价的均值，点击率均值，或ecpm均值构造（新的广告ID的话，中位数填充）</p>
@@ -22,9 +44,13 @@
 <h5 id="特征筛选"><a href="#特征筛选" class="headerlink" title="特征筛选"></a>特征筛选</h5><p>1，过滤法：卡方检验 衡量x、y的相关性，相关系数来衡量特征间的相关性</p>
 <p>2，封装法：逐个添加特征来判断效果好不好（前向，后向搜索），变好就选它，不适合特征太多的情况</p>
 <p>3，嵌入法：基于学习模型的特征排序。如 树模型LightGBM可以返回特征的重要性，反映特征在训练过程中的分裂次数（越多，重要性越高），信息增益情况，按高低排序，阈值排序。</p>
+<h5 id="一些trick"><a href="#一些trick" class="headerlink" title="一些trick"></a>一些trick</h5><p>1，模型与规则：比如历史平均来填充旧广告id的曝光量，新广告id曝光量用广告size、商品id等特征对应历史平均来填充。调整单调性。</p>
 <h4 id="1-4-模型训练与验证"><a href="#1-4-模型训练与验证" class="headerlink" title="1.4 模型训练与验证"></a>1.4 模型训练与验证</h4><p>Baseline：XGboost或LIghtGBM，对特征处理要求低，对类别和连续特征友好，缺失值不需要填充。</p>
 <p>交叉验证：时序问题，为了避免数据泄露，常选择训练集最后一天进行线下验证，或者K-folds交叉验证。</p>
-<p>模型融合：</p>
+<p>模型融合：特征差异，样本差异（交叉验证中选择的样本是不一样的），模型差异（树模型，深度模型等）</p>
+<p>训练过程融合：Bagging与Boosting</p>
+<p>训练结果融合：投票法（类别），平均法（回归），Stacking</p>
+<p>要不断尝试新idea，向优秀选手提问，赛后总结看优秀方案。</p>
 <h3 id="2-源码阅读"><a href="#2-源码阅读" class="headerlink" title="2 源码阅读"></a>2 源码阅读</h3><h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，<a href="https://algo.qq.com/application/home/rankinglist/rankingList.html" target="_blank" rel="noopener">https://algo.qq.com/application/home/rankinglist/rankingList.html</a> 腾讯算法大赛</p>
 <p>2，<a href="https://zhuanlan.zhihu.com/p/63718151" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/63718151</a> 鱼佬知乎</p>
 ]]></content>
@@ -566,8 +592,8 @@
         <category>深度学习</category>
       </categories>
       <tags>
-        <tag>深度学习</tag>
         <tag>机器学习</tag>
+        <tag>深度学习</tag>
       </tags>
   </entry>
   <entry>
@@ -622,7 +648,7 @@
   <entry>
     <title>20191216面试1&amp;图论问题回顾</title>
     <url>/2019/12/17/20191216%E5%AD%97%E8%8A%82%E9%9D%A2%E8%AF%95%E4%B8%8E%E5%8D%8E%E4%B8%BA%E5%9B%BE%E8%AE%BA%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<h3 id="1，一面"><a href="#1，一面" class="headerlink" title="1，一面"></a>1，一面</h3><p>第一次面试，居然去面了目前北京最火的一家公司。emmm，真的是胆大。不过一面的面试官超级可爱，很温和，我也太幸运了吧。先让自我介绍，然后问项目，然后出了一个很简单的算法题。</p><h4 id="1-1-图论问题"><a href="#1-1-图论问题" class="headerlink" title="1.1 图论问题"></a>1.1 图论问题</h4><p>项目是我大三做的一个图论赛题，回顾总结一下。</p><p>问题：“服务器选址问题”，从图中选出一些节点安放服务器（图中绿色节点 表示为$S_i$），服务器输出流量供给消费节点（图中红色节点，表示为$C_i$）</p><a id="more"></a>
+    <content><![CDATA[<h3 id="1，一面"><a href="#1，一面" class="headerlink" title="1，一面"></a>1，一面</h3><p>第一次面试，居然去面了目前北京最火的一家公司，虽然不是我想去的算法岗。emmm，真的是胆大。不过一面的面试官超级可爱，很温和，我也太幸运了吧。先让自我介绍，然后问项目，然后出了一个很简单的算法题。</p><h4 id="1-1-图论问题"><a href="#1-1-图论问题" class="headerlink" title="1.1 图论问题"></a>1.1 图论问题</h4><p>项目是我大三做的一个图论赛题，回顾总结一下。</p><p>问题：“服务器选址问题”，从图中选出一些节点安放服务器（图中绿色节点 表示为$S_i$），服务器输出流量供给消费节点（图中红色节点，表示为$C_i$）</p><a id="more"></a>
 
 
 <p>目标：第一要满足每个消费节点的流量需求，第二费用最小。</p>
@@ -661,6 +687,18 @@
 <p>思路：倒过来遍历，取一个最小的stack</p>
 <p>倒着遍历，维护一个递减的stack(top保持最小）。先10和其index绑定入stack，然后轮到7，判断stack top，若大于7就把stack top的数的index返回，否则弹出stack top，直到找到大于7或者stack弹空，若弹空则返回-1.然后把7绑定index压到stack里。</p>
 <figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stack&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">ListNode</span>&#123;</span></span><br><span class="line">    <span class="keyword">int</span> value;</span><br><span class="line">    <span class="keyword">int</span> index;</span><br><span class="line">    ListNode(<span class="keyword">int</span> a,<span class="keyword">int</span> b)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">this</span>-&gt;value=a;</span><br><span class="line">        <span class="keyword">this</span>-&gt;index=b;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="built_in">stack</span>&lt;ListNode&gt; stk;</span><br><span class="line">    <span class="built_in">stack</span>&lt;<span class="keyword">int</span>&gt; res;</span><br><span class="line">    <span class="keyword">int</span> N; <span class="comment">//N &gt; 0</span></span><br><span class="line">    <span class="built_in">cin</span>&gt;&gt;N;</span><br><span class="line">    <span class="keyword">int</span> arr[N];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;N; i++) &#123;</span><br><span class="line">        <span class="built_in">cin</span>&gt;&gt;arr[i];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//algotithm</span></span><br><span class="line">    res.push(<span class="number">-1</span>);</span><br><span class="line">    <span class="function">ListNode <span class="title">temp</span><span class="params">(arr[N<span class="number">-1</span>],N<span class="number">-1</span>)</span></span>;</span><br><span class="line">    stk.push(temp);<span class="comment">//put last value,arr[N-1]</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=N<span class="number">-1</span>; i&gt;=<span class="number">0</span>; i--) &#123;</span><br><span class="line">        <span class="keyword">while</span> ( !stk.empty()) &#123;</span><br><span class="line">            <span class="keyword">if</span> (arr[i] &lt; stk.top().value) &#123;<span class="comment">//compare with stack top value</span></span><br><span class="line">                res.push(stk.top().index);<span class="comment">//remember the result</span></span><br><span class="line">                <span class="function">ListNode <span class="title">temp</span><span class="params">(arr[i],i)</span></span>;</span><br><span class="line">                stk.push(temp);<span class="comment">//put current arr[i]</span></span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span>&#123;</span><br><span class="line">                stk.pop();</span><br><span class="line">                <span class="keyword">if</span> (stk.empty()) &#123;</span><br><span class="line">                    res.push(<span class="number">-1</span>); <span class="comment">//no bigger data, so res is -1</span></span><br><span class="line">                    <span class="function">ListNode <span class="title">temp</span><span class="params">(arr[i],i)</span></span>; <span class="comment">//put this value in it</span></span><br><span class="line">                    stk.push(temp);</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;N; i++) &#123;<span class="comment">//print the result</span></span><br><span class="line">        <span class="built_in">cout</span>&lt;&lt;res.top()&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">        res.pop();</span><br><span class="line">    &#125;</span><br><span class="line">  	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="3-第二次zj开发岗"><a href="#3-第二次zj开发岗" class="headerlink" title="3 第二次zj开发岗"></a>3 第二次zj开发岗</h3><p>其实实习面试都是很基础的，本科学过的东西。问的主要是关于计算机网络，操作系统和数据库的。</p>
+<p>操作系统。虽然目前开发岗</p>
+<p><strong>操作系统</strong></p>
+<p>1，线程和进程的区别：</p>
+<p>2，进程调度算法：</p>
+<p><strong>计算机网络</strong></p>
+<p>1，拥塞控制：</p>
+<p><strong>数据库</strong></p>
+<p>1，数据库的三范式：</p>
+<p>2，创建表的条件：</p>
+<p><strong>算法设计</strong></p>
+<p>给一批int数，要求实现一个结构，使得以下操作平均时间复杂度都为O(1)，增加、删除指定的数、随机获取一个数。</p>
 ]]></content>
       <categories>
         <category>算法</category>
@@ -761,8 +799,8 @@
         <category>AIOps</category>
       </categories>
       <tags>
-        <tag>异常检测</tag>
         <tag>机器学习</tag>
+        <tag>异常检测</tag>
         <tag>AIOps</tag>
       </tags>
   </entry>
