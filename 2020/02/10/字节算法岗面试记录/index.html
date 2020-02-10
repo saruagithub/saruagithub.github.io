@@ -51,14 +51,14 @@
 <meta name="keywords" content="面试,算法">
 <meta property="og:type" content="article">
 <meta property="og:title" content="字节算法岗面试记录">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;01&#x2F;23&#x2F;%E5%AD%97%E8%8A%82%E7%AE%97%E6%B3%95%E5%B2%97%E9%9D%A2%E8%AF%95%E8%AE%B0%E5%BD%95&#x2F;index.html">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;02&#x2F;10&#x2F;%E5%AD%97%E8%8A%82%E7%AE%97%E6%B3%95%E5%B2%97%E9%9D%A2%E8%AF%95%E8%AE%B0%E5%BD%95&#x2F;index.html">
 <meta property="og:site_name" content="WangXue">
 <meta property="og:description" content="一面面试官真的是很直接了，就出了道算法题。但整体来说这个面试官真的是超级好了啊，特别会引导，我觉得字节就是这点细节很好。最大连续序列和。如给一个Array： 1，-2，3，1，-1，5 。则是8 (3, 1, -1 , 5)分析：设DP[k] 是表示以k结尾的最大的和。则递推公式为 DP[k] = max{DP[k-1] + A[k] ，A[k] }，要么是前一个连续和加上数组值（当前数组值为正）">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-02-10T10:23:01.248Z">
+<meta property="og:updated_time" content="2020-02-10T10:23:49.834Z">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://yoursite.com/2020/01/23/%E5%AD%97%E8%8A%82%E7%AE%97%E6%B3%95%E5%B2%97%E9%9D%A2%E8%AF%95%E8%AE%B0%E5%BD%95/">
+<link rel="canonical" href="http://yoursite.com/2020/02/10/%E5%AD%97%E8%8A%82%E7%AE%97%E6%B3%95%E5%B2%97%E9%9D%A2%E8%AF%95%E8%AE%B0%E5%BD%95/">
 
 
 <script id="page-configurations">
@@ -209,7 +209,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/23/%E5%AD%97%E8%8A%82%E7%AE%97%E6%B3%95%E5%B2%97%E9%9D%A2%E8%AF%95%E8%AE%B0%E5%BD%95/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/10/%E5%AD%97%E8%8A%82%E7%AE%97%E6%B3%95%E5%B2%97%E9%9D%A2%E8%AF%95%E8%AE%B0%E5%BD%95/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -232,16 +232,10 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2020-01-23 17:40:59" itemprop="dateCreated datePublished" datetime="2020-01-23T17:40:59+08:00">2020-01-23</time>
+              <time title="创建时间：2020-02-10 17:40:59 / 修改时间：18:23:49" itemprop="dateCreated datePublished" datetime="2020-02-10T17:40:59+08:00">2020-02-10</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-02-10 18:23:01" itemprop="dateModified" datetime="2020-02-10T18:23:01+08:00">2020-02-10</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -270,8 +264,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2020/01/23/%E5%AD%97%E8%8A%82%E7%AE%97%E6%B3%95%E5%B2%97%E9%9D%A2%E8%AF%95%E8%AE%B0%E5%BD%95/#comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/01/23/%E5%AD%97%E8%8A%82%E7%AE%97%E6%B3%95%E5%B2%97%E9%9D%A2%E8%AF%95%E8%AE%B0%E5%BD%95/" itemprop="commentCount"></span>
+    <a title="valine" href="/2020/02/10/%E5%AD%97%E8%8A%82%E7%AE%97%E6%B3%95%E5%B2%97%E9%9D%A2%E8%AF%95%E8%AE%B0%E5%BD%95/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/02/10/%E5%AD%97%E8%8A%82%E7%AE%97%E6%B3%95%E5%B2%97%E9%9D%A2%E8%AF%95%E8%AE%B0%E5%BD%95/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -301,7 +295,7 @@
 <p>我一开始莽撞写错了不等式约束，然后后面想了想SVM才改了。那里可能给面试官留了不好的印象</p>
 <p>2，吃完饭更</p>
 <p>3，给一个不均分的硬币。投的证明概率是P（不是0.5），怎么用它来得到均匀的结果。</p>
-<p>好不容易面完了二面，技术岗说后面HR联系，然后然后就没有然后了通知说岗位不匹配，我我我明明那么开心的准备过了年去实习的，我觉得还挺匹配的啊。经管这套东西其实很能揭示一些用户行为的原理的，尤其是博弈论里机制设计好了是可以引导用户行为的，hhh。</p>
+<p>1月23面的，好不容易面完了二面，技术岗说后面HR联系，然后然后就没有然后了通知说岗位不匹配，我我我明明那么开心的准备过了年去实习的，我觉得还挺匹配的啊。经管这套东西其实很能揭示一些用户行为的原理的，尤其是博弈论里机制设计好了是可以引导用户行为的，hhh。</p>
 
     </div>
 
@@ -341,13 +335,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/01/16/20200116%E7%82%B9%E4%BA%91%E7%9A%84%E4%B8%89%E7%A7%8D%E5%8F%AF%E8%A7%86%E5%8C%96%E6%96%B9%E6%B3%95/" rel="prev" title="点云的三种可视化方法">
-      <i class="fa fa-chevron-left"></i> 点云的三种可视化方法
+    <a href="/2020/02/10/20200210DP%E7%AE%97%E6%B3%95/" rel="prev" title="DP算法">
+      <i class="fa fa-chevron-left"></i> DP算法
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2020/02/04/20200204%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%8B%E8%BE%9B%E6%99%AE%E6%A3%AE%E6%82%96%E8%AE%BA/" rel="next" title="20200204统计学之辛普森悖论">
-      20200204统计学之辛普森悖论 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
