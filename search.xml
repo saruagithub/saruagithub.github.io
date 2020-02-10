@@ -77,7 +77,7 @@
 <h5 id="数值特征"><a href="#数值特征" class="headerlink" title="数值特征"></a>数值特征</h5><p>1，分桶：转为离散特征，就可以交叉组合。</p>
 <p>2，特征交叉：加减乘除等。根据业务出价 × 点击率 = ecpm 值。还可以类别与数值交叉。</p>
 <h5 id="时间特征"><a href="#时间特征" class="headerlink" title="时间特征"></a>时间特征</h5><p>1，日期变量：年、月、周、日、小时、分钟等</p>
-<p>2，时序相关特征：历史平均，滑动窗统计。</p>
+<p>2，时序相关特征：历史平均，历史曝光率，历史PCTR，滑动窗统计。</p>
 <h5 id="特征筛选"><a href="#特征筛选" class="headerlink" title="特征筛选"></a>特征筛选</h5><p>1，过滤法：卡方检验 衡量x、y的相关性，相关系数来衡量特征间的相关性</p>
 <p>2，封装法：逐个添加特征来判断效果好不好（前向，后向搜索），变好就选它，不适合特征太多的情况</p>
 <p>3，嵌入法：基于学习模型的特征排序。如 树模型LightGBM可以返回特征的重要性，反映特征在训练过程中的分裂次数（越多，重要性越高），信息增益情况，按高低排序，阈值排序。</p>
@@ -204,6 +204,32 @@
         <tag>机器学习</tag>
         <tag>AIOps</tag>
         <tag>统计学</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>字节算法岗面试记录</title>
+    <url>/2020/01/23/%E5%AD%97%E8%8A%82%E7%AE%97%E6%B3%95%E5%B2%97%E9%9D%A2%E8%AF%95%E8%AE%B0%E5%BD%95/</url>
+    <content><![CDATA[<h3 id="一面"><a href="#一面" class="headerlink" title="一面"></a>一面</h3><p>面试官真的是很直接了，就出了道算法题。但整体来说这个面试官真的是超级好了啊，特别会引导，我觉得字节就是这点细节很好。</p><p>最大连续序列和。</p><p>如给一个Array： 1，-2，3，1，-1，5 。则是8 (3, 1, -1 , 5)</p><p>分析：设DP[k] 是表示以k结尾的最大的和。则递推公式为 DP[k] = max{DP[k-1] + A[k] ，A[k] }，要么是前一个连续和加上数组值（当前数组值为正），要么就是数组本身。这样最后只需要一遍遍历过去，找出以某个k结尾的最大和的那个DP值即为答案。</p><a id="more"></a>
+
+
+
+<p>代入看：初始化DP[0] = 0 , DP[1] = max{1, 0} = 1 , DP[2] = max{-1, -2} = -1; ….</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">maxSequenceSum</span><span class="params">(<span class="keyword">int</span>* matrix, <span class="keyword">int</span> length)</span></span>&#123;</span><br><span class="line">  <span class="keyword">if</span>(length &lt; <span class="number">0</span>) <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">  <span class="keyword">int</span> dp[length];</span><br><span class="line">  dp[<span class="number">0</span>] = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;length;i++)&#123;</span><br><span class="line">    dp[i] = <span class="built_in">max</span>(dp[i<span class="number">-1</span>]+matrix[i], matrix[i]);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// get the max</span></span><br><span class="line">  <span class="keyword">int</span> res = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;length;i++)&#123;</span><br><span class="line">    <span class="keyword">if</span>(dp[i] &gt; res) res = dp[i];</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里的时间复杂度是O (n)，空间复杂度也是O(n)，面试官引导进行优化空间。</p>
+<p>思路就是用变量存上一个dp[i-1] 与最大的 dp值，直接返回即可。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">maxSequenceSum</span><span class="params">(<span class="keyword">int</span>* matrix, <span class="keyword">int</span> length)</span></span>&#123;</span><br><span class="line">  <span class="keyword">if</span>(length &lt; <span class="number">0</span>) <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">  <span class="keyword">int</span> dp[length];</span><br><span class="line">  dp_max = matrix[<span class="number">0</span>]; <span class="comment">// store the max</span></span><br><span class="line">  dp_last = matrix[<span class="number">0</span>]; <span class="comment">// store the dp[i-1]</span></span><br><span class="line">  <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;length;i++)&#123;</span><br><span class="line">    dp_last = <span class="built_in">max</span>(dp_last + matrx[i], matrix[i]);</span><br><span class="line">    <span class="keyword">if</span>(dp_last &gt; dp_max) dp_max = dp_last;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> dp_max;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>真的是有意思，我也没有刷完所有题，感觉自己思路还是有些慢，得再练哦。</p>
+<h3 id="二面"><a href="#二面" class="headerlink" title="二面"></a>二面</h3><p>二面的技术leader有点像个稍严厉的大父亲，而且涉及很广居然包括博弈论，我虽然是学了很多博弈论的数学模型（还记得当时的考试，复习得可费劲了，得理解所有的啥完美，完全博弈啥概念，还得计算的）。在此记录一些问题吧。</p>
+<p>1，出了个问题是在给定的CTR和CVR之下，让用户尽量久的停留（停留时间长）。考虑最优化，写优化和约束和拉格朗日法。</p>
+<p>我一开始莽撞写错了不等式约束，然后后面想了想SVM才改了。那里可能给面试官留了不好的印象</p>
+<p>2，吃完饭更</p>
+]]></content>
+      <categories>
+        <category>算法</category>
+      </categories>
+      <tags>
+        <tag>面试</tag>
+        <tag>算法</tag>
       </tags>
   </entry>
   <entry>

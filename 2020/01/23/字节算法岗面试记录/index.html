@@ -47,16 +47,18 @@
   };
 </script>
 
-  <meta name="description" content="本科重庆大学CS，研究生南京大学MS，主要研究AIOps，机器学习等，语言Python&amp;C++">
-<meta property="og:type" content="website">
-<meta property="og:title" content="WangXue">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;categories&#x2F;%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0&#x2F;index.html">
+  <meta name="description" content="一面面试官真的是很直接了，就出了道算法题。但整体来说这个面试官真的是超级好了啊，特别会引导，我觉得字节就是这点细节很好。最大连续序列和。如给一个Array： 1，-2，3，1，-1，5 。则是8 (3, 1, -1 , 5)分析：设DP[k] 是表示以k结尾的最大的和。则递推公式为 DP[k] = max{DP[k-1] + A[k] ，A[k] }，要么是前一个连续和加上数组值（当前数组值为正）">
+<meta name="keywords" content="面试,算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="字节算法岗面试记录">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;01&#x2F;23&#x2F;%E5%AD%97%E8%8A%82%E7%AE%97%E6%B3%95%E5%B2%97%E9%9D%A2%E8%AF%95%E8%AE%B0%E5%BD%95&#x2F;index.html">
 <meta property="og:site_name" content="WangXue">
-<meta property="og:description" content="本科重庆大学CS，研究生南京大学MS，主要研究AIOps，机器学习等，语言Python&amp;C++">
+<meta property="og:description" content="一面面试官真的是很直接了，就出了道算法题。但整体来说这个面试官真的是超级好了啊，特别会引导，我觉得字节就是这点细节很好。最大连续序列和。如给一个Array： 1，-2，3，1，-1，5 。则是8 (3, 1, -1 , 5)分析：设DP[k] 是表示以k结尾的最大的和。则递推公式为 DP[k] = max{DP[k-1] + A[k] ，A[k] }，要么是前一个连续和加上数组值（当前数组值为正）">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-02-10T10:18:53.164Z">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://yoursite.com/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">
+<link rel="canonical" href="http://yoursite.com/2020/01/23/%E5%AD%97%E8%8A%82%E7%AE%97%E6%B3%95%E5%B2%97%E9%9D%A2%E8%AF%95%E8%AE%B0%E5%BD%95/">
 
 
 <script id="page-configurations">
@@ -64,13 +66,13 @@
   CONFIG.page = {
     sidebar: "",
     isHome: false,
-    isPost: false,
+    isPost: true,
     isPage: false,
     isArchive: false
   };
 </script>
 
-  <title>分类: 机器学习 | WangXue</title>
+  <title>字节算法岗面试记录 | WangXue</title>
   
 
 
@@ -202,240 +204,162 @@
           <div class="content">
             
 
+  <div class="posts-expand">
+      
   
   
-  
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        <h1 class="collection-header">机器学习
-          <small>分类</small>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/23/%E5%AD%97%E8%8A%82%E7%AE%97%E6%B3%95%E5%B2%97%E9%9D%A2%E8%AF%95%E8%AE%B0%E5%BD%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="WangXue">
+      <meta itemprop="description" content="本科重庆大学CS，研究生南京大学MS，主要研究AIOps，机器学习等，语言Python&C++">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="WangXue">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          字节算法岗面试记录
         </h1>
-      </div>
+
+        <div class="post-meta">
+	  
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-01-23 17:40:59" itemprop="dateCreated datePublished" datetime="2020-01-23T17:40:59+08:00">2020-01-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-10 18:18:53" itemprop="dateModified" datetime="2020-02-10T18:18:53+08:00">2020-02-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index">
+                    <span itemprop="name">算法</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/01/23/%E5%AD%97%E8%8A%82%E7%AE%97%E6%B3%95%E5%B2%97%E9%9D%A2%E8%AF%95%E8%AE%B0%E5%BD%95/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/01/23/%E5%AD%97%E8%8A%82%E7%AE%97%E6%B3%95%E5%B2%97%E9%9D%A2%E8%AF%95%E8%AE%B0%E5%BD%95/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <h1 class="collection-header">2020</h1>
-    </div>
+        <h3 id="一面"><a href="#一面" class="headerlink" title="一面"></a>一面</h3><p>面试官真的是很直接了，就出了道算法题。但整体来说这个面试官真的是超级好了啊，特别会引导，我觉得字节就是这点细节很好。</p><p>最大连续序列和。</p><p>如给一个Array： 1，-2，3，1，-1，5 。则是8 (3, 1, -1 , 5)</p><p>分析：设DP[k] 是表示以k结尾的最大的和。则递推公式为 DP[k] = max{DP[k-1] + A[k] ，A[k] }，要么是前一个连续和加上数组值（当前数组值为正），要么就是数组本身。这样最后只需要一遍遍历过去，找出以某个k结尾的最大和的那个DP值即为答案。</p><a id="more"></a>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
 
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2020-02-05T16:42:07+08:00"
-              content="2020-02-05">
-          02-05
-        </time>
-      </div>
 
-      <h2 class="post-title">
-          <a class="post-title-link" href="/2020/02/05/20200205%E8%85%BE%E8%AE%AF%E5%B9%BF%E5%91%8A%E7%AE%97%E6%B3%95%E5%A4%A7%E8%B5%9B/" itemprop="url">
-            <span itemprop="name">20200205腾讯广告算法大赛——鱼佬方案</span>
-          </a>
-      </h2>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2020-01-03T21:16:46+08:00"
-              content="2020-01-03">
-          01-03
-        </time>
-      </div>
-
-      <h2 class="post-title">
-          <a class="post-title-link" href="/2020/01/03/20200103LightGBM-paper/" itemprop="url">
-            <span itemprop="name">LightGBM_paper</span>
-          </a>
-      </h2>
-
-    </header>
-  </article>
-    <div class="collection-year">
-      <h1 class="collection-header">2019</h1>
-    </div>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2019-07-20T10:36:44+08:00"
-              content="2019-07-20">
-          07-20
-        </time>
-      </div>
-
-      <h2 class="post-title">
-          <a class="post-title-link" href="/2019/07/20/20190810HUAWEI-DiGiX-CTR/" itemprop="url">
-            <span itemprop="name">2019HUAWEI_DiGiX_CTR</span>
-          </a>
-      </h2>
-
-    </header>
-  </article>
-    <div class="collection-year">
-      <h1 class="collection-header">2018</h1>
-    </div>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2018-12-28T10:02:19+08:00"
-              content="2018-12-28">
-          12-28
-        </time>
-      </div>
-
-      <h2 class="post-title">
-          <a class="post-title-link" href="/2018/12/28/20200104EM%E7%AE%97%E6%B3%95/" itemprop="url">
-            <span itemprop="name">EM算法</span>
-          </a>
-      </h2>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2018-12-25T11:23:38+08:00"
-              content="2018-12-25">
-          12-25
-        </time>
-      </div>
-
-      <h2 class="post-title">
-          <a class="post-title-link" href="/2018/12/25/20191225%E9%9B%86%E6%88%90%E5%AD%A6%E4%B9%A0/" itemprop="url">
-            <span itemprop="name">集成学习</span>
-          </a>
-      </h2>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2018-12-24T20:36:12+08:00"
-              content="2018-12-24">
-          12-24
-        </time>
-      </div>
-
-      <h2 class="post-title">
-          <a class="post-title-link" href="/2018/12/24/20191224%E6%9C%B4%E7%B4%A0%E8%B4%9D%E5%8F%B6%E6%96%AF/" itemprop="url">
-            <span itemprop="name">朴素贝叶斯</span>
-          </a>
-      </h2>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2018-12-09T18:52:35+08:00"
-              content="2018-12-09">
-          12-09
-        </time>
-      </div>
-
-      <h2 class="post-title">
-          <a class="post-title-link" href="/2018/12/09/20191224%E6%84%9F%E7%9F%A5%E6%9C%BA%E4%B8%8EKNN/" itemprop="url">
-            <span itemprop="name">感知机 & KNN</span>
-          </a>
-      </h2>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2018-12-09T09:26:32+08:00"
-              content="2018-12-09">
-          12-09
-        </time>
-      </div>
-
-      <h2 class="post-title">
-          <a class="post-title-link" href="/2018/12/09/20191209SVM%E6%8E%A8%E5%AF%BC/" itemprop="url">
-            <span itemprop="name">SVM推导</span>
-          </a>
-      </h2>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2018-12-08T10:59:11+08:00"
-              content="2018-12-08">
-          12-08
-        </time>
-      </div>
-
-      <h2 class="post-title">
-          <a class="post-title-link" href="/2018/12/08/20191208LR%E5%8E%9F%E7%90%86/" itemprop="url">
-            <span itemprop="name">LR原理</span>
-          </a>
-      </h2>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2018-12-07T16:34:41+08:00"
-              content="2018-12-07">
-          12-07
-        </time>
-      </div>
-
-      <h2 class="post-title">
-          <a class="post-title-link" href="/2018/12/07/20200107%E6%A8%A1%E5%9E%8B%E9%80%89%E6%8B%A9/" itemprop="url">
-            <span itemprop="name">模型选择</span>
-          </a>
-      </h2>
-
-    </header>
-  </article>
+<p>代入看：初始化DP[0] = 0 , DP[1] = max{1, 0} = 1 , DP[2] = max{-1, -2} = -1; ….</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">maxSequenceSum</span><span class="params">(<span class="keyword">int</span>* matrix, <span class="keyword">int</span> length)</span></span>&#123;</span><br><span class="line">  <span class="keyword">if</span>(length &lt; <span class="number">0</span>) <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">  <span class="keyword">int</span> dp[length];</span><br><span class="line">  dp[<span class="number">0</span>] = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;length;i++)&#123;</span><br><span class="line">    dp[i] = <span class="built_in">max</span>(dp[i<span class="number">-1</span>]+matrix[i], matrix[i]);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// get the max</span></span><br><span class="line">  <span class="keyword">int</span> res = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;length;i++)&#123;</span><br><span class="line">    <span class="keyword">if</span>(dp[i] &gt; res) res = dp[i];</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里的时间复杂度是O (n)，空间复杂度也是O(n)，面试官引导进行优化空间。</p>
+<p>思路就是用变量存上一个dp[i-1] 与最大的 dp值，直接返回即可。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">maxSequenceSum</span><span class="params">(<span class="keyword">int</span>* matrix, <span class="keyword">int</span> length)</span></span>&#123;</span><br><span class="line">  <span class="keyword">if</span>(length &lt; <span class="number">0</span>) <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">  <span class="keyword">int</span> dp[length];</span><br><span class="line">  dp_max = matrix[<span class="number">0</span>]; <span class="comment">// store the max</span></span><br><span class="line">  dp_last = matrix[<span class="number">0</span>]; <span class="comment">// store the dp[i-1]</span></span><br><span class="line">  <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;length;i++)&#123;</span><br><span class="line">    dp_last = <span class="built_in">max</span>(dp_last + matrx[i], matrix[i]);</span><br><span class="line">    <span class="keyword">if</span>(dp_last &gt; dp_max) dp_max = dp_last;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> dp_max;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>真的是有意思，我也没有刷完所有题，感觉自己思路还是有些慢，得再练哦。</p>
+<h3 id="二面"><a href="#二面" class="headerlink" title="二面"></a>二面</h3><p>二面的技术leader有点像个稍严厉的大父亲，而且涉及很广居然包括博弈论，我虽然是学了很多博弈论的数学模型（还记得当时的考试，复习得可费劲了，得理解所有的啥完美，完全博弈啥概念，还得计算的）。在此记录一些问题吧。</p>
+<p>1，出了个问题是在给定的CTR和CVR之下，让用户尽量久的停留（停留时间长）。考虑最优化，写优化和约束和拉格朗日法。</p>
+<p>我一开始莽撞写错了不等式约束，然后后面想了想SVM才改了。那里可能给面试官留了不好的印象</p>
+<p>2，吃完饭更</p>
 
     </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div></div>
+  <button disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="WangXue 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="WangXue 支付宝">
+        <p>支付宝</p>
+      </div>
+
   </div>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E9%9D%A2%E8%AF%95/" rel="tag"># 面试</a>
+              <a href="/tags/%E7%AE%97%E6%B3%95/" rel="tag"># 算法</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/01/16/20200116%E7%82%B9%E4%BA%91%E7%9A%84%E4%B8%89%E7%A7%8D%E5%8F%AF%E8%A7%86%E5%8C%96%E6%96%B9%E6%B3%95/" rel="prev" title="点云的三种可视化方法">
+      <i class="fa fa-chevron-left"></i> 点云的三种可视化方法
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/02/04/20200204%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%8B%E8%BE%9B%E6%99%AE%E6%A3%AE%E6%82%96%E8%AE%BA/" rel="next" title="20200204统计学之辛普森悖论">
+      20200204统计学之辛普森悖论 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
   
   
   
 
-  
-
+  </div>
 
 
           </div>
           
+    <div class="comments" id="comments"></div>
 
         </div>
           
@@ -460,6 +384,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一面"><span class="nav-number">1.</span> <span class="nav-text">一面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二面"><span class="nav-number">2.</span> <span class="nav-text">二面</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
