@@ -26,8 +26,13 @@
 <p>为什么拍卖？揭示信息并减少代理成本。当一个物品对买者的价值比卖者更清楚时，卖者一般不愿意首先提出价格，而采用拍卖方式获得可能的最高价格。</p>
 <p>暗拍，是以出价最高的投标者获得拍卖品。并支付出价给卖者。（有一级密封拍卖，出价最高；二级密封拍卖，报价中的次高价）</p>
 <p>一级拍卖：</p>
-<p>两个投标人，$b_i \geq 0$ 是投标人i的出价，$v_i$ 是拍卖品对投标人i的价值，可见$v_i$只有i自己知道。$v_i$ 独立地取自定义在区间$[0,1]$ 上的均匀分布函数。投标人i的支付是：</p>
-<script type="math/tex; mode=display">u_{i}\left(b_{i}, b_{j} ; v_{i}\right)=\left\{\begin{array}{cl}{v_{i}-b_{i},} & {\text { 如果 } b_{i}>b_{j}} \\ {\frac{1}{2}\left(v_{i}-b_{i}\right),} & {\text { 如果 } b_{i}=b_{j}} \\ {0,} & {\text { 如果 } b_{i}<b_{j}}\end{array}\right.</script><p>3，概率生成器。给一个不均分的硬币，投的正面概率是P（不是0.5），怎么用它来得到均匀（0.5）的结果。两次正面的概率是p，两次反面概率是（1-p）^2，一正一反的概率是 2p(1-p)，这里01、10的生成概率是相同的，基于此代表0，1来生成。</p>
+<p>两个投标人，假设$b_i \geq 0$ 是投标人i的出价，$v_i$ 是拍卖品对投标人i的价值，可见$v_i$只有i自己知道（自己根据估计的真实价值进行出价）。$v_i$ 独立地取自定义在区间$[0,1]$ 上的均匀分布函数。投标人i的支付是：</p>
+<script type="math/tex; mode=display">u_{i}\left(b_{i}, b_{j} ; v_{i}\right)=\left\{\begin{array}{cl}{v_{i}-b_{i},} & {\text { 如果 } b_{i}>b_{j}} \\ {\frac{1}{2}\left(v_{i}-b_{i}\right),} & {\text { 如果 } b_{i}=b_{j}} \\ {0,} & {\text { 如果 } b_{i}<b_{j}}\end{array}\right.</script><p>假设投标人i的出价 $b_i(v_i)$ 是其价值 $v_i$ 的严格递增可微函数，肯定不会$b_i ＞1 &gt; v_i$ 因为没人付比物品价值更高的出价。考虑对称的情况下，投标人i的预期支付是：</p>
+<script type="math/tex; mode=display">u_{i}=(v-b) \operatorname{Pr} o b\left\{b_{j}<b\right\}</script><script type="math/tex; mode=display">\operatorname{Pr} o b\left\{b_{j}<b\right\}=\operatorname{Pr} o b\left\{b^{*}\left(v_{j}\right)<b\right\} = \operatorname{Pr} o b\left\{v_{j}<b^{*-1}(b) \equiv \Phi(b)\right\}=\Phi(b)</script><p>投标人面对的问题就是：</p>
+<script type="math/tex; mode=display">\min _{b} u_{i}=(v-b) \operatorname{Pr} o b\left\{b_{j}<b\right\} =(v-b) \Phi(b)</script><p>其一阶条件是：$-\Phi(b)+(v-b) \Phi^{\prime}(b)=0$</p>
+<p>如果$b^{*}(\cdot)$ 是投标者i的最优策略，</p>
+<p>其实就是参与者越多，卖者得到的价格就越高。</p>
+<p>3，概率生成器。给一个不均分的硬币，投的正面概率是P（不是0.5），怎么用它来得到均匀（0.5）的结果。两次正面的概率是p，两次反面概率是（1-p）^2，一正一反的概率是 2p(1-p)，这里01、10的生成概率是相同的，基于此代表0，1来生成。</p>
 <p>2020年1月23好不容易面完了二面，技术岗说后面HR联系，然后然后就没有然后了通知说岗位不匹配，我我我明明那么开心的准备过了年去实习的，我觉得还挺匹配的啊。</p>
 ]]></content>
       <categories>
