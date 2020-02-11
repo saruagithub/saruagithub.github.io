@@ -14,7 +14,7 @@
 <figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">maxSequenceSum</span><span class="params">(<span class="keyword">int</span>* matrix, <span class="keyword">int</span> length)</span></span>&#123;</span><br><span class="line">  <span class="keyword">if</span>(length &lt; <span class="number">0</span>) <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">  <span class="keyword">int</span> dp[length];</span><br><span class="line">  dp_max = matrix[<span class="number">0</span>]; <span class="comment">// store the max</span></span><br><span class="line">  dp_last = matrix[<span class="number">0</span>]; <span class="comment">// store the dp[i-1]</span></span><br><span class="line">  <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;length;i++)&#123;</span><br><span class="line">    dp_last = <span class="built_in">max</span>(dp_last + matrx[i], matrix[i]);</span><br><span class="line">    <span class="keyword">if</span>(dp_last &gt; dp_max) dp_max = dp_last;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> dp_max;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>真的是有意思，我也没有刷完所有题，感觉自己思路还是有些慢，得再练哦。</p>
 <h3 id="二面"><a href="#二面" class="headerlink" title="二面"></a>二面</h3><p>二面的技术leader有点像个稍严厉的大父亲，而且涉及很广居然包括博弈论，我虽然是学了很多博弈论的数学模型（还记得当时的考试，复习得可费劲了，得理解所有的啥完美，完全博弈啥概念，还得计算的）。在此记录一些问题吧。</p>
-<p>1，出了个问题是在给定的CTR和CVR之下，让用户尽量久的停留（停留时间长）。考虑最优化，写优化和约束和拉格朗日法。</p>
+<h4 id="1，优化问题"><a href="#1，优化问题" class="headerlink" title="1，优化问题"></a>1，优化问题</h4><p>出了个问题是在给定的CTR和CVR之下，让用户尽量久的停留（停留时间长）。考虑最优化，写优化和约束和拉格朗日法。</p>
 <p>max: t</p>
 <p>s.t. CTR+r CVR &gt; n</p>
 <p>CTR和CVR的计算应该也是跟用户停留时间t有关的（现象上来看，用户停留时间越长，点击率和转化率可能越高），用最优化里的有约束的凸二次规划来看的话。</p>
@@ -22,17 +22,19 @@
 <script type="math/tex; mode=display">L(t) = t - \alpha_i (CTR+r CVR - n)</script><p>当然这里根据CTR和CVR的计算公式展开。根据拉格朗日对偶像，原始问题的对偶问题是极小极大问题。对所有实数域上的优化问题都有其对偶问题。</p>
 <script type="math/tex; mode=display">min_{\alpha_i} max_t  L(t)</script><p>这里应该是对偶可以求一个 upper bound的。我一开始莽撞写错了不等式约束，然后后面联想SVM才改。在复习一下（图中f ,g 不要求是凸的）：</p>
 <p><img src="/images/20200211Dual.jpg" alt="20200211Dual"></p>
-<p>2，广告拍卖模型。明拍（谁出的高就收谁的）和暗拍（相互不知道对方出价），各自的影响。</p>
+<h4 id="2，广告拍卖模型"><a href="#2，广告拍卖模型" class="headerlink" title="2，广告拍卖模型"></a>2，广告拍卖模型</h4><p>明拍（谁出的高就收谁的）和暗拍（相互不知道对方出价），各自的影响。</p>
 <p>为什么拍卖？揭示信息并减少代理成本。当一个物品对买者的价值比卖者更清楚时，卖者一般不愿意首先提出价格，而采用拍卖方式获得可能的最高价格。</p>
 <p>暗拍，是以出价最高的投标者获得拍卖品。并支付出价给卖者。（有一级密封拍卖，出价最高；二级密封拍卖，报价中的次高价）</p>
-<p>一级拍卖：</p>
-<p>两个投标人，假设$b_i \geq 0$ 是投标人i的出价，$v_i$ 是拍卖品对投标人i的价值，可见$v_i$只有i自己知道（自己根据估计的真实价值进行出价，这个函数只与自己相关）。$v_i$ 独立地取自定义在区间$[0,1]$ 上的均匀分布函数。投标人i的支付是：</p>
+<h5 id="2-1-一级拍卖"><a href="#2-1-一级拍卖" class="headerlink" title="2.1 一级拍卖"></a>2.1 一级拍卖</h5><p>两个投标人，假设$b_i \geq 0$ 是投标人i的出价，$v_i$ 是拍卖品对投标人i的价值，可见$v_i$只有i自己知道（自己根据估计的真实价值进行出价，这个函数只与自己相关）。$v_i$ 独立地取自定义在区间$[0,1]$ 上的均匀分布函数。投标人i的效用是：</p>
 <script type="math/tex; mode=display">u_{i}\left(b_{i}, b_{j} ; v_{i}\right)=\left\{\begin{array}{cl}{v_{i}-b_{i},} & {\text { 如果 } b_{i}>b_{j}} \\ {\frac{1}{2}\left(v_{i}-b_{i}\right),} & {\text { 如果 } b_{i}=b_{j}} \\ {0,} & {\text { 如果 } b_{i}<b_{j}}\end{array}\right.</script><p>假设投标人i的出价 $b_i(v_i)$ 是其价值 $v_i$ 的严格递增可微函数，肯定不会$b_i ＞1 &gt; v_i$ 因为没人付比物品价值更高的出价。考虑对称的情况下，投标人i的预期支付是：</p>
-<script type="math/tex; mode=display">u_{i}=(v-b) \operatorname{Pr} o b\left\{b_{j}<b\right\}</script><script type="math/tex; mode=display">\operatorname{Pr} o b\left\{b_{j}<b\right\}=\operatorname{Pr} o b\left\{b^{*}\left(v_{j}\right)<b\right\} = \operatorname{Pr} o b\left\{v_{j}<b^{*-1}(b) \equiv \Phi(b)\right\}=\Phi(b)</script><p>投标人面对的问题就是（拍到物品的概率 乘以 获得物品的报酬）：</p>
+<script type="math/tex; mode=display">u_{i}=(v-b) \operatorname{Pr} o b\left\{b_{j}<b\right\}</script><script type="math/tex; mode=display">\operatorname{Pr} o b\left\{b_{j}<b\right\}=\operatorname{Pr} o b\left\{b^{*}\left(v_{j}\right)<b\right\} = \operatorname{Pr} o b\left\{v_{j}<b^{*-1}(b) \equiv \Phi(b)\right\}=\Phi(b)</script><p>投标人面对的问题就是：</p>
 <script type="math/tex; mode=display">\max _{b} u_{i}=(v-b) \operatorname{Pr} o b\left\{b_{j}<b\right\}=(v-b) \Phi(b)</script><p>一阶条件是：$-\Phi(b)+(v-b) \Phi^{\prime}(b)=0$</p>
 <p>如果$b^{*}(\cdot)$ 是投标者i的最优策略，$\Phi(b)=v, then, v=(v-b) \frac{\mathrm{d} v}{\mathrm{d} b}$</p>
-<p>根据均匀分布假设求得 $b^{<em>}=v / 2$，当有n个投标人时，$b^{</em>}(v)=\frac{n-1}{n} v$</p>
+<p>根据均匀分布假设求得 $b^{<em>}=v / 2$，即是这个博弈的贝叶斯均衡。当有n个投标人时，$b^{</em>}(v)=\frac{n-1}{n} v$</p>
 <p><strong>投标人越多，卖者能得到的价格就越高；当投标人数趋于无穷时，卖者几乎得到拍卖品价值的全部。因此，卖者希望更多的人加入竞标 。</strong></p>
+<h5 id="2-2-二级拍卖"><a href="#2-2-二级拍卖" class="headerlink" title="2.2 二级拍卖"></a>2.2 二级拍卖</h5><p>如果投标者想赢得投标，则他的效用是</p>
+<script type="math/tex; mode=display">u_{i}=v_{i}-\max _{j \neq i} b_{j}</script><script type="math/tex; mode=display">b_{i}>\max _{j \neq i} b_{j}</script><p>类比到互联网的广告拍卖里，其实也有广义第一价格GFP（实收价等于出价）和广义第二价格GSP（实收价等于第二出价），还有VGG竞价机制。</p>
+<p>广义第一价格GFP（实收价等于出价）的影响，受广告主的出价影响，可能不稳定。</p>
 <p>3，概率生成器。给一个不均分的硬币，投的正面概率是P（不是0.5），怎么用它来得到均匀（0.5）的结果。两次正面的概率是p，两次反面概率是（1-p）^2，一正一反的概率是 2p(1-p)，这里01、10的生成概率是相同的，基于此代表0，1来生成。</p>
 <p>2020年1月23好不容易面完了二面，技术岗说后面HR联系，然后然后就没有然后了通知说岗位不匹配，我我我明明那么开心的准备过了年去实习的，我觉得还挺匹配的啊。</p>
 ]]></content>
