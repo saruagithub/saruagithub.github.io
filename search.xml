@@ -30,7 +30,7 @@
 <script type="math/tex; mode=display">u_{i}=(v-b) \operatorname{Pr} o b\left\{b_{j}<b\right\}</script><script type="math/tex; mode=display">\operatorname{Pr} o b\left\{b_{j}<b\right\}=\operatorname{Pr} o b\left\{b^{*}\left(v_{j}\right)<b\right\} = \operatorname{Pr} o b\left\{v_{j}<b^{*-1}(b) \equiv \Phi(b)\right\}=\Phi(b)</script><p>投标人面对的问题就是：</p>
 <script type="math/tex; mode=display">\max _{b} u_{i}=(v-b) \operatorname{Pr} o b\left\{b_{j}<b\right\}=(v-b) \Phi(b)</script><p>一阶条件是：$-\Phi(b)+(v-b) \Phi^{\prime}(b)=0$</p>
 <p>如果$b^{*}(\cdot)$ 是投标者i的最优策略，$\Phi(b)=v, then, v=(v-b) \frac{\mathrm{d} v}{\mathrm{d} b}$</p>
-<p>根据均匀分布假设求得 $b^{<em>}=v / 2$，即是这个博弈的贝叶斯均衡。当有n个投标人时，$b^{</em>}(v)=\frac{n-1}{n} v$</p>
+<p>根据均匀分布假设求得 $b^{\star}=v / 2$，即是这个博弈的贝叶斯均衡。当有n个投标人时，$b^{\star}(v)=\frac{n-1}{n} v$</p>
 <p><strong>投标人越多，卖者能得到的价格就越高；当投标人数趋于无穷时，卖者几乎得到拍卖品价值的全部。因此，卖者希望更多的人加入竞标 。</strong></p>
 <h5 id="2-2-二级拍卖"><a href="#2-2-二级拍卖" class="headerlink" title="2.2 二级拍卖"></a>2.2 二级拍卖</h5><p>如果投标者想赢得投标，则他的效用是：</p>
 <script type="math/tex; mode=display">u_{i}=v_{i}-\max _{j \neq i} b_{j}</script><script type="math/tex; mode=display">b_{i}>\max _{j \neq i} b_{j}</script><p>对每个参与人来说，自己只需要比其他人好一点点就行。即以他的估价进行投标的策略$\left(b_{i}=v_{i}\right)$ 弱优于其他策略。记$r_{i} \equiv \max _{j \neq i} b_{j}$ 即第二大出价。</p>

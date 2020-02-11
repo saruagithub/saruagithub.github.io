@@ -56,7 +56,7 @@
 <meta property="og:description" content="一面面试官真的是很直接了，就出了道算法题。但整体来说这个面试官真的是超级好了啊，特别会引导，我觉得字节就是这点细节很好。最大连续序列和。如给一个Array： 1，-2，3，1，-1，5 。则是8 (3, 1, -1 , 5)分析：设DP[k] 是表示以k结尾的最大的和。则递推公式为 DP[k] = max{DP[k-1] + A[k] ，A[k] }，要么是前一个连续和加上数组值（当前数组值为正）">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200211Dual.jpg">
-<meta property="og:updated_time" content="2020-02-11T08:37:12.955Z">
+<meta property="og:updated_time" content="2020-02-11T08:39:36.273Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200211Dual.jpg">
 
@@ -242,7 +242,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-02-11 16:37:12" itemprop="dateModified" datetime="2020-02-11T16:37:12+08:00">2020-02-11</time>
+                <time title="修改时间：2020-02-11 16:39:36" itemprop="dateModified" datetime="2020-02-11T16:39:36+08:00">2020-02-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -315,7 +315,7 @@
 <script type="math/tex; mode=display">u_{i}=(v-b) \operatorname{Pr} o b\left\{b_{j}<b\right\}</script><script type="math/tex; mode=display">\operatorname{Pr} o b\left\{b_{j}<b\right\}=\operatorname{Pr} o b\left\{b^{*}\left(v_{j}\right)<b\right\} = \operatorname{Pr} o b\left\{v_{j}<b^{*-1}(b) \equiv \Phi(b)\right\}=\Phi(b)</script><p>投标人面对的问题就是：</p>
 <script type="math/tex; mode=display">\max _{b} u_{i}=(v-b) \operatorname{Pr} o b\left\{b_{j}<b\right\}=(v-b) \Phi(b)</script><p>一阶条件是：$-\Phi(b)+(v-b) \Phi^{\prime}(b)=0$</p>
 <p>如果$b^{*}(\cdot)$ 是投标者i的最优策略，$\Phi(b)=v, then, v=(v-b) \frac{\mathrm{d} v}{\mathrm{d} b}$</p>
-<p>根据均匀分布假设求得 $b^{<em>}=v / 2$，即是这个博弈的贝叶斯均衡。当有n个投标人时，$b^{</em>}(v)=\frac{n-1}{n} v$</p>
+<p>根据均匀分布假设求得 $b^{\star}=v / 2$，即是这个博弈的贝叶斯均衡。当有n个投标人时，$b^{\star}(v)=\frac{n-1}{n} v$</p>
 <p><strong>投标人越多，卖者能得到的价格就越高；当投标人数趋于无穷时，卖者几乎得到拍卖品价值的全部。因此，卖者希望更多的人加入竞标 。</strong></p>
 <h5 id="2-2-二级拍卖"><a href="#2-2-二级拍卖" class="headerlink" title="2.2 二级拍卖"></a>2.2 二级拍卖</h5><p>如果投标者想赢得投标，则他的效用是：</p>
 <script type="math/tex; mode=display">u_{i}=v_{i}-\max _{j \neq i} b_{j}</script><script type="math/tex; mode=display">b_{i}>\max _{j \neq i} b_{j}</script><p>对每个参与人来说，自己只需要比其他人好一点点就行。即以他的估价进行投标的策略$\left(b_{i}=v_{i}\right)$ 弱优于其他策略。记$r_{i} \equiv \max _{j \neq i} b_{j}$ 即第二大出价。</p>
