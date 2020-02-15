@@ -2,7 +2,7 @@
 <search>
   <entry>
     <title>字节算法岗面试记录</title>
-    <url>/2020/02/10/%E5%AD%97%E8%8A%82%E7%AE%97%E6%B3%95%E5%B2%97%E9%9D%A2%E8%AF%95%E8%AE%B0%E5%BD%95/</url>
+    <url>/2020/02/10/20200210%E5%AD%97%E8%8A%82%E7%AE%97%E6%B3%95%E5%B2%97%E9%9D%A2%E8%AF%95%E8%AE%B0%E5%BD%95/</url>
     <content><![CDATA[<h3 id="一面"><a href="#一面" class="headerlink" title="一面"></a>一面</h3><p>面试官真的是很直接了，就出了道算法题。但整体来说这个面试官真的是超级好了啊，特别会引导，我觉得字节就是这点细节很好。</p><p>最大连续序列和。</p><p>如给一个Array： 1，-2，3，1，-1，5 。则是8 (3, 1, -1 , 5)</p><p>分析：设DP[k] 是表示以k结尾的最大的和。则递推公式为 DP[k] = max{DP[k-1] + A[k] ，A[k] }，要么是前一个连续和加上数组值（当前数组值为正），要么就是数组本身。这样最后只需要一遍遍历过去，找出以某个k结尾的最大和的那个DP值即为答案。</p><a id="more"></a>
 
 
@@ -54,17 +54,11 @@
       </tags>
   </entry>
   <entry>
-    <title>20200210DP算法</title>
+    <title>DP算法</title>
     <url>/2020/02/10/20200210DP%E7%AE%97%E6%B3%95/</url>
-    <content><![CDATA[<p>title: DP算法<br>date: 2020-02-10 11:04:11<br>mathjax: true<br>tags:</p><ul>
-<li>动态规划</li>
-<li>算法<br>categories:</li>
-<li>算法</li>
-</ul><h3 id="1-经典的背包问题"><a href="#1-经典的背包问题" class="headerlink" title="1 经典的背包问题"></a>1 经典的背包问题</h3><p>有n个重量和价值分别为$w_i,v_i$ 的物品，从这些物品中挑选出总重量不超过W的物品。求所有挑选方案中价值总和的最大值。</p><p>限制条件：</p><a id="more"></a>
+    <content><![CDATA[<h3 id="1-经典的背包问题"><a href="#1-经典的背包问题" class="headerlink" title="1 经典的背包问题"></a>1 经典的背包问题</h3><p>有n个重量和价值分别为$w_i,v_i$ 的物品，从这些物品中挑选出总重量不超过W的物品。求所有挑选方案中价值总和的最大值。</p><p>限制条件：</p><script type="math/tex; mode=display">1 \leqslant n \leqslant 100</script><script type="math/tex; mode=display">1 \leqslant w_{i}, v_{i} \leqslant 100</script><script type="math/tex; mode=display">1 \leqslant W \leqslant 10000</script><a id="more"></a>
 
-
-
-<script type="math/tex; mode=display">1 \leqslant n \leqslant 100</script><script type="math/tex; mode=display">1 \leqslant w_{i}, v_{i} \leqslant 100</script><script type="math/tex; mode=display">1 \leqslant W \leqslant 10000</script><p>样例输入： n = 4, (w,v) = {(2,3) , (1,2), (3,4) , (2,2)} ,  w = 5 则输出是 7 （选 0、1、3号物品）</p>
+<p>样例输入： n = 4, (w,v) = {(2,3) , (1,2), (3,4) , (2,2)} ,  w = 5 则输出是 7 （选 0、1、3号物品）</p>
 <p>分析：</p>
 <p>记 $dp[i+1][j]$ 是从前i个物品中挑选总重不超过j 的物品时总价值的最大值。于是有如下的递推式：</p>
 <script type="math/tex; mode=display">dp[0]\lfloor j]=0</script><script type="math/tex; mode=display">dp[i+1] [j]=\left\{\begin{array}{ll}{d p[i][j]} & {(j<w[i])} \\ {\max (d p[i][j], d p[i][j-w[i]]+v[i])} & {(其他)}\end{array}\right.</script><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">solve</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;n; i++) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j=<span class="number">0</span>; j&lt;=W; j++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (j&lt;w[i]) &#123;</span><br><span class="line">                dp[i+<span class="number">1</span>][j] = dp[i][j];</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span>&#123;</span><br><span class="line">                dp[i+<span class="number">1</span>][j] = <span class="built_in">max</span>(dp[i][j],dp[i+<span class="number">1</span>][j-w[i]] + v[i]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;dp[n][W]&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -95,6 +89,13 @@
 <h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，《挑战程序设计》 2.3 动态规划章节</p>
 <p>2，leecode经典100题10题，32题</p>
 ]]></content>
+      <categories>
+        <category>算法</category>
+      </categories>
+      <tags>
+        <tag>算法</tag>
+        <tag>动态规划</tag>
+      </tags>
   </entry>
   <entry>
     <title>技术思考（常更）</title>
@@ -905,9 +906,9 @@
         <category>AIOps</category>
       </categories>
       <tags>
+        <tag>异常检测</tag>
         <tag>机器学习</tag>
         <tag>AIOps</tag>
-        <tag>异常检测</tag>
       </tags>
   </entry>
   <entry>
@@ -1425,8 +1426,8 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
         <category>AIOps</category>
       </categories>
       <tags>
-        <tag>AIOps</tag>
         <tag>时间序列</tag>
+        <tag>AIOps</tag>
       </tags>
   </entry>
   <entry>
@@ -1491,8 +1492,8 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
         <category>AIOps</category>
       </categories>
       <tags>
-        <tag>AIOps</tag>
         <tag>异常检测</tag>
+        <tag>AIOps</tag>
       </tags>
   </entry>
   <entry>
