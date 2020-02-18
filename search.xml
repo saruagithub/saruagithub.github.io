@@ -54,7 +54,7 @@
       </tags>
   </entry>
   <entry>
-    <title>20191210异常检测方法</title>
+    <title>异常检测方法</title>
     <url>/2020/02/10/20191210%E5%BC%82%E5%B8%B8%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95/</url>
     <content><![CDATA[<h3 id="1-异常检测方法综述"><a href="#1-异常检测方法综述" class="headerlink" title="1 异常检测方法综述"></a>1 异常检测方法综述</h3><h4 id="1-1-统计方法"><a href="#1-1-统计方法" class="headerlink" title="1.1 统计方法"></a>1.1 统计方法</h4><p>主要是对数据的分布做出假设，并找出假设下所定义的“异常”，因此往往会使用极值分析或者假设检验，概率密度函数值小于某个阈值的点判定为异常。 </p><h5 id="1-1-1，看图"><a href="#1-1-1，看图" class="headerlink" title="1.1.1，看图"></a>1.1.1，看图</h5><p>频率直方图， 点分布图</p><h5 id="1-1-2，高斯分布的-k-sigma"><a href="#1-1-2，高斯分布的-k-sigma" class="headerlink" title="1.1.2，高斯分布的 k-sigma"></a>1.1.2，高斯分布的 k-sigma</h5><p>概率密度函数为 $f(x)=\frac{1}{\sqrt{2 \pi} \sigma} e^{-\frac{(x-\mu)^{2}}{2 \sigma^{2}}}$</p><a id="more"></a>
 
