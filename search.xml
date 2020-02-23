@@ -11,7 +11,7 @@
 <figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">maxSequenceSum</span><span class="params">(<span class="keyword">int</span>* matrix, <span class="keyword">int</span> length)</span></span>&#123;</span><br><span class="line">  <span class="keyword">if</span>(length &lt; <span class="number">0</span>) <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">  <span class="keyword">int</span> dp[length];</span><br><span class="line">  dp[<span class="number">0</span>] = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;length;i++)&#123;</span><br><span class="line">    dp[i] = <span class="built_in">max</span>(dp[i<span class="number">-1</span>]+matrix[i], matrix[i]);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// get the max</span></span><br><span class="line">  <span class="keyword">int</span> res = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;length;i++)&#123;</span><br><span class="line">    <span class="keyword">if</span>(dp[i] &gt; res) res = dp[i];</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>这里的时间复杂度是O (n)，空间复杂度也是O(n)，面试官引导进行优化空间。</p>
 <p>思路就是用变量存上一个dp[i-1] 与最大的 dp值，直接返回即可。</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">maxSequenceSum</span><span class="params">(<span class="keyword">int</span>* matrix, <span class="keyword">int</span> length)</span></span>&#123;</span><br><span class="line">  <span class="keyword">if</span>(length &lt; <span class="number">0</span>) <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">  <span class="keyword">int</span> dp[length];</span><br><span class="line">  dp_max = matrix[<span class="number">0</span>]; <span class="comment">// store the max</span></span><br><span class="line">  dp_last = matrix[<span class="number">0</span>]; <span class="comment">// store the dp[i-1]</span></span><br><span class="line">  <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;length;i++)&#123;</span><br><span class="line">    dp_last = <span class="built_in">max</span>(dp_last + matrx[i], matrix[i]);</span><br><span class="line">    <span class="keyword">if</span>(dp_last &gt; dp_max) dp_max = dp_last;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> dp_max;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">maxSequenceSum</span><span class="params">(<span class="keyword">int</span>* matrix, <span class="keyword">int</span> length)</span></span>&#123;</span><br><span class="line">  <span class="keyword">if</span>(length &lt; <span class="number">0</span>) <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">  <span class="keyword">int</span> dp[length];</span><br><span class="line">  <span class="keyword">int</span> dp_max = matrix[<span class="number">0</span>]; <span class="comment">// store the max</span></span><br><span class="line">  <span class="keyword">int</span> dp_last = matrix[<span class="number">0</span>]; <span class="comment">// store the dp[i-1]</span></span><br><span class="line">  <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;length;i++)&#123;</span><br><span class="line">    dp_last = <span class="built_in">max</span>(dp_last + matrx[i], matrix[i]);</span><br><span class="line">    <span class="keyword">if</span>(dp_last &gt; dp_max) dp_max = dp_last;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> dp_max;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>真的是有意思，我也没有刷完所有题，感觉自己思路还是有些慢，得再练哦。</p>
 <h3 id="二面"><a href="#二面" class="headerlink" title="二面"></a>二面</h3><p>二面的技术leader有点像个稍严厉的大父亲，而且涉及很广居然包括博弈论，我虽然是学了很多博弈论的数学模型（还记得当时的考试，复习得可费劲了，得理解所有的啥完美，完全博弈啥概念，还得计算的）。在此记录一些问题吧。</p>
 <h4 id="1，优化问题"><a href="#1，优化问题" class="headerlink" title="1，优化问题"></a>1，优化问题</h4><p>出了个问题是在给定的CTR和CVR之下，让用户尽量久的停留（停留时间长）。考虑最优化，写优化和约束和拉格朗日法。</p>
@@ -383,6 +383,33 @@
         <tag>机器学习</tag>
         <tag>AIOps</tag>
         <tag>统计学</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>DNN概述</title>
+    <url>/2020/01/23/20200223DNN%E6%A6%82%E8%BF%B0/</url>
+    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>从最开始的神经元开始，1943年MP单个神经元诞生。$y = f\left(\sum_{i=1}^{n} w_{i} x_{i}-\theta\right)$</p><p><img src="/images/20200223MP_nerual.jpg" alt="20200223MP_nerual"></p><p>1958年，感知机perception提出。感知机能很好的实现逻辑与、或、非运算。与、或、非本来也是线性可分问题。若两类模式是线性可分的，即存在一个线性超平面将它们分开。</p><a id="more"></a>
+
+
+<p>若要解决非线性可分问题，要使用多层功能神经元（1982-1986年，1995提出SVM）。两层感知机可以解决异或问题了。一个神经网络足够多的两层网络 + 适当的激活函数能够逼近任意连续的函数。</p>
+<p>2012年，DNN，CNN由于计算能力的提高再次兴起。</p>
+<p><img src="/images/20200223DNN.jpg" alt="20200223DNN"></p>
+<h3 id="反向传播"><a href="#反向传播" class="headerlink" title="反向传播"></a>反向传播</h3><p>正向传播就是将输入与权重相乘，逐层向前，直到最后输出。然后计算输出层的误差，反向传播则是将误差逆向传播至隐层神经元。根据隐层神经元的误差对权值和阈值进行更新。</p>
+<p><img src="/Users/wangxue/gitpro/20191105MyBlog/saruagithub/source/images/20200223DNN_BP.jpg" alt="20200223DNN_BP"></p>
+<p>$z$ 是样本真实值，$y = f (e), e= wx + b$ 是DNN预测值，激活函数 $f$ 采用 sigmoid，采用均方误差 $\frac{1}{2}(y-z)^2$。</p>
+<p>机器学习书上推导是根据链式求导：</p>
+<script type="math/tex; mode=display">\delta_{6}=(y-z) \frac{d f_6(e)}{d e}=(y-z) f_6(e)(1-f_6(e))</script><script type="math/tex; mode=display">\delta_{4}=\mathrm{w}_{46} \delta_{6} \frac{\mathrm{df}_{4}(\mathrm{e})}{d e}, \delta_{5}=\mathrm{W}_{56} \mathrm{\delta}_{6} \frac{\mathrm{dfs}(\mathrm{e})}{d e}</script><script type="math/tex; mode=display">\delta_{1}=\left(\mathrm{w}_{14} \mathrm{\delta}_{4}+\mathrm{w}_{15} \mathrm{\delta}_{5}\right) \frac{\mathrm{df}_{1}(\mathrm{e})}{d e}, \quad \delta_{2}=\left(\mathrm{w}_{24} \delta_{4}+\mathrm{w}_{25} \delta_{5}\right) \frac{\mathrm{d} f_{2}(\mathrm{e})}{d e}, \delta_{3}=\left(\mathrm{W}_{34} \mathrm{\delta}_{4}+\mathrm{W}_{35} \mathrm{\delta}_{5}\right) \frac{\mathrm{d} \mathrm{f}_3(\mathrm{e})}{d e}</script><p>同理……</p>
+<h3 id="一些问题"><a href="#一些问题" class="headerlink" title="一些问题"></a>一些问题</h3><p>1，目前网络层次越深能够抽象出来的特征越多，但随着神经网络层数的加深，计算量越大，优化函数越来越容易陷入局部最优解。</p>
+<p>2，随着网络层数增加，“梯度消失”现象更加严重。</p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，智能技术基础，罗晓鹏</p>
+<p>2，机器学习，周志华</p>
+]]></content>
+      <categories>
+        <category>深度学习</category>
+      </categories>
+      <tags>
+        <tag>深度学习</tag>
+        <tag>神经网络</tag>
       </tags>
   </entry>
   <entry>
@@ -815,8 +842,8 @@
         <category>深度学习</category>
       </categories>
       <tags>
-        <tag>机器学习</tag>
         <tag>深度学习</tag>
+        <tag>机器学习</tag>
       </tags>
   </entry>
   <entry>
