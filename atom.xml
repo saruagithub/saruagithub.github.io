@@ -206,13 +206,40 @@
   </entry>
   
   <entry>
+    <title>卷积神经网络CNN</title>
+    <link href="http://yoursite.com/2020/01/25/20200225%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9CCNN/"/>
+    <id>http://yoursite.com/2020/01/25/20200225%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9CCNN/</id>
+    <published>2020-01-25T09:42:45.000Z</published>
+    <updated>2020-02-25T10:18:11.616Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="1-图像基础"><a href="#1-图像基础" class="headerlink" title="1 图像基础"></a>1 图像基础</h3><h4 id="1-1-位图与矢量图"><a href="#1-1-位图与矢量图" class="headerlink" title="1.1 位图与矢量图"></a>1.1 位图与矢量图</h4><p><strong>位图</strong>称为点阵图像、像素图或栅格图像，是由称作像素（图片元素）的单个点组成。他的单位是像素。位图有个缺点是放大后看到边缘是有些模糊的，这就是因为像素点组成的缘故。</p><p>位图的参数有：</p><p>像素：像素大小决定图像大小。</p><p>深度：色彩位数，每个像素使用的信息位数越多，可用的颜色就越多</p><p>通道：通常把RGB三种颜色信息称为红通道、绿通道和蓝通道，相应的把透明度称为Alpha通道，alpha通道存储图片的明暗信息等</p><a id="more"></a><p><strong>矢量图</strong>的图形元素（点和线段）称为对象，每个对象都是一个单独的个体，它具有大小、方向、轮廓、颜色和屏幕位置等属性。矢量图形软件就是用数学的方法来绘制矩形等基本形状，因此它放大后不会模糊。</p><h4 id="1-2-图像特征"><a href="#1-2-图像特征" class="headerlink" title="1.2 图像特征"></a>1.2 图像特征</h4><p>图像具有视觉特征，即颜色、纹理、形状等。还具有空间关系特征，即物体与物体之间的空间关系等等（目前的研究热点 目标检测 yolo网络等）。</p><p>目前的卷积网络就是基于位图的，基于像素值、深度、通道等数值进行的计算。</p><h3 id="2-卷积核"><a href="#2-卷积核" class="headerlink" title="2 卷积核"></a>2 卷积核</h3><h4 id="2-1-卷积介绍"><a href="#2-1-卷积介绍" class="headerlink" title="2.1 卷积介绍"></a>2.1 卷积介绍</h4><p>卷积核其实是一个小的方阵。训练过程中的参数。</p><script type="math/tex; mode=display">\left(\begin{array}{ccc}{1} & {0} & {1} \\ {0} & {1} & {0} \\ {1} & {0} & {1}\end{array}\right)</script><p>卷积的意义？</p><p>卷积运算就是在数据矩阵上做滑动的内积（向量内积是向量模长×cos夹角）。他的直观意义就是卷积核和图像的相似程度（余弦距离），可以发现局部的特征在什么位置明显，输出的feature map则提现了图片局部与卷积核的相似程度。</p><p><img src="/images/20200225CNN_kernel.jpg" alt="20200225CNN_kernel"></p><p>为什么做卷积？</p><p>可以减少参数数量，如果采用DNN全连接网络的方式，这样导致每一个像素点都有权重等参数，参数量太大了。另一方面，卷积可以提取图像特征，将图像局部看做是一个输入，卷积核看做是一个权重。</p><p>卷积可以提取哪些特征？</p><p>局部特征：卷积核提取。</p><p>整体特征：多个卷积核提取汇总可以提取整体特征。</p><h4 id="2-2-常见卷积核"><a href="#2-2-常见卷积核" class="headerlink" title="2.2 常见卷积核"></a>2.2 常见卷积核</h4><p>垂直、水平边缘检测核。</p><script type="math/tex; mode=display">\left(\begin{array}{ccc}{1} & {0} & {-1} \\ {1} & {0} & {-1} \\ {1} & {0} & {-1}\end{array}\right) \quad\left(\begin{array}{ccc}{1} & {1} & {1} \\ {0} & {0} & {0} \\ {-1} & {-1} & {-1}\end{array}\right)</script><p>Laplacian 高反差检测核</p><script type="math/tex; mode=display">\left(\begin{array}{ccc}{0} & {-1} & {0} \\ {-1} & {4} & {-1} \\ {0} & {-1} & {0}\end{array}\right) \quad\left(\begin{array}{ccc}{-1} & {-1} & {-1} \\ {-1} & {8} & {-1} \\ {-1} & {-1} & {-1}\end{array}\right)</script>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;1-图像基础&quot;&gt;&lt;a href=&quot;#1-图像基础&quot; class=&quot;headerlink&quot; title=&quot;1 图像基础&quot;&gt;&lt;/a&gt;1 图像基础&lt;/h3&gt;&lt;h4 id=&quot;1-1-位图与矢量图&quot;&gt;&lt;a href=&quot;#1-1-位图与矢量图&quot; class=&quot;headerlink&quot; title=&quot;1.1 位图与矢量图&quot;&gt;&lt;/a&gt;1.1 位图与矢量图&lt;/h4&gt;&lt;p&gt;&lt;strong&gt;位图&lt;/strong&gt;称为点阵图像、像素图或栅格图像，是由称作像素（图片元素）的单个点组成。他的单位是像素。位图有个缺点是放大后看到边缘是有些模糊的，这就是因为像素点组成的缘故。&lt;/p&gt;&lt;p&gt;位图的参数有：&lt;/p&gt;&lt;p&gt;像素：像素大小决定图像大小。&lt;/p&gt;&lt;p&gt;深度：色彩位数，每个像素使用的信息位数越多，可用的颜色就越多&lt;/p&gt;&lt;p&gt;通道：通常把RGB三种颜色信息称为红通道、绿通道和蓝通道，相应的把透明度称为Alpha通道，alpha通道存储图片的明暗信息等&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="深度学习" scheme="http://yoursite.com/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+      <category term="深度学习" scheme="http://yoursite.com/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+    
+      <category term="神经网络" scheme="http://yoursite.com/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"/>
+    
+      <category term="CNN" scheme="http://yoursite.com/tags/CNN/"/>
+    
+  </entry>
+  
+  <entry>
     <title>DNN概述</title>
     <link href="http://yoursite.com/2020/01/23/20200223DNN%E6%A6%82%E8%BF%B0/"/>
     <id>http://yoursite.com/2020/01/23/20200223DNN%E6%A6%82%E8%BF%B0/</id>
     <published>2020-01-23T02:18:37.000Z</published>
-    <updated>2020-02-23T08:23:33.069Z</updated>
+    <updated>2020-02-25T09:57:39.905Z</updated>
     
-    <content type="html"><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>从最开始的神经元开始，1943年MP单个神经元诞生。$y = f\left(\sum_{i=1}^{n} w_{i} x_{i}-\theta\right)$</p><p><img src="/images/20200223MP_nerual.jpg" alt="20200223MP_nerual"></p><p>1958年，感知机perception提出。感知机能很好的实现逻辑与、或、非运算。与、或、非本来也是线性可分问题。若两类模式是线性可分的，即存在一个线性超平面将它们分开。</p><a id="more"></a><p>若要解决非线性可分问题，要使用多层功能神经元（1982-1986年，1995提出SVM）。两层感知机可以解决异或问题了。一个神经网络足够多的两层网络 + 适当的激活函数能够逼近任意连续的函数。</p><p>2012年，DNN，CNN由于计算能力的提高再次兴起。</p><p><img src="/images/20200223DNN.jpg" alt="20200223DNN"></p><h3 id="反向传播"><a href="#反向传播" class="headerlink" title="反向传播"></a>反向传播</h3><p>正向传播就是将输入与权重相乘，逐层向前，直到最后输出。然后计算输出层的误差，反向传播则是将误差逆向传播至隐层神经元。根据隐层神经元的误差对权值和阈值进行更新。</p><p><img src="/images/20200223DNN_BP.jpg" alt="20200223DNN_BP"></p><p>$z$ 是样本真实值，$y = f (e), e= wx + b$ 是DNN预测值，激活函数 $f$ 采用 sigmoid，采用均方误差 $\frac{1}{2}(y-z)^2$。</p><p>机器学习书上推导是根据链式求导：</p><script type="math/tex; mode=display">\delta_{6}=(y-z) \frac{d f_6(e)}{d e}=(y-z) f_6(e)(1-f_6(e))</script><script type="math/tex; mode=display">\delta_{4}=\mathrm{w}_{46} \delta_{6} \frac{\mathrm{df}_{4}(\mathrm{e})}{d e}, \delta_{5}=\mathrm{W}_{56} \mathrm{\delta}_{6} \frac{\mathrm{dfs}(\mathrm{e})}{d e}</script><script type="math/tex; mode=display">\delta_{1}=\left(\mathrm{w}_{14} \mathrm{\delta}_{4}+\mathrm{w}_{15} \mathrm{\delta}_{5}\right) \frac{\mathrm{df}_{1}(\mathrm{e})}{d e}, \quad \delta_{2}=\left(\mathrm{w}_{24} \delta_{4}+\mathrm{w}_{25} \delta_{5}\right) \frac{\mathrm{d} f_{2}(\mathrm{e})}{d e}, \delta_{3}=\left(\mathrm{W}_{34} \mathrm{\delta}_{4}+\mathrm{W}_{35} \mathrm{\delta}_{5}\right) \frac{\mathrm{d} \mathrm{f}_3(\mathrm{e})}{d e}</script><p>同理……</p><h3 id="一些问题"><a href="#一些问题" class="headerlink" title="一些问题"></a>一些问题</h3><p>1，目前网络层次越深能够抽象出来的特征越多，但随着神经网络层数的加深，计算量越大，优化函数越来越容易陷入局部最优解。</p><p>2，随着网络层数增加，“梯度消失”现象更加严重。</p><h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，智能技术基础，罗晓鹏</p><p>2，机器学习，周志华</p>]]></content>
+    <content type="html"><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>从最开始的神经元开始，1943年MP单个神经元诞生。$y = f\left(\sum_{i=1}^{n} w_{i} x_{i}-\theta\right)$</p><p><img src="/images/20200223MP_nerual.jpg" alt="20200223MP_nerual"></p><p>1958年，感知机perception提出。感知机能很好的实现逻辑与、或、非运算。与、或、非本来也是线性可分问题。若两类模式是线性可分的，即存在一个线性超平面将它们分开。</p><a id="more"></a><p>若要解决非线性可分问题，要使用多层功能神经元（1982-1986年，1995提出SVM）。两层感知机可以解决异或问题了。一个神经网络足够多的两层网络 + 适当的激活函数能够逼近任意连续的函数。</p><p>2012年，DNN，CNN由于计算能力的提高再次兴起。</p><p><img src="/images/20200223DNN.jpg" alt="20200223DNN"></p><h3 id="反向传播"><a href="#反向传播" class="headerlink" title="反向传播"></a>反向传播</h3><p>正向传播就是将输入与权重相乘，逐层向前，直到最后输出。然后计算输出层的误差，反向传播则是将误差逆向传播至隐层神经元。根据隐层神经元的误差对权值和阈值进行更新。</p><p><img src="/images/20200223DNN_BP.jpg" alt="20200223DNN_BP"></p><p>$z$ 是样本真实值，$y = f (e), e= wx + b$ 是DNN预测值，激活函数 $f$ 采用 sigmoid，采用均方误差 $\frac{1}{2}(y-z)^2$。</p><p>机器学习书上推导是根据链式求导：</p><script type="math/tex; mode=display">\delta_{6}=(y-z) \frac{d f_6(e)}{d e}=(y-z) f_6(e)(1-f_6(e))</script><script type="math/tex; mode=display">\delta_{4}=\mathrm{w}_{46} \delta_{6} \frac{\mathrm{df}_{4}(\mathrm{e})}{d e}, \delta_{5}=\mathrm{W}_{56} \mathrm{\delta}_{6} \frac{\mathrm{df_4}(\mathrm{e})}{d e}</script><script type="math/tex; mode=display">\delta_{1}=\left(\mathrm{w}_{14} \mathrm{\delta}_{4}+\mathrm{w}_{15} \mathrm{\delta}_{5}\right) \frac{\mathrm{df}_{1}(\mathrm{e})}{d e}, \quad \delta_{2}=\left(\mathrm{w}_{24} \delta_{4}+\mathrm{w}_{25} \delta_{5}\right) \frac{\mathrm{d} f_{2}(\mathrm{e})}{d e}, \delta_{3}=\left(\mathrm{W}_{34} \mathrm{\delta}_{4}+\mathrm{W}_{35} \mathrm{\delta}_{5}\right) \frac{\mathrm{d} \mathrm{f}_3(\mathrm{e})}{d e}</script><p>同理……</p><h3 id="一些问题"><a href="#一些问题" class="headerlink" title="一些问题"></a>一些问题</h3><p>1，目前网络层次越深能够抽象出来的特征越多，但随着神经网络层数的加深，计算量越大，优化函数越来越容易陷入局部最优解。</p><p>2，随着网络层数增加，“梯度消失”现象更加严重。</p><h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，智能技术基础，罗晓鹏</p><p>2，机器学习，周志华</p>]]></content>
     
     <summary type="html">
     
@@ -519,31 +546,6 @@
       <category term="面试" scheme="http://yoursite.com/tags/%E9%9D%A2%E8%AF%95/"/>
     
       <category term="算法" scheme="http://yoursite.com/tags/%E7%AE%97%E6%B3%95/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>20191210Skyline源码阅读</title>
-    <link href="http://yoursite.com/2019/12/10/20191210Skyline%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/"/>
-    <id>http://yoursite.com/2019/12/10/20191210Skyline%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/</id>
-    <published>2019-12-10T01:32:49.000Z</published>
-    <updated>2019-12-31T10:33:24.904Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="1-基类结构"><a href="#1-基类结构" class="headerlink" title="1 基类结构"></a>1 基类结构</h3><p>首先看异常检测基类base.py，所有检测器都是由它继承而来：</p><p>1，init() ：初始化dataSet，probationaryPercent 数据的最初一部分数据不做测试。inputMin, inputMax初始化最大最小值。</p><p>2，initialize()：多进程问题。进程池pool（它默认调用的是CPU的核数）</p><a id="more"></a><p>3，handleRecord(): 返回每一个时间点的异常分数值，Returns a list [anomalyScore, *]。这个函数子类必须继承。</p><p>4，getAdditionalHeaders()：如HTM检测器里会添加’anomalyscore’ , ‘rawscore’。添加并返回列名的，run函数中调用它拼接最后返回的dataframe。</p><p>5，detectDataSet(): 在运行给定检测器的每个检测器进程中调用的函数。参数 (i, detectorInstance, detectorName, labels, outputDir, relativePath) = args，主要是创建保存文件的路径，调用detectorInstance.initialize()，results = detectorInstance.run() </p><p>6，run()：为整个dataSet打分并返回结果（dataframe格式）</p><h3 id="2-Etsy的Skyline算法"><a href="#2-Etsy的Skyline算法" class="headerlink" title="2 Etsy的Skyline算法"></a>2 Etsy的Skyline算法</h3><p>继承异常检测器基类。另外它的算法是根据几个小算法各自的评分进行平均投票得到。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">self.algorithms =   [median_absolute_deviation,</span><br><span class="line">                     first_hour_average,</span><br><span class="line">                     stddev_from_average,</span><br><span class="line">                     stddev_from_moving_average,</span><br><span class="line">                     mean_subtraction_cumulation,</span><br><span class="line">                     least_squares,</span><br><span class="line">                     histogram_bins]</span><br></pre></td></tr></table></figure><h5 id="median-absolute-deviation"><a href="#median-absolute-deviation" class="headerlink" title="median_absolute_deviation"></a>median_absolute_deviation</h5><p>计算数据的中位数，偏差 = 每个值-中位数，得到偏差中位数</p><script type="math/tex; mode=display">\mathrm{MAD}=\operatorname{median}\left(\left|X_{i}-\operatorname{median}(X)\right|\right)</script><p>MAD对数据集中的异常值比标准偏差更具弹性。在标准偏差中，与均值的距离的平方，较大的异常值会影响更大。可以通过判断一个点的偏差是否过于偏离MAD来判断异常，此处是如果偏差6倍大于中位数，则判断为异常。</p><h5 id="first-hour-average"><a href="#first-hour-average" class="headerlink" title="first_hour_average"></a>first_hour_average</h5><p>上一天的这个时间段1h的均值是$mean$，标准差是$std$，如果$|X_t - mean| &gt; 3 * std$ 则是异常。</p><h5 id="stddev-from-average"><a href="#stddev-from-average" class="headerlink" title="stddev_from_average"></a>stddev_from_average</h5><p>值减去移动平均值大于平均值的三个标准偏差则为异常。</p><script type="math/tex; mode=display">|X_t - mean| > 3 * std</script><h5 id="stddev-from-moving-average"><a href="#stddev-from-moving-average" class="headerlink" title="stddev_from_moving_average"></a>stddev_from_moving_average</h5><p>值减去指数加权移动平均值大于平均值的三个标准偏差则为异常。</p><p>expAvg = series.ewm().mean()</p><p>stdDev = series.ewm().std()</p><script type="math/tex; mode=display">| X_t - expAvg | > 3 * stdDev</script><h5 id="mean-subtraction-cumulation"><a href="#mean-subtraction-cumulation" class="headerlink" title="mean_subtraction_cumulation"></a>mean_subtraction_cumulation</h5><p>从每个数据源点减去过去历史平均值之后，如果该序列中下一个数据点的值比累积项中的三个标准差远，则该时间序列是异常的。</p><h5 id="least-squares"><a href="#least-squares" class="headerlink" title="least_squares"></a>least_squares</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#X——代表时间 timestamp，Y——代表 value</span><br><span class="line">results = np.linalg.lstsq(A, Y)</span><br><span class="line">residual = results[1] #残差</span><br><span class="line">m, c = np.linalg.lstsq(A, Y)[0] #斜率与截距</span><br><span class="line">  for i, value in enumerate(y):</span><br><span class="line">    projected = m * X[i] + c</span><br><span class="line">    error = value - projected</span><br><span class="line">    errors.append(error)</span><br></pre></td></tr></table></figure><p>最后点投影到最小二乘上误差大于所有误差的std的3sigma时，判断为异常。</p><script type="math/tex; mode=display">Error_t > ErrorsStd</script><h5 id="histogram-bins"><a href="#histogram-bins" class="headerlink" title="histogram_bins"></a>histogram_bins</h5><p>最后时间点的值落入带有少于threshold个其他数据点的直方图bin中，则时间序列是异常的。</p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;1-基类结构&quot;&gt;&lt;a href=&quot;#1-基类结构&quot; class=&quot;headerlink&quot; title=&quot;1 基类结构&quot;&gt;&lt;/a&gt;1 基类结构&lt;/h3&gt;&lt;p&gt;首先看异常检测基类base.py，所有检测器都是由它继承而来：&lt;/p&gt;&lt;p&gt;1，init() ：初始化dataSet，probationaryPercent 数据的最初一部分数据不做测试。inputMin, inputMax初始化最大最小值。&lt;/p&gt;&lt;p&gt;2，initialize()：多进程问题。进程池pool（它默认调用的是CPU的核数）&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="AIOps" scheme="http://yoursite.com/categories/AIOps/"/>
-    
-    
-      <category term="机器学习" scheme="http://yoursite.com/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
-    
-      <category term="AIOps" scheme="http://yoursite.com/tags/AIOps/"/>
     
   </entry>
   

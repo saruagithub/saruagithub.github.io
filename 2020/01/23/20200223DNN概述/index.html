@@ -58,7 +58,7 @@
 <meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200223MP_nerual.jpg">
 <meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200223DNN.jpg">
 <meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200223DNN_BP.jpg">
-<meta property="og:updated_time" content="2020-02-23T08:23:33.069Z">
+<meta property="og:updated_time" content="2020-02-25T09:57:39.905Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200223MP_nerual.jpg">
 
@@ -244,7 +244,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-02-23 16:23:33" itemprop="dateModified" datetime="2020-02-23T16:23:33+08:00">2020-02-23</time>
+                <time title="修改时间：2020-02-25 17:57:39" itemprop="dateModified" datetime="2020-02-25T17:57:39+08:00">2020-02-25</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -300,7 +300,7 @@
 <p><img src="/images/20200223DNN_BP.jpg" alt="20200223DNN_BP"></p>
 <p>$z$ 是样本真实值，$y = f (e), e= wx + b$ 是DNN预测值，激活函数 $f$ 采用 sigmoid，采用均方误差 $\frac{1}{2}(y-z)^2$。</p>
 <p>机器学习书上推导是根据链式求导：</p>
-<script type="math/tex; mode=display">\delta_{6}=(y-z) \frac{d f_6(e)}{d e}=(y-z) f_6(e)(1-f_6(e))</script><script type="math/tex; mode=display">\delta_{4}=\mathrm{w}_{46} \delta_{6} \frac{\mathrm{df}_{4}(\mathrm{e})}{d e}, \delta_{5}=\mathrm{W}_{56} \mathrm{\delta}_{6} \frac{\mathrm{dfs}(\mathrm{e})}{d e}</script><script type="math/tex; mode=display">\delta_{1}=\left(\mathrm{w}_{14} \mathrm{\delta}_{4}+\mathrm{w}_{15} \mathrm{\delta}_{5}\right) \frac{\mathrm{df}_{1}(\mathrm{e})}{d e}, \quad \delta_{2}=\left(\mathrm{w}_{24} \delta_{4}+\mathrm{w}_{25} \delta_{5}\right) \frac{\mathrm{d} f_{2}(\mathrm{e})}{d e}, \delta_{3}=\left(\mathrm{W}_{34} \mathrm{\delta}_{4}+\mathrm{W}_{35} \mathrm{\delta}_{5}\right) \frac{\mathrm{d} \mathrm{f}_3(\mathrm{e})}{d e}</script><p>同理……</p>
+<script type="math/tex; mode=display">\delta_{6}=(y-z) \frac{d f_6(e)}{d e}=(y-z) f_6(e)(1-f_6(e))</script><script type="math/tex; mode=display">\delta_{4}=\mathrm{w}_{46} \delta_{6} \frac{\mathrm{df}_{4}(\mathrm{e})}{d e}, \delta_{5}=\mathrm{W}_{56} \mathrm{\delta}_{6} \frac{\mathrm{df_4}(\mathrm{e})}{d e}</script><script type="math/tex; mode=display">\delta_{1}=\left(\mathrm{w}_{14} \mathrm{\delta}_{4}+\mathrm{w}_{15} \mathrm{\delta}_{5}\right) \frac{\mathrm{df}_{1}(\mathrm{e})}{d e}, \quad \delta_{2}=\left(\mathrm{w}_{24} \delta_{4}+\mathrm{w}_{25} \delta_{5}\right) \frac{\mathrm{d} f_{2}(\mathrm{e})}{d e}, \delta_{3}=\left(\mathrm{W}_{34} \mathrm{\delta}_{4}+\mathrm{W}_{35} \mathrm{\delta}_{5}\right) \frac{\mathrm{d} \mathrm{f}_3(\mathrm{e})}{d e}</script><p>同理……</p>
 <h3 id="一些问题"><a href="#一些问题" class="headerlink" title="一些问题"></a>一些问题</h3><p>1，目前网络层次越深能够抽象出来的特征越多，但随着神经网络层数的加深，计算量越大，优化函数越来越容易陷入局部最优解。</p>
 <p>2，随着网络层数增加，“梯度消失”现象更加严重。</p>
 <h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，智能技术基础，罗晓鹏</p>
@@ -348,8 +348,8 @@
       <i class="fa fa-chevron-left"></i> 点云的三种可视化方法
     </a></div>
       <div class="post-nav-item">
-    <a href="/2020/02/04/20200204%E7%BB%9F%E8%AE%A1%E5%AD%A6%E4%B9%8B%E8%BE%9B%E6%99%AE%E6%A3%AE%E6%82%96%E8%AE%BA/" rel="next" title="20200204统计学之辛普森悖论">
-      20200204统计学之辛普森悖论 <i class="fa fa-chevron-right"></i>
+    <a href="/2020/01/25/20200225%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9CCNN/" rel="next" title="卷积神经网络CNN">
+      卷积神经网络CNN <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -405,7 +405,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">46</span>
+          <span class="site-state-item-count">47</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -418,7 +418,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-count">30</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
