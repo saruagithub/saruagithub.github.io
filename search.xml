@@ -151,8 +151,8 @@
       </categories>
       <tags>
         <tag>机器学习</tag>
-        <tag>AIOps</tag>
         <tag>异常检测</tag>
+        <tag>AIOps</tag>
       </tags>
   </entry>
   <entry>
@@ -409,6 +409,10 @@
 <script type="math/tex; mode=display">\left(\begin{array}{ccc}{1} & {0} & {-1} \\ {1} & {0} & {-1} \\ {1} & {0} & {-1}\end{array}\right) \quad\left(\begin{array}{ccc}{1} & {1} & {1} \\ {0} & {0} & {0} \\ {-1} & {-1} & {-1}\end{array}\right)</script><p>Laplacian 高反差检测核</p>
 <script type="math/tex; mode=display">\left(\begin{array}{ccc}{0} & {-1} & {0} \\ {-1} & {4} & {-1} \\ {0} & {-1} & {0}\end{array}\right) \quad\left(\begin{array}{ccc}{-1} & {-1} & {-1} \\ {-1} & {8} & {-1} \\ {-1} & {-1} & {-1}\end{array}\right)</script><p>eg: 发丝，高反差，加色之后，发丝更明显.</p>
 <h4 id="2-3-卷积过程"><a href="#2-3-卷积过程" class="headerlink" title="2.3 卷积过程"></a>2.3 卷积过程</h4><p><img src="/Users/wangxue/gitpro/20191105MyBlog/saruagithub/source/images/20200225CNN_process.jpg" alt="20200225CNN_process"></p>
+<p>假设输入图像为矩阵A，大小4×4，卷积核为3×3的下图。</p>
+<script type="math/tex; mode=display">\left|\begin{array}{lll}{k 11} & {k 12} & {k 13} \\ {k 21} & {k 22} & {k 23} \\ {k 31} & {k 32} & {k 33}\end{array}\right|</script><p>卷积的过程（注意是做内积）：</p>
+<script type="math/tex; mode=display">\left[\begin{array}{ll}{u_{11}} & {u_{12}} \\ {u_{21}} & {u_{22}}\end{array}\right]=\left[\begin{array}{cccc}{x_{11}} & {x_{12}} & {x_{13}} & {x_{14}} \\ {x_{21}} & {x_{22}} & {x_{23}} & {x_{24}} \\ {x_{31}} & {x_{32}} & {x_{33}} & {x_{34}} \\ {x_{41}} & {x_{42}} & {x_{43}} & {x_{44}}\end{array}\right] \times \left[\begin{array}{ccc}{k_{11}} & {k_{12}} & {k_{13}} \\ {k_{21}} & {k_{22}} & {k_{23}} \\ {k_{31}} & {k_{32}} & {k_{33}}\end{array}\right]+\left[\begin{array}{cc}{b} & {b} \\ {b} & {b}\end{array}\right]</script><p>中间L-1层到L层的正向传播表达式（加上激活函数）：</p>
+<script type="math/tex; mode=display">\mathrm{x}_{i j}^{L}=\mathrm{f}\left(\mathrm{u}_{i j}^{L}\right)=\mathrm{f}\left(\Sigma_{p=1}^{3} \Sigma_{q=1}^{3} x_{i+p-1, j+q-1}^{L-1} * k_{p q}^{L}+b^{L}\right)</script><p>若最后一场将特征地图进行全连接输出</p>
 ]]></content>
       <categories>
         <category>深度学习</category>
@@ -876,8 +880,8 @@
         <category>深度学习</category>
       </categories>
       <tags>
-        <tag>深度学习</tag>
         <tag>机器学习</tag>
+        <tag>深度学习</tag>
       </tags>
   </entry>
   <entry>
@@ -1508,8 +1512,8 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
         <category>AIOps</category>
       </categories>
       <tags>
-        <tag>AIOps</tag>
         <tag>时间序列</tag>
+        <tag>AIOps</tag>
       </tags>
   </entry>
   <entry>
@@ -1574,8 +1578,8 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
         <category>AIOps</category>
       </categories>
       <tags>
-        <tag>AIOps</tag>
         <tag>异常检测</tag>
+        <tag>AIOps</tag>
       </tags>
   </entry>
   <entry>
