@@ -386,75 +386,6 @@
       </tags>
   </entry>
   <entry>
-    <title>卷积神经网络CNN</title>
-    <url>/2020/01/25/20200225%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9CCNN/</url>
-    <content><![CDATA[<h3 id="1-图像基础"><a href="#1-图像基础" class="headerlink" title="1 图像基础"></a>1 图像基础</h3><h4 id="1-1-位图与矢量图"><a href="#1-1-位图与矢量图" class="headerlink" title="1.1 位图与矢量图"></a>1.1 位图与矢量图</h4><p><strong>位图</strong>称为点阵图像、像素图或栅格图像，是由称作像素（图片元素）的单个点组成。他的单位是像素。位图有个缺点是放大后看到边缘是有些模糊的，这就是因为像素点组成的缘故。</p><p>位图的参数有：</p><p>像素：像素大小决定图像大小。</p><p>深度：色彩位数，每个像素使用的信息位数越多，可用的颜色就越多</p><p>通道：通常把RGB三种颜色信息称为红通道、绿通道和蓝通道，相应的把透明度称为Alpha通道，alpha通道存储图片的明暗信息等</p><a id="more"></a>
-
-
-
-
-<p><strong>矢量图</strong>的图形元素（点和线段）称为对象，每个对象都是一个单独的个体，它具有大小、方向、轮廓、颜色和屏幕位置等属性。矢量图形软件就是用数学的方法来绘制矩形等基本形状，因此它放大后不会模糊。</p>
-<h4 id="1-2-图像特征"><a href="#1-2-图像特征" class="headerlink" title="1.2 图像特征"></a>1.2 图像特征</h4><p>图像具有视觉特征，即颜色、纹理、形状等。还具有空间关系特征，即物体与物体之间的空间关系等等（目前的研究热点 目标检测 yolo网络等）。</p>
-<p>目前的卷积网络就是基于位图的，基于像素值、深度、通道等数值进行的计算。</p>
-<h3 id="2-卷积核"><a href="#2-卷积核" class="headerlink" title="2 卷积核"></a>2 卷积核</h3><h4 id="2-1-卷积介绍"><a href="#2-1-卷积介绍" class="headerlink" title="2.1 卷积介绍"></a>2.1 卷积介绍</h4><p>卷积核其实是一个小的方阵。训练过程中的参数。</p>
-<script type="math/tex; mode=display">\left(\begin{array}{ccc}{1} & {0} & {1} \\ {0} & {1} & {0} \\ {1} & {0} & {1}\end{array}\right)</script><p>卷积的意义？</p>
-<p>卷积运算就是在数据矩阵上做滑动的内积（向量内积是向量模长×cos夹角）。他的直观意义就是卷积核和图像的相似程度（余弦距离），可以发现局部的特征在什么位置明显，输出的feature map则提现了图片局部与卷积核的相似程度。</p>
-<p><img src="/images/20200225CNN_kernel.jpg" alt="20200225CNN_kernel"></p>
-<p>为什么做卷积？</p>
-<p>可以减少参数数量，如果采用DNN全连接网络的方式，这样导致每一个像素点都有权重等参数，参数量太大了。另一方面，卷积可以提取图像特征，将图像局部看做是一个输入，卷积核看做是一个权重。</p>
-<p>卷积可以提取哪些特征？</p>
-<p>局部特征：卷积核提取。</p>
-<p>整体特征：多个卷积核提取汇总可以提取整体特征。</p>
-<h4 id="2-2-常见卷积核"><a href="#2-2-常见卷积核" class="headerlink" title="2.2 常见卷积核"></a>2.2 常见卷积核</h4><p>垂直、水平边缘检测核。</p>
-<script type="math/tex; mode=display">\left(\begin{array}{ccc}{1} & {0} & {-1} \\ {1} & {0} & {-1} \\ {1} & {0} & {-1}\end{array}\right) \quad\left(\begin{array}{ccc}{1} & {1} & {1} \\ {0} & {0} & {0} \\ {-1} & {-1} & {-1}\end{array}\right)</script><p>Laplacian 高反差检测核</p>
-<script type="math/tex; mode=display">\left(\begin{array}{ccc}{0} & {-1} & {0} \\ {-1} & {4} & {-1} \\ {0} & {-1} & {0}\end{array}\right) \quad\left(\begin{array}{ccc}{-1} & {-1} & {-1} \\ {-1} & {8} & {-1} \\ {-1} & {-1} & {-1}\end{array}\right)</script><p>eg: 发丝，高反差，加色之后，发丝更明显.</p>
-<h4 id="2-3-卷积过程"><a href="#2-3-卷积过程" class="headerlink" title="2.3 卷积过程"></a>2.3 卷积过程</h4><p><img src="/Users/wangxue/gitpro/20191105MyBlog/saruagithub/source/images/20200225CNN_process.jpg" alt="20200225CNN_process"></p>
-<p>假设输入图像为矩阵A，大小4×4，卷积核为3×3的下图。</p>
-<script type="math/tex; mode=display">\left|\begin{array}{lll}{k 11} & {k 12} & {k 13} \\ {k 21} & {k 22} & {k 23} \\ {k 31} & {k 32} & {k 33}\end{array}\right|</script><p>卷积的过程（注意是做内积）：</p>
-<script type="math/tex; mode=display">\left[\begin{array}{ll}{u_{11}} & {u_{12}} \\ {u_{21}} & {u_{22}}\end{array}\right]=\left[\begin{array}{cccc}{x_{11}} & {x_{12}} & {x_{13}} & {x_{14}} \\ {x_{21}} & {x_{22}} & {x_{23}} & {x_{24}} \\ {x_{31}} & {x_{32}} & {x_{33}} & {x_{34}} \\ {x_{41}} & {x_{42}} & {x_{43}} & {x_{44}}\end{array}\right] \times \left[\begin{array}{ccc}{k_{11}} & {k_{12}} & {k_{13}} \\ {k_{21}} & {k_{22}} & {k_{23}} \\ {k_{31}} & {k_{32}} & {k_{33}}\end{array}\right]+\left[\begin{array}{cc}{b} & {b} \\ {b} & {b}\end{array}\right]</script><script type="math/tex; mode=display">=\left[\begin{array}{ll}{x_{11} k_{11}+x_{12} k_{12}+x_{13} k_{13}+} & {x_{12} k_{11}+x_{13} k_{12}+x_{14} k_{13}+} \\ {x_{21} k_{21}+x_{22} k_{22}+x_{23} k_{23}+} & {x_{22} k_{21}+x_{23} k_{22}+x_{24} k_{23}+} \\ {x_{31} k_{31}+x_{32} k_{32}+x_{33} k_{33}+b} & {x_{32} k_{31}+x_{33} k_{32}+x_{34} k_{33}+b} \\ {x_{21} k_{11}+x_{22} k_{12}+x_{23} k_{13}+} & {x_{22} k_{11}+x_{23} k_{12}+x_{24} k_{13}+} \\ {x_{31} k_{21}+x_{32} k_{22}+x_{33} k_{23}+} & {x_{32} k_{21}+x_{33} k_{22}+x_{34} k_{23}+} \\ {x_{41} k_{31}+x_{42} k_{32}+x_{43} k_{33}+b} & {x_{42} k_{31}+x_{43} k_{32}+x_{44} k_{33}+b}\end{array}\right]</script><p>中间L-1层到L层的正向传播表达式（加上激活函数）：</p>
-<script type="math/tex; mode=display">\mathrm{x}_{i j}^{L}=\mathrm{f}\left(\mathrm{u}_{i j}^{L}\right)=\mathrm{f}\left(\Sigma_{p=1}^{3} \Sigma_{q=1}^{3} x_{i+p-1, j+q-1}^{L-1} * k_{p q}^{L}+b^{L}\right)</script><p>若最后一场将特征地图进行全连接输出为$y$ （概率输出） ，真实是 $\hat{y}$</p>
-<script type="math/tex; mode=display">y=\operatorname{sigmoid}\left(\sum_{i} \sum_{j} u_{ij}\right), \operatorname{loss}=\frac{1}{2}(y-\hat{y})^{2}</script><p>根据链式求导得最后一层全连接的权重 $w$：</p>
-<script type="math/tex; mode=display">\Delta w_{i j}=\eta \frac{d_{loss}}{d_{y}} \frac{d y}{d u_{ij}}=\eta(y-\hat{y})({y} *(1-{y}))</script><p>中间：</p>
-<script type="math/tex; mode=display">\Delta k_{p q}=\eta \sum_{i} \sum_{j}\left(\frac{d_{l o s s}}{d x_{ij}} \frac{d x_{ij}}{d k_{pq}}\right)=\eta \sum_{i} \sum_{j}\left(\frac{d_{loss}}{d x_{ij}} \mathrm{f}^{\prime}\left(\mathrm{u}_{i j}^{L}\right) x_{i+p-1, j+q-1}^{L-1}\right)</script><script type="math/tex; mode=display">\Delta b_{p q}=\eta \sum_{i} \sum_{j}\left(\frac{d \operatorname{loss}}{d x \mathrm{ij}} \frac{d x_{ij}}{d u_{ij}}\right)=\eta \sum_{i} \sum_{j}\left(\frac{d \operatorname{loss}}{d x_{ij}} \mathrm{f}^{\prime}\left(\mathrm{u}_{i j}^{L}\right)\right)</script><h4 id="2-4-池化"><a href="#2-4-池化" class="headerlink" title="2.4 池化"></a>2.4 池化</h4><p>池化可以压缩特征（压缩信息）：有最大池化，平均池化，加权池化等。</p>
-<p><img src="/Users/wangxue/gitpro/20191105MyBlog/saruagithub/source/images/20200225CNN_maxpool.jpg" alt="20200225CNN_maxpool"></p>
-]]></content>
-      <categories>
-        <category>深度学习</category>
-      </categories>
-      <tags>
-        <tag>深度学习</tag>
-        <tag>神经网络</tag>
-        <tag>CNN</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>DNN概述</title>
-    <url>/2020/01/23/20200223DNN%E6%A6%82%E8%BF%B0/</url>
-    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>从最开始的神经元开始，1943年MP单个神经元诞生。$y = f\left(\sum_{i=1}^{n} w_{i} x_{i}-\theta\right)$</p><p><img src="/images/20200223MP_nerual.jpg" alt="20200223MP_nerual"></p><p>1958年，感知机perception提出。感知机能很好的实现逻辑与、或、非运算。与、或、非本来也是线性可分问题。若两类模式是线性可分的，即存在一个线性超平面将它们分开。</p><a id="more"></a>
-
-
-<p>若要解决非线性可分问题，要使用多层功能神经元（1982-1986年，1995提出SVM）。两层感知机可以解决异或问题了。一个神经网络足够多的两层网络 + 适当的激活函数能够逼近任意连续的函数。</p>
-<p>2012年，DNN，CNN由于计算能力的提高再次兴起。</p>
-<p><img src="/images/20200223DNN.jpg" alt="20200223DNN"></p>
-<h3 id="反向传播"><a href="#反向传播" class="headerlink" title="反向传播"></a>反向传播</h3><p>正向传播就是将输入与权重相乘，逐层向前，直到最后输出。然后计算输出层的误差，反向传播则是将误差逆向传播至隐层神经元。根据隐层神经元的误差对权值和阈值进行更新。</p>
-<p><img src="/images/20200223DNN_BP.jpg" alt="20200223DNN_BP"></p>
-<p>$z$ 是样本真实值，$y = f (e), e= wx + b$ 是DNN预测值，激活函数 $f$ 采用 sigmoid，采用均方误差 $\frac{1}{2}(y-z)^2$。</p>
-<p>机器学习书上推导是根据链式求导：</p>
-<script type="math/tex; mode=display">\delta_{6}=(y-z) \frac{d f_6(e)}{d e}=(y-z) f_6(e)(1-f_6(e))</script><script type="math/tex; mode=display">\delta_{4}=\mathrm{w}_{46} \delta_{6} \frac{\mathrm{df}_{4}(\mathrm{e})}{d e}, \delta_{5}=\mathrm{W}_{56} \mathrm{\delta}_{6} \frac{\mathrm{df_4}(\mathrm{e})}{d e}</script><script type="math/tex; mode=display">\delta_{1}=\left(\mathrm{w}_{14} \mathrm{\delta}_{4}+\mathrm{w}_{15} \mathrm{\delta}_{5}\right) \frac{\mathrm{df}_{1}(\mathrm{e})}{d e}, \quad \delta_{2}=\left(\mathrm{w}_{24} \delta_{4}+\mathrm{w}_{25} \delta_{5}\right) \frac{\mathrm{d} f_{2}(\mathrm{e})}{d e}, \delta_{3}=\left(\mathrm{W}_{34} \mathrm{\delta}_{4}+\mathrm{W}_{35} \mathrm{\delta}_{5}\right) \frac{\mathrm{d} \mathrm{f}_3(\mathrm{e})}{d e}</script><p>同理……</p>
-<h3 id="一些问题"><a href="#一些问题" class="headerlink" title="一些问题"></a>一些问题</h3><p>1，目前网络层次越深能够抽象出来的特征越多，但随着神经网络层数的加深，计算量越大，优化函数越来越容易陷入局部最优解。</p>
-<p>2，随着网络层数增加，“梯度消失”现象更加严重。</p>
-<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，智能技术基础，罗晓鹏</p>
-<p>2，机器学习，周志华</p>
-]]></content>
-      <categories>
-        <category>深度学习</category>
-      </categories>
-      <tags>
-        <tag>深度学习</tag>
-        <tag>神经网络</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>点云的三种可视化方法</title>
     <url>/2020/01/16/20200116%E7%82%B9%E4%BA%91%E7%9A%84%E4%B8%89%E7%A7%8D%E5%8F%AF%E8%A7%86%E5%8C%96%E6%96%B9%E6%B3%95/</url>
     <content><![CDATA[<h3 id="1-点云介绍"><a href="#1-点云介绍" class="headerlink" title="1 点云介绍"></a>1 点云介绍</h3><p>点云数据是来自斯坦福大学的HDF5格式数据。HDF5 格式是用于存储和分发科学数据的一种多对象文件格式。可以用 HDFView 打开文件，查看数据。 </p><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">www = &apos;https://shapenet.cs.stanford.edu/media/modelnet40_ply_hdf5_2048.zip</span><br></pre></td></tr></table></figure><a id="more"></a>
@@ -838,6 +769,75 @@
       <tags>
         <tag>面试</tag>
         <tag>算法</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>卷积神经网络CNN</title>
+    <url>/2019/12/25/20200225%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9CCNN/</url>
+    <content><![CDATA[<h3 id="1-图像基础"><a href="#1-图像基础" class="headerlink" title="1 图像基础"></a>1 图像基础</h3><h4 id="1-1-位图与矢量图"><a href="#1-1-位图与矢量图" class="headerlink" title="1.1 位图与矢量图"></a>1.1 位图与矢量图</h4><p><strong>位图</strong>称为点阵图像、像素图或栅格图像，是由称作像素（图片元素）的单个点组成。他的单位是像素。位图有个缺点是放大后看到边缘是有些模糊的，这就是因为像素点组成的缘故。</p><p>位图的参数有：</p><p>像素：像素大小决定图像大小。</p><p>深度：色彩位数，每个像素使用的信息位数越多，可用的颜色就越多</p><p>通道：通常把RGB三种颜色信息称为红通道、绿通道和蓝通道，相应的把透明度称为Alpha通道，alpha通道存储图片的明暗信息等</p><a id="more"></a>
+
+
+
+
+<p><strong>矢量图</strong>的图形元素（点和线段）称为对象，每个对象都是一个单独的个体，它具有大小、方向、轮廓、颜色和屏幕位置等属性。矢量图形软件就是用数学的方法来绘制矩形等基本形状，因此它放大后不会模糊。</p>
+<h4 id="1-2-图像特征"><a href="#1-2-图像特征" class="headerlink" title="1.2 图像特征"></a>1.2 图像特征</h4><p>图像具有视觉特征，即颜色、纹理、形状等。还具有空间关系特征，即物体与物体之间的空间关系等等（目前的研究热点 目标检测 yolo网络等）。</p>
+<p>目前的卷积网络就是基于位图的，基于像素值、深度、通道等数值进行的计算。</p>
+<h3 id="2-卷积核"><a href="#2-卷积核" class="headerlink" title="2 卷积核"></a>2 卷积核</h3><h4 id="2-1-卷积介绍"><a href="#2-1-卷积介绍" class="headerlink" title="2.1 卷积介绍"></a>2.1 卷积介绍</h4><p>卷积核其实是一个小的方阵。训练过程中的参数。</p>
+<script type="math/tex; mode=display">\left(\begin{array}{ccc}{1} & {0} & {1} \\ {0} & {1} & {0} \\ {1} & {0} & {1}\end{array}\right)</script><p>卷积的意义？</p>
+<p>卷积运算就是在数据矩阵上做滑动的内积（向量内积是向量模长×cos夹角）。他的直观意义就是卷积核和图像的相似程度（余弦距离），可以发现局部的特征在什么位置明显，输出的feature map则提现了图片局部与卷积核的相似程度。</p>
+<p><img src="/images/20200225CNN_kernel.jpg" alt="20200225CNN_kernel"></p>
+<p>为什么做卷积？</p>
+<p>可以减少参数数量，如果采用DNN全连接网络的方式，这样导致每一个像素点都有权重等参数，参数量太大了。另一方面，卷积可以提取图像特征，将图像局部看做是一个输入，卷积核看做是一个权重。</p>
+<p>卷积可以提取哪些特征？</p>
+<p>局部特征：卷积核提取。</p>
+<p>整体特征：多个卷积核提取汇总可以提取整体特征。</p>
+<h4 id="2-2-常见卷积核"><a href="#2-2-常见卷积核" class="headerlink" title="2.2 常见卷积核"></a>2.2 常见卷积核</h4><p>垂直、水平边缘检测核。</p>
+<script type="math/tex; mode=display">\left(\begin{array}{ccc}{1} & {0} & {-1} \\ {1} & {0} & {-1} \\ {1} & {0} & {-1}\end{array}\right) \quad\left(\begin{array}{ccc}{1} & {1} & {1} \\ {0} & {0} & {0} \\ {-1} & {-1} & {-1}\end{array}\right)</script><p>Laplacian 高反差检测核</p>
+<script type="math/tex; mode=display">\left(\begin{array}{ccc}{0} & {-1} & {0} \\ {-1} & {4} & {-1} \\ {0} & {-1} & {0}\end{array}\right) \quad\left(\begin{array}{ccc}{-1} & {-1} & {-1} \\ {-1} & {8} & {-1} \\ {-1} & {-1} & {-1}\end{array}\right)</script><p>eg: 发丝，高反差，加色之后，发丝更明显.</p>
+<h4 id="2-3-卷积过程"><a href="#2-3-卷积过程" class="headerlink" title="2.3 卷积过程"></a>2.3 卷积过程</h4><p><img src="/Users/wangxue/gitpro/20191105MyBlog/saruagithub/source/images/20200225CNN_process.jpg" alt="20200225CNN_process"></p>
+<p>假设输入图像为矩阵A，大小4×4，卷积核为3×3的下图。</p>
+<script type="math/tex; mode=display">\left|\begin{array}{lll}{k 11} & {k 12} & {k 13} \\ {k 21} & {k 22} & {k 23} \\ {k 31} & {k 32} & {k 33}\end{array}\right|</script><p>卷积的过程（注意是做内积）：</p>
+<script type="math/tex; mode=display">\left[\begin{array}{ll}{u_{11}} & {u_{12}} \\ {u_{21}} & {u_{22}}\end{array}\right]=\left[\begin{array}{cccc}{x_{11}} & {x_{12}} & {x_{13}} & {x_{14}} \\ {x_{21}} & {x_{22}} & {x_{23}} & {x_{24}} \\ {x_{31}} & {x_{32}} & {x_{33}} & {x_{34}} \\ {x_{41}} & {x_{42}} & {x_{43}} & {x_{44}}\end{array}\right] \times \left[\begin{array}{ccc}{k_{11}} & {k_{12}} & {k_{13}} \\ {k_{21}} & {k_{22}} & {k_{23}} \\ {k_{31}} & {k_{32}} & {k_{33}}\end{array}\right]+\left[\begin{array}{cc}{b} & {b} \\ {b} & {b}\end{array}\right]</script><script type="math/tex; mode=display">=\left[\begin{array}{ll}{x_{11} k_{11}+x_{12} k_{12}+x_{13} k_{13}+} & {x_{12} k_{11}+x_{13} k_{12}+x_{14} k_{13}+} \\ {x_{21} k_{21}+x_{22} k_{22}+x_{23} k_{23}+} & {x_{22} k_{21}+x_{23} k_{22}+x_{24} k_{23}+} \\ {x_{31} k_{31}+x_{32} k_{32}+x_{33} k_{33}+b} & {x_{32} k_{31}+x_{33} k_{32}+x_{34} k_{33}+b} \\ {x_{21} k_{11}+x_{22} k_{12}+x_{23} k_{13}+} & {x_{22} k_{11}+x_{23} k_{12}+x_{24} k_{13}+} \\ {x_{31} k_{21}+x_{32} k_{22}+x_{33} k_{23}+} & {x_{32} k_{21}+x_{33} k_{22}+x_{34} k_{23}+} \\ {x_{41} k_{31}+x_{42} k_{32}+x_{43} k_{33}+b} & {x_{42} k_{31}+x_{43} k_{32}+x_{44} k_{33}+b}\end{array}\right]</script><p>中间L-1层到L层的正向传播表达式（加上激活函数）：</p>
+<script type="math/tex; mode=display">\mathrm{x}_{i j}^{L}=\mathrm{f}\left(\mathrm{u}_{i j}^{L}\right)=\mathrm{f}\left(\Sigma_{p=1}^{3} \Sigma_{q=1}^{3} x_{i+p-1, j+q-1}^{L-1} * k_{p q}^{L}+b^{L}\right)</script><p>若最后一场将特征地图进行全连接输出为$y$ （概率输出） ，真实是 $\hat{y}$</p>
+<script type="math/tex; mode=display">y=\operatorname{sigmoid}\left(\sum_{i} \sum_{j} u_{ij}\right), \operatorname{loss}=\frac{1}{2}(y-\hat{y})^{2}</script><p>根据链式求导得最后一层全连接的权重 $w$：</p>
+<script type="math/tex; mode=display">\Delta w_{i j}=\eta \frac{d_{loss}}{d_{y}} \frac{d y}{d u_{ij}}=\eta(y-\hat{y})({y} *(1-{y}))</script><p>中间：</p>
+<script type="math/tex; mode=display">\Delta k_{p q}=\eta \sum_{i} \sum_{j}\left(\frac{d_{l o s s}}{d x_{ij}} \frac{d x_{ij}}{d k_{pq}}\right)=\eta \sum_{i} \sum_{j}\left(\frac{d_{loss}}{d x_{ij}} \mathrm{f}^{\prime}\left(\mathrm{u}_{i j}^{L}\right) x_{i+p-1, j+q-1}^{L-1}\right)</script><script type="math/tex; mode=display">\Delta b_{p q}=\eta \sum_{i} \sum_{j}\left(\frac{d \operatorname{loss}}{d x \mathrm{ij}} \frac{d x_{ij}}{d u_{ij}}\right)=\eta \sum_{i} \sum_{j}\left(\frac{d \operatorname{loss}}{d x_{ij}} \mathrm{f}^{\prime}\left(\mathrm{u}_{i j}^{L}\right)\right)</script><h4 id="2-4-池化"><a href="#2-4-池化" class="headerlink" title="2.4 池化"></a>2.4 池化</h4><p>池化可以压缩特征（压缩信息）：有最大池化，平均池化，加权池化等。</p>
+<p><img src="/Users/wangxue/gitpro/20191105MyBlog/saruagithub/source/images/20200225CNN_maxpool.jpg" alt="20200225CNN_maxpool"></p>
+]]></content>
+      <categories>
+        <category>深度学习</category>
+      </categories>
+      <tags>
+        <tag>深度学习</tag>
+        <tag>神经网络</tag>
+        <tag>CNN</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>DNN概述</title>
+    <url>/2019/12/24/20200223DNN%E6%A6%82%E8%BF%B0/</url>
+    <content><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>从最开始的神经元开始，1943年MP单个神经元诞生。$y = f\left(\sum_{i=1}^{n} w_{i} x_{i}-\theta\right)$</p><p><img src="/images/20200223MP_nerual.jpg" alt="20200223MP_nerual"></p><p>1958年，感知机perception提出。感知机能很好的实现逻辑与、或、非运算。与、或、非本来也是线性可分问题。若两类模式是线性可分的，即存在一个线性超平面将它们分开。</p><a id="more"></a>
+
+
+<p>若要解决非线性可分问题，要使用多层功能神经元（1982-1986年，1995提出SVM）。两层感知机可以解决异或问题了。一个神经网络足够多的两层网络 + 适当的激活函数能够逼近任意连续的函数。</p>
+<p>2012年，DNN，CNN由于计算能力的提高再次兴起。</p>
+<p><img src="/images/20200223DNN.jpg" alt="20200223DNN"></p>
+<h3 id="反向传播"><a href="#反向传播" class="headerlink" title="反向传播"></a>反向传播</h3><p>正向传播就是将输入与权重相乘，逐层向前，直到最后输出。然后计算输出层的误差，反向传播则是将误差逆向传播至隐层神经元。根据隐层神经元的误差对权值和阈值进行更新。</p>
+<p><img src="/images/20200223DNN_BP.jpg" alt="20200223DNN_BP"></p>
+<p>$z$ 是样本真实值，$y = f (e), e= wx + b$ 是DNN预测值，激活函数 $f$ 采用 sigmoid，采用均方误差 $\frac{1}{2}(y-z)^2$。</p>
+<p>机器学习书上推导是根据链式求导：</p>
+<script type="math/tex; mode=display">\delta_{6}=(y-z) \frac{d f_6(e)}{d e}=(y-z) f_6(e)(1-f_6(e))</script><script type="math/tex; mode=display">\delta_{4}=\mathrm{w}_{46} \delta_{6} \frac{\mathrm{df}_{4}(\mathrm{e})}{d e}, \delta_{5}=\mathrm{W}_{56} \mathrm{\delta}_{6} \frac{\mathrm{df_4}(\mathrm{e})}{d e}</script><script type="math/tex; mode=display">\delta_{1}=\left(\mathrm{w}_{14} \mathrm{\delta}_{4}+\mathrm{w}_{15} \mathrm{\delta}_{5}\right) \frac{\mathrm{df}_{1}(\mathrm{e})}{d e}, \quad \delta_{2}=\left(\mathrm{w}_{24} \delta_{4}+\mathrm{w}_{25} \delta_{5}\right) \frac{\mathrm{d} f_{2}(\mathrm{e})}{d e}, \delta_{3}=\left(\mathrm{W}_{34} \mathrm{\delta}_{4}+\mathrm{W}_{35} \mathrm{\delta}_{5}\right) \frac{\mathrm{d} \mathrm{f}_3(\mathrm{e})}{d e}</script><p>同理……</p>
+<h3 id="一些问题"><a href="#一些问题" class="headerlink" title="一些问题"></a>一些问题</h3><p>1，目前网络层次越深能够抽象出来的特征越多，但随着神经网络层数的加深，计算量越大，优化函数越来越容易陷入局部最优解。</p>
+<p>2，随着网络层数增加，“梯度消失”现象更加严重。</p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，智能技术基础，罗晓鹏</p>
+<p>2，机器学习，周志华</p>
+]]></content>
+      <categories>
+        <category>深度学习</category>
+      </categories>
+      <tags>
+        <tag>深度学习</tag>
+        <tag>神经网络</tag>
       </tags>
   </entry>
   <entry>
