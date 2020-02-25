@@ -150,9 +150,9 @@
         <category>AIOps</category>
       </categories>
       <tags>
-        <tag>异常检测</tag>
         <tag>机器学习</tag>
         <tag>AIOps</tag>
+        <tag>异常检测</tag>
       </tags>
   </entry>
   <entry>
@@ -407,7 +407,9 @@
 <p>整体特征：多个卷积核提取汇总可以提取整体特征。</p>
 <h4 id="2-2-常见卷积核"><a href="#2-2-常见卷积核" class="headerlink" title="2.2 常见卷积核"></a>2.2 常见卷积核</h4><p>垂直、水平边缘检测核。</p>
 <script type="math/tex; mode=display">\left(\begin{array}{ccc}{1} & {0} & {-1} \\ {1} & {0} & {-1} \\ {1} & {0} & {-1}\end{array}\right) \quad\left(\begin{array}{ccc}{1} & {1} & {1} \\ {0} & {0} & {0} \\ {-1} & {-1} & {-1}\end{array}\right)</script><p>Laplacian 高反差检测核</p>
-<script type="math/tex; mode=display">\left(\begin{array}{ccc}{0} & {-1} & {0} \\ {-1} & {4} & {-1} \\ {0} & {-1} & {0}\end{array}\right) \quad\left(\begin{array}{ccc}{-1} & {-1} & {-1} \\ {-1} & {8} & {-1} \\ {-1} & {-1} & {-1}\end{array}\right)</script>]]></content>
+<script type="math/tex; mode=display">\left(\begin{array}{ccc}{0} & {-1} & {0} \\ {-1} & {4} & {-1} \\ {0} & {-1} & {0}\end{array}\right) \quad\left(\begin{array}{ccc}{-1} & {-1} & {-1} \\ {-1} & {8} & {-1} \\ {-1} & {-1} & {-1}\end{array}\right)</script><p>eg: 发丝，高反差，加色之后，发丝更明显.</p>
+<h4 id="2-3-卷积过程"><a href="#2-3-卷积过程" class="headerlink" title="2.3 卷积过程"></a>2.3 卷积过程</h4><p><img src="/Users/wangxue/gitpro/20191105MyBlog/saruagithub/source/images/20200225CNN_process.jpg" alt="20200225CNN_process"></p>
+]]></content>
       <categories>
         <category>深度学习</category>
       </categories>
@@ -874,8 +876,8 @@
         <category>深度学习</category>
       </categories>
       <tags>
-        <tag>机器学习</tag>
         <tag>深度学习</tag>
+        <tag>机器学习</tag>
       </tags>
   </entry>
   <entry>
@@ -1506,8 +1508,8 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
         <category>AIOps</category>
       </categories>
       <tags>
-        <tag>时间序列</tag>
         <tag>AIOps</tag>
+        <tag>时间序列</tag>
       </tags>
   </entry>
   <entry>
@@ -1572,8 +1574,8 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
         <category>AIOps</category>
       </categories>
       <tags>
-        <tag>异常检测</tag>
         <tag>AIOps</tag>
+        <tag>异常检测</tag>
       </tags>
   </entry>
   <entry>

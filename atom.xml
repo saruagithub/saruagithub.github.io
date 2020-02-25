@@ -60,11 +60,11 @@
       <category term="AIOps" scheme="http://yoursite.com/categories/AIOps/"/>
     
     
-      <category term="异常检测" scheme="http://yoursite.com/tags/%E5%BC%82%E5%B8%B8%E6%A3%80%E6%B5%8B/"/>
-    
       <category term="机器学习" scheme="http://yoursite.com/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
     
       <category term="AIOps" scheme="http://yoursite.com/tags/AIOps/"/>
+    
+      <category term="异常检测" scheme="http://yoursite.com/tags/%E5%BC%82%E5%B8%B8%E6%A3%80%E6%B5%8B/"/>
     
   </entry>
   
@@ -210,9 +210,9 @@
     <link href="http://yoursite.com/2020/01/25/20200225%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9CCNN/"/>
     <id>http://yoursite.com/2020/01/25/20200225%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9CCNN/</id>
     <published>2020-01-25T09:42:45.000Z</published>
-    <updated>2020-02-25T10:18:11.616Z</updated>
+    <updated>2020-02-25T10:28:29.951Z</updated>
     
-    <content type="html"><![CDATA[<h3 id="1-图像基础"><a href="#1-图像基础" class="headerlink" title="1 图像基础"></a>1 图像基础</h3><h4 id="1-1-位图与矢量图"><a href="#1-1-位图与矢量图" class="headerlink" title="1.1 位图与矢量图"></a>1.1 位图与矢量图</h4><p><strong>位图</strong>称为点阵图像、像素图或栅格图像，是由称作像素（图片元素）的单个点组成。他的单位是像素。位图有个缺点是放大后看到边缘是有些模糊的，这就是因为像素点组成的缘故。</p><p>位图的参数有：</p><p>像素：像素大小决定图像大小。</p><p>深度：色彩位数，每个像素使用的信息位数越多，可用的颜色就越多</p><p>通道：通常把RGB三种颜色信息称为红通道、绿通道和蓝通道，相应的把透明度称为Alpha通道，alpha通道存储图片的明暗信息等</p><a id="more"></a><p><strong>矢量图</strong>的图形元素（点和线段）称为对象，每个对象都是一个单独的个体，它具有大小、方向、轮廓、颜色和屏幕位置等属性。矢量图形软件就是用数学的方法来绘制矩形等基本形状，因此它放大后不会模糊。</p><h4 id="1-2-图像特征"><a href="#1-2-图像特征" class="headerlink" title="1.2 图像特征"></a>1.2 图像特征</h4><p>图像具有视觉特征，即颜色、纹理、形状等。还具有空间关系特征，即物体与物体之间的空间关系等等（目前的研究热点 目标检测 yolo网络等）。</p><p>目前的卷积网络就是基于位图的，基于像素值、深度、通道等数值进行的计算。</p><h3 id="2-卷积核"><a href="#2-卷积核" class="headerlink" title="2 卷积核"></a>2 卷积核</h3><h4 id="2-1-卷积介绍"><a href="#2-1-卷积介绍" class="headerlink" title="2.1 卷积介绍"></a>2.1 卷积介绍</h4><p>卷积核其实是一个小的方阵。训练过程中的参数。</p><script type="math/tex; mode=display">\left(\begin{array}{ccc}{1} & {0} & {1} \\ {0} & {1} & {0} \\ {1} & {0} & {1}\end{array}\right)</script><p>卷积的意义？</p><p>卷积运算就是在数据矩阵上做滑动的内积（向量内积是向量模长×cos夹角）。他的直观意义就是卷积核和图像的相似程度（余弦距离），可以发现局部的特征在什么位置明显，输出的feature map则提现了图片局部与卷积核的相似程度。</p><p><img src="/images/20200225CNN_kernel.jpg" alt="20200225CNN_kernel"></p><p>为什么做卷积？</p><p>可以减少参数数量，如果采用DNN全连接网络的方式，这样导致每一个像素点都有权重等参数，参数量太大了。另一方面，卷积可以提取图像特征，将图像局部看做是一个输入，卷积核看做是一个权重。</p><p>卷积可以提取哪些特征？</p><p>局部特征：卷积核提取。</p><p>整体特征：多个卷积核提取汇总可以提取整体特征。</p><h4 id="2-2-常见卷积核"><a href="#2-2-常见卷积核" class="headerlink" title="2.2 常见卷积核"></a>2.2 常见卷积核</h4><p>垂直、水平边缘检测核。</p><script type="math/tex; mode=display">\left(\begin{array}{ccc}{1} & {0} & {-1} \\ {1} & {0} & {-1} \\ {1} & {0} & {-1}\end{array}\right) \quad\left(\begin{array}{ccc}{1} & {1} & {1} \\ {0} & {0} & {0} \\ {-1} & {-1} & {-1}\end{array}\right)</script><p>Laplacian 高反差检测核</p><script type="math/tex; mode=display">\left(\begin{array}{ccc}{0} & {-1} & {0} \\ {-1} & {4} & {-1} \\ {0} & {-1} & {0}\end{array}\right) \quad\left(\begin{array}{ccc}{-1} & {-1} & {-1} \\ {-1} & {8} & {-1} \\ {-1} & {-1} & {-1}\end{array}\right)</script>]]></content>
+    <content type="html"><![CDATA[<h3 id="1-图像基础"><a href="#1-图像基础" class="headerlink" title="1 图像基础"></a>1 图像基础</h3><h4 id="1-1-位图与矢量图"><a href="#1-1-位图与矢量图" class="headerlink" title="1.1 位图与矢量图"></a>1.1 位图与矢量图</h4><p><strong>位图</strong>称为点阵图像、像素图或栅格图像，是由称作像素（图片元素）的单个点组成。他的单位是像素。位图有个缺点是放大后看到边缘是有些模糊的，这就是因为像素点组成的缘故。</p><p>位图的参数有：</p><p>像素：像素大小决定图像大小。</p><p>深度：色彩位数，每个像素使用的信息位数越多，可用的颜色就越多</p><p>通道：通常把RGB三种颜色信息称为红通道、绿通道和蓝通道，相应的把透明度称为Alpha通道，alpha通道存储图片的明暗信息等</p><a id="more"></a><p><strong>矢量图</strong>的图形元素（点和线段）称为对象，每个对象都是一个单独的个体，它具有大小、方向、轮廓、颜色和屏幕位置等属性。矢量图形软件就是用数学的方法来绘制矩形等基本形状，因此它放大后不会模糊。</p><h4 id="1-2-图像特征"><a href="#1-2-图像特征" class="headerlink" title="1.2 图像特征"></a>1.2 图像特征</h4><p>图像具有视觉特征，即颜色、纹理、形状等。还具有空间关系特征，即物体与物体之间的空间关系等等（目前的研究热点 目标检测 yolo网络等）。</p><p>目前的卷积网络就是基于位图的，基于像素值、深度、通道等数值进行的计算。</p><h3 id="2-卷积核"><a href="#2-卷积核" class="headerlink" title="2 卷积核"></a>2 卷积核</h3><h4 id="2-1-卷积介绍"><a href="#2-1-卷积介绍" class="headerlink" title="2.1 卷积介绍"></a>2.1 卷积介绍</h4><p>卷积核其实是一个小的方阵。训练过程中的参数。</p><script type="math/tex; mode=display">\left(\begin{array}{ccc}{1} & {0} & {1} \\ {0} & {1} & {0} \\ {1} & {0} & {1}\end{array}\right)</script><p>卷积的意义？</p><p>卷积运算就是在数据矩阵上做滑动的内积（向量内积是向量模长×cos夹角）。他的直观意义就是卷积核和图像的相似程度（余弦距离），可以发现局部的特征在什么位置明显，输出的feature map则提现了图片局部与卷积核的相似程度。</p><p><img src="/images/20200225CNN_kernel.jpg" alt="20200225CNN_kernel"></p><p>为什么做卷积？</p><p>可以减少参数数量，如果采用DNN全连接网络的方式，这样导致每一个像素点都有权重等参数，参数量太大了。另一方面，卷积可以提取图像特征，将图像局部看做是一个输入，卷积核看做是一个权重。</p><p>卷积可以提取哪些特征？</p><p>局部特征：卷积核提取。</p><p>整体特征：多个卷积核提取汇总可以提取整体特征。</p><h4 id="2-2-常见卷积核"><a href="#2-2-常见卷积核" class="headerlink" title="2.2 常见卷积核"></a>2.2 常见卷积核</h4><p>垂直、水平边缘检测核。</p><script type="math/tex; mode=display">\left(\begin{array}{ccc}{1} & {0} & {-1} \\ {1} & {0} & {-1} \\ {1} & {0} & {-1}\end{array}\right) \quad\left(\begin{array}{ccc}{1} & {1} & {1} \\ {0} & {0} & {0} \\ {-1} & {-1} & {-1}\end{array}\right)</script><p>Laplacian 高反差检测核</p><script type="math/tex; mode=display">\left(\begin{array}{ccc}{0} & {-1} & {0} \\ {-1} & {4} & {-1} \\ {0} & {-1} & {0}\end{array}\right) \quad\left(\begin{array}{ccc}{-1} & {-1} & {-1} \\ {-1} & {8} & {-1} \\ {-1} & {-1} & {-1}\end{array}\right)</script><p>eg: 发丝，高反差，加色之后，发丝更明显.</p><h4 id="2-3-卷积过程"><a href="#2-3-卷积过程" class="headerlink" title="2.3 卷积过程"></a>2.3 卷积过程</h4><p><img src="/Users/wangxue/gitpro/20191105MyBlog/saruagithub/source/images/20200225CNN_process.jpg" alt="20200225CNN_process"></p>]]></content>
     
     <summary type="html">
     
@@ -472,9 +472,9 @@
       <category term="深度学习" scheme="http://yoursite.com/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
     
     
-      <category term="机器学习" scheme="http://yoursite.com/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
-    
       <category term="深度学习" scheme="http://yoursite.com/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+    
+      <category term="机器学习" scheme="http://yoursite.com/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
     
   </entry>
   
