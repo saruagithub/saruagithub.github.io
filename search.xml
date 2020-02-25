@@ -150,8 +150,8 @@
         <category>AIOps</category>
       </categories>
       <tags>
-        <tag>机器学习</tag>
         <tag>异常检测</tag>
+        <tag>机器学习</tag>
         <tag>AIOps</tag>
       </tags>
   </entry>
@@ -411,8 +411,12 @@
 <h4 id="2-3-卷积过程"><a href="#2-3-卷积过程" class="headerlink" title="2.3 卷积过程"></a>2.3 卷积过程</h4><p><img src="/Users/wangxue/gitpro/20191105MyBlog/saruagithub/source/images/20200225CNN_process.jpg" alt="20200225CNN_process"></p>
 <p>假设输入图像为矩阵A，大小4×4，卷积核为3×3的下图。</p>
 <script type="math/tex; mode=display">\left|\begin{array}{lll}{k 11} & {k 12} & {k 13} \\ {k 21} & {k 22} & {k 23} \\ {k 31} & {k 32} & {k 33}\end{array}\right|</script><p>卷积的过程（注意是做内积）：</p>
-<script type="math/tex; mode=display">\left[\begin{array}{ll}{u_{11}} & {u_{12}} \\ {u_{21}} & {u_{22}}\end{array}\right]=\left[\begin{array}{cccc}{x_{11}} & {x_{12}} & {x_{13}} & {x_{14}} \\ {x_{21}} & {x_{22}} & {x_{23}} & {x_{24}} \\ {x_{31}} & {x_{32}} & {x_{33}} & {x_{34}} \\ {x_{41}} & {x_{42}} & {x_{43}} & {x_{44}}\end{array}\right] \times \left[\begin{array}{ccc}{k_{11}} & {k_{12}} & {k_{13}} \\ {k_{21}} & {k_{22}} & {k_{23}} \\ {k_{31}} & {k_{32}} & {k_{33}}\end{array}\right]+\left[\begin{array}{cc}{b} & {b} \\ {b} & {b}\end{array}\right]</script><p>中间L-1层到L层的正向传播表达式（加上激活函数）：</p>
-<script type="math/tex; mode=display">\mathrm{x}_{i j}^{L}=\mathrm{f}\left(\mathrm{u}_{i j}^{L}\right)=\mathrm{f}\left(\Sigma_{p=1}^{3} \Sigma_{q=1}^{3} x_{i+p-1, j+q-1}^{L-1} * k_{p q}^{L}+b^{L}\right)</script><p>若最后一场将特征地图进行全连接输出</p>
+<script type="math/tex; mode=display">\left[\begin{array}{ll}{u_{11}} & {u_{12}} \\ {u_{21}} & {u_{22}}\end{array}\right]=\left[\begin{array}{cccc}{x_{11}} & {x_{12}} & {x_{13}} & {x_{14}} \\ {x_{21}} & {x_{22}} & {x_{23}} & {x_{24}} \\ {x_{31}} & {x_{32}} & {x_{33}} & {x_{34}} \\ {x_{41}} & {x_{42}} & {x_{43}} & {x_{44}}\end{array}\right] \times \left[\begin{array}{ccc}{k_{11}} & {k_{12}} & {k_{13}} \\ {k_{21}} & {k_{22}} & {k_{23}} \\ {k_{31}} & {k_{32}} & {k_{33}}\end{array}\right]+\left[\begin{array}{cc}{b} & {b} \\ {b} & {b}\end{array}\right]</script><script type="math/tex; mode=display">=\left[\begin{array}{ll}{x_{11} k_{11}+x_{12} k_{12}+x_{13} k_{13}+} & {x_{12} k_{11}+x_{13} k_{12}+x_{14} k_{13}+} \\ {x_{21} k_{21}+x_{22} k_{22}+x_{23} k_{23}+} & {x_{22} k_{21}+x_{23} k_{22}+x_{24} k_{23}+} \\ {x_{31} k_{31}+x_{32} k_{32}+x_{33} k_{33}+b} & {x_{32} k_{31}+x_{33} k_{32}+x_{34} k_{33}+b} \\ {x_{21} k_{11}+x_{22} k_{12}+x_{23} k_{13}+} & {x_{22} k_{11}+x_{23} k_{12}+x_{24} k_{13}+} \\ {x_{31} k_{21}+x_{32} k_{22}+x_{33} k_{23}+} & {x_{32} k_{21}+x_{33} k_{22}+x_{34} k_{23}+} \\ {x_{41} k_{31}+x_{42} k_{32}+x_{43} k_{33}+b} & {x_{42} k_{31}+x_{43} k_{32}+x_{44} k_{33}+b}\end{array}\right]</script><p>中间L-1层到L层的正向传播表达式（加上激活函数）：</p>
+<script type="math/tex; mode=display">\mathrm{x}_{i j}^{L}=\mathrm{f}\left(\mathrm{u}_{i j}^{L}\right)=\mathrm{f}\left(\Sigma_{p=1}^{3} \Sigma_{q=1}^{3} x_{i+p-1, j+q-1}^{L-1} * k_{p q}^{L}+b^{L}\right)</script><p>若最后一场将特征地图进行全连接输出为$y$ （概率输出） ，真实是 $\hat{y}$</p>
+<script type="math/tex; mode=display">y=\operatorname{sigmoid}\left(\sum_{i} \sum_{j} u_{ij}\right), \operatorname{loss}=\frac{1}{2}(y-\hat{y})^{2}</script><p>根据链式求导得最后一层全连接的权重 $w$：</p>
+<script type="math/tex; mode=display">\Delta w_{i j}=\eta \frac{d_{loss}}{d_{y}} \frac{d y}{d u_{ij}}=\eta(y-\hat{y})({y} *(1-{y}))</script><p>中间：</p>
+<script type="math/tex; mode=display">\Delta k_{p q}=\eta \sum_{i} \sum_{j}\left(\frac{d_{l o s s}}{d x_{ij}} \frac{d x_{ij}}{d k_{pq}}\right)=\eta \sum_{i} \sum_{j}\left(\frac{d_{loss}}{d x_{ij}} \mathrm{f}^{\prime}\left(\mathrm{u}_{i j}^{L}\right) x_{i+p-1, j+q-1}^{L-1}\right)</script><script type="math/tex; mode=display">\Delta b_{p q}=\eta \sum_{i} \sum_{j}\left(\frac{d \operatorname{loss}}{d x \mathrm{ij}} \frac{d x_{ij}}{d u_{ij}}\right)=\eta \sum_{i} \sum_{j}\left(\frac{d \operatorname{loss}}{d x_{ij}} \mathrm{f}^{\prime}\left(\mathrm{u}_{i j}^{L}\right)\right)</script><h4 id="2-4-池化"><a href="#2-4-池化" class="headerlink" title="2.4 池化"></a>2.4 池化</h4><p>池化可以压缩特征（压缩信息）：有最大池化，平均池化，加权池化等。</p>
+<p><img src="/Users/wangxue/gitpro/20191105MyBlog/saruagithub/source/images/20200225CNN_maxpool.jpg" alt="20200225CNN_maxpool"></p>
 ]]></content>
       <categories>
         <category>深度学习</category>
