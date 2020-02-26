@@ -86,14 +86,12 @@
 <p><strong>Histogram-based</strong></p>
 <p>如果最后三个数据点的平均值落入了带有少于n个其他数据点的直方图bin中。</p>
 <p>统计学方法是可以用在时间序列上的，取最近的一时间段来进行统计计算。</p>
-<h4 id="2-2-基于距离distanced-based"><a href="#2-2-基于距离distanced-based" class="headerlink" title="2.2 基于距离distanced-based"></a>2.2 基于距离distanced-based</h4><p>1，直接定义距离</p>
-<p>2，KNN等基于邻居</p>
-<p>3，聚类clustering</p>
-<p>4，基于密度density</p>
-<p>LOF方法</p>
-<p>5，ABOD基于角度 </p>
-<p>6，IsolationForest</p>
-<p>random cut forest</p>
+<h4 id="2-2-基于距离distanced-based"><a href="#2-2-基于距离distanced-based" class="headerlink" title="2.2 基于距离distanced-based"></a>2.2 基于距离distanced-based</h4><h5 id="2-2-1-直接定义距离"><a href="#2-2-1-直接定义距离" class="headerlink" title="2.2.1 直接定义距离"></a>2.2.1 直接定义距离</h5><p>假设：若一个数据点和大多数数据点距离很远，则这个对象就是异常。但这个方法不太适合稀疏数据集。</p>
+<h5 id="2-2-2-KNN等基于邻居"><a href="#2-2-2-KNN等基于邻居" class="headerlink" title="2.2.2 KNN等基于邻居"></a>2.2.2 KNN等基于邻居</h5><p>简单的定义可以是：用数据对象与最近的K个点的距离之和。很明显，与K个最近点的距离之和越小，异常分越低；与K个最近点的距离之和越大，异常分越大。</p>
+<script type="math/tex; mode=display">N C M(o, M)=\sum_{h \in k N N(o)} d i s t(o, h)</script><h5 id="2-2-3-聚类clustering"><a href="#2-2-3-聚类clustering" class="headerlink" title="2.2.3 聚类clustering"></a>2.2.3 聚类clustering</h5><h5 id="2-2-4-基于密度density"><a href="#2-2-4-基于密度density" class="headerlink" title="2.2.4 基于密度density"></a>2.2.4 基于密度density</h5><p>LOF方法：通过局部的数据密度来检测异常。显然，异常点所在空间的数据点少，密度低。</p>
+<p>K邻近距离，在距离数据点 p 最近的几个点中，第 k 个最近的点跟点 p 之间的距离称为点 p 的 K-邻近距离，记为 k-distance (p) 。</p>
+<p>可达距离：可达距离的定义跟K-邻近距离是相关的，给定参数k时， 数据点 p 到 数据点 o 的可达距离 reach-dist（p, o）为数据点 o 的K-邻近距离 和 数据点p与点o之间的直接距离的最大值。</p>
+<script type="math/tex; mode=display">\text {reach_dist_{k} ( p , o ) }=\max \{k-\text {distance}(o), d(p, o)\}</script><h5 id="2-2-5-ABOD基于角度"><a href="#2-2-5-ABOD基于角度" class="headerlink" title="2.2.5 ABOD基于角度"></a>2.2.5 ABOD基于角度</h5><h5 id="2-2-6-IsolationForest"><a href="#2-2-6-IsolationForest" class="headerlink" title="2.2.6 IsolationForest"></a>2.2.6 IsolationForest</h5><p>random cut forest</p>
 <p>iForest、SCiForest、RRCF</p>
 <p>改进的iForestASD方法，流数据异常检测帧。。。</p>
 <h4 id="2-3-回归模型"><a href="#2-3-回归模型" class="headerlink" title="2.3 回归模型"></a>2.3 回归模型</h4><p>1，自回归AR</p>
