@@ -94,9 +94,18 @@
 <script type="math/tex; mode=display">reachdist_k ( p , o ) =\max \{k-\text {distance}(o), d(p, o)\}</script><p>局部可达密度：基于可达距离的，对于数据点 p，那些跟点p的距离小于等于 k-distance（p）的数据点称为它的 k-nearest-neighbor，记为$N_{k}(p)$数据点 p 的局部可达密度为它与邻近的数据点的平均可达距离的倒数：</p>
 <script type="math/tex; mode=display">lrd_{k}(p)=\frac{1}{\frac{\sum_{o \in N_{k}(p)} reachdist_{k} ( p , o ) }{\left|N_{k}(p)\right|}}</script><p>局部异常因子：用局部相对密度来定义的。数据点 p 的局部相对密度（局部异常因子）为点p的邻居们的平均局部可达密度跟数据点p的局部可达密度的比值。</p>
 <script type="math/tex; mode=display">L O F_{k}(p)=\frac{\sum_{o \in N_{k}(p)} \frac{l r d(o)}{l r d(p)}}{\left|N_{k}(p)\right|}=\frac{\sum_{o \in N_{k}(p)} lrd(o)}{\left|N_{k}(p)\right|} / \operatorname{lr} d(p)</script><p>如果一个数据点跟其他点比较疏远的话，那么显然它的局部可达密度就小。判断异常点就是看它跟周围邻近的数据点的相对密度。如果数据点 p 的 LOF 得分在1附近，表明数据点p的局部密度跟它的邻居们差不多；如果数据点 p 的 LOF 得分小于1，表明数据点p处在一个相对密集的区域，不像是一个异常点；如果数据点 p 的 LOF 得分远大于1，表明数据点p跟其他点比较疏远，很有可能是一个异常点。</p>
-<h5 id="2-2-5-ABOD基于角度"><a href="#2-2-5-ABOD基于角度" class="headerlink" title="2.2.5 ABOD基于角度"></a>2.2.5 ABOD基于角度</h5><h5 id="2-2-6-IsolationForest"><a href="#2-2-6-IsolationForest" class="headerlink" title="2.2.6 IsolationForest"></a>2.2.6 IsolationForest</h5><p>random cut forest</p>
-<p>iForest、SCiForest、RRCF</p>
-<p>改进的iForestASD方法，流数据异常检测帧。。。</p>
+<h5 id="2-2-5-ABOD基于角度"><a href="#2-2-5-ABOD基于角度" class="headerlink" title="2.2.5 ABOD基于角度"></a>2.2.5 ABOD基于角度</h5><h5 id="2-2-6-IsolationForest"><a href="#2-2-6-IsolationForest" class="headerlink" title="2.2.6 IsolationForest"></a>2.2.6 IsolationForest</h5><p>划分超平面来计算“孤立”一个样本所需的超平面数量。异常点所在空间中，所需要的划分次数更少。</p>
+<p><strong>构造itree随机二叉树</strong>：从全量数据中抽取一批样本，然后随机选择一个特征作为起始节点（bagging），并在该特征的最大值和最小值之间随机选择一个值，将样本中小于该取值的数据划到左分支，大于等于该取值的划到右分支。异常点一般都是非常稀有的，在iTree中会很快被划分到叶子节点。</p>
+<p>x —— 要预测的样本</p>
+<p>T.size —— iTree 的训练样本中同样落在 x 所在叶子节点的样本数。</p>
+<p>e —— 数据 x 从 iTree 的根节点到叶节点过程中经过的边的数目</p>
+<p>C(T.size) —— 修正值，二叉树的平均路径长度。</p>
+<p>h(x) —— x在 iTree 中的路径长度：</p>
+<script type="math/tex; mode=display">h ( x ) = e + C ( T . s i z e ) , C ( n ) = 2 H ( n - 1 ) - \left( \frac { 2 ( n - 1 ) } { n } \right), H ( k ) = \ln ( k ) + \xi</script><p>ψ —— 训练一棵itree的样本数</p>
+<p>E(h(x))—— 数据x在多棵树上的路径长度均值</p>
+<p>x在这棵树的异常指数是：</p>
+<script type="math/tex; mode=display">s ( x , \psi ) = 2 ^ { \left( - \frac { E( h ( x ) ) } { c ( \psi ) } \right) }%</script><p>如果h(x)越小，则s(x,ψ)越接近1；越大，则s(x,ψ)越接近0.5。</p>
+<p>其他树方法变形：random cut forest、iForest、SCiForest、RRCF、改进的iForestASD方法，流数据异常检测帧等等。</p>
 <h4 id="2-3-回归模型"><a href="#2-3-回归模型" class="headerlink" title="2.3 回归模型"></a>2.3 回归模型</h4><p>1，自回归AR</p>
 <script type="math/tex; mode=display">X_t = c + \sum_{i=1}^P \theta_{i}X_{t-i} + \varepsilon_t</script><p>其中$c$是常数项，$\theta_i$是自相关系数，$ \varepsilon_t$是随机误差项（平均数为0，标准差为$\sigma$的随机误差值，也称白噪声）。$X_t$的当前值是前几期的线性组合。$\theta_i$的变化将使得时间序列拥有不同的特征。</p>
 <p>对于AR(1)而言：</p>
