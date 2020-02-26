@@ -107,7 +107,8 @@
 <p>x在这棵树的异常指数是：</p>
 <script type="math/tex; mode=display">s ( x , \psi ) = 2 ^ { \left( - \frac { E( h ( x ) ) } { c ( \psi ) } \right) }%</script><p>如果h(x)越小，则s(x,ψ)越接近1；越大，则s(x,ψ)越接近0.5。</p>
 <p><strong>构造iforest</strong>：</p>
-<p>随机采样一部分数据集去构造每一棵树，保证不同树之间的差异性，采样的数据量ψ不需要等于n，可以远远小于n。</p>
+<p>随机采样一部分数据集去构造每一棵树，保证不同树之间的差异性，采样数据量ψ不需要等于n，可以远远小于n。</p>
+<p><img src="/Users/wangxue/gitpro/20191105MyBlog/saruagithub/source/images/20200226iForest.jpg" alt="20200226iForest"></p>
 <p>其他树方法变形：random cut forest、iForest、SCiForest、RRCF、改进的iForestASD方法，流数据异常检测帧等等。</p>
 <h4 id="2-3-回归模型"><a href="#2-3-回归模型" class="headerlink" title="2.3 回归模型"></a>2.3 回归模型</h4><p>1，自回归AR</p>
 <script type="math/tex; mode=display">X_t = c + \sum_{i=1}^P \theta_{i}X_{t-i} + \varepsilon_t</script><p>其中$c$是常数项，$\theta_i$是自相关系数，$ \varepsilon_t$是随机误差项（平均数为0，标准差为$\sigma$的随机误差值，也称白噪声）。$X_t$的当前值是前几期的线性组合。$\theta_i$的变化将使得时间序列拥有不同的特征。</p>
@@ -157,7 +158,6 @@
 <p>3，<a href="https://github.com/etsy/skyline" target="_blank" rel="noopener">https://github.com/etsy/skyline</a> Skyline，一些统计方法</p>
 <p>4，Habeeb R A A, Nasaruddin F, Gani A, et al. Real-time big data processing for anomaly detection: A Survey[J]. International Journal of Information Management, 2019, 45: 289-307.</p>
 <p>5，<a href="https://otexts.com/fppcn/MA.html" target="_blank" rel="noopener">https://otexts.com/fppcn/MA.html</a> 预测方法与实践</p>
-<p>6，</p>
 ]]></content>
       <categories>
         <category>AIOps</category>
