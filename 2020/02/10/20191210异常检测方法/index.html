@@ -47,17 +47,17 @@
   };
 </script>
 
-  <meta name="description" content="1 异常检测方法综述1.1 统计方法主要是对数据的分布做出假设，并找出假设下所定义的“异常”，因此往往会使用极值分析或者假设检验，概率密度函数值小于某个阈值的点判定为异常。 1.1.1，看图频率直方图， 点分布图1.1.2，高斯分布的 k-sigma概率密度函数为 $f(x)=\frac{1}{\sqrt{2 \pi} \sigma} e^{-\frac{(x-\mu)^{2}}{2 \sigma">
+  <meta name="description" content="异常检测方法综述统计方法主要是对数据的分布做出假设，并找出假设下所定义的“异常”，因此往往会使用极值分析或者假设检验，概率密度函数值小于某个阈值的点判定为异常。 看图频率直方图， 点分布图高斯分布的 k-sigma概率密度函数为 $f(x)=\frac{1}{\sqrt{2 \pi} \sigma} e^{-\frac{(x-\mu)^{2}}{2 \sigma^{2}}}$">
 <meta name="keywords" content="异常检测,机器学习,AIOps">
 <meta property="og:type" content="article">
 <meta property="og:title" content="异常检测方法">
 <meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;02&#x2F;10&#x2F;20191210%E5%BC%82%E5%B8%B8%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95&#x2F;index.html">
 <meta property="og:site_name" content="WangXue">
-<meta property="og:description" content="1 异常检测方法综述1.1 统计方法主要是对数据的分布做出假设，并找出假设下所定义的“异常”，因此往往会使用极值分析或者假设检验，概率密度函数值小于某个阈值的点判定为异常。 1.1.1，看图频率直方图， 点分布图1.1.2，高斯分布的 k-sigma概率密度函数为 $f(x)=\frac{1}{\sqrt{2 \pi} \sigma} e^{-\frac{(x-\mu)^{2}}{2 \sigma">
+<meta property="og:description" content="异常检测方法综述统计方法主要是对数据的分布做出假设，并找出假设下所定义的“异常”，因此往往会使用极值分析或者假设检验，概率密度函数值小于某个阈值的点判定为异常。 看图频率直方图， 点分布图高斯分布的 k-sigma概率密度函数为 $f(x)=\frac{1}{\sqrt{2 \pi} \sigma} e^{-\frac{(x-\mu)^{2}}{2 \sigma^{2}}}$">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20191211BoxPlot.jpg">
 <meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;Users&#x2F;wangxue&#x2F;gitpro&#x2F;20191105MyBlog&#x2F;saruagithub&#x2F;source&#x2F;images&#x2F;20200226iForest.jpg">
-<meta property="og:updated_time" content="2020-02-26T03:46:16.122Z">
+<meta property="og:updated_time" content="2020-02-26T03:54:39.955Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20191211BoxPlot.jpg">
 
@@ -243,7 +243,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-02-26 11:46:16" itemprop="dateModified" datetime="2020-02-26T11:46:16+08:00">2020-02-26</time>
+                <time title="修改时间：2020-02-26 11:54:39" itemprop="dateModified" datetime="2020-02-26T11:54:39+08:00">2020-02-26</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -289,24 +289,24 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h3 id="1-异常检测方法综述"><a href="#1-异常检测方法综述" class="headerlink" title="1 异常检测方法综述"></a>1 异常检测方法综述</h3><h4 id="1-1-统计方法"><a href="#1-1-统计方法" class="headerlink" title="1.1 统计方法"></a>1.1 统计方法</h4><p>主要是对数据的分布做出假设，并找出假设下所定义的“异常”，因此往往会使用极值分析或者假设检验，概率密度函数值小于某个阈值的点判定为异常。 </p><h5 id="1-1-1，看图"><a href="#1-1-1，看图" class="headerlink" title="1.1.1，看图"></a>1.1.1，看图</h5><p>频率直方图， 点分布图</p><h5 id="1-1-2，高斯分布的-k-sigma"><a href="#1-1-2，高斯分布的-k-sigma" class="headerlink" title="1.1.2，高斯分布的 k-sigma"></a>1.1.2，高斯分布的 k-sigma</h5><p>概率密度函数为 $f(x)=\frac{1}{\sqrt{2 \pi} \sigma} e^{-\frac{(x-\mu)^{2}}{2 \sigma^{2}}}$</p><a id="more"></a>
+        <h3 id="异常检测方法综述"><a href="#异常检测方法综述" class="headerlink" title="异常检测方法综述"></a>异常检测方法综述</h3><h4 id="统计方法"><a href="#统计方法" class="headerlink" title="统计方法"></a>统计方法</h4><p>主要是对数据的分布做出假设，并找出假设下所定义的“异常”，因此往往会使用极值分析或者假设检验，概率密度函数值小于某个阈值的点判定为异常。 </p><h5 id="看图"><a href="#看图" class="headerlink" title="看图"></a>看图</h5><p>频率直方图， 点分布图</p><h5 id="高斯分布的-k-sigma"><a href="#高斯分布的-k-sigma" class="headerlink" title="高斯分布的 k-sigma"></a>高斯分布的 k-sigma</h5><p>概率密度函数为 $f(x)=\frac{1}{\sqrt{2 \pi} \sigma} e^{-\frac{(x-\mu)^{2}}{2 \sigma^{2}}}$</p><a id="more"></a>
 
 
 <p>当点$X \notin ( { \mu } - 3 { \sigma } ,  { \mu } + 3  { \sigma } ) $ 则为异常，因为这个点出现的概率小于 1 - 99.74%。</p>
 <p>延伸出滑动窗高斯模型，后续s表示为异常分数score：</p>
 <script type="math/tex; mode=display">s =1-Q\left(\frac{\left|x_-\mu \right|}{\sigma}\right)</script><p>Q函数是标准正态分布的右尾函数：$Q(x)=\int_{x}^{\infty} \frac{1}{\sqrt{2 \pi}} e^{-\frac{t^{2}}{2}} d t$，Q函数又叫（标准正态分布的）互补累计分布函数，Q ( x )是正常(高斯)随机变量获得大于x标准差的值的概率。</p>
-<h5 id="1-1-3，箱型图"><a href="#1-1-3，箱型图" class="headerlink" title="1.1.3，箱型图"></a>1.1.3，箱型图</h5><p><img src="/images/20191211BoxPlot.jpg" alt="20191211BoxPlot"></p>
+<h5 id="箱型图"><a href="#箱型图" class="headerlink" title="箱型图"></a>箱型图</h5><p><img src="/images/20191211BoxPlot.jpg" alt="20191211BoxPlot"></p>
 <p>IQR (inter quartile range) = Q3 - Q1 ； 占据中心值周围50%数量的范围</p>
 <p>LQR (lower quartile range) = median - Q1 ； IQR的下半部分</p>
 <p>UQR (upper quartile range) = Q3 - median ； IQR的上半部分</p>
 <p>若按3 σ来判断异常， 3 σ = 2.1 IQR，则异常在median的2.1 IQR之外，因此在Q1或者Q3再延伸1.5 IQR (3σ 之外)的点就很可能是outlier点了。</p>
 <p>即$P &gt; Q3+1.5IQR$ or $P&lt; Q1 - 1.5IQR$</p>
-<h5 id="1-1-4，假设检验类型"><a href="#1-1-4，假设检验类型" class="headerlink" title="1.1.4，假设检验类型"></a>1.1.4，假设检验类型</h5><p>如extreme studentized deviate（Grubb’s Test ）</p>
+<h5 id="假设检验类型"><a href="#假设检验类型" class="headerlink" title="假设检验类型"></a>假设检验类型</h5><p>如extreme studentized deviate（Grubb’s Test ）</p>
 <p>提出假设H0:没有异常点，H1：至少有一个异常点。</p>
 <p>根据样本的均值和标准差来计算最大 bias / standard deviation 比值。</p>
 <script type="math/tex; mode=display">G=\frac{\max _{i=1, \ldots, N}\left|X_{i}-\bar{X}\right|}{s}</script><p>基于t-student分布定检出水平$\alpha$（置信概率$P=1- \alpha$）与检测次数$n$查找表格获得临界值$G_0$。当计算的$G&gt;G_0$则判断为异常点。</p>
 <p>其他还有卡方检验（chi-square theory），Q_test等</p>
-<h5 id="1-1-5，Skyline用到的几种统计方法（单时间序列的异常检测）"><a href="#1-1-5，Skyline用到的几种统计方法（单时间序列的异常检测）" class="headerlink" title="1.1.5，Skyline用到的几种统计方法（单时间序列的异常检测）"></a>1.1.5，Skyline用到的几种统计方法（单时间序列的异常检测）</h5><p><strong>median absolute deviation （MAD）</strong></p>
+<h5 id="Skyline用到的几种统计方法（单时间序列的异常检测）"><a href="#Skyline用到的几种统计方法（单时间序列的异常检测）" class="headerlink" title="Skyline用到的几种统计方法（单时间序列的异常检测）"></a>Skyline用到的几种统计方法（单时间序列的异常检测）</h5><p><strong>median absolute deviation （MAD）</strong></p>
 <p>计算数据的中位数，偏差 = 每个值-中位数，得到偏差中位数</p>
 <script type="math/tex; mode=display">\mathrm{MAD}=\operatorname{median}\left(\left|X_{i}-\operatorname{median}(X)\right|\right)</script><p>MAD对数据集中的异常值比标准偏差更具弹性。在标准偏差中，与均值的距离的平方，较大的异常值会影响更大。可以通过判断一个点的偏差是否过于偏离MAD来判断异常。</p>
 <p><strong>stddev_from_average</strong></p>
@@ -317,15 +317,15 @@
 <p><strong>Histogram-based</strong></p>
 <p>如果最后三个数据点的平均值落入了带有少于n个其他数据点的直方图bin中。</p>
 <p>统计学方法是可以用在时间序列上的，取最近的一时间段来进行统计计算。</p>
-<h4 id="2-2-基于距离distanced-based"><a href="#2-2-基于距离distanced-based" class="headerlink" title="2.2 基于距离distanced-based"></a>2.2 基于距离distanced-based</h4><h5 id="2-2-1-直接定义距离"><a href="#2-2-1-直接定义距离" class="headerlink" title="2.2.1 直接定义距离"></a>2.2.1 直接定义距离</h5><p>假设：若一个数据点和大多数数据点距离很远，则这个对象就是异常。但这个方法不太适合稀疏数据集。</p>
-<h5 id="2-2-2-KNN等基于邻居"><a href="#2-2-2-KNN等基于邻居" class="headerlink" title="2.2.2 KNN等基于邻居"></a>2.2.2 KNN等基于邻居</h5><p>简单的定义可以是：用数据对象与最近的K个点的距离之和。很明显，与K个最近点的距离之和越小，异常分越低；与K个最近点的距离之和越大，异常分越大。</p>
-<script type="math/tex; mode=display">N C M(o, M)=\sum_{h \in k N N(o)} d i s t(o, h)</script><h5 id="2-2-3-聚类clustering"><a href="#2-2-3-聚类clustering" class="headerlink" title="2.2.3 聚类clustering"></a>2.2.3 聚类clustering</h5><h5 id="2-2-4-基于密度density"><a href="#2-2-4-基于密度density" class="headerlink" title="2.2.4 基于密度density"></a>2.2.4 基于密度density</h5><p>LOF方法：通过局部的数据密度来检测异常。显然，异常点所在空间的数据点少，密度低。</p>
+<h4 id="基于距离distanced-based"><a href="#基于距离distanced-based" class="headerlink" title="基于距离distanced-based"></a>基于距离distanced-based</h4><h5 id="直接定义距离"><a href="#直接定义距离" class="headerlink" title="直接定义距离"></a>直接定义距离</h5><p>假设：若一个数据点和大多数数据点距离很远，则这个对象就是异常。但这个方法不太适合稀疏数据集。</p>
+<h5 id="KNN等基于邻居"><a href="#KNN等基于邻居" class="headerlink" title="KNN等基于邻居"></a>KNN等基于邻居</h5><p>简单的定义可以是：用数据对象与最近的K个点的距离之和。很明显，与K个最近点的距离之和越小，异常分越低；与K个最近点的距离之和越大，异常分越大。</p>
+<script type="math/tex; mode=display">N C M(o, M)=\sum_{h \in k N N(o)} d i s t(o, h)</script><h5 id="聚类clustering"><a href="#聚类clustering" class="headerlink" title="聚类clustering"></a>聚类clustering</h5><h5 id="基于密度density"><a href="#基于密度density" class="headerlink" title="基于密度density"></a>基于密度density</h5><p>LOF方法：通过局部的数据密度来检测异常。显然，异常点所在空间的数据点少，密度低。</p>
 <p>K邻近距离，在距离数据点 p 最近的几个点中，第 k 个最近的点跟点 p 之间的距离称为点 p 的 K-邻近距离，记为 k-distance (p) 。</p>
 <p>可达距离：可达距离的定义跟K-邻近距离是相关的，给定参数k时， 数据点 p 到 数据点 o 的可达距离 reach-dist（p, o）为数据点 o 的K-邻近距离 和 数据点p与点o之间的直接距离的最大值。</p>
 <script type="math/tex; mode=display">reachdist_k ( p , o ) =\max \{k-\text {distance}(o), d(p, o)\}</script><p>局部可达密度：基于可达距离的，对于数据点 p，那些跟点p的距离小于等于 k-distance（p）的数据点称为它的 k-nearest-neighbor，记为$N_{k}(p)$数据点 p 的局部可达密度为它与邻近的数据点的平均可达距离的倒数：</p>
 <script type="math/tex; mode=display">lrd_{k}(p)=\frac{1}{\frac{\sum_{o \in N_{k}(p)} reachdist_{k} ( p , o ) }{\left|N_{k}(p)\right|}}</script><p>局部异常因子：用局部相对密度来定义的。数据点 p 的局部相对密度（局部异常因子）为点p的邻居们的平均局部可达密度跟数据点p的局部可达密度的比值。</p>
 <script type="math/tex; mode=display">L O F_{k}(p)=\frac{\sum_{o \in N_{k}(p)} \frac{l r d(o)}{l r d(p)}}{\left|N_{k}(p)\right|}=\frac{\sum_{o \in N_{k}(p)} lrd(o)}{\left|N_{k}(p)\right|} / \operatorname{lr} d(p)</script><p>如果一个数据点跟其他点比较疏远的话，那么显然它的局部可达密度就小。判断异常点就是看它跟周围邻近的数据点的相对密度。如果数据点 p 的 LOF 得分在1附近，表明数据点p的局部密度跟它的邻居们差不多；如果数据点 p 的 LOF 得分小于1，表明数据点p处在一个相对密集的区域，不像是一个异常点；如果数据点 p 的 LOF 得分远大于1，表明数据点p跟其他点比较疏远，很有可能是一个异常点。</p>
-<h5 id="2-2-5-ABOD基于角度"><a href="#2-2-5-ABOD基于角度" class="headerlink" title="2.2.5 ABOD基于角度"></a>2.2.5 ABOD基于角度</h5><h5 id="2-2-6-IsolationForest"><a href="#2-2-6-IsolationForest" class="headerlink" title="2.2.6 IsolationForest"></a>2.2.6 IsolationForest</h5><p>划分超平面来计算“孤立”一个样本所需的超平面数量。异常点所在空间中，所需要的划分次数更少。</p>
+<h5 id="ABOD基于角度"><a href="#ABOD基于角度" class="headerlink" title="ABOD基于角度"></a>ABOD基于角度</h5><h5 id="IsolationForest"><a href="#IsolationForest" class="headerlink" title="IsolationForest"></a>IsolationForest</h5><p>划分超平面来计算“孤立”一个样本所需的超平面数量。异常点所在空间中，所需要的划分次数更少。</p>
 <p><strong>构造itree随机二叉树</strong>：</p>
 <p>从全量数据中抽取一批样本，然后随机选择一个特征作为起始节点（bagging），并在该特征的最大值和最小值之间随机选择一个值，将样本中小于该取值的数据划到左分支，大于等于该取值的划到右分支。异常点一般都是非常稀有的，在iTree中会很快被划分到叶子节点。</p>
 <p>x —— 要预测的样本</p>
@@ -341,7 +341,7 @@
 <p>随机采样一部分数据集去构造每一棵树，保证不同树之间的差异性，采样数据量ψ不需要等于n，可以远远小于n。</p>
 <p><img src="/Users/wangxue/gitpro/20191105MyBlog/saruagithub/source/images/20200226iForest.jpg" alt="20200226iForest"></p>
 <p>其他树方法变形：random cut forest、iForest、SCiForest、RRCF、改进的iForestASD方法，流数据异常检测帧等等。</p>
-<h4 id="2-3-回归模型"><a href="#2-3-回归模型" class="headerlink" title="2.3 回归模型"></a>2.3 回归模型</h4><p>1，自回归AR</p>
+<h4 id="回归模型"><a href="#回归模型" class="headerlink" title="回归模型"></a>回归模型</h4><p>1，自回归AR</p>
 <script type="math/tex; mode=display">X_t = c + \sum_{i=1}^P \theta_{i}X_{t-i} + \varepsilon_t</script><p>其中$c$是常数项，$\theta_i$是自相关系数，$ \varepsilon_t$是随机误差项（平均数为0，标准差为$\sigma$的随机误差值，也称白噪声）。$X_t$的当前值是前几期的线性组合。$\theta_i$的变化将使得时间序列拥有不同的特征。</p>
 <p>对于AR(1)而言：</p>
 <p>当$\theta_1=0$, $X_t$相当于白噪声。</p>
@@ -474,7 +474,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-异常检测方法综述"><span class="nav-number">1.</span> <span class="nav-text">1 异常检测方法综述</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-统计方法"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 统计方法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-1-1，看图"><span class="nav-number">1.1.1.</span> <span class="nav-text">1.1.1，看图</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-1-2，高斯分布的-k-sigma"><span class="nav-number">1.1.2.</span> <span class="nav-text">1.1.2，高斯分布的 k-sigma</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-1-3，箱型图"><span class="nav-number">1.1.3.</span> <span class="nav-text">1.1.3，箱型图</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-1-4，假设检验类型"><span class="nav-number">1.1.4.</span> <span class="nav-text">1.1.4，假设检验类型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-1-5，Skyline用到的几种统计方法（单时间序列的异常检测）"><span class="nav-number">1.1.5.</span> <span class="nav-text">1.1.5，Skyline用到的几种统计方法（单时间序列的异常检测）</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-基于距离distanced-based"><span class="nav-number">1.2.</span> <span class="nav-text">2.2 基于距离distanced-based</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2-1-直接定义距离"><span class="nav-number">1.2.1.</span> <span class="nav-text">2.2.1 直接定义距离</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2-2-KNN等基于邻居"><span class="nav-number">1.2.2.</span> <span class="nav-text">2.2.2 KNN等基于邻居</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2-3-聚类clustering"><span class="nav-number">1.2.3.</span> <span class="nav-text">2.2.3 聚类clustering</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2-4-基于密度density"><span class="nav-number">1.2.4.</span> <span class="nav-text">2.2.4 基于密度density</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2-5-ABOD基于角度"><span class="nav-number">1.2.5.</span> <span class="nav-text">2.2.5 ABOD基于角度</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2-6-IsolationForest"><span class="nav-number">1.2.6.</span> <span class="nav-text">2.2.6 IsolationForest</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-回归模型"><span class="nav-number">1.3.</span> <span class="nav-text">2.3 回归模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-线性模型（基于子空间subspace）"><span class="nav-number">1.4.</span> <span class="nav-text">2.4 线性模型（基于子空间subspace）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-机器学习"><span class="nav-number">1.5.</span> <span class="nav-text">2.3 机器学习</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-神经网络"><span class="nav-number">1.6.</span> <span class="nav-text">2.4 神经网络</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-5-实时序列异常检测"><span class="nav-number">1.7.</span> <span class="nav-text">2.5 实时序列异常检测</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2-5-1-NAB库有的"><span class="nav-number">1.7.1.</span> <span class="nav-text">2.5.1 NAB库有的</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-5-2-其他"><span class="nav-number">1.7.2.</span> <span class="nav-text">2.5.2 其他</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reference"><span class="nav-number">2.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#异常检测方法综述"><span class="nav-number">1.</span> <span class="nav-text">异常检测方法综述</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#统计方法"><span class="nav-number">1.1.</span> <span class="nav-text">统计方法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#看图"><span class="nav-number">1.1.1.</span> <span class="nav-text">看图</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#高斯分布的-k-sigma"><span class="nav-number">1.1.2.</span> <span class="nav-text">高斯分布的 k-sigma</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#箱型图"><span class="nav-number">1.1.3.</span> <span class="nav-text">箱型图</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#假设检验类型"><span class="nav-number">1.1.4.</span> <span class="nav-text">假设检验类型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Skyline用到的几种统计方法（单时间序列的异常检测）"><span class="nav-number">1.1.5.</span> <span class="nav-text">Skyline用到的几种统计方法（单时间序列的异常检测）</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#基于距离distanced-based"><span class="nav-number">1.2.</span> <span class="nav-text">基于距离distanced-based</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#直接定义距离"><span class="nav-number">1.2.1.</span> <span class="nav-text">直接定义距离</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#KNN等基于邻居"><span class="nav-number">1.2.2.</span> <span class="nav-text">KNN等基于邻居</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#聚类clustering"><span class="nav-number">1.2.3.</span> <span class="nav-text">聚类clustering</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#基于密度density"><span class="nav-number">1.2.4.</span> <span class="nav-text">基于密度density</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ABOD基于角度"><span class="nav-number">1.2.5.</span> <span class="nav-text">ABOD基于角度</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#IsolationForest"><span class="nav-number">1.2.6.</span> <span class="nav-text">IsolationForest</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#回归模型"><span class="nav-number">1.3.</span> <span class="nav-text">回归模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-线性模型（基于子空间subspace）"><span class="nav-number">1.4.</span> <span class="nav-text">2.4 线性模型（基于子空间subspace）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-机器学习"><span class="nav-number">1.5.</span> <span class="nav-text">2.3 机器学习</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-神经网络"><span class="nav-number">1.6.</span> <span class="nav-text">2.4 神经网络</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-5-实时序列异常检测"><span class="nav-number">1.7.</span> <span class="nav-text">2.5 实时序列异常检测</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2-5-1-NAB库有的"><span class="nav-number">1.7.1.</span> <span class="nav-text">2.5.1 NAB库有的</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-5-2-其他"><span class="nav-number">1.7.2.</span> <span class="nav-text">2.5.2 其他</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reference"><span class="nav-number">2.</span> <span class="nav-text">Reference</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
