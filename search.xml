@@ -108,7 +108,7 @@
 <script type="math/tex; mode=display">s ( x , \psi ) = 2 ^ { \left( - \frac { E( h ( x ) ) } { c ( \psi ) } \right) }%</script><p>如果h(x)越小，则s(x,ψ)越接近1；越大，则s(x,ψ)越接近0.5。</p>
 <p><strong>构造iforest</strong>：</p>
 <p>随机采样一部分数据集去构造每一棵树，保证不同树之间的差异性，采样数据量ψ不需要等于n，可以远远小于n。</p>
-<p><img src="/Users/wangxue/gitpro/20191105MyBlog/saruagithub/source/images/20200226iForest.jpg" alt="20200226iForest"></p>
+<p><img src="/images/20200226iForest.jpg" alt="20200226iForest"></p>
 <p>其他树方法变形：random cut forest、iForest、SCiForest、RRCF、改进的iForestASD方法，流数据异常检测帧等等。</p>
 <h4 id="回归模型"><a href="#回归模型" class="headerlink" title="回归模型"></a>回归模型</h4><p>1，自回归AR</p>
 <script type="math/tex; mode=display">X_t = c + \sum_{i=1}^P \theta_{i}X_{t-i} + \varepsilon_t</script><p>其中$c$是常数项，$\theta_i$是自相关系数，$ \varepsilon_t$是随机误差项（平均数为0，标准差为$\sigma$的随机误差值，也称白噪声）。$X_t$的当前值是前几期的线性组合。$\theta_i$的变化将使得时间序列拥有不同的特征。</p>
@@ -286,7 +286,7 @@
 <p>训练结果融合：投票法（类别），平均法（回归），Stacking</p>
 <p>要不断尝试新idea，向优秀选手提问，赛后总结看优秀方案。</p>
 <h3 id="2-源码阅读"><a href="#2-源码阅读" class="headerlink" title="2 源码阅读"></a>2 源码阅读</h3><p>数据处理</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">pd.read_csv().sort_values() // 排序</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">pd.read_csv().sort_values() // 排序</span><br><span class="line">df[[<span class="string">'col'</span>]].astype(int) // 类型转换</span><br><span class="line">df.to_pickle() //pkl 存储更快</span><br></pre></td></tr></table></figure>
 <h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，<a href="https://algo.qq.com/application/home/rankinglist/rankingList.html" target="_blank" rel="noopener">https://algo.qq.com/application/home/rankinglist/rankingList.html</a> 腾讯算法大赛</p>
 <p>2，<a href="https://zhuanlan.zhihu.com/p/63718151" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/63718151</a> 鱼佬知乎</p>
 ]]></content>
@@ -2108,7 +2108,7 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
 <p>2020/02/27</p>
 ]]></content>
       <categories>
-        <category>诗集</category>
+        <category>文学创作</category>
       </categories>
       <tags>
         <tag>诗集</tag>
