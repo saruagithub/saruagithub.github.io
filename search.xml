@@ -285,7 +285,9 @@
 <p>训练过程融合：Bagging与Boosting</p>
 <p>训练结果融合：投票法（类别），平均法（回归），Stacking</p>
 <p>要不断尝试新idea，向优秀选手提问，赛后总结看优秀方案。</p>
-<h3 id="2-源码阅读"><a href="#2-源码阅读" class="headerlink" title="2 源码阅读"></a>2 源码阅读</h3><h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，<a href="https://algo.qq.com/application/home/rankinglist/rankingList.html" target="_blank" rel="noopener">https://algo.qq.com/application/home/rankinglist/rankingList.html</a> 腾讯算法大赛</p>
+<h3 id="2-源码阅读"><a href="#2-源码阅读" class="headerlink" title="2 源码阅读"></a>2 源码阅读</h3><p>数据处理</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">pd.read_csv().sort_values() // 排序</span><br></pre></td></tr></table></figure>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，<a href="https://algo.qq.com/application/home/rankinglist/rankingList.html" target="_blank" rel="noopener">https://algo.qq.com/application/home/rankinglist/rankingList.html</a> 腾讯算法大赛</p>
 <p>2，<a href="https://zhuanlan.zhihu.com/p/63718151" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/63718151</a> 鱼佬知乎</p>
 ]]></content>
       <categories>
