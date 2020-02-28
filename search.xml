@@ -814,15 +814,54 @@
 <h4 id="2-2-常见卷积核"><a href="#2-2-常见卷积核" class="headerlink" title="2.2 常见卷积核"></a>2.2 常见卷积核</h4><p>垂直、水平边缘检测核。</p>
 <script type="math/tex; mode=display">\left(\begin{array}{ccc}{1} & {0} & {-1} \\ {1} & {0} & {-1} \\ {1} & {0} & {-1}\end{array}\right) \quad\left(\begin{array}{ccc}{1} & {1} & {1} \\ {0} & {0} & {0} \\ {-1} & {-1} & {-1}\end{array}\right)</script><p>Laplacian 高反差检测核</p>
 <script type="math/tex; mode=display">\left(\begin{array}{ccc}{0} & {-1} & {0} \\ {-1} & {4} & {-1} \\ {0} & {-1} & {0}\end{array}\right) \quad\left(\begin{array}{ccc}{-1} & {-1} & {-1} \\ {-1} & {8} & {-1} \\ {-1} & {-1} & {-1}\end{array}\right)</script><p>eg: 发丝，高反差，加色之后，发丝更明显.</p>
-<h4 id="2-3-卷积过程"><a href="#2-3-卷积过程" class="headerlink" title="2.3 卷积过程"></a>2.3 卷积过程</h4><p><img src="/Users/wangxue/gitpro/20191105MyBlog/saruagithub/source/images/20200225CNN_process.jpg" alt="20200225CNN_process"></p>
+<h4 id="2-3-卷积过程"><a href="#2-3-卷积过程" class="headerlink" title="2.3 卷积过程"></a>2.3 卷积过程</h4><p><img src="/images/20200225CNN_process.jpg" alt="20200225CNN_process"></p>
 <p>假设输入图像为矩阵A，大小4×4，卷积核为3×3的下图。</p>
 <script type="math/tex; mode=display">\left|\begin{array}{lll}{k 11} & {k 12} & {k 13} \\ {k 21} & {k 22} & {k 23} \\ {k 31} & {k 32} & {k 33}\end{array}\right|</script><p>卷积的过程（注意是做内积）：</p>
 <script type="math/tex; mode=display">\left[\begin{array}{ll}{u_{11}} & {u_{12}} \\ {u_{21}} & {u_{22}}\end{array}\right]=\left[\begin{array}{cccc}{x_{11}} & {x_{12}} & {x_{13}} & {x_{14}} \\ {x_{21}} & {x_{22}} & {x_{23}} & {x_{24}} \\ {x_{31}} & {x_{32}} & {x_{33}} & {x_{34}} \\ {x_{41}} & {x_{42}} & {x_{43}} & {x_{44}}\end{array}\right] \times \left[\begin{array}{ccc}{k_{11}} & {k_{12}} & {k_{13}} \\ {k_{21}} & {k_{22}} & {k_{23}} \\ {k_{31}} & {k_{32}} & {k_{33}}\end{array}\right]+\left[\begin{array}{cc}{b} & {b} \\ {b} & {b}\end{array}\right]</script><script type="math/tex; mode=display">=\left[\begin{array}{ll}{x_{11} k_{11}+x_{12} k_{12}+x_{13} k_{13}+} & {x_{12} k_{11}+x_{13} k_{12}+x_{14} k_{13}+} \\ {x_{21} k_{21}+x_{22} k_{22}+x_{23} k_{23}+} & {x_{22} k_{21}+x_{23} k_{22}+x_{24} k_{23}+} \\ {x_{31} k_{31}+x_{32} k_{32}+x_{33} k_{33}+b} & {x_{32} k_{31}+x_{33} k_{32}+x_{34} k_{33}+b} \\ {x_{21} k_{11}+x_{22} k_{12}+x_{23} k_{13}+} & {x_{22} k_{11}+x_{23} k_{12}+x_{24} k_{13}+} \\ {x_{31} k_{21}+x_{32} k_{22}+x_{33} k_{23}+} & {x_{32} k_{21}+x_{33} k_{22}+x_{34} k_{23}+} \\ {x_{41} k_{31}+x_{42} k_{32}+x_{43} k_{33}+b} & {x_{42} k_{31}+x_{43} k_{32}+x_{44} k_{33}+b}\end{array}\right]</script><p>中间L-1层到L层的正向传播表达式（加上激活函数）：</p>
 <script type="math/tex; mode=display">\mathrm{x}_{i j}^{L}=\mathrm{f}\left(\mathrm{u}_{i j}^{L}\right)=\mathrm{f}\left(\Sigma_{p=1}^{3} \Sigma_{q=1}^{3} x_{i+p-1, j+q-1}^{L-1} * k_{p q}^{L}+b^{L}\right)</script><p>若最后一场将特征地图进行全连接输出为$y$ （概率输出） ，真实是 $\hat{y}$</p>
 <script type="math/tex; mode=display">y=\operatorname{sigmoid}\left(\sum_{i} \sum_{j} u_{ij}\right), \operatorname{loss}=\frac{1}{2}(y-\hat{y})^{2}</script><p>根据链式求导得最后一层全连接的权重 $w$：</p>
-<script type="math/tex; mode=display">\Delta w_{i j}=\eta \frac{d_{loss}}{d_{y}} \frac{d y}{d u_{ij}}=\eta(y-\hat{y})({y} *(1-{y}))</script><p>中间：</p>
-<script type="math/tex; mode=display">\Delta k_{p q}=\eta \sum_{i} \sum_{j}\left(\frac{d_{l o s s}}{d x_{ij}} \frac{d x_{ij}}{d k_{pq}}\right)=\eta \sum_{i} \sum_{j}\left(\frac{d_{loss}}{d x_{ij}} \mathrm{f}^{\prime}\left(\mathrm{u}_{i j}^{L}\right) x_{i+p-1, j+q-1}^{L-1}\right)</script><script type="math/tex; mode=display">\Delta b_{p q}=\eta \sum_{i} \sum_{j}\left(\frac{d \operatorname{loss}}{d x \mathrm{ij}} \frac{d x_{ij}}{d u_{ij}}\right)=\eta \sum_{i} \sum_{j}\left(\frac{d \operatorname{loss}}{d x_{ij}} \mathrm{f}^{\prime}\left(\mathrm{u}_{i j}^{L}\right)\right)</script><h4 id="2-4-池化"><a href="#2-4-池化" class="headerlink" title="2.4 池化"></a>2.4 池化</h4><p>池化可以压缩特征（压缩信息）：有最大池化，平均池化，加权池化等。</p>
-<p><img src="/Users/wangxue/gitpro/20191105MyBlog/saruagithub/source/images/20200225CNN_maxpool.jpg" alt="20200225CNN_maxpool"></p>
+<script type="math/tex; mode=display">\Delta w_{i j}=\eta \frac{d_{loss}}{d_{y}} \frac{d y}{d u_{ij}}=\eta(y-\hat{y})({y} *(1-{y}))</script><p>中间卷积核（主要是看哪些对 $\delta$ 误差有贡献，反向传播乘以其相应权重，与DNN的思想类似）：</p>
+<script type="math/tex; mode=display">\Delta k_{p q}=\eta \Sigma_{i} \Sigma_{j}(\frac{d_{Loss}}{d x_{i j}^{(l)}} \frac{d x_{i j}^{(l)}}{d u_{i j}^{(l)}} \frac{d u_{i j}^{(l)}}{d k_{p q}^{(l)}})=\eta \sum_{i} \sum_{j}\left(\frac{d_{loss}}{d_{x_{ij}}^{(l)}} \mathrm{f}^{\prime}\left(\mathrm{u}_{i j}^{l}\right) x_{i+p-1, j+q-1}^{l-1}\right)</script><p>上式由于激活函数中间：</p>
+<script type="math/tex; mode=display">\frac{\partial x_{i j}^{(l)}}{\partial u_{i j}^{(l)}}=f^{\prime}\left(u_{i j}^{(l)}\right)</script><script type="math/tex; mode=display">\frac{\partial u_{j}^{(l)}}{\partial k_{p q}^{(l)}}=\frac{\partial\left(\sum_{p=1}^{s} \sum_{q=1}^{s} x_{i+p-1, j+q-1}^{(l-1)} \times k_{p q}^{(l)}+b^{(l)}\right)}{\partial k_{p q}^{(l)}}=x_{i+p-1, j+q-1}^{(l-1)}</script><p>反向传播将 $\delta \times \Delta w_{i j}$ 将误差传递回来，即$\frac{\partial L}{\partial x_{i j}^{(l)}}$，代入上述公式就可以求出 $\Delta k_{p q}$。</p>
+<script type="math/tex; mode=display">\Delta b_{p q}=\eta \sum_{i} \sum_{j}\left(\frac{d \operatorname{loss}}{d x \mathrm{ij}} \frac{d x_{ij}}{d u_{ij}}\right)=\eta \sum_{i} \sum_{j}\left(\frac{d \operatorname{loss}}{d x_{ij}} \mathrm{f}^{\prime}\left(\mathrm{u}_{i j}^{L}\right)\right)</script><p>其实将卷积核作为一个整体来看，这个传播过程就跟DNN很类似了。CNN里损失函数对临时变量的偏导数，和DNN的全连接不同的是这是一个矩阵：</p>
+<script type="math/tex; mode=display">\left[\begin{array}{ccc}\delta_{11}^{(l)} & \dots & \delta_{1 m}^{(l)} \\ \dots & \dots & \dots \\ \delta_{n 1}^{(l)} & \dots & \delta_{m n}^{(l)}\end{array}\right]</script><p>损失函数对卷积核的偏导数实际上就是输入图像矩阵与误差矩阵的卷积：</p>
+<script type="math/tex; mode=display">\left[\begin{array}{llll}x_{11} & x_{12} & x_{13} & x_{14} \\ x_{21} & x_{22} & x_{23} & x_{24} \\ x_{31} & x_{32} & x_{33} & x_{34} \\ x_{41} & x_{42} & x_{43} & x_{44}\end{array}\right] *\left[\begin{array}{ll}\delta_{11} & \delta_{12} \\ \delta_{21} & \delta_{22}\end{array}\right]</script><p>（后续看reference1的详细介绍）</p>
+<h4 id="2-4-池化"><a href="#2-4-池化" class="headerlink" title="2.4 池化"></a>2.4 池化</h4><p>池化可以压缩特征（压缩信息）：有最大池化，平均池化，加权池化等。</p>
+<p><img src="/images/20200225CNN_maxpool.jpg" alt="20200225CNN_maxpool"></p>
+<p>池化层没有参数，没有激活函数，故池化的反向传播直接将$\delta$ 传回来即可。如果是平均池化，则粉色 6 反向到 1，1，5，6那里，这四个数的误差项就是 $\frac{\delta}{4}$ , 最大池化的话就是 6 的误差是 $\delta$。</p>
+<h3 id="3-对比"><a href="#3-对比" class="headerlink" title="3 对比"></a>3 对比</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>DNN</th>
+<th>CNN</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>参数多</td>
+<td>使用卷积核，全局共享，参数较少</td>
+</tr>
+<tr>
+<td>不适用与图片处理，没有考虑局部结构信息</td>
+<td>卷积核存储图片特征，本例中不断检测一些边缘</td>
+</tr>
+<tr>
+<td>DNN可能陷入局部最优</td>
+<td>池化层也可以减小图片</td>
+</tr>
+<tr>
+<td></td>
+<td>卷积神经网络更独立于数据输入维度</td>
+</tr>
+<tr>
+<td>保留了原始输入数据的信息</td>
+<td>但CNN可能损失原始数据细节信息</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，<a href="https://zhuanlan.zhihu.com/p/41392664" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/41392664</a> CNN的反向传播</p>
 ]]></content>
       <categories>
         <category>深度学习</category>
