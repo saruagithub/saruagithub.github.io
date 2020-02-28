@@ -1,6 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>DFS与BFS算法</title>
+    <url>/2020/02/28/20200228DFS%E4%B8%8EBFS%E7%AE%97%E6%B3%95/</url>
+    <content><![CDATA[<h3 id="1-简介"><a href="#1-简介" class="headerlink" title="1 简介"></a>1 简介</h3><p>深度优先搜索从某个状态开始，不断的转移状态直到无法转移，然后回退到前一步的状态。直白点就是一条道走到黑，然后再逐步掉头，继续走到头。</p><p>一般要注意算法停止条件。迭代过程分析。</p><h3 id="2-题目"><a href="#2-题目" class="headerlink" title="2 题目"></a>2 题目</h3><h4 id="部分和问题"><a href="#部分和问题" class="headerlink" title="部分和问题"></a>部分和问题</h4><p>给定整数$a_{1}, a_{2}, \cdots, a_{n}$ ，判断能否可以从中选出若干数，使他们的和恰好为$k$</p><a id="more"></a>
+
+
+<p>例如：输入 n = 4, a = {1,2,4,7} , k=13</p>
+<p>Yes (13 = 2 + 4 + 7)</p>
+<p>转移过程就是先一直往左到底，然后在倒回去一步走 dfs(i+1, sum+a[i])  加上a[i] 。</p>
+<p>如下图，红色是执行过程。整个DFS的展开如黑色：</p>
+<p><img src="/Users/wangxue/gitpro/20191105MyBlog/saruagithub/source/images/20200228Dfs1.jpg" alt="20200228_dfs1"></p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> max_N = <span class="number">100</span>;</span><br><span class="line"><span class="keyword">int</span> n,k,a[max_N];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">dfs</span><span class="params">(<span class="keyword">int</span> i,<span class="keyword">int</span> sum)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(i == n)</span><br><span class="line">        <span class="keyword">return</span> sum==k; <span class="comment">// all nums have been used</span></span><br><span class="line">    <span class="keyword">if</span>(dfs(i+<span class="number">1</span>, sum))  <span class="comment">//not add a[i]</span></span><br><span class="line">        <span class="keyword">return</span>  <span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">if</span>(dfs(i+<span class="number">1</span>, sum+a[i])) <span class="comment">// add a[i]</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"input n:"</span>;</span><br><span class="line">    <span class="built_in">cin</span>&gt;&gt;n;</span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">        <span class="built_in">cin</span>&gt;&gt;a[i];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">cin</span>&gt;&gt;k;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span>(dfs(<span class="number">0</span>,<span class="number">0</span>))</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"Yes!\n"</span>);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"No!\n"</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="图遍历问题"><a href="#图遍历问题" class="headerlink" title="图遍历问题"></a>图遍历问题</h4><p>在图遍历过程中，每当访问某个顶点$V$ 的时候，DFS递归的访问它的所有未被访问的相邻节点。</p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3>]]></content>
+      <categories>
+        <category>算法</category>
+      </categories>
+      <tags>
+        <tag>算法</tag>
+        <tag>DFS与BFS</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>字节算法岗面试记录</title>
     <url>/2020/02/10/20200210%E5%AD%97%E8%8A%82%E7%AE%97%E6%B3%95%E5%B2%97%E9%9D%A2%E8%AF%95%E8%AE%B0%E5%BD%95/</url>
     <content><![CDATA[<h3 id="一面"><a href="#一面" class="headerlink" title="一面"></a>一面</h3><p>面试官真的是很直接了，就出了道算法题。但整体来说这个面试官真的是超级好了啊，特别会引导，我觉得字节就是这点细节很好。</p><p>最大连续序列和。</p><p>如给一个Array： 1，-2，3，1，-1，5 。则是8 (3, 1, -1 , 5)</p><p>分析：设DP[k] 是表示以k结尾的最大的和。则递推公式为 DP[k] = max{DP[k-1] + A[k] ，A[k] }，要么是前一个连续和加上数组值（当前数组值为正），要么就是数组本身。这样最后只需要一遍遍历过去，找出以某个k结尾的最大和的那个DP值即为答案。</p><a id="more"></a>
@@ -943,8 +965,8 @@
         <category>深度学习</category>
       </categories>
       <tags>
-        <tag>机器学习</tag>
         <tag>深度学习</tag>
+        <tag>机器学习</tag>
       </tags>
   </entry>
   <entry>
