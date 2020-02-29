@@ -16,7 +16,7 @@
 <h5 id="延伸-leecode39题"><a href="#延伸-leecode39题" class="headerlink" title="延伸 leecode39题"></a>延伸 leecode39题</h5><p>给定一个无重复元素的数组 <code>candidates</code> 和一个目标数 <code>target</code> ，找出 <code>candidates</code> 中所有可以使数字和为 <code>target</code> 的组合。<code>candidates</code> 中的数字可以无限制重复被选取。（这里与上一题的不同在于数字可以重复选取，并且要存所有组合的结果）</p>
 <p>分析：组合、搜索问题首先需要画出树形图，代码根据树形图写出来。</p>
 <p>如输入: <code>candidates = [2, 3, 6, 7]</code>，<code>target = 7</code>，所求解集为: <code>[[7], [2, 2, 3]]</code>。</p>
-<p>我自己的思路：首先k控制DFS的深度，sum判断每次加和结果，last存上一个candidate的值，从而在每次</p>
+<p>我自己的思路：首先k控制DFS的深度，sum判断每次加和结果，last存上一个candidate的值，从而在每次下一层的时候避免重复选择之前选过的小的值。</p>
 <figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 注意last控制去重</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">dfs_addSum1</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &amp;candidates,<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; res,<span class="keyword">int</span> target, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; v, <span class="keyword">int</span> k, <span class="keyword">int</span> sum, <span class="keyword">int</span> last)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (sum == target) &#123;</span><br><span class="line">        res.push_back(v);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (sum &gt; target) <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i&lt;candidates.<span class="built_in">size</span>(); i++) &#123;</span><br><span class="line">        <span class="keyword">if</span> (candidates[i] &lt; last) <span class="keyword">break</span>;</span><br><span class="line">        v.push_back(candidates[i]);</span><br><span class="line">        dfs_addSum1(candidates,res,target,v,k+<span class="number">1</span>,sum+candidates[i],candidates[i]);</span><br><span class="line">        v.pop_back();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; combinationSum1(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; candidates, <span class="keyword">int</span> target) &#123;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; res;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v;</span><br><span class="line">    sort(candidates.<span class="built_in">begin</span>(), candidates.<span class="built_in">end</span>());</span><br><span class="line">    dfs_addSum1(candidates,res,target,v, <span class="number">0</span>, <span class="number">0</span> ,<span class="number">0</span> ); <span class="comment">// 0 means level, 0 is temp_sum, 0 is the last val</span></span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h4 id="电话号码的字母组合"><a href="#电话号码的字母组合" class="headerlink" title="电话号码的字母组合"></a>电话号码的字母组合</h4><p>leecode17题：给定一个仅包含数字 <code>2-9</code> 的字符串，返回所有它能表示的字母组合。</p>
 <p>对应关系如下：</p>
@@ -202,8 +202,8 @@
       </categories>
       <tags>
         <tag>机器学习</tag>
-        <tag>AIOps</tag>
         <tag>异常检测</tag>
+        <tag>AIOps</tag>
       </tags>
   </entry>
   <entry>
@@ -981,8 +981,8 @@
         <category>深度学习</category>
       </categories>
       <tags>
-        <tag>深度学习</tag>
         <tag>机器学习</tag>
+        <tag>深度学习</tag>
       </tags>
   </entry>
   <entry>
@@ -1613,8 +1613,8 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
         <category>AIOps</category>
       </categories>
       <tags>
-        <tag>AIOps</tag>
         <tag>时间序列</tag>
+        <tag>AIOps</tag>
       </tags>
   </entry>
   <entry>
@@ -1679,8 +1679,8 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
         <category>AIOps</category>
       </categories>
       <tags>
-        <tag>AIOps</tag>
         <tag>异常检测</tag>
+        <tag>AIOps</tag>
       </tags>
   </entry>
   <entry>
