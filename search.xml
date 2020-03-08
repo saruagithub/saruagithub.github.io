@@ -29,8 +29,15 @@
 <h4 id="括号生成"><a href="#括号生成" class="headerlink" title="括号生成"></a>括号生成</h4><p>leecode 22：给出 <em>n</em> 代表生成括号的对数，请你写出一个函数，使其能够生成所有可能的并且<strong>有效的</strong>括号组合。如n=3时，输出：[  “((()))”,  “(()())”,  “(())()”,  “()(())”,  “()()()”]</p>
 <p>分析：全部组合的过程中，注意简单的条件剪枝。停止条件左括号个数 = n且右括号个数 = n。</p>
 <figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 剪枝的条件为：左括号的数目一旦小于右括号的数目，以及，左括号的数目和右括号数目均小于n。</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">dfs</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;&amp; res, <span class="built_in">string</span> str,<span class="keyword">int</span> l, <span class="keyword">int</span> r, <span class="keyword">int</span> n)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (l &gt; n || r &gt; n || r &gt; l) <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">if</span> (l == n &amp;&amp; r==n) &#123; <span class="comment">//stop condition</span></span><br><span class="line">        res.push_back(str);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    dfs(res, str + <span class="string">'('</span>, l+<span class="number">1</span>, r, n);</span><br><span class="line">    dfs(res, str + <span class="string">')'</span>, l, r+<span class="number">1</span>, n);</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; generateParenthesis(<span class="keyword">int</span> n)&#123;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; res;</span><br><span class="line">    dfs(res, <span class="string">""</span>, <span class="number">0</span>, <span class="number">0</span>, n);</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">    <span class="comment">// thanks a lot</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="图遍历的DFS"><a href="#图遍历的DFS" class="headerlink" title="图遍历的DFS"></a>图遍历的DFS</h3><p> 在图的遍历过程中，常用两种遍历算法。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">graphTraverse</span><span class="params">(Graph* G)</span></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> v;</span><br><span class="line">	<span class="keyword">for</span>(v=<span class="number">0</span>;v&lt;G-&gt;n();v++) G-&gt;setMark(v, UNVISITED); <span class="comment">// n - nodes num</span></span><br><span class="line">	<span class="keyword">for</span>(v=<span class="number">0</span>;v&lt;G-&gt;n();v++)&#123;</span><br><span class="line">		<span class="keyword">if</span>(G-&gt;getMark(v) == UNVISITED)</span><br><span class="line">			doTraverse(G,v);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在搜索过程中，每当访问某个顶点V时，DFS会递归的访问它的所有未被访问的相邻节点。DFS将所有从顶点V出去的边存入栈中，从栈顶弹出一条边，根据这个边找到顶点V的一个相邻节点，这个顶点就是下一个要访问的顶点。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">DFS</span><span class="params">(Graph* G, <span class="keyword">int</span> v)</span></span>&#123;</span><br><span class="line">	PreVisit(G,v); <span class="comment">//take appropriate action</span></span><br><span class="line">	G-&gt;setMark(v, VISITED);</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> w = G-&gt;first(v); w&lt;G-&gt;n(); w=G-&gt;next(v,w))</span><br><span class="line">		<span class="keyword">if</span>(G-&gt;getMark(w) == UNVISITED)</span><br><span class="line">			DFS(G,w); <span class="comment">// go deep to traverse</span></span><br><span class="line">		PostVisit(G,v);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="图遍历的BFS"><a href="#图遍历的BFS" class="headerlink" title="图遍历的BFS"></a>图遍历的BFS</h3><p>BFS  在进一步深入访问其他顶点之前，检查起点的所有相邻节点。用队列代替递归栈，BFS将逐层对各个节点进行访问。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">BFS</span><span class="params">(Graph* G, <span class="keyword">int</span> start, Queue&lt;<span class="keyword">int</span>&gt;* Q)</span></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> v,w;</span><br><span class="line">	Q-&gt;enqueue(start); <span class="comment">// initial node</span></span><br><span class="line">	G-&gt;setMark(start,VISITED);</span><br><span class="line">	<span class="keyword">while</span>(Q-&gt;length() != <span class="number">0</span>)&#123; <span class="comment">//process all vertices</span></span><br><span class="line">    v = Q-&gt;dequeue();</span><br><span class="line">    PreVisit(G,v);</span><br><span class="line">    <span class="keyword">for</span>(w=G-&gt;first(v); w&lt;G-&gt;n(); w = G-&gt;next(v,w))&#123;</span><br><span class="line">      <span class="keyword">if</span>(G-&gt;getMark(w) == UNVISITED)&#123;</span><br><span class="line">        G-&gt;getMark(w) == VISITED;</span><br><span class="line">        Q-&gt;enqueue(w);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，leecode100经典 17,22题。</p>
 <p>2，《挑战程序设计》</p>
+<p>3,  《数据结构与算法分析 》 Clifford A. Shaffer</p>
 ]]></content>
       <categories>
         <category>算法</category>
@@ -203,8 +210,8 @@
         <category>AIOps</category>
       </categories>
       <tags>
-        <tag>机器学习</tag>
         <tag>异常检测</tag>
+        <tag>机器学习</tag>
         <tag>AIOps</tag>
       </tags>
   </entry>
@@ -901,6 +908,9 @@
 </tbody>
 </table>
 </div>
+<h3 id="4-典型的CNN结构"><a href="#4-典型的CNN结构" class="headerlink" title="4 典型的CNN结构"></a>4 典型的CNN结构</h3><p>LeNet 商用级别的手写数字识别系统，邮政编码等。</p>
+<p>AlexNet</p>
+<p>VGGNet</p>
 <h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，<a href="https://zhuanlan.zhihu.com/p/41392664" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/41392664</a> CNN的反向传播</p>
 ]]></content>
       <categories>
