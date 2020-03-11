@@ -309,7 +309,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/10/20200310Exact-and-heuristic-approaches-to-detect-failures-in-failed-k-out-of-n-systems%E8%AE%BA%E6%96%87/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/03/10/20200310Computers&Operations%20Research%E9%83%A8%E5%88%86%E8%AE%BA%E6%96%87%E7%AE%80%E8%AF%BB/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -323,7 +323,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2020/03/10/20200310Exact-and-heuristic-approaches-to-detect-failures-in-failed-k-out-of-n-systems%E8%AE%BA%E6%96%87/" class="post-title-link" itemprop="url">Exact and heuristic approaches to detect failures in failed k-out-of-n systems</a>
+            <a href="/2020/03/10/20200310Computers&Operations%20Research%E9%83%A8%E5%88%86%E8%AE%BA%E6%96%87%E7%AE%80%E8%AF%BB/" class="post-title-link" itemprop="url">Computers&Operations Research部分论文简读</a>
         </h1>
 
         <div class="post-meta">
@@ -341,7 +341,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-03-11 11:50:45" itemprop="dateModified" datetime="2020-03-11T11:50:45+08:00">2020-03-11</time>
+                <time title="修改时间：2020-03-11 16:57:22" itemprop="dateModified" datetime="2020-03-11T16:57:22+08:00">2020-03-11</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -364,8 +364,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2020/03/10/20200310Exact-and-heuristic-approaches-to-detect-failures-in-failed-k-out-of-n-systems%E8%AE%BA%E6%96%87/#comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/03/10/20200310Exact-and-heuristic-approaches-to-detect-failures-in-failed-k-out-of-n-systems%E8%AE%BA%E6%96%87/" itemprop="commentCount"></span>
+    <a title="valine" href="/2020/03/10/20200310Computers&Operations%20Research%E9%83%A8%E5%88%86%E8%AE%BA%E6%96%87%E7%AE%80%E8%AF%BB/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/03/10/20200310Computers&Operations%20Research%E9%83%A8%E5%88%86%E8%AE%BA%E6%96%87%E7%AE%80%E8%AF%BB/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -380,10 +380,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h3 id="ABS-amp-Intro"><a href="#ABS-amp-Intro" class="headerlink" title="ABS&amp;Intro"></a>ABS&amp;Intro</h3><h4 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h4><p>本文考虑n个系统中k个故障了（表决系统），相应的测试每个组件是有成本的。另外，我们具有某些组件是故障的原因的先验概率信息。目标是以最小的预期成本去识别导致故障的那部分组件。</p><h4 id="本文工作"><a href="#本文工作" class="headerlink" title="本文工作"></a>本文工作</h4><p>提出了精确与近似的策略，在故障表决系统（k-out-of-n）中检测组件状态。我们提出两种整数规划编程公式，两种基于Markov决策过程（MDP）的新颖方法以及两种启发式算法。展示了精确式算法的限制以及启发式算法在随机产生的测试例子的有效性。尽管CPU时间更长，整数规划更灵活地整合更多约束 restriction，例如必要时进行测试优先级关系。数值结果表明，针对所提出的MDP模型进行动态编程是最有效的精确方法，在一小时内最多可解决12个组件。 针对小到中级测试实例，启发式算法的性能是对比精确式算法给的，并针对高级测试实例给出下限。</p>
+          <h2 id="Exact-and-heuristic-approaches-to-detect-failures-in-failed-k-out-of-n-systems"><a href="#Exact-and-heuristic-approaches-to-detect-failures-in-failed-k-out-of-n-systems" class="headerlink" title="Exact and heuristic approaches to detect failures in failed k-out-of-n systems"></a>Exact and heuristic approaches to detect failures in failed k-out-of-n systems</h2><h3 id="ABS-amp-Intro"><a href="#ABS-amp-Intro" class="headerlink" title="ABS&amp;Intro"></a>ABS&amp;Intro</h3><h4 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h4><p>本文考虑n个系统中k个故障了（表决系统），相应的测试每个组件是有成本的。另外，我们具有某些组件是故障的原因的先验概率信息。目标是以最小的预期成本去识别导致故障的那部分组件。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/03/10/20200310Exact-and-heuristic-approaches-to-detect-failures-in-failed-k-out-of-n-systems%E8%AE%BA%E6%96%87/#more" rel="contents">
+              <a class="btn" href="/2020/03/10/20200310Computers&Operations%20Research%E9%83%A8%E5%88%86%E8%AE%BA%E6%96%87%E7%AE%80%E8%AF%BB/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
