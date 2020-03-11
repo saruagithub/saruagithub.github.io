@@ -1,6 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Exact and heuristic approaches to detect failures in failed k-out-of-n systems</title>
+    <url>/2020/03/10/20200310Exact-and-heuristic-approaches-to-detect-failures-in-failed-k-out-of-n-systems%E8%AE%BA%E6%96%87/</url>
+    <content><![CDATA[<h3 id="ABS-amp-Intro"><a href="#ABS-amp-Intro" class="headerlink" title="ABS&amp;Intro"></a>ABS&amp;Intro</h3><h4 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h4><p>本文考虑n个系统中k个故障了（表决系统），相应的测试每个组件是有成本的。另外，我们具有某些组件是故障的原因的先验概率信息。目标是以最小的预期成本去识别导致故障的那部分组件。</p><h4 id="本文工作"><a href="#本文工作" class="headerlink" title="本文工作"></a>本文工作</h4><p>提出了精确与近似的策略，在故障表决系统（k-out-of-n）中检测组件状态。我们提出两种整数规划编程公式，两种基于Markov决策过程（MDP）的新颖方法以及两种启发式算法。展示了精确式算法的限制以及启发式算法在随机产生的测试例子的有效性。尽管CPU时间更长，整数规划更灵活地整合更多约束 restriction，例如必要时进行测试优先级关系。数值结果表明，针对所提出的MDP模型进行动态编程是最有效的精确方法，在一小时内最多可解决12个组件。 针对小到中级测试实例，启发式算法的性能是对比精确式算法给的，并针对高级测试实例给出下限。</p><a id="more"></a>
+
+<h4 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h4><p>系统越来越复杂，组件、感应器，子系统越来越多。为了系统更加可靠，系统中总会有冗余存在。当组件故障时，整个系统也可能fail，需要尽快恢复。两个主要问题：(1) 是否系统工作和失败（序列测试问题） (2) 故障原因（failure detection故障检测问题）。在这两种问题中，可行的解决方法可以被描述为二分决策树，目标是最小化期望成本。</p>
+<p>difference区别：故障检测问题中测试结果的概率随着测试执行而变化。但在序列测试问题中则是不变的。另一个区别是，在故障检测问题中，输出是导致故障的一组组件，而在序列测试问题中，输出是系统正在运行或发生故障的信息以及该状态的证明。</p>
+<h4 id="研究综述"><a href="#研究综述" class="headerlink" title="研究综述"></a>研究综述</h4><p>序列测试问题和故障检测问题：Chang 研究在序列测试的上下文中以最小的成本诊断电子晶体，并提供多项式时间的精确式算法。B K 提出了表决系统以在核反应堆子系统中提供冗余，以实现可靠的运行。W提出当测试不完美并且测试有优先限制时的启发式算法。Ba分析某些维护策略的长期平均成本。Gar蚁群优化算法用于计算机网络中的故障定位。</p>
+<p>故障检测问题的灵异研究领域：离散搜索问题，旨在找到隐藏在N个盒子中的一个item，并且其预期成本最小。检查盒子会很昂贵，并且已知该item在盒子内的概率是先验的。K对搜索问题提出最优贪心算法，当仅可能出现假阳性结果时。W&amp;D考虑一个变体，当存在简单的优先级约束并且路径依赖关系由组活动定义时。</p>
+<h4 id="贡献"><a href="#贡献" class="headerlink" title="贡献"></a>贡献</h4><p>1，我们引入和研究了k-out-of-n系统的故障检测问题，将文献中研究的n-out-of-n系统归纳了下来。</p>
+<p>2，我们提供了四种精确的两种启发式方法来解决该问题，并提供了两种下限lower bound方案，用于在较大的情况下进行基准测试。</p>
+<p>3，首次提出整数规划建模和马尔可夫决策过程来解决此类问题。</p>
+<p>4，我们进行数值实验以评估不同方法的有效性。</p>
+<p>（暂时了解背景和introduction，未读完）</p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，Yavuz T, Kundakcioglu O E, Ünlüyurt T. Exact and heuristic approaches to detect failures in failed k-out-of-n systems[J]. Computers &amp; Operations Research, 2019, 112: 104752.</p>
+]]></content>
+      <categories>
+        <category>AIOps</category>
+      </categories>
+      <tags>
+        <tag>AIOps</tag>
+        <tag>故障检测</tag>
+        <tag>Operation Research</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>DFS与BFS算法</title>
     <url>/2020/02/28/20200228DFS%E4%B8%8EBFS%E7%AE%97%E6%B3%95/</url>
     <content><![CDATA[<h3 id="1-简介"><a href="#1-简介" class="headerlink" title="1 简介"></a>1 简介</h3><p>深度优先搜索从某个状态开始，不断的转移状态直到无法转移，然后回退到前一步的状态。执行的过程其实是跟栈有关，因为暂时没有执行的部分会被存放到堆栈里。直白点就是一条道走到黑，然后再逐步掉头，继续走到头。</p><p>一般要注意算法停止条件。迭代过程分析。</p><h3 id="2-DFS类题目"><a href="#2-DFS类题目" class="headerlink" title="2 DFS类题目"></a>2 DFS类题目</h3><h4 id="部分和问题"><a href="#部分和问题" class="headerlink" title="部分和问题"></a>部分和问题</h4><p>给定整数$a_{1}, a_{2}, \cdots, a_{n}$ ，判断能否可以从中选出若干数，使他们的和恰好为$k$</p><a id="more"></a>
