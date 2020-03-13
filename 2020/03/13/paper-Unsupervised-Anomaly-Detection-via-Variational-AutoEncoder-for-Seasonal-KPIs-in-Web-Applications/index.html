@@ -55,10 +55,10 @@
 <meta property="og:site_name" content="WangXue">
 <meta property="og:description" content="ABS&amp;amp;IntroAbstract大的互联网公司一般会密切监控KPIs。然而这些有不同模式不同数据质量的季节性KPIs的异常检测很有挑战，特别是无标签。本文中，我们提出了Donut，基于VAE（Variational Auto-Encoder）的无监督异常检测算法，其最佳F-score达到0.75 ~ 0.9。我们为Donut的重构提出了一种新颖的KDE解释，使其成为第一种基于VAE的异常">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;Users&#x2F;wangxue&#x2F;gitpro&#x2F;20191105MyBlog&#x2F;saruagithub&#x2F;source&#x2F;images&#x2F;20200313Donut_Figure1.jpg">
-<meta property="og:updated_time" content="2020-03-13T04:22:11.362Z">
+<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200313Donut_Figure1.jpg">
+<meta property="og:updated_time" content="2020-03-13T04:31:42.655Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;Users&#x2F;wangxue&#x2F;gitpro&#x2F;20191105MyBlog&#x2F;saruagithub&#x2F;source&#x2F;images&#x2F;20200313Donut_Figure1.jpg">
+<meta name="twitter:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200313Donut_Figure1.jpg">
 
 <link rel="canonical" href="http://yoursite.com/2020/03/13/paper-Unsupervised-Anomaly-Detection-via-Variational-AutoEncoder-for-Seasonal-KPIs-in-Web-Applications/">
 
@@ -236,7 +236,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-03-13 10:54:13 / 修改时间：12:22:11" itemprop="dateCreated datePublished" datetime="2020-03-13T10:54:13+08:00">2020-03-13</time>
+              <time title="创建时间：2020-03-13 10:54:13 / 修改时间：12:31:42" itemprop="dateCreated datePublished" datetime="2020-03-13T10:54:13+08:00">2020-03-13</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -290,15 +290,15 @@
 <p>1，Donut里的三项技术：改进的ELBO，缺失数据注入进行训练以及为了检测的MCMC (imputation)借补法。使它大大超越了最新的监督类和基于VAE的异常检测算法。 对于来自顶级全球互联网公司的研究KPI，无监督Donut的最佳F-score在0.75到0.9之间。</p>
 <p>2，在文献中，我们首次发现采用VAE（或一般而言的生成模型）进行异常检测需要对正常数据和异常数据进行训练，这与通常的直觉相反。</p>
 <p>3，我们为Donut在z空间中提出了一种新颖的KDE解释，使其成为第一个基于VAE的具有可靠理论解释的异常检测算法。这种解释可能有益于异常检测中其他深度生成模型的设计。 我们发现了潜在z空间中的时间梯度效应，很好地说明了Donut在检测季节性KPI异常方面的出色性能。</p>
-<h3 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h3><h4 id="一般的异常检测"><a href="#一般的异常检测" class="headerlink" title="一般的异常检测"></a>一般的异常检测</h4><p>商业KPIs一般由季节性，另一方面在每个重复周期中，KPI曲线的形状并不完全相同，因为用户行为可能会随着天变化。这里我们命名KPIs为“具有局部变化的季节性KPIs” （如图1）</p>
-<p><img src="/Users/wangxue/gitpro/20191105MyBlog/saruagithub/source/images/20200313Donut_Figure1.jpg" alt="20200313Donut_Figure1"></p>
+<h3 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h3><h4 id="KPIs的异常检测"><a href="#KPIs的异常检测" class="headerlink" title="KPIs的异常检测"></a>KPIs的异常检测</h4><p>商业KPIs一般由季节性，另一方面在每个重复周期中，KPI曲线的形状并不完全相同，因为用户行为可能会随着天变化。这里我们命名KPIs为“具有局部变化的季节性KPIs” （如图1）</p>
+<p><img src="/images/20200313Donut_Figure1.jpg" alt="20200313Donut_Figure1"></p>
 <p>另一类局部变化是随着日数增加的趋势，可以通过Holt-Winters [41]和时间序列分解[6]来确定。 除非正确处理了这些局部变化，否则异常检测算法可能无法正常工作。</p>
 <p>除了季节性，局部变化variation，这些KPIs也有噪声noise。我们假设噪声独立，在每个点服从0均值高斯分布。高斯噪声的精确值是没有意义的，因此，我们仅关注这些噪声的统计数据，即噪声的方差。</p>
 <p>现在我们可以将季节性KPI的“正常模式”形式化为两个组成部分的组合：（1）具有局部变化的季节性模式（2）高斯噪声的统计数据。</p>
 <p>我们使用Anomaly表示不遵循正常模式的（突然的尖峰和骤降）数据点，abnormal表示Anomaly和缺失点。本文主要检测Anomalies。</p>
 <p>由于操作员需要处理异常以进行故障排除/缓解，因此有些异常会被标上标签。 请注意，此类偶然标签对异常的覆盖范围与典型的监督学习算法所需要的相去甚远。</p>
 <p>异常检测算法一般对$x_{t-T+1}, \ldots, x_{t}$ 计算$p\left(y_{t}=1 | x_{t-T+1}, \ldots, x_{t}\right)$ ，操作员只需选择阈值判断异常。</p>
-<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，Xu H, Chen W, Zhao N, et al. Unsupervised anomaly detection via variational auto-encoder for seasonal kpis in web applications[C]//Proceedings of the 2018 World Wide Web Conference. 2018: 187-196.</p>
+<h3 id="Previous-Work"><a href="#Previous-Work" class="headerlink" title="Previous Work"></a>Previous Work</h3><h4 id="传统统计模型"><a href="#传统统计模型" class="headerlink" title="传统统计模型"></a>传统统计模型</h4><h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，Xu H, Chen W, Zhao N, et al. Unsupervised anomaly detection via variational auto-encoder for seasonal kpis in web applications[C]//Proceedings of the 2018 World Wide Web Conference. 2018: 187-196.</p>
 
     </div>
 
@@ -381,7 +381,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#ABS-amp-Intro"><span class="nav-number">1.</span> <span class="nav-text">ABS&amp;Intro</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Abstract"><span class="nav-number">1.1.</span> <span class="nav-text">Abstract</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#KPIs时间序列数据"><span class="nav-number">1.2.</span> <span class="nav-text">KPIs时间序列数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#本文"><span class="nav-number">1.3.</span> <span class="nav-text">本文</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Problem"><span class="nav-number">2.</span> <span class="nav-text">Problem</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#一般的异常检测"><span class="nav-number">2.1.</span> <span class="nav-text">一般的异常检测</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reference"><span class="nav-number">3.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#ABS-amp-Intro"><span class="nav-number">1.</span> <span class="nav-text">ABS&amp;Intro</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Abstract"><span class="nav-number">1.1.</span> <span class="nav-text">Abstract</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#KPIs时间序列数据"><span class="nav-number">1.2.</span> <span class="nav-text">KPIs时间序列数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#本文"><span class="nav-number">1.3.</span> <span class="nav-text">本文</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Problem"><span class="nav-number">2.</span> <span class="nav-text">Problem</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#KPIs的异常检测"><span class="nav-number">2.1.</span> <span class="nav-text">KPIs的异常检测</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Previous-Work"><span class="nav-number">3.</span> <span class="nav-text">Previous Work</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#传统统计模型"><span class="nav-number">3.1.</span> <span class="nav-text">传统统计模型</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reference"><span class="nav-number">4.</span> <span class="nav-text">Reference</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
