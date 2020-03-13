@@ -56,7 +56,7 @@
 <meta property="og:description" content="ABS&amp;amp;IntroAbstract大的互联网公司一般会密切监控KPIs。然而这些有不同模式不同数据质量的季节性KPIs的异常检测很有挑战，特别是无标签。本文中，我们提出了Donut，基于VAE（Variational Auto-Encoder）的无监督异常检测算法，其最佳F-score达到0.75 ~ 0.9。我们为Donut的重构提出了一种新颖的KDE解释，使其成为第一种基于VAE的异常">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;Users&#x2F;wangxue&#x2F;gitpro&#x2F;20191105MyBlog&#x2F;saruagithub&#x2F;source&#x2F;images&#x2F;20200313Donut_Figure1.jpg">
-<meta property="og:updated_time" content="2020-03-13T04:03:17.964Z">
+<meta property="og:updated_time" content="2020-03-13T04:09:50.178Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;Users&#x2F;wangxue&#x2F;gitpro&#x2F;20191105MyBlog&#x2F;saruagithub&#x2F;source&#x2F;images&#x2F;20200313Donut_Figure1.jpg">
 
@@ -236,7 +236,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-03-13 10:54:13 / 修改时间：12:03:17" itemprop="dateCreated datePublished" datetime="2020-03-13T10:54:13+08:00">2020-03-13</time>
+              <time title="创建时间：2020-03-13 10:54:13 / 修改时间：12:09:50" itemprop="dateCreated datePublished" datetime="2020-03-13T10:54:13+08:00">2020-03-13</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -293,6 +293,8 @@
 <h3 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h3><h4 id="一般的异常检测"><a href="#一般的异常检测" class="headerlink" title="一般的异常检测"></a>一般的异常检测</h4><p>商业KPIs一般由季节性，另一方面在每个重复周期中，KPI曲线的形状并不完全相同，因为用户行为可能会随着天变化。这里我们命名KPIs为“具有局部变化的季节性KPIs” （如图1）</p>
 <p><img src="/Users/wangxue/gitpro/20191105MyBlog/saruagithub/source/images/20200313Donut_Figure1.jpg" alt="20200313Donut_Figure1"></p>
 <p>另一类局部变化是随着日数增加的趋势，可以通过Holt-Winters [41]和时间序列分解[6]来确定。 除非正确处理了这些局部变化，否则异常检测算法可能无法正常工作。</p>
+<p>除了季节性，局部变化variation，这些KPIs也有噪声noise。我们假设噪声独立，在每个点服从0均值高斯分布。高斯噪声的精确值是没有意义的，因此，我们仅关注这些噪声的统计数据，即噪声的方差。</p>
+<p>现在我们可以将季节性KPI的“正常模式”形式化为两个组成部分的组合：（1）具有局部变化的季节性模式（2）高斯噪声的统计数据。</p>
 <h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，Xu H, Chen W, Zhao N, et al. Unsupervised anomaly detection via variational auto-encoder for seasonal kpis in web applications[C]//Proceedings of the 2018 World Wide Web Conference. 2018: 187-196.</p>
 
     </div>
