@@ -57,7 +57,7 @@
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200313Donut_Figure_KPIs.jpg">
 <meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;Users&#x2F;wangxue&#x2F;gitpro&#x2F;20191105MyBlog&#x2F;saruagithub&#x2F;source&#x2F;images&#x2F;20200313Donut_Figure2_VAE.jpg">
-<meta property="og:updated_time" content="2020-03-13T14:15:20.604Z">
+<meta property="og:updated_time" content="2020-03-13T14:53:57.421Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200313Donut_Figure_KPIs.jpg">
 
@@ -237,7 +237,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-03-13 10:54:13 / 修改时间：22:15:20" itemprop="dateCreated datePublished" datetime="2020-03-13T10:54:13+08:00">2020-03-13</time>
+              <time title="创建时间：2020-03-13 10:54:13 / 修改时间：22:53:57" itemprop="dateCreated datePublished" datetime="2020-03-13T10:54:13+08:00">2020-03-13</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -309,8 +309,10 @@
 <h3 id="变分自动编码器Variational-Auto-Encoder"><a href="#变分自动编码器Variational-Auto-Encoder" class="headerlink" title="变分自动编码器Variational Auto-Encoder"></a>变分自动编码器Variational Auto-Encoder</h3><p>由于VAE是深度贝叶斯网络的基本构建块，因此我们选择开始使用VAE。</p>
 <p><img src="/Users/wangxue/gitpro/20191105MyBlog/saruagithub/source/images/20200313Donut_Figure2_VAE.jpg" alt="20200313Donut_Figure2_VAE"></p>
 <h4 id="VAE的背景"><a href="#VAE的背景" class="headerlink" title="VAE的背景"></a>VAE的背景</h4><p>深度贝叶斯网络使用神经网络来表达变量之间的关系，因此它们不再局限于简单的分布族，因此可以轻松地应用于复杂的数据。 在训练和预测中经常采用变分推理技术[12]，这是由神经网络延伸出的解决后验分布的有效方法。</p>
-<p>VAE是深度贝叶斯网络，它对两个随机变量（潜变量$z$和可见变量$x$）之间的关系进行建模。 为 $z$ 选择一个先验分布，它通常是多元单位高斯分布 $\mathcal{N}(\mathbf{0}, \mathbf{I})$ 。之后，从由参数为 $\theta$ 的神经网络提取出的 $p_{\theta}(\mathbf{x} | \mathbf{z})$ 中采样得到 $x$ 。$p_{\theta}(\mathbf{z} | \mathbf{x})$ 的准确形式由任务需求进行选择。真实的后验 $p_{\theta}(\mathbf{z} | \mathbf{x})$ 是难解的，但对于训练是必不可少的，并且通常对预测有用，因此变分推理技术可用于fit另外的神经网络，作为近似后验 $q_{\phi}(\mathbf{z} | \mathbf{x})$。</p>
-<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，Xu H, Chen W, Zhao N, et al. Unsupervised anomaly detection via variational auto-encoder for seasonal kpis in web applications[C]//Proceedings of the 2018 World Wide Web Conference. 2018: 187-196.</p>
+<p>VAE是深度贝叶斯网络，它对两个随机变量（潜变量$z$和可见变量$x$）之间的关系进行建模。 为 $z$ 选择一个先验分布，它通常是多元单位高斯分布 $\mathcal{N}(\mathbf{0}, \mathbf{I})$ 。之后，从由参数为 $\theta$ 的神经网络提取出的 $p_{\theta}(\mathbf{x} | \mathbf{z})$ 中采样得到 $x$ 。$p_{\theta}(\mathbf{z} | \mathbf{x})$ 的准确形式由任务需求进行选择。真实的后验 $p_{\theta}(\mathbf{z} | \mathbf{x})$ 是难解的，但对于训练是必不可少的，并且通常对预测有用，因此变分推理技术可用于fit另外的神经网络，作为近似后验 $q_{\phi}(\mathbf{z} | \mathbf{x})$。该后验通常被假定为 $\mathcal{N}\left(\boldsymbol{\mu}_{\phi}(\mathbf{x}), \boldsymbol{\sigma}_{\phi}^{2}(\mathbf{x})\right)$ , $\boldsymbol{\mu}_{\phi}(\mathbf{x})$ 与 $\boldsymbol{\sigma}_{\phi}(\mathbf{x})$ 是由神经网络导出。（如图FIgure2）</p>
+<p>SGVB [16, 32] 是一个伴随VAE一起用的变分推断算法，其中通过最大化变分下界evidence lower bound (ELBO Eqn1 ) 来联合训练近似后验模型和生成模型。</p>
+<p>Equation 1:</p>
+<script type="math/tex; mode=display">\begin{aligned} \log p_{\theta}(\mathbf{x}) & \geq \log p_{\theta}(\mathbf{x})-\operatorname{KL}\left[q_{\phi}(\mathbf{z} | \mathbf{x}) \| p_{\theta}(\mathbf{z} | \mathbf{x})\right] \\ &=\mathcal{L}(\mathbf{x}) \\ &=\mathbb{E}_{\boldsymbol{q}_{\phi}(\mathbf{z} | \mathbf{x})}\left[\log p_{\theta}(\mathbf{x})+\log p_{\theta}(\mathbf{z} | \mathbf{x})-\log q_{\phi}(\mathbf{z} | \mathbf{x})\right] \\ &=\mathbb{E}_{\boldsymbol{q}_{\phi}(\mathbf{z} | \mathbf{x})}\left[\log p_{\theta}(\mathbf{x}, \mathbf{z})-\log q_{\phi}(\mathbf{z} | \mathbf{x})\right] \\ &=\mathbb{E}_{\boldsymbol{q}_{\phi}(\mathbf{z} | \mathbf{x})}\left[\log p_{\theta}(\mathbf{x} | \mathbf{z})+\log p_{\theta}(\mathbf{z})-\log q_{\phi}(\mathbf{z} | \mathbf{x})\right] \end{aligned}</script><h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，Xu H, Chen W, Zhao N, et al. Unsupervised anomaly detection via variational auto-encoder for seasonal kpis in web applications[C]//Proceedings of the 2018 World Wide Web Conference. 2018: 187-196.</p>
 
     </div>
 
