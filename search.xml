@@ -3,7 +3,7 @@
   <entry>
     <title>Unsupervised Anomaly Detection via Variational Auto-Encoder for Seasonal KPIs in Web Applications (Donut model)</title>
     <url>/2020/03/13/paper-Unsupervised-Anomaly-Detection-via-Variational-AutoEncoder-for-Seasonal-KPIs-in-Web-Applications/</url>
-    <content><![CDATA[<h3 id="ABS-amp-Intro"><a href="#ABS-amp-Intro" class="headerlink" title="ABS&amp;Intro"></a>ABS&amp;Intro</h3><h4 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h4><p>大的互联网公司一般会密切监控KPIs。然而这些有不同模式不同数据质量的季节性KPIs的异常检测很有挑战，特别是无标签。本文中，我们提出了Donut，基于VAE（Variational Auto-Encoder）的无监督异常检测算法，其最佳F-score达到0.75 ~ 0.9。我们为Donut的重构提出了一种新颖的KDE解释，使其成为第一种基于VAE的异常检测算法，并且具有扎实的理论解释。</p><a id="more"></a>
+    <content><![CDATA[<h3 id="ABS-amp-Intro"><a href="#ABS-amp-Intro" class="headerlink" title="ABS&amp;Intro"></a>ABS&amp;Intro</h3><h4 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h4><p>大的互联网公司一般会密切监控KPIs。然而这些有不同模式不同数据质量的季节性KPIs的异常检测很有挑战，特别是无标签。本文中，我们提出了Donut，基于VAE（Variational Auto-Encoder 变分自动编码器）的无监督异常检测算法，其最佳F-score达到0.75 ~ 0.9。我们为Donut的重构提出了一种新颖的KDE解释，使其成为第一种基于VAE的异常检测算法，并且具有扎实的理论解释。</p><a id="more"></a>
 <h4 id="KPIs时间序列数据"><a href="#KPIs时间序列数据" class="headerlink" title="KPIs时间序列数据"></a>KPIs时间序列数据</h4><p>度量指标如页面浏览量，在线用户数量，订单数量等等。在所有的这些KPIs里，本文主要关心一些商业相关的KPIs，这些受用户行为计划所影响，因此大致表现出有规律的季节性模式（如按天，按周等）。</p>
 <p>检测KPI异常的相关文献【1, 2, 5– 8, 17, 18, 21, 23–27, 29, 31, 35, 36, 40, 41】 很丰富。现有的异常检测算法遭受算法挑选/参数调整的麻烦，严重依赖标签，性能不令人满意和/或缺乏理论基础。</p>
 <h4 id="本文"><a href="#本文" class="headerlink" title="本文"></a>本文</h4><p>本文提出的Donut，基于VAE（代表性的深层生成模型）的无监督异常检测算法，伴有理论解释，可以无标签或偶尔提供的标签下学习。</p>
@@ -19,6 +19,8 @@
 <p>我们使用Anomaly表示不遵循正常模式的（突然的尖峰和骤降）数据点，abnormal表示Anomaly和缺失点。本文主要检测Anomalies。</p>
 <p>由于操作员需要处理异常以进行故障排除/缓解，因此有些异常会被标上标签。 请注意，此类偶然标签对异常的覆盖范围与典型的监督学习算法所需要的相去甚远。</p>
 <p>异常检测算法一般对$x_{t-T+1}, \ldots, x_{t}$ 计算$p\left(y_{t}=1 | x_{t-T+1}, \ldots, x_{t}\right)$ ，操作员只需选择阈值判断异常。</p>
+<h4 id="2-3的Problem-Statement"><a href="#2-3的Problem-Statement" class="headerlink" title="2.3的Problem Statement"></a>2.3的Problem Statement</h4><p>（挪到前面来了）在我们的上下文中，尽管远不完整，但偶尔还是可以使用标签，应该以某种方式加以利用。本文的问题陈述如下：</p>
+<p>我们致力于<u>基于深度生成模型且具有可靠理论解释的无监督异常检测算法，该算法可以利用偶尔可用的标签</u>。由于VAE是深度贝叶斯网络的基本构建块，因此我们选择开始使用VAE。</p>
 <h3 id="Previous-Work"><a href="#Previous-Work" class="headerlink" title="Previous Work"></a>Previous Work</h3><h4 id="传统统计模型"><a href="#传统统计模型" class="headerlink" title="传统统计模型"></a>传统统计模型</h4><p>许多基于传统统计模型的异常检测器（大多是时间序列模型）[6, 17, 18, 24, 26, 27, 31, 40, 41] 已经被提出来计算异常分数。由于这些算法通常对适用的KPI有基本的假设，需要涉及专家的参考才能为给定的KPI选择合适的检测器，然后基于训练数据去微调检测器参数。这些检测器的简单集合（例如多数表决[8]和归一化[35]）不能很好地起作用。</p>
 <h4 id="监督集成方法"><a href="#监督集成方法" class="headerlink" title="监督集成方法"></a>监督集成方法</h4><p>为了规避传统统计异常检测器算法/参数调整的麻烦，提出了有监督的集成方法<strong>EGADS [21]和Opprentice [25]</strong>。 他们使用用户反馈作为标签并使用传统检测器输出的异常评分作为特征来训练异常分类器。 EGADS和Opprentice均显示出令人鼓舞的结果，但它们严重依赖于<strong>良好的标签</strong>（远远超过我们所积累的轶事标签），这在大规模应用中通常不可行。 此外，运行多个传统检测器以在检测期间提取特征会引入大量的计算成本，这是一个实际问题。</p>
 <h4 id="无监督方法与深度生成模型"><a href="#无监督方法与深度生成模型" class="headerlink" title="无监督方法与深度生成模型"></a>无监督方法与深度生成模型</h4><p>最近采用无监督机器学习方法是个趋势。, e.g., one-class SVM [1, 7], clustering based methods [9] like K-Means [28] and GMM [23], KDE [29], and VAE [2] and VRNN [36].  </p>
@@ -275,9 +277,9 @@
         <category>AIOps</category>
       </categories>
       <tags>
-        <tag>异常检测</tag>
         <tag>机器学习</tag>
         <tag>AIOps</tag>
+        <tag>异常检测</tag>
       </tags>
   </entry>
   <entry>
@@ -1058,8 +1060,8 @@
         <category>深度学习</category>
       </categories>
       <tags>
-        <tag>机器学习</tag>
         <tag>深度学习</tag>
+        <tag>机器学习</tag>
       </tags>
   </entry>
   <entry>
@@ -1690,8 +1692,8 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
         <category>AIOps</category>
       </categories>
       <tags>
-        <tag>时间序列</tag>
         <tag>AIOps</tag>
+        <tag>时间序列</tag>
       </tags>
   </entry>
   <entry>
@@ -1756,8 +1758,8 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
         <category>AIOps</category>
       </categories>
       <tags>
-        <tag>异常检测</tag>
         <tag>AIOps</tag>
+        <tag>异常检测</tag>
       </tags>
   </entry>
   <entry>
