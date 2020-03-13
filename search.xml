@@ -1,6 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Unsupervised Anomaly Detection via Variational Auto-Encoder for Seasonal KPIs in Web Applications</title>
+    <url>/2020/03/13/paper-Unsupervised-Anomaly-Detection-via-Variational-AutoEncoder-for-Seasonal-KPIs-in-Web-Applications/</url>
+    <content><![CDATA[<h3 id="ABS-amp-Intro"><a href="#ABS-amp-Intro" class="headerlink" title="ABS&amp;Intro"></a>ABS&amp;Intro</h3><h4 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h4><p>大的互联网公司一般会密切监控KPIs。然而这些有不同模式不同数据质量的季节性KPIs的异常检测很有挑战，特别是无标签。本文中，我们提出了Donut，基于VAE（Variational Auto-Encoder）的无监督异常检测算法，其最佳F-score达到0.75 ~ 0.9。我们为Donut的重构提出了一种新颖的KDE解释，使其成为第一种基于VAE的异常检测算法，并且具有扎实的理论解释。</p><a id="more"></a>
+<h4 id="KPIs时间序列数据"><a href="#KPIs时间序列数据" class="headerlink" title="KPIs时间序列数据"></a>KPIs时间序列数据</h4><p>度量指标如页面浏览量，在线用户数量，订单数量等等。在所有的这些KPIs里，本文主要关心一些商业相关的KPIs，这些受用户行为计划所影响，因此大致表现出有规律的季节性模式（如按天，按周等）。</p>
+<p>检测KPI异常的相关文献【1, 2, 5– 8, 17, 18, 21, 23–27, 29, 31, 35, 36, 40, 41】 很丰富。现有的异常检测算法遭受算法挑选/参数调整的麻烦，严重依赖标签，性能不令人满意和/或缺乏理论基础。</p>
+<h4 id="本文"><a href="#本文" class="headerlink" title="本文"></a>本文</h4><p>本文提出的Donut，基于VAE（代表性的深层生成模型）的无监督异常检测算法，伴有理论解释，可以无标签或偶尔提供的标签下学习。</p>
+<p>本文贡献：</p>
+<p>1，Donut里的三项技术：改进的ELBO，缺失数据注入进行训练以及为了检测的MCMC (imputation)借补法。使它大大超越了最新的监督类和基于VAE的异常检测算法。 对于来自顶级全球互联网公司的研究KPI，无监督Donut的最佳F-score在0.75到0.9之间。</p>
+<p>2，在文献中，我们首次发现采用VAE（或一般而言的生成模型）进行异常检测需要对正常数据和异常数据进行训练，这与通常的直觉相反。</p>
+<p>3，我们为Donut在z空间中提出了一种新颖的KDE解释，使其成为第一个基于VAE的具有可靠理论解释的异常检测算法。这种解释可能有益于异常检测中其他深度生成模型的设计。 我们发现了潜在z空间中的时间梯度效应，很好地说明了Donut在检测季节性KPI异常方面的出色性能。</p>
+<h3 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h3><h4 id="一般的异常检测"><a href="#一般的异常检测" class="headerlink" title="一般的异常检测"></a>一般的异常检测</h4><p>商业KPIs一般由季节性，另一方面在每个重复周期中，KPI曲线的形状并不完全相同，因为用户行为可能会随着天变化。这里我们命名KPIs为“具有局部变化的季节性KPIs” （如图1）</p>
+<p><img src="/Users/wangxue/gitpro/20191105MyBlog/saruagithub/source/images/20200313Donut_Figure1.jpg" alt="20200313Donut_Figure1"></p>
+<p>另一类局部变化是随着日数增加的趋势，可以通过Holt-Winters [41]和时间序列分解[6]来确定。 除非正确处理了这些局部变化，否则异常检测算法可能无法正常工作。</p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，Xu H, Chen W, Zhao N, et al. Unsupervised anomaly detection via variational auto-encoder for seasonal kpis in web applications[C]//Proceedings of the 2018 World Wide Web Conference. 2018: 187-196.</p>
+]]></content>
+      <categories>
+        <category>AIOps</category>
+      </categories>
+      <tags>
+        <tag>AIOps</tag>
+        <tag>论文</tag>
+        <tag>AnomalyDetection</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Computers&amp;Operations Research部分论文简读</title>
     <url>/2020/03/10/20200310Computers&amp;Operations%20Research%E9%83%A8%E5%88%86%E8%AE%BA%E6%96%87%E7%AE%80%E8%AF%BB/</url>
     <content><![CDATA[<h2 id="Exact-and-heuristic-approaches-to-detect-failures-in-failed-k-out-of-n-systems"><a href="#Exact-and-heuristic-approaches-to-detect-failures-in-failed-k-out-of-n-systems" class="headerlink" title="Exact and heuristic approaches to detect failures in failed k-out-of-n systems"></a>Exact and heuristic approaches to detect failures in failed k-out-of-n systems</h2><h3 id="ABS-amp-Intro"><a href="#ABS-amp-Intro" class="headerlink" title="ABS&amp;Intro"></a>ABS&amp;Intro</h3><h4 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h4><p>本文考虑n个系统中k个故障了（表决系统），相应的测试每个组件是有成本的。另外，我们具有某些组件是故障的原因的先验概率信息。目标是以最小的预期成本去识别导致故障的那部分组件。</p><a id="more"></a>
@@ -17,7 +42,9 @@
 <h2 id="A-survey-of-models-and-algorithms-for-emergency-response-logistics-in-electric-distribution-systems-Part-I-Reliability-planning-with-fault-considerations"><a href="#A-survey-of-models-and-algorithms-for-emergency-response-logistics-in-electric-distribution-systems-Part-I-Reliability-planning-with-fault-considerations" class="headerlink" title="A survey of models and algorithms for emergency response logistics in electric distribution systems. Part I: Reliability planning with fault considerations"></a>A survey of models and algorithms for emergency response logistics in electric distribution systems. Part I: Reliability planning with fault considerations</h2><h3 id="ABS-amp-Intro-1"><a href="#ABS-amp-Intro-1" class="headerlink" title="ABS&amp;Intro"></a>ABS&amp;Intro</h3><p>配电系统的应急响应设计一系列在可靠性和应急计划级别的决策问题。这些操作包括故障诊断，故障定位，故障隔离，恢复和修复。本文回顾了针对与配电运行相关的故障考虑的可靠性规划问题的优化模型和解决方法。本文对确定配电变电站单故障容量，重新分配超负荷，配置配电系统，将地理区域划分为服务区域以及定位物料仓库和仓库的研究进行了调查。</p>
 <p>规划应急响应的操作涉及许多决策问题，可以使用运筹学方法论来解决。 故障情况可能会导致配电系统服务中断的“极端”状态，从而降低服务质量并给电力公司造成经济损失。eg 2008年1月在中国中东部和南部地区的暴风雪使几个省的电线和电线杆倒塌，影响了中国近三分之二的土地，估计造成了100亿美元的直接经济损失。但应急分配响应研究少。</p>
 <p>由于网络拓扑结构，操作能力和应用的操作设备等特性的差异，规划人员面临的问题非常复杂，并且因地而异。 在过去的二十年中，文献中已经出现了越来越多的运筹学应用程序用于应急分配响应。配电系统中涉及的大量组件，配电网络的复杂性以及公用事业运营这些网络的能力不断提高，所有这些都促使人们在配电公用事业的各个层面上使用优化技术。</p>
+<h2 id="Application-of-Optimized-Machine-Learning-Techniques-for-Prediction-of-Occupational-Accidents"><a href="#Application-of-Optimized-Machine-Learning-Techniques-for-Prediction-of-Occupational-Accidents" class="headerlink" title="Application of Optimized Machine Learning Techniques for Prediction of Occupational Accidents"></a>Application of Optimized Machine Learning Techniques for Prediction of Occupational Accidents</h2><h3 id="ABS-amp-Intro-2"><a href="#ABS-amp-Intro-2" class="headerlink" title="ABS&amp;Intro"></a>ABS&amp;Intro</h3><p>机器学习在职业安全领域中预测事故的探索几乎是新的。</p>
 <h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，Yavuz T, Kundakcioglu O E, Ünlüyurt T. Exact and heuristic approaches to detect failures in failed k-out-of-n systems[J]. Computers &amp; Operations Research, 2019, 112: 104752.</p>
+<p>2，A survey of models and algorithms for emergency response logistics in electric distribution systems. Part I: Reliability planning with fault considerations</p>
 ]]></content>
       <categories>
         <category>AIOps</category>
@@ -1021,8 +1048,8 @@
         <category>深度学习</category>
       </categories>
       <tags>
-        <tag>机器学习</tag>
         <tag>深度学习</tag>
+        <tag>机器学习</tag>
       </tags>
   </entry>
   <entry>
