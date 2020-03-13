@@ -16,6 +16,9 @@
 <p>另一类局部变化是随着日数增加的趋势，可以通过Holt-Winters [41]和时间序列分解[6]来确定。 除非正确处理了这些局部变化，否则异常检测算法可能无法正常工作。</p>
 <p>除了季节性，局部变化variation，这些KPIs也有噪声noise。我们假设噪声独立，在每个点服从0均值高斯分布。高斯噪声的精确值是没有意义的，因此，我们仅关注这些噪声的统计数据，即噪声的方差。</p>
 <p>现在我们可以将季节性KPI的“正常模式”形式化为两个组成部分的组合：（1）具有局部变化的季节性模式（2）高斯噪声的统计数据。</p>
+<p>我们使用Anomaly表示不遵循正常模式的（突然的尖峰和骤降）数据点，abnormal表示Anomaly和缺失点。本文主要检测Anomalies。</p>
+<p>由于操作员需要处理异常以进行故障排除/缓解，因此有些异常会被标上标签。 请注意，此类偶然标签对异常的覆盖范围与典型的监督学习算法所需要的相去甚远。</p>
+<p>异常检测算法一般对$x_{t-T+1}, \ldots, x_{t}$ 计算$p\left(y_{t}=1 | x_{t-T+1}, \ldots, x_{t}\right)$ ，操作员只需选择阈值判断异常。</p>
 <h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，Xu H, Chen W, Zhao N, et al. Unsupervised anomaly detection via variational auto-encoder for seasonal kpis in web applications[C]//Proceedings of the 2018 World Wide Web Conference. 2018: 187-196.</p>
 ]]></content>
       <categories>
