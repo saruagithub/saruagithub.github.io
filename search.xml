@@ -19,7 +19,8 @@
 <p>我们使用Anomaly表示不遵循正常模式的（突然的尖峰和骤降）数据点，abnormal表示Anomaly和缺失点。本文主要检测Anomalies。</p>
 <p>由于操作员需要处理异常以进行故障排除/缓解，因此有些异常会被标上标签。 请注意，此类偶然标签对异常的覆盖范围与典型的监督学习算法所需要的相去甚远。</p>
 <p>异常检测算法一般对$x_{t-T+1}, \ldots, x_{t}$ 计算$p\left(y_{t}=1 | x_{t-T+1}, \ldots, x_{t}\right)$ ，操作员只需选择阈值判断异常。</p>
-<h3 id="Previous-Work"><a href="#Previous-Work" class="headerlink" title="Previous Work"></a>Previous Work</h3><h4 id="传统统计模型"><a href="#传统统计模型" class="headerlink" title="传统统计模型"></a>传统统计模型</h4><h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，Xu H, Chen W, Zhao N, et al. Unsupervised anomaly detection via variational auto-encoder for seasonal kpis in web applications[C]//Proceedings of the 2018 World Wide Web Conference. 2018: 187-196.</p>
+<h3 id="Previous-Work"><a href="#Previous-Work" class="headerlink" title="Previous Work"></a>Previous Work</h3><h4 id="传统统计模型"><a href="#传统统计模型" class="headerlink" title="传统统计模型"></a>传统统计模型</h4><p>许多基于传统统计模型的异常检测器（大多是时间序列模型）[6, 17, 18, 24, 26, 27, 31, 40, 41] 已经被提出来计算异常分数。由于这些算法通常对适用的KPI有基本的假设，需要涉及专家的参考才能为给定的KPI选择合适的检测器，然后基于训练数据去微调检测器参数。这些检测器的简单集合（例如多数表决[8]和归一化[35]）不能很好地起作用。</p>
+<h4 id="监督集成方法"><a href="#监督集成方法" class="headerlink" title="监督集成方法"></a>监督集成方法</h4><h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，Xu H, Chen W, Zhao N, et al. Unsupervised anomaly detection via variational auto-encoder for seasonal kpis in web applications[C]//Proceedings of the 2018 World Wide Web Conference. 2018: 187-196.</p>
 ]]></content>
       <categories>
         <category>AIOps</category>
