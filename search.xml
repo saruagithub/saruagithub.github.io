@@ -23,7 +23,7 @@
 <h4 id="监督集成方法"><a href="#监督集成方法" class="headerlink" title="监督集成方法"></a>监督集成方法</h4><p>为了规避传统统计异常检测器算法/参数调整的麻烦，提出了有监督的集成方法<strong>EGADS [21]和Opprentice [25]</strong>。 他们使用用户反馈作为标签并使用传统检测器输出的异常评分作为特征来训练异常分类器。 EGADS和Opprentice均显示出令人鼓舞的结果，但它们严重依赖于<strong>良好的标签</strong>（远远超过我们所积累的轶事标签），这在大规模应用中通常不可行。 此外，运行多个传统检测器以在检测期间提取特征会引入大量的计算成本，这是一个实际问题。</p>
 <h4 id="无监督方法与深度生成模型"><a href="#无监督方法与深度生成模型" class="headerlink" title="无监督方法与深度生成模型"></a>无监督方法与深度生成模型</h4><p>最近采用无监督机器学习方法是个趋势。, e.g., one-class SVM [1, 7], clustering based methods [9] like K-Means [28] and GMM [23], KDE [29], and VAE [2] and VRNN [36].  </p>
 <p>其理念是关注正常模式而不是异常：由于KPIs通常主要由正常数据组成，因此即使没有标签也可以轻松地训练模型。 粗略地说，它们都首先识别原始或某些潜在特征空间中的“正常”区域，然后通过测量观测值与正常区域的“距离”来计算异常分数。</p>
-<p>沿着此方向，1，学习正常模式可以看作是学习训练数据的分布，这是生成模型的主题。2，最近在利用深度学习技术训练生成模型方面取得了巨大进展（例如<strong>GAN [13]和深度贝叶斯网络[4，39]</strong>）。后者属于深度生成模型家族，它采用图形graphical[30]模型框架和变型variational技术[3]，以VAE [16，32]为代表。 3，</p>
+<p>沿着此方向，1，学习正常模式可以看作是学习训练数据的分布，这是生成模型的主题。2，最近在利用深度学习技术训练生成模型方面取得了巨大进展（例如<strong>GAN [13]和深度贝叶斯网络[4，39]</strong>）。后者属于深度生成模型家族，它采用图形graphical[30]模型框架和变型variational技术[3]，以VAE [16，32]为代表。 3，尽管深度生成模型在异常检测方面具有广阔的前景，但现有的基于VAE的异常检测方法[2]并非为KPIs（时间序列）设计，在我们的设置中效果不佳（请参见§4），并且没有 为其用于异常检测的深度生成模型的设计提供支持的理论基础（请参阅§5）4，简单地采用基于VRNN的更复杂的模型[36]在我们的实验中显示出训练时间长且性能差。5，[2]假定仅对干净数据进行训练，这在我们的上下文中是不可行的。</p>
 <h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，Xu H, Chen W, Zhao N, et al. Unsupervised anomaly detection via variational auto-encoder for seasonal kpis in web applications[C]//Proceedings of the 2018 World Wide Web Conference. 2018: 187-196.</p>
 ]]></content>
       <categories>
@@ -1058,8 +1058,8 @@
         <category>深度学习</category>
       </categories>
       <tags>
-        <tag>深度学习</tag>
         <tag>机器学习</tag>
+        <tag>深度学习</tag>
       </tags>
   </entry>
   <entry>
