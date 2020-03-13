@@ -50,13 +50,13 @@
   <meta name="description" content="ABS&amp;amp;IntroAbstract大的互联网公司一般会密切监控KPIs。然而这些有不同模式不同数据质量的季节性KPIs的异常检测很有挑战，特别是无标签。本文中，我们提出了Donut，基于VAE（Variational Auto-Encoder）的无监督异常检测算法，其最佳F-score达到0.75 ~ 0.9。我们为Donut的重构提出了一种新颖的KDE解释，使其成为第一种基于VAE的异常">
 <meta name="keywords" content="AIOps,论文,AnomalyDetection">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Unsupervised Anomaly Detection via Variational Auto-Encoder for Seasonal KPIs in Web Applications">
+<meta property="og:title" content="Unsupervised Anomaly Detection via Variational Auto-Encoder for Seasonal KPIs in Web Applications (Donut model)">
 <meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;03&#x2F;13&#x2F;paper-Unsupervised-Anomaly-Detection-via-Variational-AutoEncoder-for-Seasonal-KPIs-in-Web-Applications&#x2F;index.html">
 <meta property="og:site_name" content="WangXue">
 <meta property="og:description" content="ABS&amp;amp;IntroAbstract大的互联网公司一般会密切监控KPIs。然而这些有不同模式不同数据质量的季节性KPIs的异常检测很有挑战，特别是无标签。本文中，我们提出了Donut，基于VAE（Variational Auto-Encoder）的无监督异常检测算法，其最佳F-score达到0.75 ~ 0.9。我们为Donut的重构提出了一种新颖的KDE解释，使其成为第一种基于VAE的异常">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200313Donut_Figure1.jpg">
-<meta property="og:updated_time" content="2020-03-13T08:00:17.485Z">
+<meta property="og:updated_time" content="2020-03-13T08:08:38.788Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200313Donut_Figure1.jpg">
 
@@ -74,7 +74,7 @@
   };
 </script>
 
-  <title>Unsupervised Anomaly Detection via Variational Auto-Encoder for Seasonal KPIs in Web Applications | WangXue</title>
+  <title>Unsupervised Anomaly Detection via Variational Auto-Encoder for Seasonal KPIs in Web Applications (Donut model) | WangXue</title>
   
 
 
@@ -224,7 +224,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Unsupervised Anomaly Detection via Variational Auto-Encoder for Seasonal KPIs in Web Applications
+          Unsupervised Anomaly Detection via Variational Auto-Encoder for Seasonal KPIs in Web Applications (Donut model)
         </h1>
 
         <div class="post-meta">
@@ -236,7 +236,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-03-13 10:54:13 / 修改时间：16:00:17" itemprop="dateCreated datePublished" datetime="2020-03-13T10:54:13+08:00">2020-03-13</time>
+              <time title="创建时间：2020-03-13 10:54:13 / 修改时间：16:08:38" itemprop="dateCreated datePublished" datetime="2020-03-13T10:54:13+08:00">2020-03-13</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -299,7 +299,8 @@
 <p>由于操作员需要处理异常以进行故障排除/缓解，因此有些异常会被标上标签。 请注意，此类偶然标签对异常的覆盖范围与典型的监督学习算法所需要的相去甚远。</p>
 <p>异常检测算法一般对$x_{t-T+1}, \ldots, x_{t}$ 计算$p\left(y_{t}=1 | x_{t-T+1}, \ldots, x_{t}\right)$ ，操作员只需选择阈值判断异常。</p>
 <h3 id="Previous-Work"><a href="#Previous-Work" class="headerlink" title="Previous Work"></a>Previous Work</h3><h4 id="传统统计模型"><a href="#传统统计模型" class="headerlink" title="传统统计模型"></a>传统统计模型</h4><p>许多基于传统统计模型的异常检测器（大多是时间序列模型）[6, 17, 18, 24, 26, 27, 31, 40, 41] 已经被提出来计算异常分数。由于这些算法通常对适用的KPI有基本的假设，需要涉及专家的参考才能为给定的KPI选择合适的检测器，然后基于训练数据去微调检测器参数。这些检测器的简单集合（例如多数表决[8]和归一化[35]）不能很好地起作用。</p>
-<h4 id="监督集成方法"><a href="#监督集成方法" class="headerlink" title="监督集成方法"></a>监督集成方法</h4><h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，Xu H, Chen W, Zhao N, et al. Unsupervised anomaly detection via variational auto-encoder for seasonal kpis in web applications[C]//Proceedings of the 2018 World Wide Web Conference. 2018: 187-196.</p>
+<h4 id="监督集成方法"><a href="#监督集成方法" class="headerlink" title="监督集成方法"></a>监督集成方法</h4><p>为了规避传统统计异常检测器算法/参数调整的麻烦，提出了有监督的集成方法<strong>EGADS [21]和Opprentice [25]</strong>。 他们使用用户反馈作为标签并使用传统检测器输出的异常评分作为特征来训练异常分类器。 EGADS和Opprentice均显示出令人鼓舞的结果，但它们严重依赖于<strong>良好的标签</strong>（远远超过我们所积累的轶事标签），这在大规模应用中通常不可行。 此外，运行多个传统检测器以在检测期间提取特征会引入大量的计算成本，这是一个实际问题。</p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，Xu H, Chen W, Zhao N, et al. Unsupervised anomaly detection via variational auto-encoder for seasonal kpis in web applications[C]//Proceedings of the 2018 World Wide Web Conference. 2018: 187-196.</p>
 
     </div>
 
