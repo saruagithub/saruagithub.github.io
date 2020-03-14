@@ -1,8 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Unsupervised Anomaly Detection via Variational Auto-Encoder for Seasonal KPIs in Web Applications (Donut model, Part Tow)</title>
+    <url>/2020/03/14/20200314paper-Unsupervised-Anomaly-Detection-via-Variational-AutoEncoder-for-Seasonal-KPIs-in-Web-Applications/</url>
+    <content><![CDATA[<h3 id="Evaluation实验"><a href="#Evaluation实验" class="headerlink" title="Evaluation实验"></a>Evaluation实验</h3><h4 id="Datasets"><a href="#Datasets" class="headerlink" title="Datasets"></a>Datasets</h4><p>我们从大型互联网上获得了18个维护良好的商业KPIs（时间跨度足以进行培训和评估），所有的KPIs间隔为1min。三个数据集 A B C 如图6的Table1。因此我们可以评估Donut在不同级别的噪声。 我们将每个数据集分为训练集 49%，验证集21%和测试集30%。</p><a id="more"></a>
+<p><img src="/images/20200314Donut_Dataset.jpg" alt="20200314Donut_Dataset"></p>
+<h4 id="Performance-Metric度量指标"><a href="#Performance-Metric度量指标" class="headerlink" title="Performance Metric度量指标"></a>Performance Metric度量指标</h4><p>评估中，完全忽略了所有算法在缺失点（“空”）的输出。本文所有评估的算法为每个点计算一个异常分数，选择一个阈值来进行决策：如果某个点的分数大于阈值，则应该触发警报。这样，异常检测就类似于分类问题，并且我们可以计算与每个阈值相对应的精度和召回率。给定所有可能的阈值，我们可以进一步计算AUC，即召回率的平均精度。或F分数，它是给定一个特定阈值的精度和召回率的谐平均值。我们还可能枚举所有阈值，获得所有F分数，并使用最佳F分数作为度量。给定最佳全局阈值，最好的F分数表示模型在特定测试集上的最佳性能。在实践中，最佳F分数与AUC基本一致，除了细微差异（见图8）。<strong>相比AUC我们更喜欢best F-score</strong>，因为在某个阈值上拥有出色的F分数比在大多数阈值上拥有高但不是那么出色的F分数更为重要。</p>
+<p>在实际应用中，操作员通常并不关心逐点度量。 如果延迟不太长，则算法可以触发连续异常段中任何点的警报。 已经提出了一些用于异常检测的度量来适应这种偏好，例如，[22]，但是大多数度量没有被广泛接受，这可能是因为它们太复杂了。 相反，我们使用一种简单的策略：如果可以通过选定的阈值检测到地面真相中异常段中的任何点，那么我们就可以正确地检测到该段，并且将该段中的所有点都视为可以被此段检测到。 阈。 同时，异常段外的点将照常处理。 然后相应地计算精度，召回率，AUC，F分数和最佳F分数。 图7中说明了这种方法。</p>
+]]></content>
+      <categories>
+        <category>AIOps</category>
+      </categories>
+      <tags>
+        <tag>AIOps</tag>
+        <tag>论文</tag>
+        <tag>AnomalyDetection</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Unsupervised Anomaly Detection via Variational Auto-Encoder for Seasonal KPIs in Web Applications (Donut model, Part I)</title>
-    <url>/2020/03/13/20200314paper-Unsupervised-Anomaly-Detection-via-Variational-AutoEncoder-for-Seasonal-KPIs-in-Web-Applications/</url>
+    <url>/2020/03/13/20200314paper-Unsupervised-Anomaly-Detection-via-Variational-AutoEncoder-for-Seasonal-KPIs-in-Web-Applications(Part1)/</url>
     <content><![CDATA[<h3 id="ABS-amp-Intro"><a href="#ABS-amp-Intro" class="headerlink" title="ABS&amp;Intro"></a>ABS&amp;Intro</h3><h4 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h4><p>大的互联网公司一般会密切监控KPIs。然而这些有不同模式不同数据质量的季节性KPIs的异常检测很有挑战，特别是无标签。本文中，我们提出了Donut，基于VAE（Variational Auto-Encoder 变分自动编码器）的无监督异常检测算法，其最佳F-score达到0.75 ~ 0.9。我们为Donut的重构提出了一种新颖的KDE解释，使其成为第一种基于VAE的异常检测算法，并且具有扎实的理论解释。</p><a id="more"></a>
 <h4 id="KPIs时间序列数据"><a href="#KPIs时间序列数据" class="headerlink" title="KPIs时间序列数据"></a>KPIs时间序列数据</h4><p>度量指标如页面浏览量，在线用户数量，订单数量等等。在所有的这些KPIs里，本文主要关心一些商业相关的KPIs，这些受用户行为计划所影响，因此大致表现出有规律的季节性模式（如按天，按周等）。</p>
 <p>检测KPI异常的相关文献【1, 2, 5– 8, 17, 18, 21, 23–27, 29, 31, 35, 36, 40, 41】 很丰富。现有的异常检测算法遭受算法挑选/参数调整的麻烦，严重依赖标签，性能不令人满意和/或缺乏理论基础。</p>
