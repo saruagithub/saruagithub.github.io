@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Unsupervised Anomaly Detection via Variational Auto-Encoder for Seasonal KPIs in Web Applications (Donut model, Part Tow)</title>
+    <title>Unsupervised Anomaly Detection via Variational Auto-Encoder for Seasonal KPIs in Web Applications (Donut model, Part Ⅱ)</title>
     <url>/2020/03/14/20200314paper-Unsupervised-Anomaly-Detection-via-Variational-AutoEncoder-for-Seasonal-KPIs-in-Web-Applications(Part2)/</url>
     <content><![CDATA[<h3 id="Evaluation实验"><a href="#Evaluation实验" class="headerlink" title="Evaluation实验"></a>Evaluation实验</h3><h4 id="Datasets"><a href="#Datasets" class="headerlink" title="Datasets"></a>Datasets</h4><p>我们从大型互联网上获得了18个维护良好的商业KPIs（时间跨度足以进行培训和评估），所有的KPIs间隔为1min。三个数据集 A B C 如图6的Table1。因此我们可以评估Donut在不同级别的噪声。 我们将每个数据集分为训练集 49%，验证集21%和测试集30%。</p><a id="more"></a>
 <p><img src="/images/20200314Donut_Dataset.jpg" alt="20200314Donut_Dataset"></p>
@@ -1413,8 +1413,8 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
         <category>深度学习</category>
       </categories>
       <tags>
-        <tag>配置</tag>
         <tag>深度学习</tag>
+        <tag>配置</tag>
       </tags>
   </entry>
   <entry>
@@ -1827,8 +1827,8 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
         <category>配置</category>
       </categories>
       <tags>
-        <tag>配置</tag>
         <tag>三维点云</tag>
+        <tag>配置</tag>
       </tags>
   </entry>
   <entry>
