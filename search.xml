@@ -2,7 +2,7 @@
 <search>
   <entry>
     <title>Unsupervised Anomaly Detection via Variational Auto-Encoder for Seasonal KPIs in Web Applications (Donut model)</title>
-    <url>/2020/03/13/paper-Unsupervised-Anomaly-Detection-via-Variational-AutoEncoder-for-Seasonal-KPIs-in-Web-Applications/</url>
+    <url>/2020/03/13/20200314paper-Unsupervised-Anomaly-Detection-via-Variational-AutoEncoder-for-Seasonal-KPIs-in-Web-Applications/</url>
     <content><![CDATA[<h3 id="ABS-amp-Intro"><a href="#ABS-amp-Intro" class="headerlink" title="ABS&amp;Intro"></a>ABS&amp;Intro</h3><h4 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h4><p>大的互联网公司一般会密切监控KPIs。然而这些有不同模式不同数据质量的季节性KPIs的异常检测很有挑战，特别是无标签。本文中，我们提出了Donut，基于VAE（Variational Auto-Encoder 变分自动编码器）的无监督异常检测算法，其最佳F-score达到0.75 ~ 0.9。我们为Donut的重构提出了一种新颖的KDE解释，使其成为第一种基于VAE的异常检测算法，并且具有扎实的理论解释。</p><a id="more"></a>
 <h4 id="KPIs时间序列数据"><a href="#KPIs时间序列数据" class="headerlink" title="KPIs时间序列数据"></a>KPIs时间序列数据</h4><p>度量指标如页面浏览量，在线用户数量，订单数量等等。在所有的这些KPIs里，本文主要关心一些商业相关的KPIs，这些受用户行为计划所影响，因此大致表现出有规律的季节性模式（如按天，按周等）。</p>
 <p>检测KPI异常的相关文献【1, 2, 5– 8, 17, 18, 21, 23–27, 29, 31, 35, 36, 40, 41】 很丰富。现有的异常检测算法遭受算法挑选/参数调整的麻烦，严重依赖标签，性能不令人满意和/或缺乏理论基础。</p>
@@ -35,11 +35,8 @@
 <script type="math/tex; mode=display">\begin{aligned} \log p_{\theta}(\mathbf{x}) & \geq \log p_{\theta}(\mathbf{x})-\operatorname{KL}\left[q_{\phi}(\mathbf{z} | \mathbf{x}) \| p_{\theta}(\mathbf{z} | \mathbf{x})\right] \\ &=\mathcal{L}(\mathbf{x}) \\ &=\mathbb{E}_{\boldsymbol{q}_{\phi}(\mathbf{z} | \mathbf{x})}\left[\log p_{\theta}(\mathbf{x})+\log p_{\theta}(\mathbf{z} | \mathbf{x})-\log q_{\phi}(\mathbf{z} | \mathbf{x})\right] \\ &=\mathbb{E}_{\boldsymbol{q}_{\phi}(\mathbf{z} | \mathbf{x})}\left[\log p_{\theta}(\mathbf{x}, \mathbf{z})-\log q_{\phi}(\mathbf{z} | \mathbf{x})\right] \\ &=\mathbb{E}_{\boldsymbol{q}_{\phi}(\mathbf{z} | \mathbf{x})}\left[\log p_{\theta}(\mathbf{x} | \mathbf{z})+\log p_{\theta}(\mathbf{z})-\log q_{\phi}(\mathbf{z} | \mathbf{x})\right] \end{aligned}</script><p>蒙特卡洛积分常常被用于近似 Eqn 1 中的期望。如Eqn 2，$\mathbf{z}^{(l)}, l=1 \ldots L$ 是来自 $q_{\phi}(\mathbf{z} | \mathbf{x})$ 的样例samples。整个本文中，我们都坚持使用这种方法。</p>
 <p>Equation 2：</p>
 <script type="math/tex; mode=display">\mathbb{E}_{\boldsymbol{q}_{\phi}(\mathbf{z} | \mathbf{x})}[f(\mathbf{z})] \approx \frac{1}{L} \sum_{l=1}^{L} f\left(\mathbf{z}^{(l)}\right)</script><h3 id="Architecture结构"><a href="#Architecture结构" class="headerlink" title="Architecture结构"></a>Architecture结构</h3><p>Donut的总体架构如图Figure3，三个关键技术是Modified ELBO，训练时的Missing Data Injection， 检测时的MCMC Imputation。</p>
-<p><img src="/Users/wangxue/gitpro/20191105MyBlog/saruagithub/source/images/20200314Arch_Donut.jpg" alt="20200314Arch_Donut"></p>
-<p><img src="/Users/wangxue/gitpro/20191105MyBlog/saruagithub/source/images/20200314Network_Donut.jpg" alt="20200314Network_Donut"></p>
-<h4 id="Network-Structure"><a href="#Network-Structure" class="headerlink" title="Network Structure"></a>Network Structure</h4><p>VAE不是一个序列模型，因此我们在KPI上应用长度为 $w$ 的<strong>滑动窗口</strong>[34]。 对于每一个 $x_t$ 使用 $x_{t-W+1}, \ldots, x_{t}$ 作为VAE的 $\mathbf{X}$  向量。该滑动窗口由于其简单性而首先被采用，实际上却带来了重要而有益的结果。</p>
-<p>Donut的总体网络结构如图4，其中有双线轮廓的组件 (e.g., Sliding Win- dow x, W Dimensional at bottom left) 是我们的新设计，其余组件来自标准VAE。先验 $p_{\theta}(\mathbf{z})$ 被选择为 $\mathcal{N}(\mathbf{0}, \mathbf{I})$ 。 x和z后验均选择为对角高斯 diagonal Gaussian：</p>
-<script type="math/tex; mode=display">p_{\theta}(\mathbf{x} | \mathbf{z})=\mathcal{N}\left(\boldsymbol{\mu}_{\mathbf{x}}, \boldsymbol{\sigma}_{\mathbf{x}}^{2} \mathbf{I}\right)</script><script type="math/tex; mode=display">q_{\phi}(\mathbf{z} | \mathbf{x})=\mathcal{N}\left(\boldsymbol{\mu}_{\mathbf{z}}, \boldsymbol{\sigma}_{\mathbf{z}}^{2} \mathbf{I}\right)</script><p>这里的$\boldsymbol{\mu}_{\mathbf{X}}, \boldsymbol{\mu}_{\mathbf{Z}} \text { and } \boldsymbol{\sigma}_{\mathbf{X}}, \boldsymbol{\sigma}_{\mathbf{Z}}$ 是每个独立高斯组件的均值和标准差。 $z$ 是 K 维的。</p>
+<p><img src="/images/20200314Arch_Donut.jpg" alt="20200314Arch_Donut"></p>
+<p><img src="/images/20200314Network_Donut.jpg" alt="20200314Network_Donut"></p>
 <h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，Xu H, Chen W, Zhao N, et al. Unsupervised anomaly detection via variational auto-encoder for seasonal kpis in web applications[C]//Proceedings of the 2018 World Wide Web Conference. 2018: 187-196.</p>
 ]]></content>
       <categories>
