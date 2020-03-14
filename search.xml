@@ -39,7 +39,7 @@
 <p><img src="/images/20200314Network_Donut.jpg" alt="20200314Network_Donut"></p>
 <h4 id="Network-Structure"><a href="#Network-Structure" class="headerlink" title="Network Structure"></a>Network Structure</h4><p>VAE不是一个序列模型，因此我们在KPI上应用长度为 $w$ 的<strong>滑动窗口</strong>[34]。 对于每一个 $x_t$ 使用 $x_{t-W+1}, …, x_{t}$ 作为VAE的 $X$  向量。该滑动窗口由于其简单性而首先被采用，实际上却带来了重要而有益的结果。</p>
 <p>Donut的总体网络结构如图4，其中有双线轮廓的组件 (e.g., Sliding Window x, W Dimensional at bottom left) 是我们的新设计，其余组件来自标准VAEs。先验 $p_{\theta}(z)$ 被选择为 $\mathcal{N}(\mathrm{0}, \mathrm{I})$ 。 x和z后验均选择为对角高斯 diagonal Gaussian：</p>
-<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，Xu H, Chen W, Zhao N, et al. Unsupervised anomaly detection via variational auto-encoder for seasonal kpis in web applications[C]//Proceedings of the 2018 World Wide Web Conference. 2018: 187-196.</p>
+<script type="math/tex; mode=display">p_{\theta}(\mathbf{x} | \mathbf{z})=\mathcal{N}\left(\boldsymbol{\mu}_{\mathbf{x}}, \boldsymbol{\sigma}_{\mathbf{x}}^{2} \mathbf{I}\right)</script><script type="math/tex; mode=display">q_{\phi}(\mathbf{z} | \mathbf{x})=\mathcal{N}\left(\boldsymbol{\mu}_{\mathbf{z}}, \boldsymbol{\sigma}_{\mathbf{z}}^{2} \mathbf{I}\right)</script><h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，Xu H, Chen W, Zhao N, et al. Unsupervised anomaly detection via variational auto-encoder for seasonal kpis in web applications[C]//Proceedings of the 2018 World Wide Web Conference. 2018: 187-196.</p>
 ]]></content>
       <categories>
         <category>AIOps</category>
