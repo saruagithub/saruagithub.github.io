@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Unsupervised Anomaly Detection via Variational Auto-Encoder for Seasonal KPIs in Web Applications (Donut model)</title>
+    <title>Unsupervised Anomaly Detection via Variational Auto-Encoder for Seasonal KPIs in Web Applications (Donut model, Part I)</title>
     <url>/2020/03/13/20200314paper-Unsupervised-Anomaly-Detection-via-Variational-AutoEncoder-for-Seasonal-KPIs-in-Web-Applications/</url>
     <content><![CDATA[<h3 id="ABS-amp-Intro"><a href="#ABS-amp-Intro" class="headerlink" title="ABS&amp;Intro"></a>ABS&amp;Intro</h3><h4 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h4><p>大的互联网公司一般会密切监控KPIs。然而这些有不同模式不同数据质量的季节性KPIs的异常检测很有挑战，特别是无标签。本文中，我们提出了Donut，基于VAE（Variational Auto-Encoder 变分自动编码器）的无监督异常检测算法，其最佳F-score达到0.75 ~ 0.9。我们为Donut的重构提出了一种新颖的KDE解释，使其成为第一种基于VAE的异常检测算法，并且具有扎实的理论解释。</p><a id="more"></a>
 <h4 id="KPIs时间序列数据"><a href="#KPIs时间序列数据" class="headerlink" title="KPIs时间序列数据"></a>KPIs时间序列数据</h4><p>度量指标如页面浏览量，在线用户数量，订单数量等等。在所有的这些KPIs里，本文主要关心一些商业相关的KPIs，这些受用户行为计划所影响，因此大致表现出有规律的季节性模式（如按天，按周等）。</p>
@@ -55,6 +55,7 @@
 <p>在检测期间，测试窗口$x$中的异常点和缺失点可能给映射的 $z$ 带来偏差，并进一步使重建概率不准确，这将在5.2节中讨论。 由于缺失点始终是已知的（称为“null”），我们有机会消除缺失点所带来的偏差。 我们选择采用经过训练的VAE的基于MCMC的缺失数据插入imputation技术，该技术由[32]提出。 同时，我们在检测之前不知道异常点的确切位置，因此无法对异常采用MCMC。</p>
 <p>更具体地，测试 $x$ 被划分为观察部分和缺失部分，即 $\left(\mathbf{x}_{o}, \mathbf{x}_{m}\right)$。一个 $z$ 样例从 $q_{\phi}\left(\mathbf{z} | \mathbf{x}_{o}, \mathbf{x}_{m}\right)$ 中获取，然后一个重建样例 $\left(\mathbf{x}_{\boldsymbol{o}}^{\prime}, \mathbf{x}_{m}^{\prime}\right)$ 从 $p_{\theta}\left(\mathbf{x}_{\boldsymbol{o}}, \mathbf{x}_{m} | \mathbf{z}\right)$ 中获取得到。$\left(\mathbf{x}_{o}, \mathbf{x}_{m}\right)$ then由 $\left(\mathbf{x}_{\boldsymbol{o}}, \mathbf{x}_{m}^{\prime}\right)$ 替换，即观察点是固定的，缺失点被设置为新值。  这个过程迭代 M次，然后最终的 $\left(\mathbf{x}_{o}, \mathbf{x}_{m}^{\prime}\right)$ 被用来计算重建概率。在整个过程中，中间值$\mathbf{x}_{m}^{\prime}$会越来越接近正常值。给定足够大的M，可以减少偏差，并且可以获得更准确的重构概率。 MCMC方法在图5中说明，并在图3的“检测”步骤中显示。</p>
 <p><img src="/images/20200314Figure5_MCMC.jpg" alt="20200314Figure5_MCMC"></p>
+<p>MCMC之后，我们取z的L个样本通过蒙特卡洛积分来计算重构概率。 值得一提的是，尽管我们可以计算x的每个窗口中每个点的重建概率，但我们仅使用最后一个点的分数（即$x_t$ 在 $x_{t-T+1}, \ldots, x_{t}$），因为我们想要将在检测过程中尽快归纳异常 。后续文章中我们仍将使用矢量符号，它们与VAE的体系结构相对应。 尽管可以通过延迟决策并在不同时间考虑同一点的更多分数来提高检测性能，但我们将其留作将来的工作。</p>
 <h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，Xu H, Chen W, Zhao N, et al. Unsupervised anomaly detection via variational auto-encoder for seasonal kpis in web applications[C]//Proceedings of the 2018 World Wide Web Conference. 2018: 187-196.</p>
 ]]></content>
       <categories>
@@ -306,9 +307,9 @@
         <category>AIOps</category>
       </categories>
       <tags>
+        <tag>异常检测</tag>
         <tag>机器学习</tag>
         <tag>AIOps</tag>
-        <tag>异常检测</tag>
       </tags>
   </entry>
   <entry>
@@ -1721,8 +1722,8 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
         <category>AIOps</category>
       </categories>
       <tags>
-        <tag>AIOps</tag>
         <tag>时间序列</tag>
+        <tag>AIOps</tag>
       </tags>
   </entry>
   <entry>
@@ -1787,8 +1788,8 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
         <category>AIOps</category>
       </categories>
       <tags>
-        <tag>AIOps</tag>
         <tag>异常检测</tag>
+        <tag>AIOps</tag>
       </tags>
   </entry>
   <entry>
