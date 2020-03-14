@@ -37,6 +37,7 @@
 <script type="math/tex; mode=display">\mathbb{E}_{\boldsymbol{q}_{\phi}(\mathbf{z} | \mathbf{x})}[f(\mathbf{z})] \approx \frac{1}{L} \sum_{l=1}^{L} f\left(\mathbf{z}^{(l)}\right)</script><h3 id="Architecture结构"><a href="#Architecture结构" class="headerlink" title="Architecture结构"></a>Architecture结构</h3><p>Donut的总体架构如图Figure3，三个关键技术是Modified ELBO，训练时的Missing Data Injection， 检测时的MCMC Imputation。</p>
 <p><img src="/images/20200314Arch_Donut.jpg" alt="20200314Arch_Donut"></p>
 <p><img src="/images/20200314Network_Donut.jpg" alt="20200314Network_Donut"></p>
+<h4 id="Network-Structure"><a href="#Network-Structure" class="headerlink" title="Network Structure"></a>Network Structure</h4><p>VAE不是一个序列模型，因此我们在KPI上应用长度为 $w$ 的<strong>滑动窗口</strong>[34]。 对于每一个 $x_t$ 使用 $x_{t-W+1}, …, x_{t}$ 作为VAE的 $X$  向量。该滑动窗口由于其简单性而首先被采用，实际上却带来了重要而有益的结果。</p>
 <h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，Xu H, Chen W, Zhao N, et al. Unsupervised anomaly detection via variational auto-encoder for seasonal kpis in web applications[C]//Proceedings of the 2018 World Wide Web Conference. 2018: 187-196.</p>
 ]]></content>
       <categories>
