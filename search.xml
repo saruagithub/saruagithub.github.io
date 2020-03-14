@@ -2,7 +2,7 @@
 <search>
   <entry>
     <title>Unsupervised Anomaly Detection via Variational Auto-Encoder for Seasonal KPIs in Web Applications (Donut model, Part Tow)</title>
-    <url>/2020/03/14/20200314paper-Unsupervised-Anomaly-Detection-via-Variational-AutoEncoder-for-Seasonal-KPIs-in-Web-Applications/</url>
+    <url>/2020/03/14/20200314paper-Unsupervised-Anomaly-Detection-via-Variational-AutoEncoder-for-Seasonal-KPIs-in-Web-Applications(Part2)/</url>
     <content><![CDATA[<h3 id="Evaluation实验"><a href="#Evaluation实验" class="headerlink" title="Evaluation实验"></a>Evaluation实验</h3><h4 id="Datasets"><a href="#Datasets" class="headerlink" title="Datasets"></a>Datasets</h4><p>我们从大型互联网上获得了18个维护良好的商业KPIs（时间跨度足以进行培训和评估），所有的KPIs间隔为1min。三个数据集 A B C 如图6的Table1。因此我们可以评估Donut在不同级别的噪声。 我们将每个数据集分为训练集 49%，验证集21%和测试集30%。</p><a id="more"></a>
 <p><img src="/images/20200314Donut_Dataset.jpg" alt="20200314Donut_Dataset"></p>
 <h4 id="Performance-Metric度量指标"><a href="#Performance-Metric度量指标" class="headerlink" title="Performance Metric度量指标"></a>Performance Metric度量指标</h4><p>评估中，完全忽略了所有算法在缺失点（“空”）的输出。本文所有评估的算法为每个点计算一个异常分数，选择一个阈值来进行决策：如果某个点的分数大于阈值，则应该触发警报。这样，异常检测就类似于分类问题，并且我们可以计算与每个阈值相对应的精度和召回率。给定所有可能的阈值，我们可以进一步计算AUC，即召回率的平均精度。或F分数，它是给定一个特定阈值的精度和召回率的谐平均值。我们还可能枚举所有阈值，获得所有F分数，并使用最佳F分数作为度量。给定最佳全局阈值，最好的F分数表示模型在特定测试集上的最佳性能。在实践中，最佳F分数与AUC基本一致，除了细微差异（见图8）。<strong>相比AUC我们更喜欢best F-score</strong>，因为在某个阈值上拥有出色的F分数比在大多数阈值上拥有高但不是那么出色的F分数更为重要。</p>
