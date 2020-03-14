@@ -148,9 +148,13 @@ $$\boldsymbol\mu_{z}=\mathbf{W}_{\mu_{z}}^{\top} f_{\phi}(\mathbf{x})+\mathbf{b}
 
 标准差是从soft-plus层导出，加上一个非负小数 $\epsilon$ ：
 
-$$\sigma_{\mathrm{z}} = \text{SoftPlus} \left[\mathbf{W}_{\sigma_{z}}^{\top} f_{\phi}(\mathbf{x})+\mathbf{b}_{\sigma_{z}}\right]+\epsilon$$
+$$\sigma_{\mathrm{x}} = \text{SoftPlus} \left[\mathbf{W}_{\sigma_{x}}^{\top} f_{\phi}(\mathbf{x})+\mathbf{b}_{\sigma_{x}}\right]+\epsilon$$
 
-$$\sigma_{\mathrm{z}}=\text{SoftPlus} \left[\mathbf{W}_{\boldsymbol{\sigma}_{\mathbf{z}}}^{\top} f_{\phi}(\mathbf{x})+\mathbf{b}_{\boldsymbol{\sigma}_{\mathbf{z}}}\right]+\boldsymbol{\epsilon}$$
+$$\sigma_{\mathrm{z}}=\text{SoftPlus} \left[\mathbf{W}_{\boldsymbol{\sigma}_{\mathbf{z}}}^{\top} f_{\phi}(\mathbf{z})+\mathbf{b}_{\boldsymbol{\sigma}_{\mathbf{z}}}\right]+\boldsymbol{\epsilon}$$
+
+这里的 $\text{SoftPlus}[a] = log[exp(a) + 1]$ ，这里介绍的所有W-s和b-s是相应层的参数。 注意，将标量函数 $f(x)$ 应用于向量 $x$ 时，意味着将其应用于每个部分component。
+
+
 
 
 
