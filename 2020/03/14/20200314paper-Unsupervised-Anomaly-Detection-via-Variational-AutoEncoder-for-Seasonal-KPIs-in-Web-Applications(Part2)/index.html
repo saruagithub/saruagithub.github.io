@@ -57,8 +57,8 @@
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200314Donut_Dataset.jpg">
 <meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200314Metric.jpg">
-<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;Users&#x2F;wangxue&#x2F;gitpro&#x2F;20191105MyBlog&#x2F;saruagithub&#x2F;source&#x2F;images&#x2F;20200314compare_metric.jpg">
-<meta property="og:updated_time" content="2020-03-14T13:59:54.543Z">
+<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200314compare_metric.jpg">
+<meta property="og:updated_time" content="2020-03-14T14:28:39.604Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200314Donut_Dataset.jpg">
 
@@ -238,7 +238,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-03-14 17:40:12 / 修改时间：21:59:54" itemprop="dateCreated datePublished" datetime="2020-03-14T17:40:12+08:00">2020-03-14</time>
+              <time title="创建时间：2020-03-14 17:40:12 / 修改时间：22:28:39" itemprop="dateCreated datePublished" datetime="2020-03-14T17:40:12+08:00">2020-03-14</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -293,8 +293,12 @@
 <p>其他超参： std 层的 $\epsilon = 10^{-4}$ ，injection ratio = $\lambda$ ,  MCMC 迭代次数M = 10， 蒙特卡洛积分的采样数量$L = 1024$ ，训练的batch size = 256，运行250 Epochs，优化器是 Adam[15]，初始学习率是 $10^{-3}$ ，每过10Epochs就将学习率折0.75，对隐藏层采用L2正则化其系数coefficient = $10^{-3}$。 我们按标准裁剪clip梯度，限制为10.0。 </p>
 <p>标签说明：为了评估没有标签的Donut，我们将忽略所有标签。 对于偶有的标签，我们对训练和验证集的异常标签进行下采样，以使其包含10％的标记异常。 请注意，缺失点不会被下采样。 我们一直随机丢弃异常片段，其概率与每个片段的长度成正比，直到达到所需的下采样率。 我们使用这种方法，而不是随机丢弃单个异常点，因为KPI是时间序列，并且每个异常点都可能泄漏有关其邻近点的信息，从而导致性能被高估。 这样的下采样完成了10次，这使我们能够进行10个独立的重复实验。 对于每个数据集，总体而言，我们有三个版本：0％标签，10％标签和100％标签。</p>
 <h4 id="总体性能"><a href="#总体性能" class="headerlink" title="总体性能"></a>总体性能</h4><p>我们比较AUC，best F-score和平均alert delay，与三种算法相比，如图8：</p>
-<p><img src="/Users/wangxue/gitpro/20191105MyBlog/saruagithub/source/images/20200314compare_metric.jpg" alt="20200314compare_metric"></p>
+<p><img src="/images/20200314compare_metric.jpg" alt="20200314compare_metric"></p>
 <p>比较的算法：Opprentice[25]，VAE baselin[2] 基于VAE的异常检测不处理时间序列，因此我们按以下方法设置VAE基模型。 首先，VAE基模型具有与Donut相同的网络结构，如图4所示。其次，在图3中的所有技术中，仅使用“数据准备”步骤中的那些技术。 第三，正如[2]所建议的，我们从训练数据中排除所有包含标记异常或缺失点的窗口。 Donut-Prior算法。</p>
+<p>Donut，Opprentice和VAE Baseline的平均警报延迟在所有数据集中都是可接受的</p>
+<h4 id="Donut技术的效果"><a href="#Donut技术的效果" class="headerlink" title="Donut技术的效果"></a>Donut技术的效果</h4><p>我们提出的三种技术的各自的作用。</p>
+<p>分析K的影响。</p>
+<h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p>我们在此提出针对重建概率以及整个Donut算法的KDE（内核密度估计）解释。</p>
 
     </div>
 
@@ -377,7 +381,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Evaluation实验"><span class="nav-number">1.</span> <span class="nav-text">Evaluation实验</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Datasets"><span class="nav-number">1.1.</span> <span class="nav-text">Datasets</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Performance-Metric度量指标"><span class="nav-number">1.2.</span> <span class="nav-text">Performance Metric度量指标</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Experiment-启动"><span class="nav-number">1.3.</span> <span class="nav-text">Experiment 启动</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#总体性能"><span class="nav-number">1.4.</span> <span class="nav-text">总体性能</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Evaluation实验"><span class="nav-number">1.</span> <span class="nav-text">Evaluation实验</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Datasets"><span class="nav-number">1.1.</span> <span class="nav-text">Datasets</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Performance-Metric度量指标"><span class="nav-number">1.2.</span> <span class="nav-text">Performance Metric度量指标</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Experiment-启动"><span class="nav-number">1.3.</span> <span class="nav-text">Experiment 启动</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#总体性能"><span class="nav-number">1.4.</span> <span class="nav-text">总体性能</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Donut技术的效果"><span class="nav-number">1.5.</span> <span class="nav-text">Donut技术的效果</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Analysis"><span class="nav-number">2.</span> <span class="nav-text">Analysis</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
