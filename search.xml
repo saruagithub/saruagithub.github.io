@@ -13,10 +13,15 @@
 <p>标签说明：为了评估没有标签的Donut，我们将忽略所有标签。 对于偶有的标签，我们对训练和验证集的异常标签进行下采样，以使其包含10％的标记异常。 请注意，缺失点不会被下采样。 我们一直随机丢弃异常片段，其概率与每个片段的长度成正比，直到达到所需的下采样率。 我们使用这种方法，而不是随机丢弃单个异常点，因为KPI是时间序列，并且每个异常点都可能泄漏有关其邻近点的信息，从而导致性能被高估。 这样的下采样完成了10次，这使我们能够进行10个独立的重复实验。 对于每个数据集，总体而言，我们有三个版本：0％标签，10％标签和100％标签。</p>
 <h4 id="总体性能"><a href="#总体性能" class="headerlink" title="总体性能"></a>总体性能</h4><p>我们比较AUC，best F-score和平均alert delay，与三种算法相比，如图8：</p>
 <p><img src="/images/20200314compare_metric.jpg" alt="20200314compare_metric"></p>
-<p>比较的算法：Opprentice[25]，VAE baselin[2] 基于VAE的异常检测不处理时间序列，因此我们按以下方法设置VAE基模型。 首先，VAE基模型具有与Donut相同的网络结构，如图4所示。其次，在图3中的所有技术中，仅使用“数据准备”步骤中的那些技术。 第三，正如[2]所建议的，我们从训练数据中排除所有包含标记异常或缺失点的窗口。 Donut-Prior算法。</p>
+<p>比较的算法：Opprentice[25]，VAE baselin[2] 基于VAE的异常检测不处理时间序列，因此我们按以下方法设置VAE基模型。 首先，VAE基模型具有与Donut相同的网络结构，如图4所示。其次，在图3中的所有技术中，仅使用“数据准备”步骤中的那些技术。 第三，正如[2]所建议的，我们从训练数据中排除所有包含标记异常或缺失点的窗口。 Donut-Prior算法，给定一个生成模型自然学习 $p(x)$ ，而在VAE $p(x)$ 被定义为 $\mathbb{E}_{\boldsymbol{p}_{\theta}(\mathbf{z})}\left[p_{\theta}(\mathbf{x} | \mathbf{z})\right]$ ，我们还评估了重建概率的先前部分 $\mathbb{E}_{p_{\theta}(\mathbf{z})}\left[\log p_{\theta}(\mathbf{x} | \mathbf{z})\right]$。 我们只需要先验的基模型，因此我们可以通过简单的蒙特卡洛积分来计算先验期望，而无需使用先进的技术来改善结果。</p>
+<p>The best F-score of Donut is quite satisfactory in totally unsu- pervised case, ranges from 0.75 to 0.9, </p>
 <p>Donut，Opprentice和VAE Baseline的平均警报延迟在所有数据集中都是可接受的</p>
-<h4 id="Donut技术的效果"><a href="#Donut技术的效果" class="headerlink" title="Donut技术的效果"></a>Donut技术的效果</h4><p>我们提出的三种技术的各自的作用。</p>
-<p>分析K的影响。</p>
+<h4 id="Donut技术的效果"><a href="#Donut技术的效果" class="headerlink" title="Donut技术的效果"></a>Donut技术的效果</h4><p>我们提出的三种技术的各自的作用(1) M-ELBO (Eqn (3)), (2) missing data injection, and (3) MCMC imputation。我们通过这些技术的四种可能的组合展示了Donut的最佳F分数：</p>
+<p><img src="/images/202003154Tech-BestF-score.jpg" alt="202003154Tech-BestF-score"></p>
+<p>仅M-ELBO就能在VAE基模型上做出大部分改进。 它通过训练Donut来适应x中可能出现的异常点并在这种情况下产生所需的输出而起作用。尽管对于生成模型来说很自然（第5.2节），但仅使用正常数据来训练VAE以进行异常检测不是一个好习惯。</p>
+<p>丢失数据注入是为增强M-ELBO的效果而设计的，实际上可以看作是一种数据增强方法。我们仅注入遗漏的点。由于缺少数据注入而导致的最佳F分数的提高不是很明显。注射会给训练带来额外的随机性，因此需要更大的训练时间。</p>
+<p>MCMC imputation还旨在帮助Donut处理异常点。 尽管Donut仅在某些情况下使用MCMC获得了最佳F评分的显着改善，但它从未损害性能。 根据[32]，这应该是预期的结果。 因此，我们建议在检测中始终采用MCMC。</p>
+<h4 id="分析K的影响。"><a href="#分析K的影响。" class="headerlink" title="分析K的影响。"></a>分析K的影响。</h4><p>$z$ 的维度 K很重要。K太小可能会导致拟合不足或次优平衡（请参见第5.4节）。 另一方面，K太大可能会导致重建概率无法找到好的后验概率（请参阅第5.1节）。 在完全不受监督的情况下很难选择一个好的K，因此我们将其留作未来的工作。</p>
 <h3 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h3><p>我们在此提出针对重建概率以及整个Donut算法的KDE（内核密度估计）解释。</p>
 ]]></content>
       <categories>
@@ -53,7 +58,7 @@
 <h4 id="监督集成方法"><a href="#监督集成方法" class="headerlink" title="监督集成方法"></a>监督集成方法</h4><p>为了规避传统统计异常检测器算法/参数调整的麻烦，提出了有监督的集成方法<strong>EGADS [21]和Opprentice [25]</strong>。 他们使用用户反馈作为标签并使用传统检测器输出的异常评分作为特征来训练异常分类器。 EGADS和Opprentice均显示出令人鼓舞的结果，但它们严重依赖于<strong>良好的标签</strong>（远远超过我们所积累的轶事标签），这在大规模应用中通常不可行。 此外，运行多个传统检测器以在检测期间提取特征会引入大量的计算成本，这是一个实际问题。</p>
 <h4 id="无监督方法与深度生成模型"><a href="#无监督方法与深度生成模型" class="headerlink" title="无监督方法与深度生成模型"></a>无监督方法与深度生成模型</h4><p>最近采用无监督机器学习方法是个趋势。, e.g., one-class SVM [1, 7], clustering based methods [9] like K-Means [28] and GMM [23], KDE [29], and VAE [2] and VRNN [36].  </p>
 <p>其理念是关注正常模式而不是异常：由于KPIs通常主要由正常数据组成，因此即使没有标签也可以轻松地训练模型。 粗略地说，它们都首先识别原始或某些潜在特征空间中的“正常”区域，然后通过测量观测值与正常区域的“距离”来计算异常分数。</p>
-<p>沿着此方向，1，学习正常模式可以看作是学习训练数据的分布，这是生成模型的主题。2，最近在利用深度学习技术训练生成模型方面取得了巨大进展（例如<strong>GAN [13]和深度贝叶斯网络[4，39]</strong>）。后者属于深度生成模型家族，它采用图形graphical[30]模型框架和变型variational技术[3]，以VAE [16，32]为代表。 3，尽管深度生成模型在异常检测方面具有广阔的前景，但现有的基于VAE的异常检测方法[2]并非为KPIs（时间序列）设计，在我们的设置中效果不佳（请参见§4），并且没有 为其用于异常检测的深度生成模型的设计提供支持的理论基础（请参阅§5）4，简单地采用基于VRNN的更复杂的模型[36]在我们的实验中显示出训练时间长且性能差。5，[2]假定仅对干净数据进行训练，这在我们的上下文中是不可行的。</p>
+<p>沿着此方向，1，学习正常模式可以看作是学习训练数据的分布，这是生成模型的主题。2，最近在利用深度学习技术训练生成模型方面取得了巨大进展（例如<strong>GAN [13]和深度贝叶斯网络[4，39]</strong>）。后者属于深度生成模型家族，它采用图形graphical[30]模型框架和变分技术[3]，以VAE [16，32]为代表。 3，尽管深度生成模型在异常检测方面具有广阔的前景，但现有的基于VAE的异常检测方法[2]并非为KPIs（时间序列）设计，在我们的设置中效果不佳（请参见§4），并且没有 为其用于异常检测的深度生成模型的设计提供支持的理论基础（请参阅§5）4，简单地采用基于VRNN的更复杂的模型[36]在我们的实验中显示出训练时间长且性能差。5，[2]假定仅对干净数据进行训练，这在我们的上下文中是不可行的。</p>
 <h3 id="变分自动编码器Variational-Auto-Encoder"><a href="#变分自动编码器Variational-Auto-Encoder" class="headerlink" title="变分自动编码器Variational Auto-Encoder"></a>变分自动编码器Variational Auto-Encoder</h3><p>由于VAE是深度贝叶斯网络的基本构建块，因此我们选择开始使用VAE。</p>
 <p><img src="/images/20200313Donut_Figure2_VAE.jpg" alt="20200313Donut_Figure2_VAE"></p>
 <h4 id="VAE的背景"><a href="#VAE的背景" class="headerlink" title="VAE的背景"></a>VAE的背景</h4><p>深度贝叶斯网络使用神经网络来表达变量之间的关系，因此它们不再局限于简单的分布族，因此可以轻松地应用于复杂的数据。 在训练和预测中经常采用变分推理技术[12]，这是由神经网络延伸出的解决后验分布的有效方法。</p>
