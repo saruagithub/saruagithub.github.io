@@ -122,7 +122,8 @@
 <p>简介：全球每年约有230万工人死于职业事故和疾病，其中包括约36万致命事故[1]。事故的根本原因是不安全的情况或不安全的行为，或两者兼有。造成事故的因素有很多。文献中有许多理论可以解释事故的因果关系。 Khanzode等 [5]解释了他们在事故背后的各种研究理论，例如事故倾向性理论[6]，多米诺骨牌理论[7]，伤害流行病学[8]，系统理论[9]，社会技术系统理论[10]和宏观人机工程学理论[11]。由于一系列事件或因果关系的存在，导致发生伤害事件。如果知道原因，则可以预测结果（即事故）。另外，预测模型将量化各种因果因素对事故发生的贡献。</p>
 <p>ML用于预测模型很广泛。然而，ML技术用于职业事件分析还是有限的 limited biasis。至今，关于职业分析的研究展示了基于机器学习技术的预测能力[14]和解释能力[15]。这些方法基于事件报告中的历史数据或与员工进行的访谈，可确保它们在预测功能和影响事件结果的预测变量的重要性方面优于常规统计数据。</p>
 <p>本文：</p>
-<p>本研究的主要目标是使用机器学习技术（即SVM和ANN）开发预测模型，以预测职业事故的后果。 为了获得更好的精度，在分类器上采用了优化技术，即GA和PSO。 此外，基于PSO-SVM、结合决策树（C5.0）的分类器对伤害injury的发生提取规则。 次要目标包括使用卡方特征识别可归因于事件结果的相关变量</p>
+<p>本研究的主要目标是使用机器学习技术（即SVM和ANN）开发预测模型，以预测职业事故的后果。 为了获得更好的精度，在分类器上采用了优化技术，即GA和PSO。 此外，基于PSO-SVM、结合决策树（C5.0）的分类器对伤害injury的发生提取规则。 次要目标包括使用卡方特征选择技术识别可归因于事件结果的相关变量。 分析结果显示了SVM分类器在预测以及规则提取目的方面的效用。</p>
+<h3 id="文献综述"><a href="#文献综述" class="headerlink" title="文献综述"></a>文献综述</h3><p>在职业事件预测中，许多机器学习算法如SVM，ANN，Extreme Learning machine（极限学习机）与决策树等。在DT在事故分析中的应用中，通常使用C4.5，C5.0分类和回归树（CART）分析，卡方自动交互检测器（CHAID）等算法来预测职业事故。</p>
 <h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，Yavuz T, Kundakcioglu O E, Ünlüyurt T. Exact and heuristic approaches to detect failures in failed k-out-of-n systems[J]. Computers &amp; Operations Research, 2019, 112: 104752.</p>
 <p>2，A survey of models and algorithms for emergency response logistics in electric distribution systems. Part I: Reliability planning with fault considerations</p>
 <p>3，Application of Optimized Machine Learning Techniques for Prediction of Occupational Accidents</p>
