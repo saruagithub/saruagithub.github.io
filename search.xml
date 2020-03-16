@@ -125,6 +125,7 @@
 <p>本研究的主要目标是使用机器学习技术（即SVM和ANN）开发预测模型，以预测职业事故的后果。 为了获得更好的精度，在分类器上采用了优化技术，即GA和PSO。 此外，基于PSO-SVM、结合决策树（C5.0）的分类器对伤害injury的发生提取规则。 次要目标包括使用卡方特征识别可归因于事件结果的相关变量</p>
 <h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，Yavuz T, Kundakcioglu O E, Ünlüyurt T. Exact and heuristic approaches to detect failures in failed k-out-of-n systems[J]. Computers &amp; Operations Research, 2019, 112: 104752.</p>
 <p>2，A survey of models and algorithms for emergency response logistics in electric distribution systems. Part I: Reliability planning with fault considerations</p>
+<p>3，Application of Optimized Machine Learning Techniques for Prediction of Occupational Accidents</p>
 ]]></content>
       <categories>
         <category>AIOps</category>
