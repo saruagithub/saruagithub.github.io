@@ -167,6 +167,7 @@
 <p>简介：电子商务和最近的在线消费者热潮迫使对共享网络上的系统的基本计算机安全设计进行更改。 现在设计的系统具有更高的灵活性和更少的屏障安全性。 此外，随着计算机在金融上越来越普及给大众，它们也越来越以消费者为导向。 用户友好性和公共可访问性的结合，尽管对普通人有利，但不可避免地使交换的信息容易受到犯罪分子的攻击。 存储在内部数据仓库中的消费者信息，员工数据或知识产权受到外部攻击者和不满员工的威胁，他们可能会滥用访问权限谋取私利。由于软件应用程序中隐藏的弱点和错误bug，安全策略或防火墙很难阻止此类攻击。 此外，黑客不断发明新的攻击并通过Internet进行传播。</p>
 <p> 入侵检测系统可以检测，识别并响应未经授权的或异常的活动，具有缓解或防止此类攻击的潜力。 因此，security breech是Internet社区日益关注的一个领域[2]。</p>
 <p>大多数研究人员（请参见表1）使用简短的系统调用序列来表征程序行为。少部分使用系统调用的频率分布。与基于序列的编码技术相比，基于频率的编码技术所需的开销更少，基于序列的编码技术需要为每个程序构建一个文件（例如，必须为sendmail或lpr 1构建一个文件），并在每个时间帧检查攻击 。 基于频率的编码技术仅为每个进程而不是每个程序（一个进程可能包含多个程序）建立一个配置文件，并在该过程结束时检查攻击实例。 </p>
+<p>在这项研究中，我们探索了应用人工神经网络（ANN）和支持向量机（SVM）预测基于基于频率的编码技术的攻击的可行性。使用ANN和SVM进行攻击检测的目的是从有限的训练数据中发展泛化能力。</p>
 <h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，Yavuz T, Kundakcioglu O E, Ünlüyurt T. Exact and heuristic approaches to detect failures in failed k-out-of-n systems[J]. Computers &amp; Operations Research, 2019, 112: 104752.</p>
 <p>2，A survey of models and algorithms for emergency response logistics in electric distribution systems. Part I: Reliability planning with fault considerations</p>
 <p>3，Application of Optimized Machine Learning Techniques for Prediction of Occupational Accidents</p>
@@ -286,7 +287,7 @@
   <entry>
     <title>异常检测方法</title>
     <url>/2020/02/10/20191210%E5%BC%82%E5%B8%B8%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95/</url>
-    <content><![CDATA[<h3 id="异常检测方法综述"><a href="#异常检测方法综述" class="headerlink" title="异常检测方法综述"></a>异常检测方法综述</h3><h4 id="统计方法"><a href="#统计方法" class="headerlink" title="统计方法"></a>统计方法</h4><p>主要是对数据的分布做出假设，并找出假设下所定义的“异常”，因此往往会使用极值分析或者假设检验，概率密度函数值小于某个阈值的点判定为异常。 </p><h5 id="看图"><a href="#看图" class="headerlink" title="看图"></a>看图</h5><p>频率直方图， 点分布图</p><h5 id="高斯分布的-k-sigma"><a href="#高斯分布的-k-sigma" class="headerlink" title="高斯分布的 k-sigma"></a>高斯分布的 k-sigma</h5><p>概率密度函数为 $f(x)=\frac{1}{\sqrt{2 \pi} \sigma} e^{-\frac{(x-\mu)^{2}}{2 \sigma^{2}}}$</p><a id="more"></a>
+    <content><![CDATA[<h3 id="异常检测方法综述"><a href="#异常检测方法综述" class="headerlink" title="异常检测方法综述"></a>异常检测方法综述</h3><h4 id="统计方法"><a href="#统计方法" class="headerlink" title="统计方法"></a>统计方法</h4><p>有基于阈值的，还有对数据的分布做出假设，并找出假设下所定义的“异常”，因此往往会使用极值分析或者假设检验，概率密度函数值小于某个阈值的点判定为异常。 还有些多元模型，如计算多个事件指标之间期望的相关性等等。</p><h5 id="看图"><a href="#看图" class="headerlink" title="看图"></a>看图</h5><p>频率直方图， 点分布图</p><h5 id="高斯分布的-k-sigma"><a href="#高斯分布的-k-sigma" class="headerlink" title="高斯分布的 k-sigma"></a>高斯分布的 k-sigma</h5><p>概率密度函数为 $f(x)=\frac{1}{\sqrt{2 \pi} \sigma} e^{-\frac{(x-\mu)^{2}}{2 \sigma^{2}}}$</p><a id="more"></a>
 
 
 <p>当点$X \notin ( { \mu } - 3 { \sigma } ,  { \mu } + 3  { \sigma } ) $ 则为异常，因为这个点出现的概率小于 1 - 99.74%。</p>
@@ -391,9 +392,9 @@
         <category>AIOps</category>
       </categories>
       <tags>
+        <tag>异常检测</tag>
         <tag>机器学习</tag>
         <tag>AIOps</tag>
-        <tag>异常检测</tag>
       </tags>
   </entry>
   <entry>
@@ -1806,8 +1807,8 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
         <category>AIOps</category>
       </categories>
       <tags>
-        <tag>AIOps</tag>
         <tag>时间序列</tag>
+        <tag>AIOps</tag>
       </tags>
   </entry>
   <entry>
@@ -1872,8 +1873,8 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
         <category>AIOps</category>
       </categories>
       <tags>
-        <tag>AIOps</tag>
         <tag>异常检测</tag>
+        <tag>AIOps</tag>
       </tags>
   </entry>
   <entry>
