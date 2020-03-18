@@ -163,9 +163,14 @@
 <h3 id="本文研究关键"><a href="#本文研究关键" class="headerlink" title="本文研究关键"></a>本文研究关键</h3><p>1，将文本数据与非文本数据用于事件预测</p>
 <p>2，分类器的参数优化，以获得更好的预测准确率</p>
 <p>3，少有基于SVM的规则提取用于事件发生的研究</p>
+<h2 id="Application-of-SVM-and-ANN-for-intrusion-detection"><a href="#Application-of-SVM-and-ANN-for-intrusion-detection" class="headerlink" title="Application of SVM and ANN for intrusion detection"></a>Application of SVM and ANN for intrusion detection</h2><h3 id="ABS-amp-Intro-3"><a href="#ABS-amp-Intro-3" class="headerlink" title="ABS &amp; Intro"></a>ABS &amp; Intro</h3><p>两种数据挖掘技术，ANNs 人工神经网络和支持向量机。两种编码方式，，基于简单频率的方案和tf×idf方案，来检测潜在的系统入侵。我们的结果展示采用TF-IDF方案的SVM性能最佳，而基于简单频率方案的ANN表现最差。实验中使用的数据是麻省理工学院林肯实验室的DARPA 1998入侵检测评估计划的BSM审核数据。</p>
+<p>简介：电子商务和最近的在线消费者热潮迫使对共享网络上的系统的基本计算机安全设计进行更改。 现在设计的系统具有更高的灵活性和更少的屏障安全性。 此外，随着计算机在金融上越来越普及给大众，它们也越来越以消费者为导向。 用户友好性和公共可访问性的结合，尽管对普通人有利，但不可避免地使交换的信息容易受到犯罪分子的攻击。 存储在内部数据仓库中的消费者信息，员工数据或知识产权受到外部攻击者和不满员工的威胁，他们可能会滥用访问权限谋取私利。由于软件应用程序中隐藏的弱点和错误bug，安全策略或防火墙很难阻止此类攻击。 此外，黑客不断发明新的攻击并通过Internet进行传播。</p>
+<p> 入侵检测系统可以检测，识别并响应未经授权的或异常的活动，具有缓解或防止此类攻击的潜力。 因此，security breech是Internet社区日益关注的一个领域[2]。</p>
+<p>大多数研究人员（请参见表1）使用简短的系统调用序列来表征程序行为。少部分使用系统调用的频率分布。与基于序列的编码技术相比，基于频率的编码技术所需的开销更少，基于序列的编码技术需要为每个程序构建一个文件（例如，必须为sendmail或lpr 1构建一个文件），并在每个时间帧检查攻击 。 基于频率的编码技术仅为每个进程而不是每个程序（一个进程可能包含多个程序）建立一个配置文件，并在该过程结束时检查攻击实例。 </p>
 <h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，Yavuz T, Kundakcioglu O E, Ünlüyurt T. Exact and heuristic approaches to detect failures in failed k-out-of-n systems[J]. Computers &amp; Operations Research, 2019, 112: 104752.</p>
 <p>2，A survey of models and algorithms for emergency response logistics in electric distribution systems. Part I: Reliability planning with fault considerations</p>
 <p>3，Application of Optimized Machine Learning Techniques for Prediction of Occupational Accidents</p>
+<p>4，Application of SVM and ANN for intrusion detection （Wun-Hwa Chen, Sheng-Hsun Hsu∗, Hwang-Pin Shen）</p>
 ]]></content>
       <categories>
         <category>AIOps</category>
