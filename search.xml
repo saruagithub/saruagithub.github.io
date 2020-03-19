@@ -164,6 +164,7 @@
 <h5 id="冒泡排序"><a href="#冒泡排序" class="headerlink" title="冒泡排序"></a>冒泡排序</h5><p>例子：气泡冒上来的过程。从最后开始，比较相邻的，如果前面的比它大则交换。就像气泡逐渐被推到数组的顶部。</p>
 <figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">//C++</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> E,<span class="keyword">typename</span> Comp&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">bubsort</span><span class="params">(E A[], <span class="keyword">int</span> len)</span></span>&#123;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;len<span class="number">-1</span>;i++)</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> j=len<span class="number">-1</span>; j&gt;i; i--)</span><br><span class="line">      <span class="keyword">if</span>(Comp::prior(A[j],A[j<span class="number">-1</span>]))</span><br><span class="line">        swap(A,j,j<span class="number">-1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># python</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bubble_sort</span><span class="params">(array)</span>:</span></span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,len(array)<span class="number">-1</span>):</span><br><span class="line">		<span class="keyword">for</span> j <span class="keyword">in</span> range(len(array)<span class="number">-1</span>,i,<span class="number">-1</span>):</span><br><span class="line">			<span class="keyword">if</span> array[j] &lt; array[j<span class="number">-1</span>]:</span><br><span class="line">				array[j], array[j - <span class="number">1</span>] = array[j - <span class="number">1</span>], array[j]</span><br></pre></td></tr></table></figure>
+<p>内层的for循环比较次数总会是 i，因此时间代价是：$\sum_{i=1}^n i \approx n^2/2 = \Theta(n^2)$</p>
 <h3 id="改进的排序"><a href="#改进的排序" class="headerlink" title="改进的排序"></a>改进的排序</h3><p><img src="https://img-blog.csdn.net/20180821151148381?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MTU3MTQ5Mw==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="img"></p>
 ]]></content>
       <categories>
@@ -387,8 +388,8 @@
         <category>AIOps</category>
       </categories>
       <tags>
-        <tag>机器学习</tag>
         <tag>异常检测</tag>
+        <tag>机器学习</tag>
         <tag>AIOps</tag>
       </tags>
   </entry>
