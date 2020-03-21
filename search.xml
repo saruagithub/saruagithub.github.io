@@ -394,9 +394,9 @@
         <category>AIOps</category>
       </categories>
       <tags>
-        <tag>异常检测</tag>
         <tag>机器学习</tag>
         <tag>AIOps</tag>
+        <tag>异常检测</tag>
       </tags>
   </entry>
   <entry>
@@ -1177,8 +1177,8 @@
         <category>深度学习</category>
       </categories>
       <tags>
-        <tag>机器学习</tag>
         <tag>深度学习</tag>
+        <tag>机器学习</tag>
       </tags>
   </entry>
   <entry>
@@ -1809,8 +1809,8 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
         <category>AIOps</category>
       </categories>
       <tags>
-        <tag>时间序列</tag>
         <tag>AIOps</tag>
+        <tag>时间序列</tag>
       </tags>
   </entry>
   <entry>
@@ -1875,8 +1875,8 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
         <category>AIOps</category>
       </categories>
       <tags>
-        <tag>异常检测</tag>
         <tag>AIOps</tag>
+        <tag>异常检测</tag>
       </tags>
   </entry>
   <entry>
