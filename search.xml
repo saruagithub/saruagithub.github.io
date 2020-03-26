@@ -9,7 +9,7 @@
 <p>我这里提示的错误是：起始标记“mc:Fallback”（偏移位置 1732371）在偏移位置 1733790缺少对应的结束标记。则将鼠标移动到 1733790个字节的位置，说明这里缺少了 ＜/mc:Fallback＞，注意英文输入。 </p>
 <p>然后重复分析xml文档的缺失，直到没有任何问题。其中遇到了下图这个最后的问题，这个问题是直接缺了 ＜ /w:r＞这个标签，怎么分析的呢？是查找对比前面的几对Fallback的格式发现的缺失，这个就要好好对比一下了。</p>
 <p><img src="/images/20200325word_problem2.jpg" alt="20200325word_problem2"></p>
-<p>最后将改完的xml替换原来的xml，再将“.zip”改回”.dcox“文档，再次打开word文件就可以打开了。</p>
+<h3 id="重新打开"><a href="#重新打开" class="headerlink" title="重新打开"></a>重新打开</h3><p>最后将改完的xml替换原来的xml，再将“.zip”改回”.dcox“文档，再次打开word文件就可以打开了。</p>
 ]]></content>
       <categories>
         <category>配置</category>
@@ -1219,8 +1219,8 @@
         <category>深度学习</category>
       </categories>
       <tags>
-        <tag>深度学习</tag>
         <tag>机器学习</tag>
+        <tag>深度学习</tag>
       </tags>
   </entry>
   <entry>

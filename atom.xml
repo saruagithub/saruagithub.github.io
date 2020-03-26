@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-03-26T01:24:11.079Z</updated>
+  <updated>2020-03-26T01:26:04.993Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -21,9 +21,9 @@
     <link href="http://yoursite.com/2020/03/26/20200325word%E7%9A%84xml%E6%97%A0%E6%95%88%E8%80%8C%E6%97%A0%E6%B3%95%E6%89%93%E5%BC%80/"/>
     <id>http://yoursite.com/2020/03/26/20200325word%E7%9A%84xml%E6%97%A0%E6%95%88%E8%80%8C%E6%97%A0%E6%B3%95%E6%89%93%E5%BC%80/</id>
     <published>2020-03-26T01:07:58.000Z</published>
-    <updated>2020-03-26T01:24:11.079Z</updated>
+    <updated>2020-03-26T01:26:04.993Z</updated>
     
-    <content type="html"><![CDATA[<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>写论文生成word的时候出现了xml无效的问题。</p><p><img src="/images/20200325word_problem1.jpg" alt="20200325word_problem1"></p><p>将word文档原扩展名“docx”手动改为压缩文件扩展名“zip”，备份一个，然后用解压软件解压。用vscode编辑器或者其他的一些xml编辑器（如firstobject）打开解压文件夹下的word目录下的document.xml 文件。根据对xml错误提示进行更改。</p><a id="more"></a><p>我这里提示的错误是：起始标记“mc:Fallback”（偏移位置 1732371）在偏移位置 1733790缺少对应的结束标记。则将鼠标移动到 1733790个字节的位置，说明这里缺少了 ＜/mc:Fallback＞，注意英文输入。 </p><p>然后重复分析xml文档的缺失，直到没有任何问题。其中遇到了下图这个最后的问题，这个问题是直接缺了 ＜ /w:r＞这个标签，怎么分析的呢？是查找对比前面的几对Fallback的格式发现的缺失，这个就要好好对比一下了。</p><p><img src="/images/20200325word_problem2.jpg" alt="20200325word_problem2"></p><p>最后将改完的xml替换原来的xml，再将“.zip”改回”.dcox“文档，再次打开word文件就可以打开了。</p>]]></content>
+    <content type="html"><![CDATA[<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>写论文生成word的时候出现了xml无效的问题。</p><p><img src="/images/20200325word_problem1.jpg" alt="20200325word_problem1"></p><p>将word文档原扩展名“docx”手动改为压缩文件扩展名“zip”，备份一个，然后用解压软件解压。用vscode编辑器或者其他的一些xml编辑器（如firstobject）打开解压文件夹下的word目录下的document.xml 文件。根据对xml错误提示进行更改。</p><a id="more"></a><p>我这里提示的错误是：起始标记“mc:Fallback”（偏移位置 1732371）在偏移位置 1733790缺少对应的结束标记。则将鼠标移动到 1733790个字节的位置，说明这里缺少了 ＜/mc:Fallback＞，注意英文输入。 </p><p>然后重复分析xml文档的缺失，直到没有任何问题。其中遇到了下图这个最后的问题，这个问题是直接缺了 ＜ /w:r＞这个标签，怎么分析的呢？是查找对比前面的几对Fallback的格式发现的缺失，这个就要好好对比一下了。</p><p><img src="/images/20200325word_problem2.jpg" alt="20200325word_problem2"></p><h3 id="重新打开"><a href="#重新打开" class="headerlink" title="重新打开"></a>重新打开</h3><p>最后将改完的xml替换原来的xml，再将“.zip”改回”.dcox“文档，再次打开word文件就可以打开了。</p>]]></content>
     
     <summary type="html">
     
