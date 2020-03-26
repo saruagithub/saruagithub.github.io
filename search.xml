@@ -1,6 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>20200325word的xml无效而无法打开</title>
+    <url>/2020/03/26/20200325word%E7%9A%84xml%E6%97%A0%E6%95%88%E8%80%8C%E6%97%A0%E6%B3%95%E6%89%93%E5%BC%80/</url>
+    <content><![CDATA[<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>写论文生成word的时候出现了xml无效的问题。</p><p><img src="/images/20200325word_problem1.jpg" alt="20200325word_problem1"></p><p>将word文档原扩展名“docx”手动改为压缩文件扩展名“zip”，备份一个，然后用解压软件解压。用vscode编辑器或者其他的一些xml编辑器（如firstobject）打开解压文件夹下的word目录下的document.xml 文件。根据对xml错误提示进行更改。</p><a id="more"></a>
+
+
+<p>我这里提示的错误是：起始标记“mc:Fallback”（偏移位置 1732371）在偏移位置 1733790缺少对应的结束标记。则将鼠标移动到 1733790个字节的位置，说明这里缺少了 ＜/mc:Fallback＞，注意英文输入。 </p>
+<p>然后重复分析xml文档的缺失，直到没有任何问题。其中遇到了下图这个最后的问题，这个问题是直接缺了 ＜ /w:r＞这个标签，怎么分析的呢？是查找对比前面的几对Fallback的格式发现的缺失，这个就要好好对比一下了。</p>
+<p><img src="/images/20200325word_problem2.jpg" alt="20200325word_problem2"></p>
+<p>最后将改完的xml替换原来的xml，再将“.zip”改回”.dcox“文档，再次打开word文件就可以打开了。</p>
+]]></content>
+      <categories>
+        <category>配置</category>
+      </categories>
+      <tags>
+        <tag>配置</tag>
+        <tag>word</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Unsupervised Anomaly Detection via Variational Auto-Encoder for Seasonal KPIs in Web Applications (Donut model, Part Ⅱ)</title>
     <url>/2020/03/14/20200314paper-Unsupervised-Anomaly-Detection-via-Variational-AutoEncoder-for-Seasonal-KPIs-in-Web-Applications(Part2)/</url>
     <content><![CDATA[<h3 id="Evaluation实验"><a href="#Evaluation实验" class="headerlink" title="Evaluation实验"></a>Evaluation实验</h3><h4 id="Datasets"><a href="#Datasets" class="headerlink" title="Datasets"></a>Datasets</h4><p>我们从大型互联网上获得了18个维护良好的商业KPIs（时间跨度足以进行培训和评估），所有的KPIs间隔为1min。三个数据集 A B C 如图6的Table1。因此我们可以评估Donut在不同级别的噪声。 我们将每个数据集分为训练集 49%，验证集21%和测试集30%。</p><a id="more"></a>
@@ -417,8 +436,8 @@
         <category>AIOps</category>
       </categories>
       <tags>
-        <tag>机器学习</tag>
         <tag>异常检测</tag>
+        <tag>机器学习</tag>
         <tag>AIOps</tag>
       </tags>
   </entry>
@@ -1200,8 +1219,8 @@
         <category>深度学习</category>
       </categories>
       <tags>
-        <tag>机器学习</tag>
         <tag>深度学习</tag>
+        <tag>机器学习</tag>
       </tags>
   </entry>
   <entry>
@@ -1506,8 +1525,8 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
         <category>深度学习</category>
       </categories>
       <tags>
-        <tag>深度学习</tag>
         <tag>配置</tag>
+        <tag>深度学习</tag>
       </tags>
   </entry>
   <entry>
@@ -1920,8 +1939,8 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
         <category>配置</category>
       </categories>
       <tags>
-        <tag>三维点云</tag>
         <tag>配置</tag>
+        <tag>三维点云</tag>
       </tags>
   </entry>
   <entry>
