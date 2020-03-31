@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-03-28T10:08:59.217Z</updated>
+  <updated>2020-03-31T02:32:42.114Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>分治递归思想</title>
+    <link href="http://yoursite.com/2020/03/31/20200330%E5%88%86%E6%B2%BB%E9%80%92%E5%BD%92%E6%80%9D%E6%83%B3/"/>
+    <id>http://yoursite.com/2020/03/31/20200330%E5%88%86%E6%B2%BB%E9%80%92%E5%BD%92%E6%80%9D%E6%83%B3/</id>
+    <published>2020-03-31T01:37:21.000Z</published>
+    <updated>2020-03-31T02:32:42.114Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="分治递归思想"><a href="#分治递归思想" class="headerlink" title="分治递归思想"></a>分治递归思想</h3><p>为了解决一个给定的问题，算法一次或多次递归的调用自身以解决若干子问题，这些就是典型的分治法的思想。我们将原问题分解为几个规模较小但类似于原问题的子问题，从而递归的调用自身，最后合并这些子问题的解来建立原问题的解。</p><p>关键：1，分解原问题为相同结构的子问题。2，解决这些子问题。3，合并子问题的解。</p><a id="more"></a><h3 id="经典案例"><a href="#经典案例" class="headerlink" title="经典案例"></a>经典案例</h3><h4 id="递归求和"><a href="#递归求和" class="headerlink" title="递归求和"></a>递归求和</h4><p>如果计算1 + 2 + … n ，可以用递归的方法来写。</p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">AddFrom1ToN_Recursive</span><span class="params">(<span class="keyword">int</span> n)</span></span>&#123;</span><br><span class="line"><span class="keyword">return</span> n &lt;= <span class="number">0</span>?: <span class="number">0</span>:n + AddFrom1ToN_Recursive(n<span class="number">-1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>但这里递归比循环的时间复杂度更高，函数递归调用自身都要在内存栈中分配空间保存参数（如n到哪了），返回地址（函数的地址），临时变量（上一次计算得到的AddFrom1ToN_Recursive值）等等，因此空间和时间消耗较多。</p><p>更严重的话递归会带来调用栈溢出的问题，递归调用层级太多就有可能超出栈的容量。</p><h4 id="归并排序。"><a href="#归并排序。" class="headerlink" title="归并排序。"></a>归并排序。</h4><p><a href="[https://saruagithub.github.io/2020/03/10/20200309%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E5%A4%8D%E4%B9%A0/](https://saruagithub.github.io/2020/03/10/20200309排序算法复习/">排序—归并排序</a>)</p><p>归并排序的详细复杂度分析见 《算法导论》P21，通过递归树分析，总代价是$cnlgn + cn$ (c表示求解规模为1的问题所需要的时间以及在分解步骤与合并步骤处理每个数组元素所需要的时间。)</p><h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1, 《算法导论》机械工业出版社 第三版（黑皮的，Thoms H Cormen…）</p><p>2，leecode网站</p><p>3，</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;分治递归思想&quot;&gt;&lt;a href=&quot;#分治递归思想&quot; class=&quot;headerlink&quot; title=&quot;分治递归思想&quot;&gt;&lt;/a&gt;分治递归思想&lt;/h3&gt;&lt;p&gt;为了解决一个给定的问题，算法一次或多次递归的调用自身以解决若干子问题，这些就是典型的分治法的思想。我们将原问题分解为几个规模较小但类似于原问题的子问题，从而递归的调用自身，最后合并这些子问题的解来建立原问题的解。&lt;/p&gt;&lt;p&gt;关键：1，分解原问题为相同结构的子问题。2，解决这些子问题。3，合并子问题的解。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="算法" scheme="http://yoursite.com/categories/%E7%AE%97%E6%B3%95/"/>
+    
+    
+      <category term="算法" scheme="http://yoursite.com/tags/%E7%AE%97%E6%B3%95/"/>
+    
+      <category term="递归" scheme="http://yoursite.com/tags/%E9%80%92%E5%BD%92/"/>
+    
+      <category term="分治" scheme="http://yoursite.com/tags/%E5%88%86%E6%B2%BB/"/>
+    
+  </entry>
   
   <entry>
     <title>数组实现堆</title>
@@ -539,29 +566,6 @@
       <category term="深度学习" scheme="http://yoursite.com/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
     
       <category term="三维点云" scheme="http://yoursite.com/tags/%E4%B8%89%E7%BB%B4%E7%82%B9%E4%BA%91/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>LightGBM_paper</title>
-    <link href="http://yoursite.com/2020/01/03/20200103LightGBM-paper/"/>
-    <id>http://yoursite.com/2020/01/03/20200103LightGBM-paper/</id>
-    <published>2020-01-03T13:16:46.000Z</published>
-    <updated>2020-01-07T08:04:49.187Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="1-摘要简介"><a href="#1-摘要简介" class="headerlink" title="1 摘要简介"></a>1 摘要简介</h3><h4 id="1-1-简介"><a href="#1-1-简介" class="headerlink" title="1.1 简介"></a>1.1 简介</h4><p>GBDT的实现有XGBoost，pGBRT等。但当特征维度高，数据集size大的时候有效性还不够。主要原因在于对每一个特征，都要扫描所有实例并估计所有可能的划分节点的信息增益。</p><p>LightGBM提出的方法是：Gradient-based one-side sampling (GOSS) ，Exclusive feature bundling (EFB)。</p><a id="more"></a><h4 id="1-2-GOSS"><a href="#1-2-GOSS" class="headerlink" title="1.2 GOSS"></a>1.2 GOSS</h4><p>GOSS的作用排除相当一部分小的梯度的数据实例（instance），只使用剩下的来估计信息增益。<strong>更大的梯度的数据实例在计算信息增益上起到更重要的作用</strong>。</p><p>GBDT中没有数据实例权重。但具有不同梯度的数据实例在信息增益的计算中起着不同的作用。根据信息增益的定义，<u>那些具有较大梯度的实例（即训练不足的实例）将为信息增益做出更大的贡献</u>。下采样那些梯度大的实例（阈值or百分比），并随机丢弃那些小的梯度的实例。</p><h4 id="1-3-EFB的作用"><a href="#1-3-EFB的作用" class="headerlink" title="1.3 EFB的作用"></a>1.3 EFB的作用</h4><p>EFB的作用：捆绑互斥特征（即，他们很少同时采用非零值）贪心策略来找最优互斥特征。</p><p>现实中，特征空间稀疏。这为我们提供了一种设计几乎无损方法以减少有效特征数量的可能性。在稀疏特征空间中，许多特征几乎是互斥的，即他们很少同时采用非零值（文本挖掘里one hot词表征）。我们可以很安全的捆绑这些互斥特征。</p><p>设计了一个以恒定近似比率的贪心算法将最优特征捆绑问题转换为图着色问题。通过将特征作为顶点并为每两个特征（如果它们之间不是互斥的话）添加边。</p><p><strong>而Hitogram算法的主要作用是减少候选分裂点数量，GOSS算法的作用是减少样本的数量，EFB算法的作用是减少特征的数量。</strong></p><h3 id="2-GBDT回顾"><a href="#2-GBDT回顾" class="headerlink" title="2 GBDT回顾"></a>2 GBDT回顾</h3><p>GBDT是决策树的集成模型。每次迭代GBDT通过拟合负梯度（残差）学习决策树。他的主要成本是在于学习决策树。划分节点的选择是非常耗时的，之前有预排序算法，它每次枚举所有可能的划分点，基于预排序的特征值，从而找到最优划分节点。</p><p>另一种是基于直方图的算法。他将连续特征值分桶为离散的bins，利用bins来构建特征直方图。（内存消耗更少，训练速度更快）。直方图建立是 O(#data <em> #feature)，划分节点是 O(#bin </em> #feature)。</p><p>实际应用中使用的大规模数据集通常很少。 带有预排序算法的GBDT可以通过忽略零值的特征来降低训练成本[13]。 但是，具有基于直方图的算法的GBDT没有有效的稀疏优化解决方案。 原因是，无论特征值是否为零，基于直方图的算法都需要为每个数据实例检索特征仓值（请参阅算法1）。</p><p><img src="/images/20200104GBDT_Algo.jpg" alt="20200104GBDT_Algo"></p><p><center>图1</center></p><h4 id="2-1-直方图算法"><a href="#2-1-直方图算法" class="headerlink" title="2.1 直方图算法"></a>2.1 直方图算法</h4><p><img src="/images/20200105Histogram.jpg" alt="20200105Histogram"></p><p><center>图2</center><br>for node in nodeSet (for all leaf p in Tc-1(x)) 这里是对当前层的叶子节点遍历。（需要遍历所有的特征，来找到增益最大的特征及其划分值，以此来分裂该叶子节点。）</p><p>for k=1 to m (for all f in X.Features) 这里是对所有特征进行遍历。<strong>对于每个特征，为其创建一个直方图</strong>。</p><p>for j in usedRows do ( for i in (0, num_of_row)) 这里是对此节点的样本row进行统计计算。这个直方图存储了两类信息，分别是每个bin中样本的梯度之和 $H[f \cdot b i n s[i]] \cdot g$, 还有就是每个bin中样本数量$H[f . \text { bins }[i]] . n$ 。下面图2的循环 for i in (0, len(H)) 是遍历所有bin，分别以当前bin作为分割点，累加其左边的bin至当前bin的梯度和$S_L$以及样本数量$n_L$，与父节点的梯度和$S_p,n_p$ 相减得到右边的。</p><p>然后计算增益，在遍历过程中取最大的增益，以此时的特征和bin的特征值作为分裂节点的特征和分裂特征取值。</p><p>连续特征的分桶和离散特征的分桶是不一样的。先把连续的浮点特征值离散化成k个整数（其实又是分桶的思想，而这些桶称为bin，比如[0,0.1)→0, [0.1,0.3)→1），同时构造一个宽度为k的直方图。离散特征直接对特征的每个取值进行计数。即LightGBM可以直接将<strong>每个类别取值和一个bin关联</strong>，从而自动地处理它们，而无需预处理成onehot编码多此一举。</p><p>对比Xgboost的预排序算法：预排序算法首先将样本按照特征取值排序，然后从全部特征取值中找到最优的分裂点位，该算法的候选分裂点数量与样本数量成正比。</p><h3 id="3-Gradient-based-One-side-Sampling"><a href="#3-Gradient-based-One-side-Sampling" class="headerlink" title="3 Gradient-based One-side Sampling"></a>3 Gradient-based One-side Sampling</h3><p>在AdaBoost中，样本权重可以很好地表明数据实例的重要性。但GBDT里面就没有这个权重，但我们注意到GBDT中每个数据实例的梯度为我们提供了有用的数据采样信息。如果实例与较小的坡度关联，则该实例的训练误差很小，并且已经过良好训练。 一个简单的主意是丢弃那些梯度小的数据实例。 但是，这样做会改变数据分布，这会损害学习模型的准确性。 为避免此问题，我们提出基于梯度的单边采样（GOSS）。</p><p>GOSS保留所有具有大梯度的实例，并对具有小梯度的实例执行随机采样。为了补偿对数据分布的影响，在计算信息增益时，GOSS为具有较小梯度的数据实例引入了一个常数乘法器（constant multiplier）。</p><p>GOSS首先根据数据实例的梯度绝对值进行排序，选出最高的a%的实例。随机从剩余的数据实例中采样出 b% 的数据。GOSS放大采样的梯度较小的数据实例，乘常量因子$\frac{1-a}{b}$。</p><h4 id="3-1-理论分析"><a href="#3-1-理论分析" class="headerlink" title="3.1 理论分析"></a>3.1 理论分析</h4><p>$\mathcal{X}$ 输入空间</p><p>$\mathcal{G}$ 是梯度空间</p><p>$n$ 是样本实例个数。</p><p>$\{g_1,g_2…g_n\}$ 是损失函数关于模型输出（即$f_{m-1}的预测值$）的负梯度。</p><p>对于GBDT，信息增益经常是由划分后的方差度量的。</p><p>定义：令$O$ 是在决策树的一个固定节点的训练数据集training dataset，划分特征 $j$ 在点 $d$ （我的理解是特征取值d）的方差增益定义是（理解一下就是划分的两边的平均负梯度的平方的平均）：</p><script type="math/tex; mode=display">V_{j | O}(d)=\frac{1}{n_{O}}\left(\frac{\left(\sum_{\left\{x_{i} \in O: x_{i j} \leq d\right\}} g_{i}\right)^{2}}{n_{l | O}^{j}(d)}+\frac{\left(\sum_{\left\{x_{i} \in O: x_{i j}>d\right\}} g_{i}\right)^{2}}{n_{r | O}^{j}(d)}\right)</script><script type="math/tex; mode=display">n_{O}=\sum I\left[x_{i} \in O\right], n_{l | O}^{j}(d)=\sum I\left[x_{i} \in O: x_{i j} \leq d\right] \text { and } n_{r | O}^{j}(d)=\sum I\left[x_{i} \in O: x_{i j}>d\right]</script><p>对于特征 $j$ ，决策树算法选择：</p><script type="math/tex; mode=display">d_{j}^{*}=\operatorname{argmax}_{d} V_{j}(d)</script><p>并计算最大增益：$V_{j}\left(d_{j}^{*}\right)$</p><p>然后数据由特征 $j^{\star}$ 在划分点 $d_{j^{\star}}$ 为左右子节点。</p><p>在我们提出的GOSS方法中，首先，我们将训练实例根据其梯度的绝对值按降序排列。然后保存前 $a * 100%$ 的数据实例子集 $A$ ，剩下的数据 $A^c$ 是随机采样大小为 $b \times\left|A^{c}\right|$子集$B$。 最后通过在数据 $A \cup B$对估计的方差增益 $\tilde{V}_{j}(d)$ 划分数据实例</p><script type="math/tex; mode=display">\tilde{V}_{j}(d)=\frac{1}{n}\left(\frac{\left(\sum_{x_{i} \in A_{l}} g_{i}+\frac{1-a}{b} \sum_{x_{i} \in B_{l}} g_{i}\right)^{2}}{n_{l}^{j}(d)}+\frac{\left(\sum_{x_{i} \in A_{r}} g_{i}+\frac{1-a}{b} \sum_{x_{i} \in B_{r}} g_{i}\right)^{2}}{n_{r}^{j}(d)}\right)</script><script type="math/tex; mode=display">A_{l}=\left\{x_{i} \in A: x_{i j} \leq d\right\}, A_{r}=\left\{x_{i} \in A: x_{i j}>d\right\}, B_{l}=\left\{x_{i} \in B: x_{i j} \leq d\right\}, B_{r}=\left\{x_{i} \in B: x_{ij} > d \}\right.</script><p>该系数$\frac{1-a}{b}$用于将B上的梯度总和归一化为A的大小，GOSS放大采样的梯度较小的数据实例。</p><h3 id="4-Exclusive-feature-Bundling"><a href="#4-Exclusive-feature-Bundling" class="headerlink" title="4 Exclusive feature Bundling"></a>4 Exclusive feature Bundling</h3><p>目的：减少特征数量。</p><p>高维数据经常是稀疏的，特征空间的稀疏性为我们提供了一种设计几乎无损方法以减少特征数量的可能性。在稀疏的特征空间中，许多特征是互斥的，即它们永远不会同时采用非零值（意思是所有样本在这两特征的取值不是同时采用非零值，这个很像我之前看的HTM里的SDR），因此可以绑定这俩特征为一个单特征。</p><p>可以有趣的是，对于类别特征，如果转换成onehot编码，则这些onehot编码后的多个特征相互之间是互斥的，从而可以被捆绑成为一个特征。we can build the same feature histograms from the feature bundles as those from individual features. </p><h4 id="4-1-绑哪些feature"><a href="#4-1-绑哪些feature" class="headerlink" title="4.1 绑哪些feature"></a>4.1 绑哪些feature</h4><p>背景图着色问题：给顶点着色，相连的顶点颜色都不同，最少需要多少颜色，这是NP难问题。</p><p>给定$G = (V,E)$。$V$ 是特征数，通过将特征作为顶点并为每两个特征（如果它们之间不是互斥的话）添加边。则互斥特征是有着相同颜色的节点。最后采用贪心策略来产生bundle。</p><p><img src="/images/20200105EFB.jpg" alt="20200105EFB"></p><p>算法过程：</p><p>1,首先，我们构造一个具有加权边的图，其权重对应于特征之间的总冲突（特征并不是100%的互斥，只要很少很少的同时为非零值也可 allow a small fraction of conflicts）。 </p><p>2, 其次，我们按特征在图中的度（degrees ）降序对特征进行排序。 </p><p>3, 最后，我们依次检查排序列表中的每个feature，要么将其分配给冲突很小（由γ控制）的现有bundle，或创建一个新包bundle。 Alg.3 的时间复杂度是$O(feature^2)$，在训练之前仅处理一次使得操作之后的总体冲突最小。</p><p>​    当特征数量不是很大时，这种复杂性是可以接受的，但如果有数百万个特征，则可能仍然会受到影响。 为了进一步提高效率，我们提出了一种更有效的排序策略，而无需构建图表：通过非零值的计数进行排序，这类似于按度排序，因为更多的非零值通常会导致发生冲突的可能性更高（类似于根据度degree排序）。</p><h4 id="4-2-如何捆绑bundle"><a href="#4-2-如何捆绑bundle" class="headerlink" title="4.2 如何捆绑bundle"></a>4.2 如何捆绑bundle</h4><p>对于第二个问题，我们需要一种很好的方法来合并同一捆绑bundle中的特征，以减少相应的训练复杂性。 关键是要确保可以从feature bundles中识别原始feature的值。</p><p>由于基于直方图的算法存储的是离散的bins而不是特征feature的连续值，因此我们可以通过让互斥特征驻留在不同的bins中来构造feature bundle。 这可以通过向特征原始值添加偏移量来完成。 例如，假设我们在feature bundle中有两个特征。 最初，特征A取值[0，10），特征B取值[0，20）。 然后，我们向特征B的值添加10的偏移量，以使经过改进的特征采用[10，30）中的值。 之后，可以安全地合并特征A和B，并使用范围为[0，30]的feature bundle替换原始特征A和B。详细算法在Alg 4。</p><p>EFB算法可以将许多互斥特征捆绑到少得多的密集特征上，从而可以<strong>有效避免零特征值</strong>的不必要计算。</p><p>实际上，我们还可以优化基本的基于直方图的算法，通过为每个特征使用一个表table 记录具有非零值的数据来忽略零特征值。 通过扫描此表中的数据，构建功能的直方图的成本将从$O(data)$变为$O(non-zero-data)$。 但是，此方法需要额外的内存和计算成本才能在整个树生长过程中维护这些per-feature tables。 我们在LightGBM中将这种优化实现为基本功能。 请注意，此优化不会与EFB冲突，因为当bundle稀疏时我们仍然可以使用它。</p><h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>LightGBM的优化点总结</p><ul><li>基于Histogram的决策树算法。直方图做差加速。</li><li>带深度限制的Leaf-wise的叶子生长策略：level-wise 过一次数据可以同时分裂同一层的叶子，容易进行多线程优化，不容易过拟合。但实际上level-wise是一种低效的算法，因为它不加区分的对待同一层的叶子，带来了很多没必要的开销。因为实际上很多叶子的分裂增益较低，没必要进行搜索和分裂。leaf-wise则是一种更为高效的策略，每次从当前所有叶子中，找到分裂增益最大(一般也是数据量最大)的一个叶子，然后分裂，如此循环。因此同 level-wise 相比，在分裂次数相同的情况下，leaf-wise 可以降低更多的误差，得到更好的精度。leaf-wise 的缺点是可能会长出比较深的决策树，产生过拟合。因此 LightGBM 在leaf-wise 之上增加了一个最大深度的限制，在保证高效率的同时防止过拟合。</li><li>直接支持类别特征(Categorical Feature)：类别特征最优分割</li><li>基于梯度的单边采样算法</li><li>特征捆绑策略</li></ul><h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，论文 LightGBM: A highly efficient gradient boosting decision tree.</p><p>2，<a href="https://blog.csdn.net/anshuai_aw1/article/details/83040541" target="_blank" rel="noopener">LightGBM直方图优化算法</a></p><p>3，<a href="https://juejin.im/post/5d25e1d0e51d4556da53d151" target="_blank" rel="noopener">一些面试问题</a></p><p>4，<a href="https://zhuanlan.zhihu.com/p/91167170" target="_blank" rel="noopener">LightGBM</a></p><p>5， <a href="https://zhuanlan.zhihu.com/p/87885678" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/87885678</a></p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;1-摘要简介&quot;&gt;&lt;a href=&quot;#1-摘要简介&quot; class=&quot;headerlink&quot; title=&quot;1 摘要简介&quot;&gt;&lt;/a&gt;1 摘要简介&lt;/h3&gt;&lt;h4 id=&quot;1-1-简介&quot;&gt;&lt;a href=&quot;#1-1-简介&quot; class=&quot;headerlink&quot; title=&quot;1.1 简介&quot;&gt;&lt;/a&gt;1.1 简介&lt;/h4&gt;&lt;p&gt;GBDT的实现有XGBoost，pGBRT等。但当特征维度高，数据集size大的时候有效性还不够。主要原因在于对每一个特征，都要扫描所有实例并估计所有可能的划分节点的信息增益。&lt;/p&gt;&lt;p&gt;LightGBM提出的方法是：Gradient-based one-side sampling (GOSS) ，Exclusive feature bundling (EFB)。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="机器学习" scheme="http://yoursite.com/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-      <category term="机器学习" scheme="http://yoursite.com/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
     
   </entry>
   
