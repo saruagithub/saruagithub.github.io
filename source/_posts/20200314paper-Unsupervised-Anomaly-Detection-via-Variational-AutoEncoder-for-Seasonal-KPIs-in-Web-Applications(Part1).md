@@ -1,5 +1,5 @@
 ---
-title: Unsupervised Anomaly Detection via Variational Auto-Encoder for Seasonal KPIs in Web Applications (Donut model)
+title: Unsupervised Anomaly Detection via Variational Auto-Encoder for Seasonal KPIs in Web Applications (Donut model, Part I)
 date: 2020-03-13 10:54:13
 mathjax: true
 tags:
@@ -88,7 +88,7 @@ categories:
 
 其理念是关注正常模式而不是异常：由于KPIs通常主要由正常数据组成，因此即使没有标签也可以轻松地训练模型。 粗略地说，它们都首先识别原始或某些潜在特征空间中的“正常”区域，然后通过测量观测值与正常区域的“距离”来计算异常分数。
 
-沿着此方向，1，学习正常模式可以看作是学习训练数据的分布，这是生成模型的主题。2，最近在利用深度学习技术训练生成模型方面取得了巨大进展（例如**GAN [13]和深度贝叶斯网络[4，39]**）。后者属于深度生成模型家族，它采用图形graphical[30]模型框架和变型variational技术[3]，以VAE [16，32]为代表。 3，尽管深度生成模型在异常检测方面具有广阔的前景，但现有的基于VAE的异常检测方法[2]并非为KPIs（时间序列）设计，在我们的设置中效果不佳（请参见§4），并且没有 为其用于异常检测的深度生成模型的设计提供支持的理论基础（请参阅§5）4，简单地采用基于VRNN的更复杂的模型[36]在我们的实验中显示出训练时间长且性能差。5，[2]假定仅对干净数据进行训练，这在我们的上下文中是不可行的。
+沿着此方向，1，学习正常模式可以看作是学习训练数据的分布，这是生成模型的主题。2，最近在利用深度学习技术训练生成模型方面取得了巨大进展（例如**GAN [13]和深度贝叶斯网络[4，39]**）。后者属于深度生成模型家族，它采用图形graphical[30]模型框架和变分技术[3]，以VAE [16，32]为代表。 3，尽管深度生成模型在异常检测方面具有广阔的前景，但现有的基于VAE的异常检测方法[2]并非为KPIs（时间序列）设计，在我们的设置中效果不佳（请参见§4），并且没有 为其用于异常检测的深度生成模型的设计提供支持的理论基础（请参阅§5）4，简单地采用基于VRNN的更复杂的模型[36]在我们的实验中显示出训练时间长且性能差。5，[2]假定仅对干净数据进行训练，这在我们的上下文中是不可行的。
 
 
 
@@ -184,9 +184,25 @@ $$\widetilde{\mathcal{L}}(\mathbf{x})=\mathbb{E}_{\boldsymbol{q}_{\phi}(\mathbf{
 
 #### Detection
 
+与仅为一个目的而设计的判别模型（例如，为仅计算分类概率 $p(y|x)$ 而设计的分类器）不同，像VAE这样的生成模型可以得出各种输出。 在异常检测的范围内，观察窗 $x$ 的可能性（即VAE中的 $p_{\theta}(\mathbf{x})$ ）是重要的输出，因为我们想知道给定的 $x$ 遵循正常模式的程度。可以采用蒙特卡洛方法来计算 $x$ 的概率密度 $$p_{\theta}(\mathbf{x})=\mathbb{E}_{p_{\theta}(\mathbf{z})}\left[p_{\theta}(\mathbf{x} | \mathbf{z})\right]$$ 。尽管在理论上有很好的解释，但实际上，对先验样本进行采样实际上并不能很好地完成工作，如第4段所示
 
 
 
+与其对先验进行采样，不如通过变分后验 $q_{\phi}(\mathbf{z} | \mathbf{x})$ 来推导有用的输出。一种选择是计算出 $\mathbb{E}_{\boldsymbol{q}_{\phi}(\mathbf{z} | \mathbf{x})}\left[p_{\theta}(\mathbf{x} | \mathbf{z})\right]$ 。尽管与 $p_{\theta}(\mathbf{x})$ 相似，它实际上不是一个定义很好的概率密度。另一种选择是计算在[2] 中采用的 $\mathbb{E}_{\boldsymbol{q}_{\phi}(\mathbf{z} | \mathbf{x})}\left[\log p_{\theta}(\mathbf{x} | \mathbf{z})\right]$ ，称为“重建概率”。由于在异常检测中只关注异常评分的顺序而不是确切值，因此我们遵循[2]并使用后者。或者另一个可选项，如[36]所示，ELBO（等式Eqn 1）也可用于近似 $\log p_{\theta}(\mathbf{x})$。然而，在ELBO的另外一项  $\mathbb{E}_{q_{\phi}(\mathbf{z} | \mathbf{x})}\left[\log p_{\theta}(\mathbf{z})-\log q_{\phi}(\mathbf{z} | \mathbf{x})\right]$  使其内部机制难以理解。 由于[36]中的实验不支持该可选方法的优越性，因此我们选择不使用它。
+
+
+
+在检测期间，测试窗口$x$中的异常点和缺失点可能给映射的 $z$ 带来偏差，并进一步使重建概率不准确，这将在5.2节中讨论。 由于缺失点始终是已知的（称为“null”），我们有机会消除缺失点所带来的偏差。 我们选择采用经过训练的VAE的基于MCMC的缺失数据插入imputation技术，该技术由[32]提出。 同时，我们在检测之前不知道异常点的确切位置，因此无法对异常采用MCMC。
+
+
+
+更具体地，测试 $x$ 被划分为观察部分和缺失部分，即 $\left(\mathbf{x}_{o}, \mathbf{x}_{m}\right)$。一个 $z$ 样例从 $q_{\phi}\left(\mathbf{z} | \mathbf{x}_{o}, \mathbf{x}_{m}\right)$ 中获取，然后一个重建样例 $\left(\mathbf{x}_{\boldsymbol{o}}^{\prime}, \mathbf{x}_{m}^{\prime}\right)$ 从 $p_{\theta}\left(\mathbf{x}_{\boldsymbol{o}}, \mathbf{x}_{m} | \mathbf{z}\right)$ 中获取得到。$\left(\mathbf{x}_{o}, \mathbf{x}_{m}\right)$ then由 $\left(\mathbf{x}_{\boldsymbol{o}}, \mathbf{x}_{m}^{\prime}\right)$ 替换，即观察点是固定的，缺失点被设置为新值。  这个过程迭代 M次，然后最终的 $\left(\mathbf{x}_{o}, \mathbf{x}_{m}^{\prime}\right)$ 被用来计算重建概率。在整个过程中，中间值$\mathbf{x}_{m}^{\prime}$会越来越接近正常值。给定足够大的M，可以减少偏差，并且可以获得更准确的重构概率。 MCMC方法在图5中说明，并在图3的“检测”步骤中显示。
+
+![20200314Figure5_MCMC](/images/20200314Figure5_MCMC.jpg)
+
+ 
+
+MCMC之后，我们取z的L个样本通过蒙特卡洛积分来计算重构概率。 值得一提的是，尽管我们可以计算x的每个窗口中每个点的重建概率，但我们仅使用最后一个点的分数（即$x_t$ 在 $x_{t-T+1}, \ldots, x_{t}$），因为我们想要将在检测过程中尽快归纳异常 。后续文章中我们仍将使用矢量符号，它们与VAE的体系结构相对应。 尽管可以通过延迟决策并在不同时间考虑同一点的更多分数来提高检测性能，但我们将其留作将来的工作。
 
 
 
