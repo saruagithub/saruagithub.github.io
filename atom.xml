@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-04-05T07:56:58.877Z</updated>
+  <updated>2020-04-05T08:09:51.915Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -21,13 +21,13 @@
     <link href="http://yoursite.com/2020/04/05/20200405%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%8A%80%E6%9C%AF1hadoop/"/>
     <id>http://yoursite.com/2020/04/05/20200405%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%8A%80%E6%9C%AF1hadoop/</id>
     <published>2020-04-05T01:37:46.000Z</published>
-    <updated>2020-04-05T07:56:58.877Z</updated>
+    <updated>2020-04-05T08:09:51.915Z</updated>
     
-    <content type="html"><![CDATA[<h3 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h3><h3 id="虚拟化技术"><a href="#虚拟化技术" class="headerlink" title="虚拟化技术"></a>虚拟化技术</h3><h3 id="Hadoop"><a href="#Hadoop" class="headerlink" title="Hadoop"></a>Hadoop</h3><p>hadoop是一个开源框架，允许使用简单的编程模型在跨计算机集群的分布式环境中存储和处理大数据。</p><h4 id="HDFS"><a href="#HDFS" class="headerlink" title="HDFS"></a>HDFS</h4><p>分布式文件系统，是一个高度容错性的系统（每个数据块都复制到多个节点），可以提供高吞吐量的数据访问（T级别，多个节点同时处理数据）。</p><p>文件分块存储，HDFS将一个完整的大文件平均分块存储到不同的计算器上，多主机读取比单主机读取效率更高。代码向数据迁移，尽量地将任务分配到离数据最近的机器上运行。</p><a id="more"></a><p>流式数据访问，一次写入多次读写，不支持动态改变文件内容。</p><p>适用情况：大规模数据，流式数据（写一次读多次），一般硬件</p><h5 id="关键元素"><a href="#关键元素" class="headerlink" title="关键元素"></a>关键元素</h5><p>Block：文件分块</p><p>NameNode：保存整个文件系统的目录信息，文件信息及分块信息。</p><p>DataNode：分布在廉价的计算机上，用于存储Block块文件。</p><h4 id="MapReduce"><a href="#MapReduce" class="headerlink" title="MapReduce"></a>MapReduce</h4><p>编程模型</p><h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，《云计算课程》</p><p>2，W3Cschool： <a href="https://www.w3cschool.cn/hadoop/fgr61jyf.html" target="_blank" rel="noopener">https://www.w3cschool.cn/hadoop/fgr61jyf.html</a></p>]]></content>
+    <content type="html"><![CDATA[<h3 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h3><h3 id="虚拟化技术"><a href="#虚拟化技术" class="headerlink" title="虚拟化技术"></a>虚拟化技术</h3><h3 id="Hadoop"><a href="#Hadoop" class="headerlink" title="Hadoop"></a>Hadoop</h3><p>hadoop是一个开源框架，允许使用简单的编程模型在跨计算机集群的分布式环境中存储和处理大数据。</p><h3 id="HDFS"><a href="#HDFS" class="headerlink" title="HDFS"></a>HDFS</h3><p>分布式文件系统，是一个高度容错性的系统（每个数据块都复制到多个节点），可以提供高吞吐量的数据访问（T级别，多个节点同时处理数据）。</p><p>文件分块存储，HDFS将一个完整的大文件平均分块存储到不同的计算器上，多主机读取比单主机读取效率更高。代码向数据迁移，尽量地将任务分配到离数据最近的机器上运行。</p><a id="more"></a><p>流式数据访问，一次写入多次读写，不支持动态改变文件内容。</p><p>适用情况：大规模数据，流式数据（写一次读多次），一般硬件</p><h4 id="关键元素"><a href="#关键元素" class="headerlink" title="关键元素"></a>关键元素</h4><p>Block：文件分块。配置大的块减少搜寻时间，减少管理块的数据开销，每个块都需要在NameNode上有对应的记录；对数据块进行读写减少建立网络的连接成本。每个块都会被复制到多台机器（可靠性）。</p><p>NameNode：保存整个文件系统的目录信息，文件信息及分块信息。</p><p>DataNode：分布在廉价的计算机上，用于存储Block块文件。</p><p>结构如图：</p><p><img src="/images/20200405hadoop_namenode.jpg" alt="20200405hadoop_namenode"></p><p>名称节点（NameNode） 主节点（Master），数据节点 （DataNode） 从节点（Slave）</p><p>名称节点负责文件和目录的创建、删除和重命名等，同时管理数据节点与文件块的映射关系；数据节点负责数据的存储和读取。</p><h3 id="MapReduce"><a href="#MapReduce" class="headerlink" title="MapReduce"></a>MapReduce</h3><p>编程模型</p><h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，《云计算课程》</p><p>2，W3Cschool： <a href="https://www.w3cschool.cn/hadoop/fgr61jyf.html" target="_blank" rel="noopener">https://www.w3cschool.cn/hadoop/fgr61jyf.html</a></p>]]></content>
     
     <summary type="html">
     
-      &lt;h3 id=&quot;基础&quot;&gt;&lt;a href=&quot;#基础&quot; class=&quot;headerlink&quot; title=&quot;基础&quot;&gt;&lt;/a&gt;基础&lt;/h3&gt;&lt;h3 id=&quot;虚拟化技术&quot;&gt;&lt;a href=&quot;#虚拟化技术&quot; class=&quot;headerlink&quot; title=&quot;虚拟化技术&quot;&gt;&lt;/a&gt;虚拟化技术&lt;/h3&gt;&lt;h3 id=&quot;Hadoop&quot;&gt;&lt;a href=&quot;#Hadoop&quot; class=&quot;headerlink&quot; title=&quot;Hadoop&quot;&gt;&lt;/a&gt;Hadoop&lt;/h3&gt;&lt;p&gt;hadoop是一个开源框架，允许使用简单的编程模型在跨计算机集群的分布式环境中存储和处理大数据。&lt;/p&gt;&lt;h4 id=&quot;HDFS&quot;&gt;&lt;a href=&quot;#HDFS&quot; class=&quot;headerlink&quot; title=&quot;HDFS&quot;&gt;&lt;/a&gt;HDFS&lt;/h4&gt;&lt;p&gt;分布式文件系统，是一个高度容错性的系统（每个数据块都复制到多个节点），可以提供高吞吐量的数据访问（T级别，多个节点同时处理数据）。&lt;/p&gt;&lt;p&gt;文件分块存储，HDFS将一个完整的大文件平均分块存储到不同的计算器上，多主机读取比单主机读取效率更高。代码向数据迁移，尽量地将任务分配到离数据最近的机器上运行。&lt;/p&gt;
+      &lt;h3 id=&quot;基础&quot;&gt;&lt;a href=&quot;#基础&quot; class=&quot;headerlink&quot; title=&quot;基础&quot;&gt;&lt;/a&gt;基础&lt;/h3&gt;&lt;h3 id=&quot;虚拟化技术&quot;&gt;&lt;a href=&quot;#虚拟化技术&quot; class=&quot;headerlink&quot; title=&quot;虚拟化技术&quot;&gt;&lt;/a&gt;虚拟化技术&lt;/h3&gt;&lt;h3 id=&quot;Hadoop&quot;&gt;&lt;a href=&quot;#Hadoop&quot; class=&quot;headerlink&quot; title=&quot;Hadoop&quot;&gt;&lt;/a&gt;Hadoop&lt;/h3&gt;&lt;p&gt;hadoop是一个开源框架，允许使用简单的编程模型在跨计算机集群的分布式环境中存储和处理大数据。&lt;/p&gt;&lt;h3 id=&quot;HDFS&quot;&gt;&lt;a href=&quot;#HDFS&quot; class=&quot;headerlink&quot; title=&quot;HDFS&quot;&gt;&lt;/a&gt;HDFS&lt;/h3&gt;&lt;p&gt;分布式文件系统，是一个高度容错性的系统（每个数据块都复制到多个节点），可以提供高吞吐量的数据访问（T级别，多个节点同时处理数据）。&lt;/p&gt;&lt;p&gt;文件分块存储，HDFS将一个完整的大文件平均分块存储到不同的计算器上，多主机读取比单主机读取效率更高。代码向数据迁移，尽量地将任务分配到离数据最近的机器上运行。&lt;/p&gt;
     
     </summary>
     
@@ -327,9 +327,9 @@
       <category term="AIOps" scheme="http://yoursite.com/categories/AIOps/"/>
     
     
-      <category term="异常检测" scheme="http://yoursite.com/tags/%E5%BC%82%E5%B8%B8%E6%A3%80%E6%B5%8B/"/>
-    
       <category term="机器学习" scheme="http://yoursite.com/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
+    
+      <category term="异常检测" scheme="http://yoursite.com/tags/%E5%BC%82%E5%B8%B8%E6%A3%80%E6%B5%8B/"/>
     
       <category term="AIOps" scheme="http://yoursite.com/tags/AIOps/"/>
     
