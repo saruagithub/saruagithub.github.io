@@ -207,6 +207,202 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/10/20191210Skyline%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="WangXue">
+      <meta itemprop="description" content="本科重庆大学CS，研究生南京大学MS，主要研究AIOps，机器学习等，语言Python&C++">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="WangXue">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/12/10/20191210Skyline%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" class="post-title-link" itemprop="url">20191210Skyline源码阅读</a>
+        </h1>
+
+        <div class="post-meta">
+	  
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-12-10 09:32:49" itemprop="dateCreated datePublished" datetime="2019-12-10T09:32:49+08:00">2019-12-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-12-31 18:33:24" itemprop="dateModified" datetime="2019-12-31T18:33:24+08:00">2019-12-31</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/AIOps/" itemprop="url" rel="index">
+                    <span itemprop="name">AIOps</span>
+                  </a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2019/12/10/20191210Skyline%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/12/10/20191210Skyline%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="1-基类结构"><a href="#1-基类结构" class="headerlink" title="1 基类结构"></a>1 基类结构</h3><p>首先看异常检测基类base.py，所有检测器都是由它继承而来：</p><p>1，init() ：初始化dataSet，probationaryPercent 数据的最初一部分数据不做测试。inputMin, inputMax初始化最大最小值。</p><p>2，initialize()：多进程问题。进程池pool（它默认调用的是CPU的核数）</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/12/10/20191210Skyline%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/11/26/20191126mac%E4%B8%8Ahexo%E7%9A%84mathjax%E9%85%8D%E7%BD%AE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="WangXue">
+      <meta itemprop="description" content="本科重庆大学CS，研究生南京大学MS，主要研究AIOps，机器学习等，语言Python&C++">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="WangXue">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/11/26/20191126mac%E4%B8%8Ahexo%E7%9A%84mathjax%E9%85%8D%E7%BD%AE/" class="post-title-link" itemprop="url">mac上hexo的mathjax配置</a>
+        </h1>
+
+        <div class="post-meta">
+	  
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-11-26 11:50:08" itemprop="dateCreated datePublished" datetime="2019-11-26T11:50:08+08:00">2019-11-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-12-10 09:46:28" itemprop="dateModified" datetime="2019-12-10T09:46:28+08:00">2019-12-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%85%8D%E7%BD%AE/" itemprop="url" rel="index">
+                    <span itemprop="name">配置</span>
+                  </a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2019/11/26/20191126mac%E4%B8%8Ahexo%E7%9A%84mathjax%E9%85%8D%E7%BD%AE/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/11/26/20191126mac%E4%B8%8Ahexo%E7%9A%84mathjax%E9%85%8D%E7%BD%AE/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>博文中要写公式是难免的，因为配置hexo支持数学公式是必要的。 Next 主题提供了两个渲染引擎，分别是 mathjax 和 katex，后者相对前者来说渲染速度更快，而且支持更丰富的公式。我这里hexo是4.0版本了，因此又折腾了下。</p><h6 id="1，更改next下的config"><a href="#1，更改next下的config" class="headerlink" title="1，更改next下的config"></a>1，更改next下的config</h6><p>配置next主题里的_config如下，只需要改一个地方就是mathjax的enable为true。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/11/26/20191126mac%E4%B8%8Ahexo%E7%9A%84mathjax%E9%85%8D%E7%BD%AE/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/11/25/20191125Numenta%E7%9A%84HTM%E7%AE%80%E4%BB%8B/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1067,202 +1263,6 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/27/20190327PCL%E5%9C%A8Mac%E4%B8%8A%E7%8E%AF%E5%A2%83%E9%97%AE%E9%A2%98/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="WangXue">
-      <meta itemprop="description" content="本科重庆大学CS，研究生南京大学MS，主要研究AIOps，机器学习等，语言Python&C++">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="WangXue">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/03/27/20190327PCL%E5%9C%A8Mac%E4%B8%8A%E7%8E%AF%E5%A2%83%E9%97%AE%E9%A2%98/" class="post-title-link" itemprop="url">PCL在Mac上环境问题</a>
-        </h1>
-
-        <div class="post-meta">
-	  
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-03-27 17:04:05" itemprop="dateCreated datePublished" datetime="2019-03-27T17:04:05+08:00">2019-03-27</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-01-16 17:05:18" itemprop="dateModified" datetime="2020-01-16T17:05:18+08:00">2020-01-16</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E9%85%8D%E7%BD%AE/" itemprop="url" rel="index">
-                    <span itemprop="name">配置</span>
-                  </a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2019/03/27/20190327PCL%E5%9C%A8Mac%E4%B8%8A%E7%8E%AF%E5%A2%83%E9%97%AE%E9%A2%98/#comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2019/03/27/20190327PCL%E5%9C%A8Mac%E4%B8%8A%E7%8E%AF%E5%A2%83%E9%97%AE%E9%A2%98/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="PCL库"><a href="#PCL库" class="headerlink" title="PCL库"></a>PCL库</h3><h6 id="1、安装过程参考官网，环境是Mac10-14-4，mojave"><a href="#1、安装过程参考官网，环境是Mac10-14-4，mojave" class="headerlink" title="1、安装过程参考官网，环境是Mac10.14.4，mojave"></a>1、安装过程参考官网，环境是Mac10.14.4，mojave</h6><p><a href="http://www.pointclouds.org/documentation/tutorials/installing_homebrew.php" target="_blank" rel="noopener">pcl install on Mac</a><br><code>brew install pcl</code> ，一直装就好了，我这里的版本是1.9.1_1</p><h6 id="2、使用xcode创建pcl工程"><a href="#2、使用xcode创建pcl工程" class="headerlink" title="2、使用xcode创建pcl工程"></a>2、使用xcode创建pcl工程</h6><p><a href="http://dragonwood-blastevil.blogspot.com/2013/02/install-pcl-and-first-project-in-xcode.html" target="_blank" rel="noopener">翻墙搜的pcl project in xcode</a><br>此处注意编译器的选择，Switch Compiler for C/C++/Objective-C from Apple LLVM compiler 4.2 -&gt; LLVM GCC 4.2，注意”Header Search Paths”的配置，链接里没有全部配置完全，项目要用到的库都应该加进去。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/03/27/20190327PCL%E5%9C%A8Mac%E4%B8%8A%E7%8E%AF%E5%A2%83%E9%97%AE%E9%A2%98/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/28/20200104EM%E7%AE%97%E6%B3%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="WangXue">
-      <meta itemprop="description" content="本科重庆大学CS，研究生南京大学MS，主要研究AIOps，机器学习等，语言Python&C++">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="WangXue">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/12/28/20200104EM%E7%AE%97%E6%B3%95/" class="post-title-link" itemprop="url">EM算法</a>
-        </h1>
-
-        <div class="post-meta">
-	  
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-12-28 10:02:19" itemprop="dateCreated datePublished" datetime="2018-12-28T10:02:19+08:00">2018-12-28</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-01-07 20:44:46" itemprop="dateModified" datetime="2020-01-07T20:44:46+08:00">2020-01-07</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index">
-                    <span itemprop="name">机器学习</span>
-                  </a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2018/12/28/20200104EM%E7%AE%97%E6%B3%95/#comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2018/12/28/20200104EM%E7%AE%97%E6%B3%95/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="1-简介"><a href="#1-简介" class="headerlink" title="1 简介"></a>1 简介</h3><p>EM算法是一种迭代算法，用于含有隐变量的概率模型参数的极大似然估计。 </p><p>E步：求期望；M步，求极大。 </p><h4 id="1-1-例子"><a href="#1-1-例子" class="headerlink" title="1.1 例子"></a>1.1 例子</h4><p>P176三硬币模型： </p><script type="math/tex; mode=display">p_{(y/\theta)}=\sum_{\mathcal{Z}} P(y, z | \theta)=\sum_{\mathcal{Z}} P(z | \theta) P(y | z, \theta)</script>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2018/12/28/20200104EM%E7%AE%97%E6%B3%95/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1313,20 +1313,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">57</span>
+          <span class="site-state-item-count">59</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-count">11</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-count">46</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
