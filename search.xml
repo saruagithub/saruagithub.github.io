@@ -20,7 +20,7 @@
 <p>然后对hadoop进行解压放到与jdk同一个目录中：</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">tar -zxvf hadoop-2.7.1.tar.gz -C /usr/local</span><br></pre></td></tr></table></figure>
 <p>配置hadoop全局环境变量并使其生效，在Java环境变量配置的下面:</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">export HADOOP_HOME=/usr/local/hadoop</span><br><span class="line">export PATH=$PATH:$JAVA_HOME/bin:$HADOOP_HOME/bin:$HADOOP_HOME/sbin:</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">HADOOP VARIABLES</span></span><br><span class="line">export HADOOP_HOME=/usr/local/hadoop-2.6.4</span><br><span class="line">export PATH=$PATH:$HADOOP_HOME/bin</span><br><span class="line">export PATH=$PATH:$HADOOP_HOME/sbin</span><br><span class="line">export HADOOP_MAPRED_HOME=$HADOOP_HOME</span><br><span class="line">export HADOOP_COMMON_HOME=$HADOOP_HOME</span><br><span class="line">export HADOOP_HDFS_HOME=$HADOOP_HOME</span><br><span class="line">export YARN_HOME=$HADOOP_HOME</span><br><span class="line">export HADOOP_COMMON_LIB_NATIVE_DIR=$HADOOP_HOME/lib/native</span><br><span class="line">export HADOOP_OPTS="-Djava.library.path=$HADOOP_HOME/lib"</span><br></pre></td></tr></table></figure>
 <p>编辑完后终端输入<strong>source /etc/profile</strong>使环境变量生效。</p>
 ]]></content>
       <categories>
@@ -597,8 +597,8 @@
         <category>AIOps</category>
       </categories>
       <tags>
-        <tag>异常检测</tag>
         <tag>机器学习</tag>
+        <tag>异常检测</tag>
         <tag>AIOps</tag>
       </tags>
   </entry>

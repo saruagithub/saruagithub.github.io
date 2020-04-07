@@ -56,7 +56,7 @@
 <meta property="og:description" content="SSH远程1，开启一个Ubuntu16的虚拟机。注意设置里换源，中国区的快些。然后进行更新 (sudo apt-get update ,  然后sudo apt-get upgrade)然后安装ssh（sudo apt-get install openssh-server）。然后我在本机mac这边用ssh远程登录ubuntu。将mac的ssh公钥发送给ubunt，（ssh-copy-id *@10">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;Users&#x2F;wangxue&#x2F;Desktop&#x2F;JavaJDK.png">
-<meta property="og:updated_time" content="2020-04-07T08:12:59.229Z">
+<meta property="og:updated_time" content="2020-04-07T08:24:15.874Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;Users&#x2F;wangxue&#x2F;Desktop&#x2F;JavaJDK.png">
 
@@ -242,7 +242,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-07 16:12:59" itemprop="dateModified" datetime="2020-04-07T16:12:59+08:00">2020-04-07</time>
+                <time title="修改时间：2020-04-07 16:24:15" itemprop="dateModified" datetime="2020-04-07T16:24:15+08:00">2020-04-07</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -305,7 +305,7 @@
 <p>然后对hadoop进行解压放到与jdk同一个目录中：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf hadoop-2.7.1.tar.gz -C /usr/local</span><br></pre></td></tr></table></figure>
 <p>配置hadoop全局环境变量并使其生效，在Java环境变量配置的下面:</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export HADOOP_HOME=/usr/local/hadoop</span><br><span class="line">export PATH=$PATH:$JAVA_HOME/bin:$HADOOP_HOME/bin:$HADOOP_HOME/sbin:</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">HADOOP VARIABLES</span></span><br><span class="line">export HADOOP_HOME=/usr/local/hadoop-2.6.4</span><br><span class="line">export PATH=$PATH:$HADOOP_HOME/bin</span><br><span class="line">export PATH=$PATH:$HADOOP_HOME/sbin</span><br><span class="line">export HADOOP_MAPRED_HOME=$HADOOP_HOME</span><br><span class="line">export HADOOP_COMMON_HOME=$HADOOP_HOME</span><br><span class="line">export HADOOP_HDFS_HOME=$HADOOP_HOME</span><br><span class="line">export YARN_HOME=$HADOOP_HOME</span><br><span class="line">export HADOOP_COMMON_LIB_NATIVE_DIR=$HADOOP_HOME/lib/native</span><br><span class="line">export HADOOP_OPTS="-Djava.library.path=$HADOOP_HOME/lib"</span><br></pre></td></tr></table></figure>
 <p>编辑完后终端输入<strong>source /etc/profile</strong>使环境变量生效。</p>
 
     </div>
