@@ -27,13 +27,15 @@
 <h4 id="映射配置"><a href="#映射配置" class="headerlink" title="映射配置"></a>映射配置</h4><p>使用 vim 进入到 “/etc/hostname” 的这个文件进行修改，我修改了为“wangxue-para”，同时修改“/etc/hosts”文件，在里面追加 IP 地址与 wangxue-para 主机的映射。</p>
 <p><img src="/Users/wangxue/Desktop/hostname.png" alt="hostname"></p>
 <h4 id="配置免秘钥登录"><a href="#配置免秘钥登录" class="headerlink" title="配置免秘钥登录"></a>配置免秘钥登录</h4><p>整个hadoop的处理过程之中，都是利用ssh实现通讯的，就算是在本机，也一样使用ssh进行通讯处理，因此需要在电脑上配置ssh免登录处理。</p>
+<p>在本主机上生成一个ssh key：使用<strong>sudo apt-get openssh-server</strong>安装openssh-server后，然后使用<strong>ssh-keygen -t rsa -P “”</strong>生成.ssh文件</p>
+<p>保存公钥：这个时候的程序如果要想进行登录依然需要密码。需要将公钥信息保存在授权认证的文件之中 ： “authorized_key”文件里面。</p>
 ]]></content>
       <categories>
         <category>配置</category>
       </categories>
       <tags>
-        <tag>配置</tag>
         <tag>大数据</tag>
+        <tag>配置</tag>
         <tag>hadoop</tag>
       </tags>
   </entry>
@@ -602,9 +604,9 @@
         <category>AIOps</category>
       </categories>
       <tags>
+        <tag>异常检测</tag>
         <tag>机器学习</tag>
         <tag>AIOps</tag>
-        <tag>异常检测</tag>
       </tags>
   </entry>
   <entry>
@@ -1386,8 +1388,8 @@
         <category>深度学习</category>
       </categories>
       <tags>
-        <tag>深度学习</tag>
         <tag>机器学习</tag>
+        <tag>深度学习</tag>
       </tags>
   </entry>
   <entry>
@@ -2018,8 +2020,8 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
         <category>AIOps</category>
       </categories>
       <tags>
-        <tag>AIOps</tag>
         <tag>时间序列</tag>
+        <tag>AIOps</tag>
       </tags>
   </entry>
   <entry>
@@ -2084,8 +2086,8 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
         <category>AIOps</category>
       </categories>
       <tags>
-        <tag>AIOps</tag>
         <tag>异常检测</tag>
+        <tag>AIOps</tag>
       </tags>
   </entry>
   <entry>
