@@ -55,11 +55,12 @@
 <meta property="og:site_name" content="WangXue">
 <meta property="og:description" content="SSH远程1，开启一个Ubuntu16的虚拟机。注意设置里换源，中国区的快些。然后进行更新 (sudo apt-get update ,  然后sudo apt-get upgrade)然后安装ssh（sudo apt-get install openssh-server）。然后我在本机mac这边用ssh远程登录ubuntu。将mac的ssh公钥发送给ubunt，（ssh-copy-id *@10">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;Users&#x2F;wangxue&#x2F;Desktop&#x2F;JavaJDK.png">
-<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;Users&#x2F;wangxue&#x2F;Desktop&#x2F;hostname.png">
-<meta property="og:updated_time" content="2020-04-07T09:26:13.657Z">
+<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200407JavaJDK.jpg">
+<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200407hadoop-hostname.jpg">
+<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200407single_wordcount.jpg">
+<meta property="og:updated_time" content="2020-04-07T09:40:41.850Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;Users&#x2F;wangxue&#x2F;Desktop&#x2F;JavaJDK.png">
+<meta name="twitter:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200407JavaJDK.jpg">
 
 <link rel="canonical" href="http://yoursite.com/2020/04/06/20200406hadoop%E9%85%8D%E7%BD%AE/">
 
@@ -243,7 +244,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-07 17:26:13" itemprop="dateModified" datetime="2020-04-07T17:26:13+08:00">2020-04-07</time>
+                <time title="修改时间：2020-04-07 17:40:41" itemprop="dateModified" datetime="2020-04-07T17:40:41+08:00">2020-04-07</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -296,7 +297,7 @@
 
 <h3 id="下载资源"><a href="#下载资源" class="headerlink" title="下载资源"></a>下载资源</h3><h4 id="Java环境"><a href="#Java环境" class="headerlink" title="Java环境"></a>Java环境</h4><p>在 Linux 中下载java JDK，下载的Linux X64的1.7版本的jdk-7u80</p>
 <p><a href="https://www.oracle.com/java/technologies/javase/javase7-archive-downloads.html#jdk-7u80-oth-JPR" target="_blank" rel="noopener">https://www.oracle.com/java/technologies/javase/javase7-archive-downloads.html#jdk-7u80-oth-JPR</a></p>
-<p><img src="/Users/wangxue/Desktop/JavaJDK.png" alt="JavaJDK"></p>
+<p><img src="/images/20200407JavaJDK.jpg" alt="20200407JavaJDK"></p>
 <p>我远程scp传到ubuntu的时候提醒connection refused，这个是因为我mac的setting里的sharing的remote login没有开启，这里得开启一下。</p>
 <p>接着配置Java环境变量，配置在/etc/profile中，作为<strong>全局系统变量</strong>，使用<strong>sudo vi /etc/profile</strong>进行环境变量编辑，</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 添加并保存</span></span><br><span class="line">export JAVA_HOME=/usr/local/java/jdk1.7.0_80  #注意此处jdk目录与你解压目录相同</span><br><span class="line">export JRE_HOME=$JAVA_HOME/jre</span><br><span class="line">export CLASSPATH=.:$JAVA_HOME/lib:$JRE_HOME/lib</span><br><span class="line">export PATH=$JAVA_HOME/bin:$PATH</span><br></pre></td></tr></table></figure>
@@ -311,7 +312,7 @@
 <p>另外这里注意配置hadoop-env.sh文件的$JAVA_HOME，接着用<strong>sudo gedit hadoop-env.sh</strong>配置jdk绝对路径：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export JAVA_HOME=/usr/local/java/jdk1.7.0_80  #注意此处jdk目录与你解压目录相同</span><br></pre></td></tr></table></figure>
 <h3 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h3><h4 id="映射配置"><a href="#映射配置" class="headerlink" title="映射配置"></a>映射配置</h4><p>使用 vim 进入到 “/etc/hostname” 的这个文件进行修改，我修改了为“wangxue-para”，同时修改“/etc/hosts”文件，在里面追加 IP 地址与 wangxue-para 主机的映射。</p>
-<p><img src="/Users/wangxue/Desktop/hostname.png" alt="hostname"></p>
+<p><img src="/images/20200407hadoop-hostname.jpg" alt="20200407hadoop-hostname"></p>
 <h4 id="配置免秘钥登录"><a href="#配置免秘钥登录" class="headerlink" title="配置免秘钥登录"></a>配置免秘钥登录</h4><p>整个hadoop的处理过程之中，都是利用ssh实现通讯的，就算是在本机，也一样使用ssh进行通讯处理，因此需要在电脑上配置ssh免登录处理。</p>
 <p>在本主机上生成一个ssh key：使用<strong>sudo apt-get openssh-server</strong>安装openssh-server后，然后使用<strong>ssh-keygen -t rsa -P “”</strong>生成.ssh文件</p>
 <p>保存公钥：这个时候的程序如果要想进行登录依然需要密码。需要将公钥信息保存在授权认证的文件之中 ： “authorized_key”文件里面。最后使用<strong>ssh localhost</strong>验证免密钥是否配置成功。</p>
@@ -323,13 +324,16 @@
 </ul>
 <p>hadoop支持三种启动模式：</p>
 <ul>
-<li>Local (Standalone) Mode - 本地模式</li>
+<li>Local (Standalone) Mode - 单机模式</li>
 <li>Pseudo-Distributed Mode - 伪分布式</li>
 <li>Fully-Distributed Mode - 全分布式</li>
 </ul>
 <h4 id="wordcount单机测试"><a href="#wordcount单机测试" class="headerlink" title="wordcount单机测试"></a>wordcount单机测试</h4><p>在单机模式下，读取的是本地数据，这里采用的是单机模式。</p>
 <p>进入你的/hadoop目录我的是“~/app/hadoop2.6”，使用<strong>mkdir input</strong>创建一个input文件夹。随便在input目录下创建一个txt文本，准备统计文本的单词个数。</p>
-<p>使用<strong>bin/hadoop jar share/hadoop/mapreduce/sources/hadoop-mapreduce-examples-2.7.3-sources.jar org.apache.hadoop.examples.WordCount input output</strong>进行对单词的计数测试，然后再使用<strong>cat output/*</strong>查看计数的结果</p>
+<p>执行hadoop的统计命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hadoop jar share/hadoop/mapreduce/sources/hadoop-mapreduce-examples-2.6.0-cdh5.7.0-sources.jar org.apache.hadoop.examples.WordCount input output</span><br></pre></td></tr></table></figure>
+<p>进行对单词的计数测试，然后再使用<strong>cat output/*</strong>查看计数的结果。</p>
+<p><img src="/images/20200407single_wordcount.jpg" alt="20200407single_wordcount"></p>
 <h4 id="伪分布式"><a href="#伪分布式" class="headerlink" title="伪分布式"></a>伪分布式</h4><p>伪分布式读取的则是 HDFS 上的数据；要使用 HDFS，首先需要在 HDFS 中创建用户目录。</p>
 <h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，部分参考 <a href="http://blog.sanyuehua.net/2017/10/30/Hadoop-Pseudo-distributed/" target="_blank" rel="noopener">http://blog.sanyuehua.net/2017/10/30/Hadoop-Pseudo-distributed/</a></p>
 <p><a href="https://blog.sanyuehua.net/2017/10/27/Hadoop-SetUp/" target="_blank" rel="noopener">https://blog.sanyuehua.net/2017/10/27/Hadoop-SetUp/</a></p>
