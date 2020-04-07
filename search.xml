@@ -22,13 +22,18 @@
 <p>配置hadoop全局环境变量并使其生效，在Java环境变量配置的下面:</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">HADOOP VARIABLES</span></span><br><span class="line">export HADOOP_HOME=/usr/local/hadoop-2.6.4</span><br><span class="line">export PATH=$PATH:$HADOOP_HOME/bin</span><br><span class="line">export PATH=$PATH:$HADOOP_HOME/sbin</span><br><span class="line">export HADOOP_MAPRED_HOME=$HADOOP_HOME</span><br><span class="line">export HADOOP_COMMON_HOME=$HADOOP_HOME</span><br><span class="line">export HADOOP_HDFS_HOME=$HADOOP_HOME</span><br><span class="line">export YARN_HOME=$HADOOP_HOME</span><br><span class="line">export HADOOP_COMMON_LIB_NATIVE_DIR=$HADOOP_HOME/lib/native</span><br><span class="line">export HADOOP_OPTS="-Djava.library.path=$HADOOP_HOME/lib"</span><br></pre></td></tr></table></figure>
 <p>编辑完后终端输入<strong>source /etc/profile</strong>使环境变量生效。</p>
+<p>另外这里注意配置hadoop-env.sh文件的$JAVA_HOME，接着用<strong>sudo gedit hadoop-env.sh</strong>配置jdk绝对路径：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">export JAVA_HOME=/usr/local/java/jdk1.7.0_80  #注意此处jdk目录与你解压目录相同</span><br></pre></td></tr></table></figure>
+<h4 id="映射配置"><a href="#映射配置" class="headerlink" title="映射配置"></a>映射配置</h4><p>使用 vim 进入到 “/etc/hostname” 的这个文件进行修改，我修改了为“wangxue-para”，同时修改“/etc/hosts”文件，在里面追加 IP 地址与 wangxue-para 主机的映射。</p>
+<p><img src="/Users/wangxue/Desktop/hostname.png" alt="hostname"></p>
+<h4 id="配置免秘钥登录"><a href="#配置免秘钥登录" class="headerlink" title="配置免秘钥登录"></a>配置免秘钥登录</h4><p>整个hadoop的处理过程之中，都是利用ssh实现通讯的，就算是在本机，也一样使用ssh进行通讯处理，因此需要在电脑上配置ssh免登录处理。</p>
 ]]></content>
       <categories>
         <category>配置</category>
       </categories>
       <tags>
-        <tag>大数据</tag>
         <tag>配置</tag>
+        <tag>大数据</tag>
         <tag>hadoop</tag>
       </tags>
   </entry>
@@ -598,8 +603,8 @@
       </categories>
       <tags>
         <tag>机器学习</tag>
-        <tag>异常检测</tag>
         <tag>AIOps</tag>
+        <tag>异常检测</tag>
       </tags>
   </entry>
   <entry>
@@ -1381,8 +1386,8 @@
         <category>深度学习</category>
       </categories>
       <tags>
-        <tag>机器学习</tag>
         <tag>深度学习</tag>
+        <tag>机器学习</tag>
       </tags>
   </entry>
   <entry>
@@ -2013,8 +2018,8 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
         <category>AIOps</category>
       </categories>
       <tags>
-        <tag>时间序列</tag>
         <tag>AIOps</tag>
+        <tag>时间序列</tag>
       </tags>
   </entry>
   <entry>
@@ -2079,8 +2084,8 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
         <category>AIOps</category>
       </categories>
       <tags>
-        <tag>异常检测</tag>
         <tag>AIOps</tag>
+        <tag>异常检测</tag>
       </tags>
   </entry>
   <entry>
