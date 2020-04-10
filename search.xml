@@ -72,6 +72,8 @@
 <p><img src="/images/20200410jsp.jpg" alt="20200410jsp"></p>
 <p>可以打开firefox浏览器，输入网址 <a href="http://localhost:50070，查看NameNode和DataNode相关信息。" target="_blank" rel="noopener">http://localhost:50070，查看NameNode和DataNode相关信息。</a></p>
 <p><img src="/images/20200410web_hdfs.jpg" alt="20200410web_hdfs"></p>
+<p>检查配置是否成功，运行WordCount例子。创建输出文件夹，将txt文本文件放入input下，然后执行wordcount进行统计，最后cat展示output的结果。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">bin/hadoop fs -mkdir -p input</span><br><span class="line"></span><br><span class="line">bin/hadoop fs -copyFromLocal README.txt input</span><br><span class="line"></span><br><span class="line">bin/hadoop jar share/hadoop/mapreduce/sources/hadoop-mapreduce-examples-2.7.3-sources.jar org.apache.hadoop.examples.WordCount input output</span><br><span class="line"></span><br><span class="line">bin/hadoop fs -cat output/*</span><br></pre></td></tr></table></figure>
 <h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，部分参考 <a href="http://blog.sanyuehua.net/2017/10/30/Hadoop-Pseudo-distributed/" target="_blank" rel="noopener">http://blog.sanyuehua.net/2017/10/30/Hadoop-Pseudo-distributed/</a></p>
 <p><a href="https://blog.sanyuehua.net/2017/10/27/Hadoop-SetUp/" target="_blank" rel="noopener">https://blog.sanyuehua.net/2017/10/27/Hadoop-SetUp/</a></p>
 <p>2，<a href="https://zhengbao.wang/Centos7搭建Hadoop伪分布式集群详细步骤/" target="_blank" rel="noopener">https://zhengbao.wang/Centos7%E6%90%AD%E5%BB%BAHadoop%E4%BC%AA%E5%88%86%E5%B8%83%E5%BC%8F%E9%9B%86%E7%BE%A4%E8%AF%A6%E7%BB%86%E6%AD%A5%E9%AA%A4/</a></p>
