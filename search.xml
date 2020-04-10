@@ -64,7 +64,7 @@
 <h5 id="yarn-site-xml"><a href="#yarn-site-xml" class="headerlink" title="yarn-site.xml"></a>yarn-site.xml</h5><p>暂时简单的理解为配置相关的job的处理，配置YARN</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line">    &lt;property&gt; </span><br><span class="line">        &lt;name&gt;yarn.nodemanager.aux-services&lt;/name&gt; </span><br><span class="line">        &lt;value&gt;mapreduce_shuffle&lt;/value&gt; </span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;yarn.nodemanager.aux-services.mapreduce.shuffle.class&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;org.apache.hadoop.mapred.ShuffleHandler&lt;/value&gt;</span><br><span class="line">		&lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
 <p>最后执行<strong>hdfs namenode –format</strong>命令来格式化hdfs。</p>
-<p><img src="/source/images/20200410hdfs_format.jpg" alt="20200410hdfs_format"></p>
+<p><img src="/images/20200410hdfs_format.jpg" alt="20200410hdfs_format"></p>
 <p>然后依次执行hdfs的命令</p>
 <p><strong>sbin/start-dfs.sh，sbin/start-yarn.sh</strong>来启动hadoop。</p>
 <p><img src="/images/20200410start_hdfs.jpg" alt="20200410start_hdfs"></p>
