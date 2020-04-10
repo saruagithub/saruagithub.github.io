@@ -49,15 +49,20 @@
 <p><img src="/images/20200407single_wordcount.jpg" alt="20200407single_wordcount"></p>
 <h4 id="伪分布式"><a href="#伪分布式" class="headerlink" title="伪分布式"></a>伪分布式</h4><p>伪分布式读取的则是 HDFS 上的数据；要使用 HDFS，首先需要在 HDFS 中创建用户目录。</p>
 <p>伪分布式里要修改hadoop的几个重要的文件。先做简单的介绍：</p>
-<p>core-site.xml：配置公共属性，确定Hadoop的核心的信息，包括临时目录，访问地址。我们用gedit编辑它。</p>
+<h5 id="core-site-xml"><a href="#core-site-xml" class="headerlink" title="core-site.xml"></a>core-site.xml</h5><p>配置公共属性，确定Hadoop的核心的信息，包括临时目录，访问地址。我们用gedit编辑它。</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd hadoop/etc/hadoop/</span><br><span class="line">vim core-site.xml</span><br></pre></td></tr></table></figure>
 <p>在configuration中添加配置property：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;hadoop.tmp.dir&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;file:/home/wangxue/app/hadoop-2.6/tmp&lt;/value&gt;</span><br><span class="line">        &lt;description&gt;location to store temporary files&lt;/description&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;fs.defaultFS&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;hdfs://localhost:9000&lt;/value&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
-<p>这个文件路径配置的是临时文件的信息，不配置就会在hadoop的文件夹里面生成“tmp”文件(“/home/wangxue/app/hadoop-2.6/tmp”)，如果这样配置，一但重新启动，所有的配置就会被清空，您的Hadoop环境就失效了。</p>
-<p>yarn-site.xml：暂时简单的理解为配置相关的job的处理，配置YARN</p>
-<p>hdfs-site.xml：可以确定文件的备份个数以及数据文件夹的路径，配置HDFS：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;dfs.replication&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;1&lt;/value&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;dfs.namenode.name.dir&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;file:/home/wangxue/app/hadoop-2.6/hdfs/name&lt;/value&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;dfs.datanode.data.dir&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;file:/usr/local/hadoop/tmp/dfs/data&lt;/value&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
-<p>mapred-site.xml 配置MapReduce</p>
+<p>这个文件路径配置的是临时文件的地址，不配置就会在hadoop的文件夹里面生成“tmp”文件(“/home/wangxue/app/hadoop-2.6/tmp”)，如果这样配置，一但重新启动，所有的配置就会被清空，您的Hadoop环境就失效了。</p>
+<h5 id="hdfs-site-xml"><a href="#hdfs-site-xml" class="headerlink" title="hdfs-site.xml"></a>hdfs-site.xml</h5><p>可以确定文件的备份个数以及数据文件夹的路径，配置HDFS：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;dfs.replication&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;1&lt;/value&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;dfs.namenode.name.dir&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;file:/home/wangxue/app/hadoop-2.6/hdfs/name&lt;/value&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;dfs.datanode.data.dir&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;file:/home/wangxue/app/hadoop-2.6/hdfs/data&lt;/value&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
+<p>HDFS文件存储的副本个数，默认3。因为我们这只有一个节点，所以设置1.</p>
+<h5 id="mapred-site-xml"><a href="#mapred-site-xml" class="headerlink" title="mapred-site.xml"></a>mapred-site.xml</h5><p>配置MapReduce</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;mapreduce.framework.name&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;yarn&lt;/value&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
+<p>采用yarn管理MR，还可以配置：</p>
+<p>apreduce.jobhistory.address 历史服务器端口地址mapreduce.jobhistory.webapp.address 历史服务器web端地址</p>
+<h5 id="yarn-site-xml"><a href="#yarn-site-xml" class="headerlink" title="yarn-site.xml"></a>yarn-site.xml</h5><p>暂时简单的理解为配置相关的job的处理，配置YARN</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line">    &lt;property&gt; </span><br><span class="line">        &lt;name&gt;yarn.nodemanager.aux-services&lt;/name&gt; </span><br><span class="line">        &lt;value&gt;mapreduce_shuffle&lt;/value&gt; </span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
 <h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，部分参考 <a href="http://blog.sanyuehua.net/2017/10/30/Hadoop-Pseudo-distributed/" target="_blank" rel="noopener">http://blog.sanyuehua.net/2017/10/30/Hadoop-Pseudo-distributed/</a></p>
 <p><a href="https://blog.sanyuehua.net/2017/10/27/Hadoop-SetUp/" target="_blank" rel="noopener">https://blog.sanyuehua.net/2017/10/27/Hadoop-SetUp/</a></p>
 <p>2，<a href="https://zhengbao.wang/Centos7搭建Hadoop伪分布式集群详细步骤/" target="_blank" rel="noopener">https://zhengbao.wang/Centos7%E6%90%AD%E5%BB%BAHadoop%E4%BC%AA%E5%88%86%E5%B8%83%E5%BC%8F%E9%9B%86%E7%BE%A4%E8%AF%A6%E7%BB%86%E6%AD%A5%E9%AA%A4/</a></p>
@@ -67,8 +72,8 @@
         <category>配置</category>
       </categories>
       <tags>
-        <tag>配置</tag>
         <tag>大数据</tag>
+        <tag>配置</tag>
         <tag>hadoop</tag>
       </tags>
   </entry>
@@ -637,9 +642,9 @@
         <category>AIOps</category>
       </categories>
       <tags>
-        <tag>AIOps</tag>
         <tag>异常检测</tag>
         <tag>机器学习</tag>
+        <tag>AIOps</tag>
       </tags>
   </entry>
   <entry>
@@ -878,8 +883,8 @@
         <category>统计学</category>
       </categories>
       <tags>
-        <tag>AIOps</tag>
         <tag>机器学习</tag>
+        <tag>AIOps</tag>
         <tag>统计学</tag>
       </tags>
   </entry>
@@ -1424,8 +1429,8 @@
         <category>深度学习</category>
       </categories>
       <tags>
-        <tag>深度学习</tag>
         <tag>机器学习</tag>
+        <tag>深度学习</tag>
       </tags>
   </entry>
   <entry>
@@ -1569,8 +1574,8 @@
         <category>AIOps</category>
       </categories>
       <tags>
-        <tag>AIOps</tag>
         <tag>机器学习</tag>
+        <tag>AIOps</tag>
       </tags>
   </entry>
   <entry>
@@ -2056,8 +2061,8 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
         <category>AIOps</category>
       </categories>
       <tags>
-        <tag>AIOps</tag>
         <tag>时间序列</tag>
+        <tag>AIOps</tag>
       </tags>
   </entry>
   <entry>
@@ -2122,8 +2127,8 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
         <category>AIOps</category>
       </categories>
       <tags>
-        <tag>AIOps</tag>
         <tag>异常检测</tag>
+        <tag>AIOps</tag>
       </tags>
   </entry>
   <entry>
