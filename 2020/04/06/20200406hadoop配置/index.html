@@ -58,11 +58,11 @@
 <meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200407JavaJDK.jpg">
 <meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200407hadoop-hostname.jpg">
 <meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200407single_wordcount.jpg">
-<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;Users&#x2F;wangxue&#x2F;Desktop&#x2F;Screen%20Shot%202020-04-10%20at%205.09.34%20PM.png">
-<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;Users&#x2F;wangxue&#x2F;Desktop&#x2F;Screen%20Shot%202020-04-10%20at%205.12.57%20PM.png">
-<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;Users&#x2F;wangxue&#x2F;Desktop&#x2F;Screen%20Shot%202020-04-10%20at%205.13.11%20PM.png">
-<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;Users&#x2F;wangxue&#x2F;Desktop&#x2F;Screen%20Shot%202020-04-10%20at%205.14.21%20PM.png">
-<meta property="og:updated_time" content="2020-04-10T09:16:33.606Z">
+<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;source&#x2F;images&#x2F;20200410hdfs_format.jpg">
+<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200410start_hdfs.jpg">
+<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200410jsp.jpg">
+<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200410web_hdfs.jpg">
+<meta property="og:updated_time" content="2020-04-10T10:38:46.012Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200407JavaJDK.jpg">
 
@@ -248,7 +248,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-10 17:16:33" itemprop="dateModified" datetime="2020-04-10T17:16:33+08:00">2020-04-10</time>
+                <time title="修改时间：2020-04-10 18:38:46" itemprop="dateModified" datetime="2020-04-10T18:38:46+08:00">2020-04-10</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -355,14 +355,14 @@
 <h5 id="yarn-site-xml"><a href="#yarn-site-xml" class="headerlink" title="yarn-site.xml"></a>yarn-site.xml</h5><p>暂时简单的理解为配置相关的job的处理，配置YARN</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line">    &lt;property&gt; </span><br><span class="line">        &lt;name&gt;yarn.nodemanager.aux-services&lt;/name&gt; </span><br><span class="line">        &lt;value&gt;mapreduce_shuffle&lt;/value&gt; </span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;yarn.nodemanager.aux-services.mapreduce.shuffle.class&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;org.apache.hadoop.mapred.ShuffleHandler&lt;/value&gt;</span><br><span class="line">		&lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
 <p>最后执行<strong>hdfs namenode –format</strong>命令来格式化hdfs。</p>
-<p><img src="/Users/wangxue/Desktop/Screen Shot 2020-04-10 at 5.09.34 PM.png" alt="Screen Shot 2020-04-10 at 5.09.34 PM"></p>
+<p><img src="/source/images/20200410hdfs_format.jpg" alt="20200410hdfs_format"></p>
 <p>然后依次执行hdfs的命令</p>
 <p><strong>sbin/start-dfs.sh，sbin/start-yarn.sh</strong>来启动hadoop。</p>
-<p><img src="/Users/wangxue/Desktop/Screen Shot 2020-04-10 at 5.12.57 PM.png" alt="Screen Shot 2020-04-10 at 5.12.57 PM"></p>
+<p><img src="/images/20200410start_hdfs.jpg" alt="20200410start_hdfs"></p>
 <p>在终端输入<strong>jps</strong>发现相应的NameNode、DataNode等java进程已经在运行了。</p>
-<p><img src="/Users/wangxue/Desktop/Screen Shot 2020-04-10 at 5.13.11 PM.png" alt="Screen Shot 2020-04-10 at 5.13.11 PM"></p>
+<p><img src="/images/20200410jsp.jpg" alt="20200410jsp"></p>
 <p>可以打开firefox浏览器，输入网址 <a href="http://localhost:50070，查看NameNode和DataNode相关信息。" target="_blank" rel="noopener">http://localhost:50070，查看NameNode和DataNode相关信息。</a></p>
-<p><img src="/Users/wangxue/Desktop/Screen Shot 2020-04-10 at 5.14.21 PM.png" alt="Screen Shot 2020-04-10 at 5.14.21 PM"></p>
+<p><img src="/images/20200410web_hdfs.jpg" alt="20200410web_hdfs"></p>
 <h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，部分参考 <a href="http://blog.sanyuehua.net/2017/10/30/Hadoop-Pseudo-distributed/" target="_blank" rel="noopener">http://blog.sanyuehua.net/2017/10/30/Hadoop-Pseudo-distributed/</a></p>
 <p><a href="https://blog.sanyuehua.net/2017/10/27/Hadoop-SetUp/" target="_blank" rel="noopener">https://blog.sanyuehua.net/2017/10/27/Hadoop-SetUp/</a></p>
 <p>2，<a href="https://zhengbao.wang/Centos7搭建Hadoop伪分布式集群详细步骤/" target="_blank" rel="noopener">https://zhengbao.wang/Centos7%E6%90%AD%E5%BB%BAHadoop%E4%BC%AA%E5%88%86%E5%B8%83%E5%BC%8F%E9%9B%86%E7%BE%A4%E8%AF%A6%E7%BB%86%E6%AD%A5%E9%AA%A4/</a></p>
