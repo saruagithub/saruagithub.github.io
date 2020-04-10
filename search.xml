@@ -3,11 +3,11 @@
   <entry>
     <title>hadoop配置</title>
     <url>/2020/04/06/20200406hadoop%E9%85%8D%E7%BD%AE/</url>
-    <content><![CDATA[<h3 id="SSH远程"><a href="#SSH远程" class="headerlink" title="SSH远程"></a>SSH远程</h3><p>1，开启一个Ubuntu16的虚拟机。</p><p>注意设置里换源，中国区的快些。</p><p>然后进行更新 (sudo apt-get update ,  然后sudo apt-get upgrade)</p><p>然后安装ssh（sudo apt-get install openssh-server）。</p><p>然后我在本机mac这边用ssh远程登录ubuntu。将mac的ssh公钥发送给ubunt，（ssh-copy-id <em>*</em>@10.211.55…IP），以后就可以直接ssh user@IP登录ubuntu了。</p><a id="more"></a>
+    <content><![CDATA[<h3 id="SSH远程"><a href="#SSH远程" class="headerlink" title="SSH远程"></a>SSH远程</h3><p>1，在mac上用parallels desktop开启一个Ubuntu16的虚拟机。</p><p>注意设置里换源，中国区的快些。</p><p>然后进行更新 (sudo apt-get update ,  然后sudo apt-get upgrade)</p><p>然后安装ssh（sudo apt-get install openssh-server）。</p><a id="more"></a>
 
 
 
-
+<p>然后我在本机mac这边用ssh远程登录ubuntu。将mac的ssh公钥发送给ubunt，（ssh-copy-id <em>*</em>@10.211.55…IP），以后就可以直接ssh user@IP登录ubuntu了。</p>
 <h3 id="下载资源"><a href="#下载资源" class="headerlink" title="下载资源"></a>下载资源</h3><h4 id="Java环境"><a href="#Java环境" class="headerlink" title="Java环境"></a>Java环境</h4><p>在 Linux 中下载java JDK，下载的Linux X64的1.7版本的jdk-7u80</p>
 <p><a href="https://www.oracle.com/java/technologies/javase/javase7-archive-downloads.html#jdk-7u80-oth-JPR" target="_blank" rel="noopener">https://www.oracle.com/java/technologies/javase/javase7-archive-downloads.html#jdk-7u80-oth-JPR</a></p>
 <p><img src="/images/20200407JavaJDK.jpg" alt="20200407JavaJDK"></p>
@@ -48,6 +48,16 @@
 <p>进行对单词的计数测试，然后再使用<strong>cat output/*</strong>查看计数的结果。</p>
 <p><img src="/images/20200407single_wordcount.jpg" alt="20200407single_wordcount"></p>
 <h4 id="伪分布式"><a href="#伪分布式" class="headerlink" title="伪分布式"></a>伪分布式</h4><p>伪分布式读取的则是 HDFS 上的数据；要使用 HDFS，首先需要在 HDFS 中创建用户目录。</p>
+<p>伪分布式里要修改hadoop的几个重要的文件。先做简单的介绍：</p>
+<p>core-site.xml：配置公共属性，确定Hadoop的核心的信息，包括临时目录，访问地址。我们用gedit编辑它。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd hadoop/etc/hadoop/</span><br><span class="line">vim core-site.xml</span><br></pre></td></tr></table></figure>
+<p>在configuration中添加配置property：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;hadoop.tmp.dir&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;file:/home/wangxue/app/hadoop-2.6/tmp&lt;/value&gt;</span><br><span class="line">        &lt;description&gt;location to store temporary files&lt;/description&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;fs.defaultFS&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;hdfs://localhost:9000&lt;/value&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
+<p>这个文件路径配置的是临时文件的信息，不配置就会在hadoop的文件夹里面生成“tmp”文件(“/home/wangxue/app/hadoop-2.6/tmp”)，如果这样配置，一但重新启动，所有的配置就会被清空，您的Hadoop环境就失效了。</p>
+<p>yarn-site.xml：暂时简单的理解为配置相关的job的处理，配置YARN</p>
+<p>hdfs-site.xml：可以确定文件的备份个数以及数据文件夹的路径，配置HDFS：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;dfs.replication&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;1&lt;/value&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;dfs.namenode.name.dir&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;file:/home/wangxue/app/hadoop-2.6/hdfs/name&lt;/value&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;dfs.datanode.data.dir&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;file:/usr/local/hadoop/tmp/dfs/data&lt;/value&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
+<p>mapred-site.xml 配置MapReduce</p>
 <h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，部分参考 <a href="http://blog.sanyuehua.net/2017/10/30/Hadoop-Pseudo-distributed/" target="_blank" rel="noopener">http://blog.sanyuehua.net/2017/10/30/Hadoop-Pseudo-distributed/</a></p>
 <p><a href="https://blog.sanyuehua.net/2017/10/27/Hadoop-SetUp/" target="_blank" rel="noopener">https://blog.sanyuehua.net/2017/10/27/Hadoop-SetUp/</a></p>
 <p>2，<a href="https://zhengbao.wang/Centos7搭建Hadoop伪分布式集群详细步骤/" target="_blank" rel="noopener">https://zhengbao.wang/Centos7%E6%90%AD%E5%BB%BAHadoop%E4%BC%AA%E5%88%86%E5%B8%83%E5%BC%8F%E9%9B%86%E7%BE%A4%E8%AF%A6%E7%BB%86%E6%AD%A5%E9%AA%A4/</a></p>
@@ -57,8 +67,8 @@
         <category>配置</category>
       </categories>
       <tags>
-        <tag>大数据</tag>
         <tag>配置</tag>
+        <tag>大数据</tag>
         <tag>hadoop</tag>
       </tags>
   </entry>
@@ -627,9 +637,9 @@
         <category>AIOps</category>
       </categories>
       <tags>
+        <tag>AIOps</tag>
         <tag>异常检测</tag>
         <tag>机器学习</tag>
-        <tag>AIOps</tag>
       </tags>
   </entry>
   <entry>
@@ -685,14 +695,17 @@
       </tags>
   </entry>
   <entry>
-    <title>技术思考（常更）</title>
+    <title>一些思考</title>
     <url>/2020/02/07/00000000%E6%8A%80%E6%9C%AF%E6%80%9D%E8%80%83%EF%BC%88%E5%B8%B8%E6%9B%B4%EF%BC%89/</url>
-    <content><![CDATA[<p>2020-02-07</p><p>0，计算机科学。计算机可以是一个计算工具，代码只是为了实现一个计算。计算机本身也是一个机器设计的科学，里面有许多的机制与策略，为了让机器更快更有效率，更稳定，更易用，更易于扩展，更简洁易懂，更开放等等，这些是一种设计的科学和精神。</p><p>1，其实机器学习目前来看绝大多数基于概率统计，比如说贝叶斯分类，根据数据类别的分布去推测出新数据更可能属于哪个类别。深度学习则更多的时候是拟合非线性函数，在数学上看都是模型，建模建模是要根据实际问题和实际数据情况来的，所以才有了奥卡姆剃刀规则。其实我觉得底层其实是数学，看了越多论文越觉得一切皆数学，包括目前跨院接触的运筹经管。</p><a id="more"></a>
+    <content><![CDATA[<h3 id="计算机科学。"><a href="#计算机科学。" class="headerlink" title="计算机科学。"></a>计算机科学。</h3><p>2020-02-07</p><p>计算机可以是一个计算工具，为了实现一个计算而写一行，所以数学系的常用MATLAB进行计算。</p><p>计算机本身也是一个机器设计的科学，里面有许多的机制与策略，为了让机器更快更有效率，更稳定，更易用，更易于扩展，更简洁易懂，更开放等等，这些是一种设计的科学和精神。有些代码可以恒久经典，必然有其设计理念的先进。</p><a id="more"></a>
 
 
-<p>2，运筹优化领域：其实在管科里这个应用十分广泛，毕竟本质是数学。始于线性规划（减少物料使用，减少费用这是目标，各种限制是约束条件），发展于各种决策甚至统计学习（线性回归SVM等优化函数）与深度学习（优化损失函数），更深的数学还有组合优化，多目标优化等等。我在想是否可以考虑一些运筹启发式的策略用于学习呢？比如说模拟退火？考虑一定的概率跳出当前解，重新搜索进行梯度优化？</p>
+<p>但目前越深入后发现，数学和计算有趋同融合之势。</p>
+<h3 id="数学是基础"><a href="#数学是基础" class="headerlink" title="数学是基础"></a>数学是基础</h3><p>绝大多数基于数学的，如概率统计，比如说贝叶斯分类，根据数据类别的分布去推测出新数据更可能属于哪个类别。深度学习则更多的时候是拟合非线性函数，在数学上看都是模型。看了越多论文越觉得一切皆数学，不论工科理科或管科。</p>
+<h3 id="运筹优化领域"><a href="#运筹优化领域" class="headerlink" title="运筹优化领域"></a>运筹优化领域</h3><p>其实在管科里这个应用十分广泛，毕竟本质是数学。始于线性规划（减少物料使用，减少费用这是目标，各种限制是约束条件），发展于各种决策甚至统计学习（线性回归SVM等优化函数）与深度学习（优化损失函数），更深的数学还有组合优化，多目标优化等等。我在想是否可以考虑一些运筹启发式的策略用于学习呢？比如说模拟退火？考虑一定的概率跳出当前解，重新搜索进行梯度优化？</p>
 <p>3，在推荐领域，推荐的根本思想在于销售，销售除了考虑产品的性质，marketing，还有环境等等，联系起来其实数据特征、特征工程还有规则策略其实不就是为了解决这样的问题吗。</p>
 <p>4，“最好的问题”就是那些能够均分所有可能性的问题，不论如何排除掉k-1/k种可能性。在搜索排序中，如何划分更小的问题的思路。</p>
+<p>2020-04-08</p>
 ]]></content>
       <categories>
         <category>经历</category>
@@ -865,8 +878,8 @@
         <category>统计学</category>
       </categories>
       <tags>
-        <tag>机器学习</tag>
         <tag>AIOps</tag>
+        <tag>机器学习</tag>
         <tag>统计学</tag>
       </tags>
   </entry>
@@ -1411,8 +1424,8 @@
         <category>深度学习</category>
       </categories>
       <tags>
-        <tag>机器学习</tag>
         <tag>深度学习</tag>
+        <tag>机器学习</tag>
       </tags>
   </entry>
   <entry>
@@ -1556,8 +1569,8 @@
         <category>AIOps</category>
       </categories>
       <tags>
-        <tag>机器学习</tag>
         <tag>AIOps</tag>
+        <tag>机器学习</tag>
       </tags>
   </entry>
   <entry>
@@ -2043,8 +2056,8 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
         <category>AIOps</category>
       </categories>
       <tags>
-        <tag>时间序列</tag>
         <tag>AIOps</tag>
+        <tag>时间序列</tag>
       </tags>
   </entry>
   <entry>
@@ -2109,8 +2122,8 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
         <category>AIOps</category>
       </categories>
       <tags>
-        <tag>异常检测</tag>
         <tag>AIOps</tag>
+        <tag>异常检测</tag>
       </tags>
   </entry>
   <entry>
