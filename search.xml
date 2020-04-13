@@ -20,7 +20,10 @@
 <h5 id="两关键问题"><a href="#两关键问题" class="headerlink" title="两关键问题"></a>两关键问题</h5><p>i）如何对正在运行的服务和运行时性能指标之间的因果关系进行建模，以及（ii）如何使用具有成本效益的方法来推断根本原因。</p>
 <h5 id="CauseInfer简介"><a href="#CauseInfer简介" class="headerlink" title="CauseInfer简介"></a>CauseInfer简介</h5><p>根因指标的变化会导致effect metric的改变，<u>CauseInfer的本质是建立因果图，该因果图用于为运行分布式系统的故障传播路径建模并在因果图中沿因果路径推断根本原因。</u> 为此，CauseInfer首先从多个数据源收集运行时性能指标，然后通过<strong>贝叶斯变化点检测方法</strong> 提取嵌入在这些指标中的变化点。</p>
 <p>利用变化数据，CauseInfer通过基于统计的方法构造两层层次因果图，以解决关键问题（i）。该因果图由一个粗粒度图和一个细粒度图组成。前一个图是通过一种新颖的轻量级流量滞后相关方法<strong>（traffic lag correlation method）</strong>构造的服务级依赖图，旨在将根本原因定位在服务级别上。而后一个图是系统指标/度量metric因果关系图<strong>（system metric causality graph）</strong>，它是通过条件独立性测试[16]在运行时性能指标中构建的，目的是在指标级别找到真正的罪魁祸首。</p>
-<p>为了解决关键问题（ii），针对每个节点1专门构建指标因果图。应用程序的SLO指标将来自不同节点的两个指标因果关系图链接在一起。</p>
+<p>为了解决关键问题（ii），针对每个节点1专门构建指标因果图。应用程序的SLO（Service level objective）指标将来自不同节点的两个指标因果关系图链接在一起。</p>
+<p>CauseInfer部署在基于云的系统中。它着重于诊断导致虚拟服务器中违反SLO的性能问题。 <strong>CauseInfer通过监视服务的响应时间来检测SLO违规</strong>。其他SLO指标（例如，可用性）将在我们的未来工作中进行讨论。（不会影响SLO的性能问题不在本文讨论范围之内。例如，除非服务器的内存使用率很高，否则CauseInfer将不会开始诊断，除非请求响应时间很高。）此外，系统崩溃也不在我们的考虑范围之内，因为可以通过诸如Sherlock [17]之类的传统工具来解决它们。</p>
+<p>一旦发生SLO违规，就会触发推理过程。 CauseInfer首先通过分析特定服务的SLO指标来定位故障。然后，它通过检测因果路径上有故障的节点中的性能指标违规来查明根本原因。重复该过程，直到揭示出所有潜在的根本原因。由于采用了分层图结构，在推理过程中跳过了一些常规路径，因此大大缩短了推理时间。在两个测试基准中的实验评估，即在线事务处理（OLTP）基准：TPC-W [18]和大数据基准：BigDataBench [19]，表明CauseInfer可以准确地找出根本原因，并且胜过几种最先进的方法。</p>
+<h5 id="贡献"><a href="#贡献" class="headerlink" title="贡献"></a>贡献</h5><p>1，Bayesian change point 检测方法   2，通过分析两个服务之间的通信延迟相关性the traffic lag correlation，提出了一种新颖的轻量级服务依赖发现方法。 服务依赖关系图非常有效地指导我们在服务级别上定位性能问题。3，我们设计了一种新颖的方法来发现从多个数据源收集的运行时系统指标之间的因果关系。 与基于correlation-based approaches 相关的方法不同，该方法利用条件独立性测试来精确快速地对系统故障之间的故障传播路径进行建模。4，CauseINfer系统</p>
 <h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1, Chen P, Qi Y, Hou D. CauseInfer: automated end-to-end performance diagnosis with hierarchical causality graph in cloud environment[J]. IEEE transactions on services computing, 2016, 12(2): 214-230.</p>
 ]]></content>
       <categories>
