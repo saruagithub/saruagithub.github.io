@@ -1,6 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>CauseInfer论文</title>
+    <url>/2020/04/13/20200413CauseInfer%E8%AE%BA%E6%96%87/</url>
+    <content><![CDATA[<h3 id="ABS-amp-Intro"><a href="#ABS-amp-Intro" class="headerlink" title="ABS &amp; Intro"></a>ABS &amp; Intro</h3><p>1，云系统背景 cloud-based and cloud-centric systems always consist of a mass of components running in large distributed environments with complicated interactions.</p><a id="more"></a>
+<p>2，性能问题 highly dynamic runtime environment changes (e.g., overload and resource contention竞争) or software bugs (e.g., memory leak)</p>
+<p>3，细粒度根因定位很困难 due to complicated interactions and a large cardinality of potential cause set.</p>
+<p>4，本文内容：构建CauseInfer系统，指出根因原因与给出提示</p>
+<p>build an automated, black-box and end-to-end cause inference system named CauseInfer to pinpoint the root causes or at least provide some hints. </p>
+]]></content>
+      <categories>
+        <category>AIOps</category>
+      </categories>
+      <tags>
+        <tag>AIOps</tag>
+        <tag>论文</tag>
+        <tag>ProblemDiagnosis</tag>
+        <tag>Root Cause</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>hadoop配置</title>
     <url>/2020/04/06/20200406hadoop%E9%85%8D%E7%BD%AE/</url>
     <content><![CDATA[<h3 id="SSH远程"><a href="#SSH远程" class="headerlink" title="SSH远程"></a>SSH远程</h3><p>1，在mac上用parallels desktop开启一个Ubuntu16的虚拟机。</p><p>注意设置里换源，中国区的快些。</p><p>然后进行更新 (sudo apt-get update ,  然后sudo apt-get upgrade)</p><p>然后安装ssh（sudo apt-get install openssh-server）。</p><a id="more"></a>
