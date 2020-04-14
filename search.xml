@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>CauseInfer论文</title>
+    <title>CauseInfer论文（partI）</title>
     <url>/2020/04/13/20200413CauseInfer%E8%AE%BA%E6%96%87/</url>
     <content><![CDATA[<h3 id="ABS-amp-Intro"><a href="#ABS-amp-Intro" class="headerlink" title="ABS &amp; Intro"></a>ABS &amp; Intro</h3><h4 id="云系统背景"><a href="#云系统背景" class="headerlink" title="云系统背景"></a>云系统背景</h4><p>cloud-based and cloud-centric systems always consist of a mass of components running in large distributed environments with complicated interactions.</p><a id="more"></a>
 <h4 id="性能问题"><a href="#性能问题" class="headerlink" title="性能问题"></a>性能问题</h4><p> highly dynamic runtime environment changes (e.g., overload and resource contention竞争，内部损伤) or software bugs (e.g., memory leak 外部)</p>
@@ -64,7 +64,7 @@
 <p><img src="/images/20200407hadoop-hostname.jpg" alt="20200407hadoop-hostname"></p>
 <h4 id="配置免秘钥登录"><a href="#配置免秘钥登录" class="headerlink" title="配置免秘钥登录"></a>配置免秘钥登录</h4><p>整个hadoop的处理过程之中，都是利用ssh实现通讯的，就算是在本机，也一样使用ssh进行通讯处理，因此需要在电脑上配置ssh免登录处理。</p>
 <p>在本主机上生成一个ssh key：使用<strong>sudo apt-get openssh-server</strong>安装openssh-server后，然后使用<strong>ssh-keygen -t rsa -P “”</strong>生成.ssh文件</p>
-<p>保存公钥：这个时候的程序如果要想进行登录依然需要密码。需要将公钥信息保存在授权认证的文件之中 ： “authorized_key”文件里面。最后使用<strong>ssh localhost</strong>验证免密钥是否配置成功。</p>
+<p>保存公钥：这个时候的程序如果要想进行登录依然需要密码。需要将公钥信息保存在授权认证的文件之中 ： “authorized_key”文件里面。<strong>cd .ssh/</strong>进入到该文件中，然后使用 <strong>ls</strong> 命令查看其中的文件，然后使用<strong>cat id_rsa.pub &gt;&gt; authorized_keys</strong>把公钥存到authorized_keys文件中，最后使用<strong>ssh localhost</strong>验证免密钥是否配置成功。</p>
 <h3 id="Hadoop简介"><a href="#Hadoop简介" class="headerlink" title="Hadoop简介"></a>Hadoop简介</h3><h4 id="Hadoop-主要包含模块"><a href="#Hadoop-主要包含模块" class="headerlink" title="Hadoop 主要包含模块"></a>Hadoop 主要包含模块</h4><ul>
 <li>Hadoop Common: The common utilities that support the other Hadoop modules.</li>
 <li>Hadoop Distributed File System (HDFS™): A distributed file system that provides high-throughput access to application data.</li>
@@ -89,7 +89,7 @@
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cd hadoop/etc/hadoop/</span><br><span class="line">vim core-site.xml</span><br></pre></td></tr></table></figure>
 <p>在configuration中添加配置property：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;hadoop.tmp.dir&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;file:/home/wangxue/app/hadoop-2.6/tmp&lt;/value&gt;</span><br><span class="line">        &lt;description&gt;location to store temporary files&lt;/description&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;fs.defaultFS&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;hdfs://localhost:9000&lt;/value&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
-<p>这个文件路径配置的是临时文件的地址，不配置就会在hadoop的文件夹里面生成“tmp”文件(“/home/wangxue/app/hadoop-2.6/tmp”)，如果这样配置，一但重新启动，所有的配置就会被清空，您的Hadoop环境就失效了。</p>
+<p>这个文件路径配置的是临时文件的地址，不配置就会在hadoop的文件夹里面生成“tmp”文件(“/home/wangxue/app/hadoop-2.6/tmp”)，如果这样配置，每次重新开机启动，所有的配置就会被清空，namenode的格式化信息就会丢失，您的Hadoop环境就失效了。所以这里先建立tmp文件夹，再重新配置一个tmp文件的目录。</p>
 <h5 id="hdfs-site-xml"><a href="#hdfs-site-xml" class="headerlink" title="hdfs-site.xml"></a>hdfs-site.xml</h5><p>可以确定文件的备份个数以及数据文件夹的路径，即指定namenode存放元数据的位置和datanode存放数据块的位置，配置HDFS：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;dfs.replication&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;1&lt;/value&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;dfs.namenode.name.dir&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;file:/home/wangxue/app/hadoop-2.6/hdfs/name&lt;/value&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;dfs.datanode.data.dir&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;file:/home/wangxue/app/hadoop-2.6/hdfs/data&lt;/value&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
 <p>HDFS文件存储的副本个数，默认3。因为我们这只有一个节点，所以设置1.</p>
@@ -110,17 +110,33 @@
 <p><img src="/images/20200410web_hdfs.jpg" alt="20200410web_hdfs"></p>
 <p>检查配置是否成功，运行WordCount例子。创建输出文件夹，将txt文本文件放入input下，然后执行wordcount进行统计，最后cat展示output的结果。</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">bin/hadoop fs -mkdir -p input</span><br><span class="line"></span><br><span class="line">bin/hadoop fs -copyFromLocal README.txt input</span><br><span class="line"></span><br><span class="line">bin/hadoop jar share/hadoop/mapreduce/sources/hadoop-mapreduce-examples-2.7.3-sources.jar org.apache.hadoop.examples.WordCount input output</span><br><span class="line"></span><br><span class="line">bin/hadoop fs -cat output/*</span><br></pre></td></tr></table></figure>
+<h3 id="Python执行任务"><a href="#Python执行任务" class="headerlink" title="Python执行任务"></a>Python执行任务</h3><p>参考4，<a href="https://www.jianshu.com/p/229c7ec48110" target="_blank" rel="noopener">https://www.jianshu.com/p/229c7ec48110</a></p>
+<p>首先我在hadoop-2.6目录下新建文件夹test/code/ ，用于存放mapper.py和reducer.py</p>
+<p>遇到的问题：找不到hadoop-streaming，注意要找到自己本地环境中安装hadoop中的stream jar包，我的也是在share目录下的，用tab补全jar名：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">~/app/hadoop-2.6/share/hadoop/tools/lib/hadoop-streaming-2.6.0-cdh5.7.0.jar</span><br></pre></td></tr></table></figure>
+<p>然后上传本地的txt文件（用于统计单词的原始文本）到hdfs系统。</p>
+<p>这里遇到一个问题是，执行到mapreduce.job: Running job <em>**</em>就一直卡着不动了，这里我停下了，重新jps命令检查了hadoop的启动信息，缺少了NodeManager，故重新启动了下hadoop。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">stop-all.sh</span><br><span class="line">start-all.sh</span><br></pre></td></tr></table></figure>
+<p>jps结果如下，这个是正常的：</p>
+<p><img src="/images/20200415py_jps.png" alt="20200415py_jps"></p>
+<p>然后执行：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">bin/hadoop jar /share/hadoop/tools/lib/hadoop-streaming-2.6.0-cdh5.7.0.jar -file /test/code/mapper.py    -mapper /test/code/mapper.py -file /test/code/reducer.py   -reducer /home/hadoop/reducer.py -input /user/wangxue/hdfs_first/* -output /user/wangxue/hdfs_first_output</span><br></pre></td></tr></table></figure>
+<p>正确执行：</p>
+<p><img src="/images/20200415py_wordcount.png" alt="20200415py_wordcount"></p>
+<p>最后用cat命令查看结果</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">bin/hdfs dfs -cat /user/wangxue/hdfs_first_output/part-00000</span><br></pre></td></tr></table></figure>
 <h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，部分参考 <a href="http://blog.sanyuehua.net/2017/10/30/Hadoop-Pseudo-distributed/" target="_blank" rel="noopener">http://blog.sanyuehua.net/2017/10/30/Hadoop-Pseudo-distributed/</a></p>
 <p><a href="https://blog.sanyuehua.net/2017/10/27/Hadoop-SetUp/" target="_blank" rel="noopener">https://blog.sanyuehua.net/2017/10/27/Hadoop-SetUp/</a></p>
 <p>2，<a href="https://zhengbao.wang/Centos7搭建Hadoop伪分布式集群详细步骤/" target="_blank" rel="noopener">https://zhengbao.wang/Centos7%E6%90%AD%E5%BB%BAHadoop%E4%BC%AA%E5%88%86%E5%B8%83%E5%BC%8F%E9%9B%86%E7%BE%A4%E8%AF%A6%E7%BB%86%E6%AD%A5%E9%AA%A4/</a></p>
 <p>3，《云计算课程》实验2</p>
+<p>4，<a href="https://www.jianshu.com/p/229c7ec48110" target="_blank" rel="noopener">https://www.jianshu.com/p/229c7ec48110</a> 让Python代码在hadoop上运行</p>
 ]]></content>
       <categories>
         <category>配置</category>
       </categories>
       <tags>
-        <tag>大数据</tag>
         <tag>配置</tag>
+        <tag>大数据</tag>
         <tag>hadoop</tag>
       </tags>
   </entry>
@@ -178,6 +194,7 @@
 <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><h4 id="leecode84"><a href="#leecode84" class="headerlink" title="leecode84"></a>leecode84</h4><p>给定 <em>n</em> 个非负整数，用来表示柱状图中各个柱子的高度。每个柱子彼此相邻，且宽度为 1 。求在该柱状图中，能够勾勒出来的矩形的最大面积。</p>
 <p>分析：最大面积是最矮柱子以后，矩形的宽尽可能往两边延伸；or 最矮柱子左边的最大面积矩形 or 最矮柱子右边的最大面积矩形。</p>
 <figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">calculateArea</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; <span class="built_in">height</span>,<span class="keyword">int</span> start, <span class="keyword">int</span> <span class="built_in">end</span>)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (start &gt; <span class="built_in">end</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> minindex = start;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=start; i&lt;=<span class="built_in">end</span>; i++) &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">height</span>[minindex] &gt; <span class="built_in">height</span>[i]) &#123;</span><br><span class="line">            minindex = i;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">max</span>(<span class="built_in">height</span>[minindex]*(<span class="built_in">end</span>-start+<span class="number">1</span>) ,<span class="built_in">max</span>( calculateArea(<span class="built_in">height</span>,start,minindex<span class="number">-1</span>), calculateArea(<span class="built_in">height</span>,minindex+<span class="number">1</span>,<span class="built_in">end</span>)) );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">largestRectangleArea</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; <span class="built_in">height</span>)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> calculateArea(<span class="built_in">height</span>, <span class="number">0</span>, <span class="built_in">height</span>.<span class="built_in">size</span>()<span class="number">-1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main_recursive</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; nums = &#123;<span class="number">2</span>,<span class="number">1</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">2</span>,<span class="number">3</span>&#125;;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;largestRectangleArea(nums)&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>还有很多二叉树类的问题都涉及到递归方法。</p>
 <h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1, 《算法导论》机械工业出版社 第三版（黑皮的，Thoms H Cormen…）</p>
 <p>2，leecode网站</p>
 ]]></content>
@@ -689,9 +706,9 @@
         <category>AIOps</category>
       </categories>
       <tags>
-        <tag>异常检测</tag>
         <tag>机器学习</tag>
         <tag>AIOps</tag>
+        <tag>异常检测</tag>
       </tags>
   </entry>
   <entry>
@@ -1476,8 +1493,8 @@
         <category>深度学习</category>
       </categories>
       <tags>
-        <tag>机器学习</tag>
         <tag>深度学习</tag>
+        <tag>机器学习</tag>
       </tags>
   </entry>
   <entry>
@@ -2108,8 +2125,8 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
         <category>AIOps</category>
       </categories>
       <tags>
-        <tag>时间序列</tag>
         <tag>AIOps</tag>
+        <tag>时间序列</tag>
       </tags>
   </entry>
   <entry>
@@ -2174,8 +2191,8 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
         <category>AIOps</category>
       </categories>
       <tags>
-        <tag>异常检测</tag>
         <tag>AIOps</tag>
+        <tag>异常检测</tag>
       </tags>
   </entry>
   <entry>

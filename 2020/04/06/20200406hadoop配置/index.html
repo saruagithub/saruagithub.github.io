@@ -48,7 +48,7 @@
 </script>
 
   <meta name="description" content="SSH远程1，在mac上用parallels desktop开启一个Ubuntu16的虚拟机。注意设置里换源，中国区的快些。然后进行更新 (sudo apt-get update ,  然后sudo apt-get upgrade)然后安装ssh（sudo apt-get install openssh-server）。">
-<meta name="keywords" content="大数据,配置,hadoop">
+<meta name="keywords" content="配置,大数据,hadoop">
 <meta property="og:type" content="article">
 <meta property="og:title" content="hadoop配置">
 <meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;04&#x2F;06&#x2F;20200406hadoop%E9%85%8D%E7%BD%AE&#x2F;index.html">
@@ -62,7 +62,9 @@
 <meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200410start_hdfs.jpg">
 <meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200410jsp.jpg">
 <meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200410web_hdfs.jpg">
-<meta property="og:updated_time" content="2020-04-10T12:43:03.440Z">
+<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200415py_jps.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200415py_wordcount.png">
+<meta property="og:updated_time" content="2020-04-14T08:02:22.594Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200407JavaJDK.jpg">
 
@@ -248,7 +250,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-10 20:43:03" itemprop="dateModified" datetime="2020-04-10T20:43:03+08:00">2020-04-10</time>
+                <time title="修改时间：2020-04-14 16:02:22" itemprop="dateModified" datetime="2020-04-14T16:02:22+08:00">2020-04-14</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -319,7 +321,7 @@
 <p><img src="/images/20200407hadoop-hostname.jpg" alt="20200407hadoop-hostname"></p>
 <h4 id="配置免秘钥登录"><a href="#配置免秘钥登录" class="headerlink" title="配置免秘钥登录"></a>配置免秘钥登录</h4><p>整个hadoop的处理过程之中，都是利用ssh实现通讯的，就算是在本机，也一样使用ssh进行通讯处理，因此需要在电脑上配置ssh免登录处理。</p>
 <p>在本主机上生成一个ssh key：使用<strong>sudo apt-get openssh-server</strong>安装openssh-server后，然后使用<strong>ssh-keygen -t rsa -P “”</strong>生成.ssh文件</p>
-<p>保存公钥：这个时候的程序如果要想进行登录依然需要密码。需要将公钥信息保存在授权认证的文件之中 ： “authorized_key”文件里面。最后使用<strong>ssh localhost</strong>验证免密钥是否配置成功。</p>
+<p>保存公钥：这个时候的程序如果要想进行登录依然需要密码。需要将公钥信息保存在授权认证的文件之中 ： “authorized_key”文件里面。<strong>cd .ssh/</strong>进入到该文件中，然后使用 <strong>ls</strong> 命令查看其中的文件，然后使用<strong>cat id_rsa.pub &gt;&gt; authorized_keys</strong>把公钥存到authorized_keys文件中，最后使用<strong>ssh localhost</strong>验证免密钥是否配置成功。</p>
 <h3 id="Hadoop简介"><a href="#Hadoop简介" class="headerlink" title="Hadoop简介"></a>Hadoop简介</h3><h4 id="Hadoop-主要包含模块"><a href="#Hadoop-主要包含模块" class="headerlink" title="Hadoop 主要包含模块"></a>Hadoop 主要包含模块</h4><ul>
 <li>Hadoop Common: The common utilities that support the other Hadoop modules.</li>
 <li>Hadoop Distributed File System (HDFS™): A distributed file system that provides high-throughput access to application data.</li>
@@ -344,7 +346,7 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd hadoop/etc/hadoop/</span><br><span class="line">vim core-site.xml</span><br></pre></td></tr></table></figure>
 <p>在configuration中添加配置property：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;hadoop.tmp.dir&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;file:/home/wangxue/app/hadoop-2.6/tmp&lt;/value&gt;</span><br><span class="line">        &lt;description&gt;location to store temporary files&lt;/description&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;fs.defaultFS&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;hdfs://localhost:9000&lt;/value&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
-<p>这个文件路径配置的是临时文件的地址，不配置就会在hadoop的文件夹里面生成“tmp”文件(“/home/wangxue/app/hadoop-2.6/tmp”)，如果这样配置，一但重新启动，所有的配置就会被清空，您的Hadoop环境就失效了。</p>
+<p>这个文件路径配置的是临时文件的地址，不配置就会在hadoop的文件夹里面生成“tmp”文件(“/home/wangxue/app/hadoop-2.6/tmp”)，如果这样配置，每次重新开机启动，所有的配置就会被清空，namenode的格式化信息就会丢失，您的Hadoop环境就失效了。所以这里先建立tmp文件夹，再重新配置一个tmp文件的目录。</p>
 <h5 id="hdfs-site-xml"><a href="#hdfs-site-xml" class="headerlink" title="hdfs-site.xml"></a>hdfs-site.xml</h5><p>可以确定文件的备份个数以及数据文件夹的路径，即指定namenode存放元数据的位置和datanode存放数据块的位置，配置HDFS：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;dfs.replication&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;1&lt;/value&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;dfs.namenode.name.dir&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;file:/home/wangxue/app/hadoop-2.6/hdfs/name&lt;/value&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;dfs.datanode.data.dir&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;file:/home/wangxue/app/hadoop-2.6/hdfs/data&lt;/value&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
 <p>HDFS文件存储的副本个数，默认3。因为我们这只有一个节点，所以设置1.</p>
@@ -365,10 +367,26 @@
 <p><img src="/images/20200410web_hdfs.jpg" alt="20200410web_hdfs"></p>
 <p>检查配置是否成功，运行WordCount例子。创建输出文件夹，将txt文本文件放入input下，然后执行wordcount进行统计，最后cat展示output的结果。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">bin/hadoop fs -mkdir -p input</span><br><span class="line"></span><br><span class="line">bin/hadoop fs -copyFromLocal README.txt input</span><br><span class="line"></span><br><span class="line">bin/hadoop jar share/hadoop/mapreduce/sources/hadoop-mapreduce-examples-2.7.3-sources.jar org.apache.hadoop.examples.WordCount input output</span><br><span class="line"></span><br><span class="line">bin/hadoop fs -cat output/*</span><br></pre></td></tr></table></figure>
+<h3 id="Python执行任务"><a href="#Python执行任务" class="headerlink" title="Python执行任务"></a>Python执行任务</h3><p>参考4，<a href="https://www.jianshu.com/p/229c7ec48110" target="_blank" rel="noopener">https://www.jianshu.com/p/229c7ec48110</a></p>
+<p>首先我在hadoop-2.6目录下新建文件夹test/code/ ，用于存放mapper.py和reducer.py</p>
+<p>遇到的问题：找不到hadoop-streaming，注意要找到自己本地环境中安装hadoop中的stream jar包，我的也是在share目录下的，用tab补全jar名：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">~/app/hadoop-2.6/share/hadoop/tools/lib/hadoop-streaming-2.6.0-cdh5.7.0.jar</span><br></pre></td></tr></table></figure>
+<p>然后上传本地的txt文件（用于统计单词的原始文本）到hdfs系统。</p>
+<p>这里遇到一个问题是，执行到mapreduce.job: Running job <em>**</em>就一直卡着不动了，这里我停下了，重新jps命令检查了hadoop的启动信息，缺少了NodeManager，故重新启动了下hadoop。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">stop-all.sh</span><br><span class="line">start-all.sh</span><br></pre></td></tr></table></figure>
+<p>jps结果如下，这个是正常的：</p>
+<p><img src="/images/20200415py_jps.png" alt="20200415py_jps"></p>
+<p>然后执行：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bin/hadoop jar /share/hadoop/tools/lib/hadoop-streaming-2.6.0-cdh5.7.0.jar -file /test/code/mapper.py    -mapper /test/code/mapper.py -file /test/code/reducer.py   -reducer /home/hadoop/reducer.py -input /user/wangxue/hdfs_first/* -output /user/wangxue/hdfs_first_output</span><br></pre></td></tr></table></figure>
+<p>正确执行：</p>
+<p><img src="/images/20200415py_wordcount.png" alt="20200415py_wordcount"></p>
+<p>最后用cat命令查看结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bin/hdfs dfs -cat /user/wangxue/hdfs_first_output/part-00000</span><br></pre></td></tr></table></figure>
 <h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，部分参考 <a href="http://blog.sanyuehua.net/2017/10/30/Hadoop-Pseudo-distributed/" target="_blank" rel="noopener">http://blog.sanyuehua.net/2017/10/30/Hadoop-Pseudo-distributed/</a></p>
 <p><a href="https://blog.sanyuehua.net/2017/10/27/Hadoop-SetUp/" target="_blank" rel="noopener">https://blog.sanyuehua.net/2017/10/27/Hadoop-SetUp/</a></p>
 <p>2，<a href="https://zhengbao.wang/Centos7搭建Hadoop伪分布式集群详细步骤/" target="_blank" rel="noopener">https://zhengbao.wang/Centos7%E6%90%AD%E5%BB%BAHadoop%E4%BC%AA%E5%88%86%E5%B8%83%E5%BC%8F%E9%9B%86%E7%BE%A4%E8%AF%A6%E7%BB%86%E6%AD%A5%E9%AA%A4/</a></p>
 <p>3，《云计算课程》实验2</p>
+<p>4，<a href="https://www.jianshu.com/p/229c7ec48110" target="_blank" rel="noopener">https://www.jianshu.com/p/229c7ec48110</a> 让Python代码在hadoop上运行</p>
 
     </div>
 
@@ -398,8 +416,8 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" rel="tag"># 大数据</a>
               <a href="/tags/%E9%85%8D%E7%BD%AE/" rel="tag"># 配置</a>
+              <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" rel="tag"># 大数据</a>
               <a href="/tags/hadoop/" rel="tag"># hadoop</a>
           </div>
 
@@ -413,8 +431,8 @@
       <i class="fa fa-chevron-left"></i> 大数据技术1hadoop
     </a></div>
       <div class="post-nav-item">
-    <a href="/2020/04/13/20200413CauseInfer%E8%AE%BA%E6%96%87/" rel="next" title="CauseInfer论文">
-      CauseInfer论文 <i class="fa fa-chevron-right"></i>
+    <a href="/2020/04/13/20200413CauseInfer%E8%AE%BA%E6%96%87/" rel="next" title="CauseInfer论文（partI）">
+      CauseInfer论文（partI） <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -454,7 +472,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#SSH远程"><span class="nav-number">1.</span> <span class="nav-text">SSH远程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#下载资源"><span class="nav-number">2.</span> <span class="nav-text">下载资源</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Java环境"><span class="nav-number">2.1.</span> <span class="nav-text">Java环境</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#hadoop下载"><span class="nav-number">2.2.</span> <span class="nav-text">hadoop下载</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#环境配置"><span class="nav-number">3.</span> <span class="nav-text">环境配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#映射配置"><span class="nav-number">3.1.</span> <span class="nav-text">映射配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置免秘钥登录"><span class="nav-number">3.2.</span> <span class="nav-text">配置免秘钥登录</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hadoop简介"><span class="nav-number">4.</span> <span class="nav-text">Hadoop简介</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Hadoop-主要包含模块"><span class="nav-number">4.1.</span> <span class="nav-text">Hadoop 主要包含模块</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#wordcount单机测试"><span class="nav-number">4.2.</span> <span class="nav-text">wordcount单机测试</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#伪分布式"><span class="nav-number">4.3.</span> <span class="nav-text">伪分布式</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#core-site-xml"><span class="nav-number">4.3.1.</span> <span class="nav-text">core-site.xml</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#hdfs-site-xml"><span class="nav-number">4.3.2.</span> <span class="nav-text">hdfs-site.xml</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#mapred-site-xml"><span class="nav-number">4.3.3.</span> <span class="nav-text">mapred-site.xml</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#yarn-site-xml"><span class="nav-number">4.3.4.</span> <span class="nav-text">yarn-site.xml</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reference"><span class="nav-number">5.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#SSH远程"><span class="nav-number">1.</span> <span class="nav-text">SSH远程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#下载资源"><span class="nav-number">2.</span> <span class="nav-text">下载资源</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Java环境"><span class="nav-number">2.1.</span> <span class="nav-text">Java环境</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#hadoop下载"><span class="nav-number">2.2.</span> <span class="nav-text">hadoop下载</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#环境配置"><span class="nav-number">3.</span> <span class="nav-text">环境配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#映射配置"><span class="nav-number">3.1.</span> <span class="nav-text">映射配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置免秘钥登录"><span class="nav-number">3.2.</span> <span class="nav-text">配置免秘钥登录</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hadoop简介"><span class="nav-number">4.</span> <span class="nav-text">Hadoop简介</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Hadoop-主要包含模块"><span class="nav-number">4.1.</span> <span class="nav-text">Hadoop 主要包含模块</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#wordcount单机测试"><span class="nav-number">4.2.</span> <span class="nav-text">wordcount单机测试</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#伪分布式"><span class="nav-number">4.3.</span> <span class="nav-text">伪分布式</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#core-site-xml"><span class="nav-number">4.3.1.</span> <span class="nav-text">core-site.xml</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#hdfs-site-xml"><span class="nav-number">4.3.2.</span> <span class="nav-text">hdfs-site.xml</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#mapred-site-xml"><span class="nav-number">4.3.3.</span> <span class="nav-text">mapred-site.xml</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#yarn-site-xml"><span class="nav-number">4.3.4.</span> <span class="nav-text">yarn-site.xml</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Python执行任务"><span class="nav-number">5.</span> <span class="nav-text">Python执行任务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reference"><span class="nav-number">6.</span> <span class="nav-text">Reference</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
