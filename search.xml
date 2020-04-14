@@ -24,6 +24,10 @@
 <p>CauseInfer部署在基于云的系统中。它着重于诊断导致虚拟服务器中违反SLO的性能问题。 <strong>CauseInfer通过监视服务的响应时间来检测SLO违规</strong>。其他SLO指标（例如，可用性）将在我们的未来工作中进行讨论。（不会影响SLO的性能问题不在本文讨论范围之内。例如，除非服务器的内存使用率很高，否则CauseInfer将不会开始诊断，除非请求响应时间很高。）此外，系统崩溃也不在我们的考虑范围之内，因为可以通过诸如Sherlock [17]之类的传统工具来解决它们。</p>
 <p>一旦发生SLO违规，就会触发推理过程。 CauseInfer首先通过分析特定服务的SLO指标来定位故障。然后，它通过检测因果路径上有故障的节点中的性能指标违规来查明根本原因。重复该过程，直到揭示出所有潜在的根本原因。由于采用了分层图结构，在推理过程中跳过了一些常规路径，因此大大缩短了推理时间。在两个测试基准中的实验评估，即在线事务处理（OLTP）基准：TPC-W [18]和大数据基准：BigDataBench [19]，表明CauseInfer可以准确地找出根本原因，并且胜过几种最先进的方法。</p>
 <h5 id="贡献"><a href="#贡献" class="headerlink" title="贡献"></a>贡献</h5><p>1，Bayesian change point 检测方法   2，通过分析两个服务之间的通信延迟相关性the traffic lag correlation，提出了一种新颖的轻量级服务依赖发现方法。 服务依赖关系图非常有效地指导我们在服务级别上定位性能问题。3，我们设计了一种新颖的方法来发现从多个数据源收集的运行时系统指标之间的因果关系。 与基于correlation-based approaches 相关的方法不同，该方法利用条件独立性测试来精确快速地对系统故障之间的故障传播路径进行建模。4，CauseINfer系统</p>
+<h3 id="背景与动机"><a href="#背景与动机" class="headerlink" title="背景与动机"></a>背景与动机</h3><h4 id="云平台需要诊断工具"><a href="#云平台需要诊断工具" class="headerlink" title="云平台需要诊断工具"></a>云平台需要诊断工具</h4><p>云平台监控正在运行的application。</p>
+<p>举例：在Hadoop错误库有一个真正的性能错误，即Hadoop-3382。 未完全关闭打开的文件时，在namenode中发生内存泄漏。 而且内存泄漏将延长Hadoop请求的响应时间。 故障传播路径是“打开的文件→内存利用率→响应时间”。 如果事先知道故障传播路径，则可以查明性能问题的根本原因。 以Hadoop-3382为例，一旦作业执行时间变得异常，我们就可以在“打开的文件”中找到根本原因。 这促使我们对故障传播路径进行显式建模。</p>
+<h4 id="性能问题分类"><a href="#性能问题分类" class="headerlink" title="性能问题分类"></a>性能问题分类</h4><p>引用【7,8,15】，我们发现性能问题可能是由运行时环境更改或软件错误引起的。通过手动分析这些原因，这些原因与 <strong>物理资源（例如，CPU和内存）或逻辑资源（例如，锁和队列）高度相关</strong>，并且可以很容易地监视这两个原因。这一发现也与[11]中的观察结果相符，在该发现中作者声称可以通过 <strong>分析系统调用</strong>（例如sys write，sys open，sys futex等）来诊断性能错误。这些系统调用用于为应用程序提供接口，以利用物理或逻辑系统资源。</p>
+<p>从这些错误中，我们首先通过搜索与性能相关的词（例如“延迟”，“崩溃”，“挂起”，“降级”等）来检索这些错误。然后，我们手动检查它们是否确实是性能错误。从它们中随机选择的1000个错误被分为8个组，如图1所示。因此，通过分析物理或逻辑资源利用率，我们可以细粒度地诊断性能问题。</p>
 <h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1, Chen P, Qi Y, Hou D. CauseInfer: automated end-to-end performance diagnosis with hierarchical causality graph in cloud environment[J]. IEEE transactions on services computing, 2016, 12(2): 214-230.</p>
 ]]></content>
       <categories>
@@ -118,11 +122,11 @@
 <p>这里遇到一个问题是，执行到mapreduce.job: Running job <em>**</em>就一直卡着不动了，这里我停下了，重新jps命令检查了hadoop的启动信息，缺少了NodeManager，故重新启动了下hadoop。</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">stop-all.sh</span><br><span class="line">start-all.sh</span><br></pre></td></tr></table></figure>
 <p>jps结果如下，这个是正常的：</p>
-<p><img src="/images/20200415py_jps.png" alt="20200415py_jps"></p>
+<p><img src="/images/20200415py_jps.jpg" alt="20200415py_jps"></p>
 <p>然后执行：</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">bin/hadoop jar /share/hadoop/tools/lib/hadoop-streaming-2.6.0-cdh5.7.0.jar -file /test/code/mapper.py    -mapper /test/code/mapper.py -file /test/code/reducer.py   -reducer /home/hadoop/reducer.py -input /user/wangxue/hdfs_first/* -output /user/wangxue/hdfs_first_output</span><br></pre></td></tr></table></figure>
 <p>正确执行：</p>
-<p><img src="/images/20200415py_wordcount.png" alt="20200415py_wordcount"></p>
+<p><img src="/images/20200415py_wordcount.jpg" alt="20200415py_wordcount"></p>
 <p>最后用cat命令查看结果</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">bin/hdfs dfs -cat /user/wangxue/hdfs_first_output/part-00000</span><br></pre></td></tr></table></figure>
 <h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，部分参考 <a href="http://blog.sanyuehua.net/2017/10/30/Hadoop-Pseudo-distributed/" target="_blank" rel="noopener">http://blog.sanyuehua.net/2017/10/30/Hadoop-Pseudo-distributed/</a></p>
@@ -135,8 +139,8 @@
         <category>配置</category>
       </categories>
       <tags>
-        <tag>配置</tag>
         <tag>大数据</tag>
+        <tag>配置</tag>
         <tag>hadoop</tag>
       </tags>
   </entry>
@@ -706,9 +710,9 @@
         <category>AIOps</category>
       </categories>
       <tags>
+        <tag>异常检测</tag>
         <tag>机器学习</tag>
         <tag>AIOps</tag>
-        <tag>异常检测</tag>
       </tags>
   </entry>
   <entry>
@@ -1493,8 +1497,8 @@
         <category>深度学习</category>
       </categories>
       <tags>
-        <tag>深度学习</tag>
         <tag>机器学习</tag>
+        <tag>深度学习</tag>
       </tags>
   </entry>
   <entry>
@@ -2125,8 +2129,8 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
         <category>AIOps</category>
       </categories>
       <tags>
-        <tag>AIOps</tag>
         <tag>时间序列</tag>
+        <tag>AIOps</tag>
       </tags>
   </entry>
   <entry>
@@ -2191,8 +2195,8 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
         <category>AIOps</category>
       </categories>
       <tags>
-        <tag>AIOps</tag>
         <tag>异常检测</tag>
+        <tag>AIOps</tag>
       </tags>
   </entry>
   <entry>
