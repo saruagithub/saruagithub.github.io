@@ -79,7 +79,11 @@
 <p>我们假设服务II节点中的指标E是根本原因。 当检测到服务I的SLO违反时，将触发原因推断。 在对服务I节点进行原因推断后，我们将性能异常定位于指标A。指标A是服务II的响应时间，它也是服务I指标因果关系图中的根本原因节点。异常A意味着 服务II的SLO被违反。 </p>
 <p>因此，服务II节点中的根因推断被触发，并根据该节点的指标因果关系图继续进行推断。 最后，我们获得了根本原因，度量E。整个推理路径为SLO→A→D→E。</p>
 <p>值得注意的是，由于统计误差和系统噪声，结果可能包含多个度量。 因此，必须有根因排名过程来减少误报并选择最可能的根本原因。</p>
-<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1, Chen P, Qi Y, Hou D. CauseInfer: automated end-to-end performance diagnosis with hierarchical causality graph in cloud environment[J]. IEEE transactions on services computing, 2016, 12(2): 214-230.</p>
+<h3 id="系统设计"><a href="#系统设计" class="headerlink" title="系统设计"></a>系统设计</h3><h4 id="系统模块简介"><a href="#系统模块简介" class="headerlink" title="系统模块简介"></a>系统模块简介</h4><p>如图3所示，CauseInfer系统主要包含两部分，即<strong>离线因果图构建和在线原因推断</strong>。 </p>
+<p>在线部分包含两个模块，即数据收集模块和原因推断模块。 数据收集模块从特定节点中的多个数据源收集实时系统指标，并将<u>数据存储在时间序列数据库</u>中。 当检测到违反SLO时，将触发根因推断模块。 该模块负责根据因果图生成器生成的<u>因果图来精确定位和排序根因</u>。 最后，获得包含最可能原因的原因列表。</p>
+<p> 离线部分包含三个模块，即预处理模块，突变点检测模块和因果图构建模块。 预处理模块在发送到下一阶段之前会对数据进行一些修改。 突变点change point detection检测模块使用贝叶斯change point检测方法将每个预处理指标转换为二进制数据序列。 因果关系图模块利用二值化数据来构建两层分层的因果关系图。 在下文中，我们将详细描述这些模块。</p>
+<p><img src="/images/20200415CauseInfer_fig4.jpg" alt="20200415CauseInfer_fig4"></p>
+<h4 id="系统模块详述"><a href="#系统模块详述" class="headerlink" title="系统模块详述"></a>系统模块详述</h4><h5 id="数据收集"><a href="#数据收集" class="headerlink" title="数据收集"></a>数据收集</h5><h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1, Chen P, Qi Y, Hou D. CauseInfer: automated end-to-end performance diagnosis with hierarchical causality graph in cloud environment[J]. IEEE transactions on services computing, 2016, 12(2): 214-230.</p>
 ]]></content>
       <categories>
         <category>AIOps</category>
@@ -123,6 +127,7 @@
 <p><img src="/images/20200414CauseInfer_fig1.jpg" alt="20200414CauseInfer_fig1"></p>
 <p>如图1所示。因此，通过分析物理或逻辑资源利用率，我们可以细粒度地诊断性能问题。</p>
 <h4 id="相关性陷进"><a href="#相关性陷进" class="headerlink" title="相关性陷进"></a>相关性陷进</h4><p>大量现有文献利用“相关性”（例如，皮尔逊相关系数）对服务[5]，[6]或系统指标[2]，[7]，[8]之间的依赖关系进行建模。我们认为基于“相关性”的方法可能会错误地将某些独立关系视为依赖关系的可能性很高。原因是该方法旨在仅捕获两个指标之间的简单关联。它<u>不能捕获两个以上指标之间的更复杂的依赖关系</u>，称为“条件依赖”。</p>
+<p>（CauseInfer论文(Part Ⅱ) CauseInfer的工作流模型）</p>
 <h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1, Chen P, Qi Y, Hou D. CauseInfer: automated end-to-end performance diagnosis with hierarchical causality graph in cloud environment[J]. IEEE transactions on services computing, 2016, 12(2): 214-230.</p>
 ]]></content>
       <categories>
