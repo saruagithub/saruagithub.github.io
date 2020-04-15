@@ -51,14 +51,14 @@
 <meta name="keywords" content="AIOps,论文,faultDiagnosis,RootCause">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CauseInfer论文（partI）">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;04&#x2F;13&#x2F;20200413CauseInfer%E8%AE%BA%E6%96%87&#x2F;index.html">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;04&#x2F;13&#x2F;20200413CauseInfer%E8%AE%BA%E6%96%871&#x2F;index.html">
 <meta property="og:site_name" content="WangXue">
 <meta property="og:description" content="ABS &amp;amp; Intro云系统背景cloud-based and cloud-centric systems always consist of a mass of components running in large distributed environments with complicated interactions.">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-04-14T09:22:16.029Z">
+<meta property="og:updated_time" content="2020-04-14T09:30:48.685Z">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://yoursite.com/2020/04/13/20200413CauseInfer%E8%AE%BA%E6%96%87/">
+<link rel="canonical" href="http://yoursite.com/2020/04/13/20200413CauseInfer%E8%AE%BA%E6%96%871/">
 
 
 <script id="page-configurations">
@@ -209,7 +209,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/13/20200413CauseInfer%E8%AE%BA%E6%96%87/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/13/20200413CauseInfer%E8%AE%BA%E6%96%871/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -240,7 +240,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-14 17:22:16" itemprop="dateModified" datetime="2020-04-14T17:22:16+08:00">2020-04-14</time>
+                <time title="修改时间：2020-04-14 17:30:48" itemprop="dateModified" datetime="2020-04-14T17:30:48+08:00">2020-04-14</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -270,8 +270,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2020/04/13/20200413CauseInfer%E8%AE%BA%E6%96%87/#comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/04/13/20200413CauseInfer%E8%AE%BA%E6%96%87/" itemprop="commentCount"></span>
+    <a title="valine" href="/2020/04/13/20200413CauseInfer%E8%AE%BA%E6%96%871/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/04/13/20200413CauseInfer%E8%AE%BA%E6%96%871/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -307,10 +307,6 @@
 <p>CauseInfer部署在基于云的系统中。它着重于诊断导致虚拟服务器中违反SLO的性能问题。 <strong>CauseInfer通过监视服务的响应时间来检测SLO违规</strong>。其他SLO指标（例如，可用性）将在我们的未来工作中进行讨论。（不会影响SLO的性能问题不在本文讨论范围之内。例如，除非服务器的内存使用率很高，否则CauseInfer将不会开始诊断，除非请求响应时间很高。）此外，系统崩溃也不在我们的考虑范围之内，因为可以通过诸如Sherlock [17]之类的传统工具来解决它们。</p>
 <p>一旦发生SLO违规，就会触发推理过程。 CauseInfer首先通过分析特定服务的SLO指标来定位故障。然后，它通过检测因果路径上有故障的节点中的性能指标违规来查明根本原因。重复该过程，直到揭示出所有潜在的根本原因。由于采用了分层图结构，在推理过程中跳过了一些常规路径，因此大大缩短了推理时间。在两个测试基准中的实验评估，即在线事务处理（OLTP）基准：TPC-W [18]和大数据基准：BigDataBench [19]，表明CauseInfer可以准确地找出根本原因，并且胜过几种最先进的方法。</p>
 <h5 id="贡献"><a href="#贡献" class="headerlink" title="贡献"></a>贡献</h5><p>1，Bayesian change point 检测方法   2，通过分析两个服务之间的通信延迟相关性the traffic lag correlation，提出了一种新颖的轻量级服务依赖发现方法。 服务依赖关系图非常有效地指导我们在服务级别上定位性能问题。3，我们设计了一种新颖的方法来发现从多个数据源收集的运行时系统指标之间的因果关系。 与基于correlation-based approaches 相关的方法不同，该方法利用条件独立性测试来精确快速地对系统故障之间的故障传播路径进行建模。4，CauseINfer系统</p>
-<h3 id="背景与动机"><a href="#背景与动机" class="headerlink" title="背景与动机"></a>背景与动机</h3><h4 id="云平台需要诊断工具"><a href="#云平台需要诊断工具" class="headerlink" title="云平台需要诊断工具"></a>云平台需要诊断工具</h4><p>云平台监控正在运行的application。</p>
-<p>举例：在Hadoop错误库有一个真正的性能错误，即Hadoop-3382。 未完全关闭打开的文件时，在namenode中发生内存泄漏。 而且内存泄漏将延长Hadoop请求的响应时间。 故障传播路径是“打开的文件→内存利用率→响应时间”。 如果事先知道故障传播路径，则可以查明性能问题的根本原因。 以Hadoop-3382为例，一旦作业执行时间变得异常，我们就可以在“打开的文件”中找到根本原因。 这促使我们对故障传播路径进行显式建模。</p>
-<h4 id="性能问题分类"><a href="#性能问题分类" class="headerlink" title="性能问题分类"></a>性能问题分类</h4><p>引用【7,8,15】，我们发现性能问题可能是由运行时环境更改或软件错误引起的。通过手动分析这些原因，这些原因与 <strong>物理资源（例如，CPU和内存）或逻辑资源（例如，锁和队列）高度相关</strong>，并且可以很容易地监视这两个原因。这一发现也与[11]中的观察结果相符，在该发现中作者声称可以通过 <strong>分析系统调用</strong>（例如sys write，sys open，sys futex等）来诊断性能错误。这些系统调用用于为应用程序提供接口，以利用物理或逻辑系统资源。</p>
-<p>从这些错误中，我们首先通过搜索与性能相关的词（例如“延迟”，“崩溃”，“挂起”，“降级”等）来检索这些错误。然后，我们手动检查它们是否确实是性能错误。从它们中随机选择的1000个错误被分为8个组，如图1所示。因此，通过分析物理或逻辑资源利用率，我们可以细粒度地诊断性能问题。</p>
 <h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1, Chen P, Qi Y, Hou D. CauseInfer: automated end-to-end performance diagnosis with hierarchical causality graph in cloud environment[J]. IEEE transactions on services computing, 2016, 12(2): 214-230.</p>
 
     </div>
@@ -356,7 +352,10 @@
     <a href="/2020/04/06/20200406hadoop%E9%85%8D%E7%BD%AE/" rel="prev" title="hadoop配置">
       <i class="fa fa-chevron-left"></i> hadoop配置
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2020/04/14/20200414CauseInfer%E8%AE%BA%E6%96%872/" rel="next" title="20200414CauseInfer论文2">
+      20200414CauseInfer论文2 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -395,7 +394,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#ABS-amp-Intro"><span class="nav-number">1.</span> <span class="nav-text">ABS &amp; Intro</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#云系统背景"><span class="nav-number">1.1.</span> <span class="nav-text">云系统背景</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#性能问题"><span class="nav-number">1.2.</span> <span class="nav-text">性能问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#细粒度根因定位困难"><span class="nav-number">1.3.</span> <span class="nav-text">细粒度根因定位困难</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#系统监控"><span class="nav-number">1.3.1.</span> <span class="nav-text">系统监控</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#本文内容"><span class="nav-number">1.4.</span> <span class="nav-text">本文内容</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文献综述"><span class="nav-number">2.</span> <span class="nav-text">文献综述</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#一些不足"><span class="nav-number">2.1.</span> <span class="nav-text">一些不足</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#粗粒度"><span class="nav-number">2.1.1.</span> <span class="nav-text">粗粒度</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#相当大的开销"><span class="nav-number">2.1.2.</span> <span class="nav-text">相当大的开销</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#因果关系弱"><span class="nav-number">2.1.3.</span> <span class="nav-text">因果关系弱</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#OurWork"><span class="nav-number">2.2.</span> <span class="nav-text">OurWork</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#目标"><span class="nav-number">2.2.1.</span> <span class="nav-text">目标</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#两关键问题"><span class="nav-number">2.2.2.</span> <span class="nav-text">两关键问题</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#CauseInfer简介"><span class="nav-number">2.2.3.</span> <span class="nav-text">CauseInfer简介</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#贡献"><span class="nav-number">2.2.4.</span> <span class="nav-text">贡献</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#背景与动机"><span class="nav-number">3.</span> <span class="nav-text">背景与动机</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#云平台需要诊断工具"><span class="nav-number">3.1.</span> <span class="nav-text">云平台需要诊断工具</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#性能问题分类"><span class="nav-number">3.2.</span> <span class="nav-text">性能问题分类</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reference"><span class="nav-number">4.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#ABS-amp-Intro"><span class="nav-number">1.</span> <span class="nav-text">ABS &amp; Intro</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#云系统背景"><span class="nav-number">1.1.</span> <span class="nav-text">云系统背景</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#性能问题"><span class="nav-number">1.2.</span> <span class="nav-text">性能问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#细粒度根因定位困难"><span class="nav-number">1.3.</span> <span class="nav-text">细粒度根因定位困难</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#系统监控"><span class="nav-number">1.3.1.</span> <span class="nav-text">系统监控</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#本文内容"><span class="nav-number">1.4.</span> <span class="nav-text">本文内容</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文献综述"><span class="nav-number">2.</span> <span class="nav-text">文献综述</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#一些不足"><span class="nav-number">2.1.</span> <span class="nav-text">一些不足</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#粗粒度"><span class="nav-number">2.1.1.</span> <span class="nav-text">粗粒度</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#相当大的开销"><span class="nav-number">2.1.2.</span> <span class="nav-text">相当大的开销</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#因果关系弱"><span class="nav-number">2.1.3.</span> <span class="nav-text">因果关系弱</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#OurWork"><span class="nav-number">2.2.</span> <span class="nav-text">OurWork</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#目标"><span class="nav-number">2.2.1.</span> <span class="nav-text">目标</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#两关键问题"><span class="nav-number">2.2.2.</span> <span class="nav-text">两关键问题</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#CauseInfer简介"><span class="nav-number">2.2.3.</span> <span class="nav-text">CauseInfer简介</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#贡献"><span class="nav-number">2.2.4.</span> <span class="nav-text">贡献</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reference"><span class="nav-number">3.</span> <span class="nav-text">Reference</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -411,7 +410,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">61</span>
+          <span class="site-state-item-count">63</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -424,7 +423,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">48</span>
+        <span class="site-state-item-count">50</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
