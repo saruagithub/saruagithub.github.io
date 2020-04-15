@@ -56,7 +56,7 @@
 <meta property="og:description" content="组合优化问题问题引入车辆路径规划问题，n位客户，在不同地点，有需求。在中央仓库有m辆车辆的均质车队。这是一个NP难问题，这类问题中，启发式和元启发式是实践中最常用的VRP解决方案。启发式算法：模拟退火，遗传算法，蚁群优化算法等。NP难问题的一些解决方法1，精确方法（枚举，约束编程，分支定界，分支与剪切）是非多项式的，通常可以处理一定规模的问题实例（如旅行商问题TSP的80000节点）。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200415local_search1.jpg">
-<meta property="og:updated_time" content="2020-04-15T08:47:24.256Z">
+<meta property="og:updated_time" content="2020-04-15T09:07:41.979Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200415local_search1.jpg">
 
@@ -236,7 +236,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-04-15 12:25:01 / 修改时间：16:47:24" itemprop="dateCreated datePublished" datetime="2020-04-15T12:25:01+08:00">2020-04-15</time>
+              <time title="创建时间：2020-04-15 12:25:01 / 修改时间：17:07:41" itemprop="dateCreated datePublished" datetime="2020-04-15T12:25:01+08:00">2020-04-15</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -290,8 +290,17 @@
 <p>3，近似算法</p>
 <p>4，随机算法</p>
 <p>5，启发式方法和元启发式方法可以视为最后的选择。但他们生成的解决方案没有任何性能保证。</p>
-<h3 id="局部搜索启发式"><a href="#局部搜索启发式" class="headerlink" title="局部搜索启发式"></a>局部搜索启发式</h3><p>局部搜索启发式迭代地改善了解决方案。 它枚举了导致新解决方案（称为邻居neighbor）的可能更改（move）的列表，并在改进的情况下应用这些更改（接受更好的解）。</p>
+<h3 id="局部搜索启发式"><a href="#局部搜索启发式" class="headerlink" title="局部搜索启发式"></a>局部搜索启发式</h3><h4 id="局部搜索"><a href="#局部搜索" class="headerlink" title="局部搜索"></a>局部搜索</h4><p>局部搜索启发式迭代地优化解。 它枚举了导致新解（称为邻居neighbor）的可能更改（move）的列表，并在改进的情况下应用这些更改（接受更好的解）。</p>
 <p><img src="/images/20200415local_search1.jpg" alt="20200415local_search1"></p>
+<p>仅应用这些邻域会导致问题的局部最优，这可能与最佳解决方案（全局最优）大不相同。需要设计了几种策略来摆脱这些局部最优值，并继续在其他地区进行搜索。</p>
+<h4 id="解决局部最优"><a href="#解决局部最优" class="headerlink" title="解决局部最优"></a>解决局部最优</h4><p>1，允许坏解的运动 deteriorating moves（模拟退火）</p>
+<p>2，在解决方案上施加扰动perturbation以将其移至其他位置</p>
+<p>3，更改邻居（可变邻居搜索<em>variable neighborhood search</em>）</p>
+<p>4，惩罚当前的局部最优值</p>
+<p>5，同时保留多个解（填充），然后将它们交叉在一起以生成新的起点（带有交叉算子的遗传算法）</p>
+<p>6，重复一个建设性的过程来创建新解，并根据先前解中的成功（信息素）来促进良好的建设决策（如蚁群优化/强化学习）。</p>
+<h4 id="metaheuristic定义"><a href="#metaheuristic定义" class="headerlink" title="metaheuristic定义"></a>metaheuristic定义</h4><p>元启发法被正式定义为一种迭代生成过程，该过程通过组合智能的不同概念来探索和利用搜索空间来引导从属启发法，并使用学习策略来构造信息，以便有效地找到接近最优的解决方案</p>
+<p>一些特点：目标是有效地探索搜索空间以找到高质量的解，允许逃出局部最优，方法的抽象级别描述，元启发法通常是不确定的，最近的元启发法会从他们过去的搜索经验中“学习”以指导搜索。</p>
 
     </div>
 
@@ -374,7 +383,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#组合优化问题"><span class="nav-number">1.</span> <span class="nav-text">组合优化问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#问题引入"><span class="nav-number">1.1.</span> <span class="nav-text">问题引入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#NP难问题的一些解决方法"><span class="nav-number">1.2.</span> <span class="nav-text">NP难问题的一些解决方法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#局部搜索启发式"><span class="nav-number">2.</span> <span class="nav-text">局部搜索启发式</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#组合优化问题"><span class="nav-number">1.</span> <span class="nav-text">组合优化问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#问题引入"><span class="nav-number">1.1.</span> <span class="nav-text">问题引入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#NP难问题的一些解决方法"><span class="nav-number">1.2.</span> <span class="nav-text">NP难问题的一些解决方法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#局部搜索启发式"><span class="nav-number">2.</span> <span class="nav-text">局部搜索启发式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#局部搜索"><span class="nav-number">2.1.</span> <span class="nav-text">局部搜索</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#解决局部最优"><span class="nav-number">2.2.</span> <span class="nav-text">解决局部最优</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#metaheuristic定义"><span class="nav-number">2.3.</span> <span class="nav-text">metaheuristic定义</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
