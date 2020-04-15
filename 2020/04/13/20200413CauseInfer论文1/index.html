@@ -47,16 +47,16 @@
   };
 </script>
 
-  <meta name="description" content="ABS &amp;amp; Intro云系统背景cloud-based and cloud-centric systems always consist of a mass of components running in large distributed environments with complicated interactions.">
+  <meta name="description" content="ABS &amp;amp; Intro云系统背景许多组件，复杂交互：cloud-based and cloud-centric systems always consist of a mass of components running in large distributed environments with complicated interactions.">
 <meta name="keywords" content="AIOps,论文,faultDiagnosis,RootCause">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CauseInfer论文（partI）">
 <meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;04&#x2F;13&#x2F;20200413CauseInfer%E8%AE%BA%E6%96%871&#x2F;index.html">
 <meta property="og:site_name" content="WangXue">
-<meta property="og:description" content="ABS &amp;amp; Intro云系统背景cloud-based and cloud-centric systems always consist of a mass of components running in large distributed environments with complicated interactions.">
+<meta property="og:description" content="ABS &amp;amp; Intro云系统背景许多组件，复杂交互：cloud-based and cloud-centric systems always consist of a mass of components running in large distributed environments with complicated interactions.">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200414CauseInfer_fig1.jpg">
-<meta property="og:updated_time" content="2020-04-15T13:07:58.147Z">
+<meta property="og:updated_time" content="2020-04-15T14:18:58.879Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200414CauseInfer_fig1.jpg">
 
@@ -242,7 +242,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-15 21:07:58" itemprop="dateModified" datetime="2020-04-15T21:07:58+08:00">2020-04-15</time>
+                <time title="修改时间：2020-04-15 22:18:58" itemprop="dateModified" datetime="2020-04-15T22:18:58+08:00">2020-04-15</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -288,12 +288,12 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h3 id="ABS-amp-Intro"><a href="#ABS-amp-Intro" class="headerlink" title="ABS &amp; Intro"></a>ABS &amp; Intro</h3><h4 id="云系统背景"><a href="#云系统背景" class="headerlink" title="云系统背景"></a>云系统背景</h4><p>cloud-based and cloud-centric systems always consist of a mass of components running in large distributed environments with complicated interactions.</p><a id="more"></a>
-<h4 id="性能问题"><a href="#性能问题" class="headerlink" title="性能问题"></a>性能问题</h4><p> highly dynamic runtime environment changes (e.g., overload and resource contention竞争，内部损伤) or software bugs (e.g., memory leak 外部)</p>
+        <h3 id="ABS-amp-Intro"><a href="#ABS-amp-Intro" class="headerlink" title="ABS &amp; Intro"></a>ABS &amp; Intro</h3><h4 id="云系统背景"><a href="#云系统背景" class="headerlink" title="云系统背景"></a>云系统背景</h4><p><strong>许多组件，复杂交互</strong>：cloud-based and cloud-centric systems always consist of a mass of components running in large distributed environments with complicated interactions.</p><a id="more"></a>
+<h4 id="性能问题"><a href="#性能问题" class="headerlink" title="性能问题"></a>性能问题</h4><p><strong>引起性能问题的一些因素</strong>：highly dynamic runtime environment changes (e.g., overload and resource contention竞争，内部损伤) or software bugs (e.g., memory leak 外部)</p>
 <p>必要性：在多租户云平台中，由于多个应用程序在同一位置，资源争用会导致持久的性能下降。在实际的生产系统中，性能问题可能会导致巨大的收入损失。（亚马逊数据）</p>
 <p>定位好处：为系统管理员提供一些见解，例如瓶颈在哪里，或者两个应用程序适合共存于同一台机器上。如果快速找到根本原因，则可以显着降低云应用程序的MTTR。</p>
 <h4 id="细粒度根因定位困难"><a href="#细粒度根因定位困难" class="headerlink" title="细粒度根因定位困难"></a>细粒度根因定位困难</h4><p>困难原因：due to complicated interactions and a large cardinality of potential cause set.</p>
-<h5 id="系统监控"><a href="#系统监控" class="headerlink" title="系统监控"></a>系统监控</h5><p>监控中心以固定的时间间隔收集性能指标（例如CPU使用率），并在SLO（Service level objective）指标（例如响应时间）超过预设阈值时发出警报。 如果发生警报，系统管理员将始终手动查明罪魁祸首。 但是，手动诊断可能非常费力，费时，甚至容易出错。</p>
+<h5 id="系统监控"><a href="#系统监控" class="headerlink" title="系统监控"></a>系统监控</h5><p>监控中心以固定的时间间隔收集性能指标（例如CPU使用率），并在SLO（Service level objective）指标（例如响应时间）超过预设阈值时发出警报。 如果发生警报，系统管理员将始终手动查明罪魁祸首。 但手动诊断可能非常费力费时容易出错。</p>
 <h4 id="本文内容"><a href="#本文内容" class="headerlink" title="本文内容"></a>本文内容</h4><p>构建CauseInfer系统，指出根因原因与给出提示。</p>
 <p>CauseInfer可以自动将分布式系统映射到两层分层的因果关系图，并沿着因果关系图中的因果路径推断根本原因。 CauseInfer以明确的方式对故障传播路径进行建模，并且无需对正在运行的生产系统进行检测即可工作，</p>
 <p>这使得CauseInfer比以前的方法更加有效和实用。 在两个基准系统中的实验评估表明，CauseInfer可以高精度地识别根本原因。 与几种最新方法相比，CauseInfer可以实现10％以上的改进。 此外，CauseInfer轻巧且足够灵活，可以轻松地在大型分布式系统中进行扩展。 使用CauseInfer，可以显着减少云系统的平均恢复时间（MTTR）。</p>
@@ -301,7 +301,7 @@
 <h5 id="相当大的开销"><a href="#相当大的开销" class="headerlink" title="相当大的开销"></a>相当大的开销</h5><p>为了缩小故障位置，几个系统[10]，[12]，[13]，[14]可以非常精细地确定根本原因。但是他们需要检测应用程序源代码或正在运行的系统，这给生产系统带来了可观的开销。 </p>
 <h5 id="因果关系弱"><a href="#因果关系弱" class="headerlink" title="因果关系弱"></a>因果关系弱</h5><p>大量工作[6]，[7]，[8]，[15]以成对方式利用“相关性correlation”分析来发现服务依赖性或运行时系统度量间的依赖性，并推断出根据这些依赖关系的根本原因。但是，<u>“相关”并不等同于“因果关系”</u>。弱的因果关系可能导致诊断结果不准确。</p>
 <h4 id="OurWork"><a href="#OurWork" class="headerlink" title="OurWork"></a>OurWork</h4><h5 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h5><p>在开销和粒度之间存在冲突时，要在两者之间取得平衡是一项艰巨的工作。细粒度总是意味着高开销。本文提出了一种解决方案，可以在不考虑开销的情况下进行细粒度的诊断。</p>
-<p>性能问题原因大致分为两类：即外部和内部损害。前一类包括资源争用，配置错误，过载，资源消耗等等。后者主要指软件错误。此外，我们的主要观察结果是，大多数此类损害可以通过运行时系统指标直接或间接地表现出来，这将在第2节中更详细地说明。此外，这些指标可以通过现成的工具轻松监控。根据此观察，<u>我们的目标是通过将原因归因于最相关的运行时系统指标来缩小导致性能问题的可能原因。</u>例如，如果系统中发生并发错误，则根本原因应归因于违反的“锁定”指标。</p>
+<p>性能问题原因大致分为两类：即<u>外部和内部损害</u>。前一类包括资源争用，配置错误，过载，资源消耗等等。后者主要指软件错误。此外，我们的主要观察结果是，大多数此类损害可以通过运行时系统指标直接或间接地表现出来，这将在第2节中更详细地说明。此外，这些指标可以通过现成的工具轻松监控。根据此观察，<u>我们的目标是通过将原因归因于最相关的运行时系统指标来缩小导致性能问题的可能原因。</u>例如，如果系统中发生并发错误，则根本原因应归因于违反的“锁定”指标。</p>
 <h5 id="两关键问题"><a href="#两关键问题" class="headerlink" title="两关键问题"></a>两关键问题</h5><p>i）如何对正在运行的服务和运行时性能指标之间的因果关系进行建模，以及（ii）如何使用具有成本效益的方法来推断根本原因。</p>
 <h5 id="CauseInfer简介"><a href="#CauseInfer简介" class="headerlink" title="CauseInfer简介"></a>CauseInfer简介</h5><p>根因指标的变化会导致effect metric的改变，<u>CauseInfer的本质是建立因果图，该因果图用于为运行分布式系统的故障传播路径建模并在因果图中沿因果路径推断根本原因。</u> 为此，CauseInfer首先从多个数据源收集运行时性能指标，然后通过<strong>贝叶斯变化点检测方法</strong> 提取嵌入在这些指标中的变化点。</p>
 <p>利用变化数据，CauseInfer通过基于统计的方法构造两层层次因果图，以解决关键问题（i）。该因果图由一个粗粒度图和一个细粒度图组成。前一个图是通过一种新颖的轻量级流量滞后相关方法<strong>（traffic lag correlation method）</strong>构造的服务级依赖图，旨在将根本原因定位在服务级别上。而后一个图是系统指标/度量metric因果关系图<strong>（system metric causality graph）</strong>，它是通过条件独立性测试[16]在运行时性能指标中构建的，目的是在指标级别找到真正的罪魁祸首。</p>
