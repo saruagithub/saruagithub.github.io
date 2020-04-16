@@ -1,21 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>马尔可夫链蒙特卡洛法MCMC</title>
-    <url>/2020/04/16/20200416%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E9%93%BE%E8%92%99%E7%89%B9%E5%8D%A1%E6%B4%9B%E6%B3%95MCMC/</url>
-    <content><![CDATA[<h3 id="蒙特卡洛法"><a href="#蒙特卡洛法" class="headerlink" title="蒙特卡洛法"></a>蒙特卡洛法</h3><h4 id="随机抽样"><a href="#随机抽样" class="headerlink" title="随机抽样"></a>随机抽样</h4><p>统计学的目的是基于数据对概率分布的特征进行推断。</p><p>蒙特卡洛法要解决的问题：假设概率分布的定义已知，通过抽样获得概率分布的随机样本，通过得到的<strong>随机样本</strong>对概率分布的特征进行分析。</p><p>几种抽样：直接抽样，接受-拒绝抽样（先按照建议分布的概率密度函数 $q(x)$ 抽样，建议分布需要满足对任一$x$ 满足 $cq(x) \geq p(x) $，再按照 $\frac{p(x^{\star})}{cq(x^{\star})}$ 的比例随机决定是否接受 $x^{\star}$），重要性抽样</p><a id="more"></a>
-
-
-<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，《统计学习方法》</p>
-]]></content>
-      <categories>
-        <category>机器学习</category>
-      </categories>
-      <tags>
-        <tag>机器学习</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>组合优化问题的启发式算法</title>
     <url>/2020/04/15/20200415%E7%BB%84%E5%90%88%E4%BC%98%E5%8C%96%E9%97%AE%E9%A2%98%E7%9A%84%E5%90%AF%E5%8F%91%E5%BC%8F%E7%AE%97%E6%B3%95/</url>
     <content><![CDATA[<h3 id="组合优化问题"><a href="#组合优化问题" class="headerlink" title="组合优化问题"></a>组合优化问题</h3><h4 id="问题引入"><a href="#问题引入" class="headerlink" title="问题引入"></a>问题引入</h4><p>车辆路径规划问题，n位客户，在不同地点，有需求。在中央仓库有m辆车辆的均质车队。这是一个NP难问题，这类问题中，启发式和元启发式是实践中最常用的VRP解决方案。</p><p>启发式算法：模拟退火，遗传算法，蚁群优化算法等。</p><h4 id="NP难问题的一些解决方法"><a href="#NP难问题的一些解决方法" class="headerlink" title="NP难问题的一些解决方法"></a>NP难问题的一些解决方法</h4><p>1，精确方法（枚举，约束编程，分支定界，分支与剪切）是非多项式的，通常可以处理一定规模的问题实例（如旅行商问题TSP的80000节点）。</p><a id="more"></a>
@@ -843,8 +828,8 @@
         <category>AIOps</category>
       </categories>
       <tags>
-        <tag>机器学习</tag>
         <tag>异常检测</tag>
+        <tag>机器学习</tag>
         <tag>AIOps</tag>
       </tags>
   </entry>
@@ -1087,6 +1072,21 @@
         <tag>机器学习</tag>
         <tag>AIOps</tag>
         <tag>统计学</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>马尔可夫链蒙特卡洛法MCMC</title>
+    <url>/2020/01/16/20200116%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E9%93%BE%E8%92%99%E7%89%B9%E5%8D%A1%E6%B4%9B%E6%B3%95MCMC/</url>
+    <content><![CDATA[<h3 id="蒙特卡洛法"><a href="#蒙特卡洛法" class="headerlink" title="蒙特卡洛法"></a>蒙特卡洛法</h3><h4 id="随机抽样"><a href="#随机抽样" class="headerlink" title="随机抽样"></a>随机抽样</h4><p>统计学的目的是基于数据对概率分布的特征进行推断。</p><p>蒙特卡洛法要解决的问题：假设概率分布的定义已知，通过抽样获得概率分布的随机样本，通过得到的<strong>随机样本</strong>对概率分布的特征进行分析。</p><p>几种抽样：直接抽样，接受-拒绝抽样（先按照建议分布的概率密度函数 $q(x)$ 抽样，建议分布需要满足对任一$x$ 满足 $cq(x) \geq p(x) $，再按照 $\frac{p(x^{\star})}{cq(x^{\star})}$ 的比例随机决定是否接受 $x^{\star}$），重要性抽样</p><a id="more"></a>
+
+
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，《统计学习方法》</p>
+]]></content>
+      <categories>
+        <category>机器学习</category>
+      </categories>
+      <tags>
+        <tag>机器学习</tag>
       </tags>
   </entry>
   <entry>
