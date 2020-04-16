@@ -98,8 +98,9 @@
 <p>给定块和参数，不同块中的观测值是相互独立的。 应该给每个块的突变点和参数一个先验的概率分布 $\mu_{i,j}$ （是在位置i+1开始在j结束的块的均值）服从 $N\left(\mu_{0}, \sigma_{2}^{0} /(j-i)\right)$</p>
 <p>给定观测序列：$X=\left(x_{1}, x_{2}, \cdots, x_{n}\right)$ ，目标是找到划分 $\rho=\left(P_{1}, P_{2}, P_{3}, \cdots, P_{n-1}\right)$ ，如果$P_i = 1$ ，则表示位置i+1有一个变化change。$\theta_i$ 表示$x_i$所在的划分P的统计参数。</p>
 <p>Barry报告，参数序列$\theta_i$ 形成一个<strong>马尔可夫链</strong>：以概率$ 1 -p_i$ 假设 $\theta_i = \theta_{i+1}$ ，即$x_i,x_{i+1}$ 是属于相同的划分 ，or或者说以概率 $p_i$ 存在一个条件密度 $f\left(\theta_{i+1} | \theta_{i}\right)$ 。因此，我们使用一个马尔可夫蒙特卡洛法来计算一个近似划分。</p>
-<p>在马尔可夫链的每一层转移，根据观测值的序列和 $P_j$ 的当前值，从$P_i$的条件分布中获得 $P_i$ 的值，从$P_i$的条件分布中获取$P_i$ 值 ，$j \neq i$。在迭代的开始，我们为所有i都初始化 $P_i = 0$ 。转移概率 $p_i$ ，对于位置 $i+1$ 处的突变点的条件概率可以通过以下公式估计：</p>
-<script type="math/tex; mode=display">\frac{p_{i}}{1-p_{i}}=\frac{\left(P_{i}=1 | X, P_{j}, j \neq i\right)}{\left(P_{i}=0 | X, P_{j}, j \neq i\right)}</script><h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1, Chen P, Qi Y, Hou D. CauseInfer: automated end-to-end performance diagnosis with hierarchical causality graph in cloud environment[J]. IEEE transactions on services computing, 2016, 12(2): 214-230.</p>
+<p>在马尔可夫链的每一层转移，根据观测值的序列和 $P_j$ 的当前值，从$P_i$的条件分布中获得 $P_i$ 的值，从$P_i$的条件分布中获取$P_i$ 值 ，$j \neq i$。在迭代的开始，我们为所有i都初始化 $P_i = 0$ 。转移概率 $p_i$ ，对于位置 $i+1$ 处的突变点的条件概率可以通过以下公式估计（参考论文22，这些表达式的参数设置）：</p>
+<script type="math/tex; mode=display">\frac{p_{i}}{1-p_{i}}=\frac{\left(P_{i}=1 | X, P_{j}, j \neq i\right)}{\left(P_{i}=0 | X, P_{j}, j \neq i\right)}</script><p>因此我们可以获得 $f\left(P_{i}=1 | X, P_{j}, j \neq i\right)$ 和 随机采样$P_i$ 。在一次MCMC迭代中，为每个$P_{i}(1 \leq i \leq n)$ 产生一个值。每次迭代，后验均值$\mu_{i, j}$ 将根据当前划分进行更新。M次迭代以后，我们利用 $\mu_{i, j}$ 的M个估计的平均值作为给定X的后验均值的近似值。</p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1, Chen P, Qi Y, Hou D. CauseInfer: automated end-to-end performance diagnosis with hierarchical causality graph in cloud environment[J]. IEEE transactions on services computing, 2016, 12(2): 214-230.</p>
 ]]></content>
       <categories>
         <category>AIOps</category>
