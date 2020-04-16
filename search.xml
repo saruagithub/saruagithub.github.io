@@ -87,7 +87,15 @@
 <h4 id="系统模块详述"><a href="#系统模块详述" class="headerlink" title="系统模块详述"></a>系统模块详述</h4><h5 id="数据收集"><a href="#数据收集" class="headerlink" title="数据收集"></a>数据收集</h5><p><strong>时序数据收集</strong>：我们的目标是确定由根本原因（例如配置错误，过载，资源占用，软件错误等）引起的性能问题的根源。因此，<u>数据收集模块应收集足够多的运行时信息</u>，从应用程序、流程processes到操作系统的不同软件堆栈的多个数据源。当前CauseInfer仅支持数字数据，但不包括非数字数据，例如日志事件，非数字配置项等。</p>
 <p><strong>SLO标准指标TCP时延</strong>：对于基于云或以云为中心的服务，最终用户体验是关键。一个特定应用程序的SLO指标（例如响应时间）可以直接显示最终用户的体验。SLO指标针对不同的应用程序而有所不同。因此，我们提出了一个<u>新的统一SLO度量标准，即TCP请求等待时间（TCP LATENCY）</u>。通过测量通过特定网络端口的最后一个入站数据包（即请求）和第一个出站数据包（即响应）之间的等待时间来获得TCP延迟。尽管此指标很简单，但在我们的系统中效果很好。</p>
 <p><strong>其他指标获取</strong>：对于与流程processes和操作系统相关的指标，我们使用操作系统随附的工具（例如，Linux OS中的/ proc文件系统）收集它们。 除了两个指标标准（即每个进程发送的数据包数量以及内核空间和用户空间的锁lock状态）外，大多数系统度量标准都可以通过这种方式获得。 为了获得前一个指标，我们通过探测与网络传输相关的kprobes [20]（例如netdev.transmit）来捕获信息。 同样，我们通过探测相应的Kprobes来捕获锁定状态。 这些Kprobes已合并到主流Linux操作系统中。</p>
-<h5 id="数据预处理"><a href="#数据预处理" class="headerlink" title="数据预处理"></a>数据预处理</h5><h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1, Chen P, Qi Y, Hou D. CauseInfer: automated end-to-end performance diagnosis with hierarchical causality graph in cloud environment[J]. IEEE transactions on services computing, 2016, 12(2): 214-230.</p>
+<h5 id="数据预处理"><a href="#数据预处理" class="headerlink" title="数据预处理"></a>数据预处理</h5><p><strong>Data aggregation</strong>：看到一个应用程序生成多个具有相同名称的进程processes来提供服务的情况并不少见。 例如，Apache httpd在Linux操作系统中总是生成多个具有相同名称“ httpd”的进程来处理Web请求。 在这种情况下，我们将这些流程的绩效指标聚合在一起。</p>
+<p><strong>Metric selection</strong>：图4，一些指标高度相关correlation，需要减少冗余指标。</p>
+<p><u>指标选择以简单的成对方式进行</u>：如果两个指标的Pearson相关系数的绝对值超过预设阈值（在本文中为0.8），则将其中一个消除。 例如，在图5中，CPU Int和CPU Irq的相关系数接近1。因此，我们将从CPU Int和CPU Irq中随机选择一个。</p>
+<p> 但是对于那些预定义的根因指标（例如工作量workload和配置项configuration），我们将始终将其保留在指标集中。</p>
+<h5 id="离线change-point-detection"><a href="#离线change-point-detection" class="headerlink" title="离线change point detection"></a>离线change point detection</h5><p>cause-effect定义：如果一个变量变化导致另一个变量变化，则这俩者有因果关系。</p>
+<p>首先识别系统指标里的changes突变。</p>
+<p>这可以被认为是离线分割问题。 但是挑战在于细分的数量，每个细分中的统计特征（即均值或方差）事先未知。 在常规方法中，始终采用CUSUM [8]，[21]通过检查时间序列均值的违反violation来检测变化点。 但是CUSUM需要至少一个先验知识，即（i）突变之前的充分值分布统计信息，（ii）突变后，由于这些知识未知，因此不服从。 因此，我们介绍了一种<strong>基于贝叶斯理论的新颖方法，即贝叶斯变化点检测</strong>（BCP）[22]。 变更点检测过程不仅提取变更，而且以二进制格式统一不同尺度的不同系统的指标，这意味着度量数据仅包含“ 0”（未更改）和“ 1”（更改）。</p>
+<p><strong>BCP的基本思想</strong>：是找到一个参数的基本序列，该序列将时间序列划分为具有相等参数值的连续块，并定位突变点的位置，即每个块的开始。</p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1, Chen P, Qi Y, Hou D. CauseInfer: automated end-to-end performance diagnosis with hierarchical causality graph in cloud environment[J]. IEEE transactions on services computing, 2016, 12(2): 214-230.</p>
 ]]></content>
       <categories>
         <category>AIOps</category>
