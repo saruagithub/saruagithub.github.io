@@ -24,12 +24,13 @@
 <p>一些特点：目标是有效地探索搜索空间以找到高质量的解，允许逃出局部最优，方法的抽象级别描述，元启发法通常是不确定的，最近的元启发法会从他们过去的搜索经验中“学习”以指导搜索。</p>
 ]]></content>
       <categories>
-        <category>算法</category>
+        <category>机器学习</category>
       </categories>
       <tags>
         <tag>算法</tag>
         <tag>组合优化</tag>
         <tag>启发式算法</tag>
+        <tag>优化算法</tag>
       </tags>
   </entry>
   <entry>
@@ -76,7 +77,7 @@
 <p>如果在一个节点中检测到SLO违规，则根据指标因果关系图进行细粒度的推断。 在本文中，我们将使用第4.1节中描述的统一指标标准<u>TCP请求延迟</u>来表示特定服务的SLO度量标准。</p>
 <p><img src="/images/20200415CauseInfer_pig1.jpg" alt="20200415CauseInfer_pig1"></p>
 <p>CauseInfer的基本结构和工作流程。 最底层是三层系统的物理拓扑。 顶部是抽象的服务和指标因果关系图。 在因果关系图中，大虚线圆圈表示服务，红色节点表示根本原因，黑色节点表示性能指标，绿色节点表示SLO指标，弧线表示因果关系，箭头表示方向 故障传播。</p>
-<p>举例：我们假设服务II节点中的指标E是根本原因。 当检测到服务I的SLO违反时，将触发原因推断。 在对服务I节点进行原因推断后，我们将性能异常定位于指标A。指标A是服务II的响应时间，它也是服务I指标因果关系图中的根本原因节点。异常A意味着 服务II的SLO被违反。 </p>
+<p><strong>举例</strong>：我们假设服务II节点中的指标E是根本原因。 当检测到服务I的SLO违反时，将触发原因推断。 在对服务I节点进行原因推断后，我们将性能异常定位于指标A。指标A是服务II的响应时间，它也是服务I指标因果关系图中的根本原因节点。异常A意味着 服务II的SLO被违反。 </p>
 <p>因此，服务II节点中的根因推断被触发，并根据该节点的指标因果关系图继续进行推断。 最后，我们获得了根本原因，度量E。整个推理路径为SLO→A→D→E。</p>
 <p>值得注意的是，由于统计误差和系统噪声，结果可能包含多个度量。 因此，必须有根因排名过程来减少误报并选择最可能的根本原因。</p>
 <h3 id="系统设计"><a href="#系统设计" class="headerlink" title="系统设计"></a>系统设计</h3><h4 id="系统模块简介"><a href="#系统模块简介" class="headerlink" title="系统模块简介"></a>系统模块简介</h4><p>如图3所示，CauseInfer系统主要包含两部分，即<strong>离线因果图构建和在线原因推断</strong>。 </p>
@@ -86,7 +87,7 @@
 <h4 id="系统模块详述"><a href="#系统模块详述" class="headerlink" title="系统模块详述"></a>系统模块详述</h4><h5 id="数据收集"><a href="#数据收集" class="headerlink" title="数据收集"></a>数据收集</h5><p><strong>时序数据收集</strong>：我们的目标是确定由根本原因（例如配置错误，过载，资源占用，软件错误等）引起的性能问题的根源。因此，<u>数据收集模块应收集足够多的运行时信息</u>，从应用程序、流程processes到操作系统的不同软件堆栈的多个数据源。当前CauseInfer仅支持数字数据，但不包括非数字数据，例如日志事件，非数字配置项等。</p>
 <p><strong>SLO标准指标TCP时延</strong>：对于基于云或以云为中心的服务，最终用户体验是关键。一个特定应用程序的SLO指标（例如响应时间）可以直接显示最终用户的体验。SLO指标针对不同的应用程序而有所不同。因此，我们提出了一个<u>新的统一SLO度量标准，即TCP请求等待时间（TCP LATENCY）</u>。通过测量通过特定网络端口的最后一个入站数据包（即请求）和第一个出站数据包（即响应）之间的等待时间来获得TCP延迟。尽管此指标很简单，但在我们的系统中效果很好。</p>
 <p><strong>其他指标获取</strong>：对于与流程processes和操作系统相关的指标，我们使用操作系统随附的工具（例如，Linux OS中的/ proc文件系统）收集它们。 除了两个指标标准（即每个进程发送的数据包数量以及内核空间和用户空间的锁lock状态）外，大多数系统度量标准都可以通过这种方式获得。 为了获得前一个指标，我们通过探测与网络传输相关的kprobes [20]（例如netdev.transmit）来捕获信息。 同样，我们通过探测相应的Kprobes来捕获锁定状态。 这些Kprobes已合并到主流Linux操作系统中。</p>
-<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1, Chen P, Qi Y, Hou D. CauseInfer: automated end-to-end performance diagnosis with hierarchical causality graph in cloud environment[J]. IEEE transactions on services computing, 2016, 12(2): 214-230.</p>
+<h5 id="数据预处理"><a href="#数据预处理" class="headerlink" title="数据预处理"></a>数据预处理</h5><h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1, Chen P, Qi Y, Hou D. CauseInfer: automated end-to-end performance diagnosis with hierarchical causality graph in cloud environment[J]. IEEE transactions on services computing, 2016, 12(2): 214-230.</p>
 ]]></content>
       <categories>
         <category>AIOps</category>
