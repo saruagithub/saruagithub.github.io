@@ -124,6 +124,7 @@
 <script type="math/tex; mode=display">\begin{aligned} G^{2} &=2 m C E(X, Y | \mathbf{Z}) \\ &=\sum_{z} P(z) \sum_{x} \sum_{y} P(x, y | z) \log \left(\frac{P(x, y | z)}{p(x | z) \cdot p(y | z)}\right) \end{aligned}</script><p>m: sample size</p>
 <p>$C E(X, Y | \mathbf{Z})$ the conditional cross entropy of X and Y given <strong>Z</strong>.</p>
 <p>度量$G^2$服从$\chi^{2}$ ，自由度是：$\left(N_{X}-1\right)\left(N_{Y}-1\right) \prod_{Z^{\prime} \in \mathbf{Z}} N_{Z^{\prime}}$</p>
+<p>$N_{X}, N_{Y} ,N_{Z^{\prime}}$ 各自代表变量 $X ,Y, Z’$ 的值。卡方测试我们可以决定是否接受独立性假设。</p>
 <h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1, Chen P, Qi Y, Hou D. CauseInfer: automated end-to-end performance diagnosis with hierarchical causality graph in cloud environment[J]. IEEE transactions on services computing, 2016, 12(2): 214-230.</p>
 ]]></content>
       <categories>
@@ -852,8 +853,8 @@
         <category>AIOps</category>
       </categories>
       <tags>
-        <tag>异常检测</tag>
         <tag>机器学习</tag>
+        <tag>异常检测</tag>
         <tag>AIOps</tag>
       </tags>
   </entry>
@@ -926,8 +927,8 @@
         <category>经历</category>
       </categories>
       <tags>
-        <tag>计算机</tag>
         <tag>IT行业</tag>
+        <tag>计算机</tag>
       </tags>
   </entry>
   <entry>
@@ -2819,8 +2820,8 @@ capacity = \left( \begin{array} { c } { n } \\ { w } \end{array} \right) = \frac
         <category>读书笔记</category>
       </categories>
       <tags>
-        <tag>IT行业</tag>
         <tag>读书笔记</tag>
+        <tag>IT行业</tag>
       </tags>
   </entry>
   <entry>
