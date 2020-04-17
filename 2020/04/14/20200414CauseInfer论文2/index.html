@@ -58,7 +58,7 @@
 <meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200415CauseInfer_pig1.jpg">
 <meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200415CauseInfer_fig4.jpg">
 <meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200417CauseInfer_fig7.png">
-<meta property="og:updated_time" content="2020-04-17T07:47:38.629Z">
+<meta property="og:updated_time" content="2020-04-17T07:56:53.947Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200415CauseInfer_pig1.jpg">
 
@@ -244,7 +244,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-17 15:47:38" itemprop="dateModified" datetime="2020-04-17T15:47:38+08:00">2020-04-17</time>
+                <time title="修改时间：2020-04-17 15:56:53" itemprop="dateModified" datetime="2020-04-17T15:56:53+08:00">2020-04-17</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -348,7 +348,9 @@
 <script type="math/tex; mode=display">\begin{aligned} G^{2} &=2 m C E(X, Y | \mathbf{Z}) \\ &=\sum_{z} P(z) \sum_{x} \sum_{y} P(x, y | z) \log \left(\frac{P(x, y | z)}{p(x | z) \cdot p(y | z)}\right) \end{aligned}</script><p>m: sample size</p>
 <p>$C E(X, Y | \mathbf{Z})$ the conditional cross entropy of X and Y given <strong>Z</strong>.</p>
 <p>度量$G^2$服从$\chi^{2}$ ，自由度是：$\left(N_{X}-1\right)\left(N_{Y}-1\right) \prod_{Z^{\prime} \in \mathbf{Z}} N_{Z^{\prime}}$</p>
-<p>$N_{X}, N_{Y} ,N_{Z^{\prime}}$ 各自代表变量 $X ,Y, Z’$ 的值。卡方测试我们可以决定是否接受独立性假设。</p>
+<p>$N_{X}, N_{Y} ,N_{Z^{\prime}}$ 各自代表变量 $X ,Y, Z’$ 的值。卡方测试我们可以决定是否接受独立性假设。$p &gt; \xi$ 接受独立性假设。</p>
+<p>给定 $Z$ 如果 $X$ 独立于 $Y$ ，则 $I(X, Y | \mathbf{Z})=1$</p>
+<p>PC算法从完全连接的无向图开始，然后促进 $G^2$ 以成对方式捕获所有变量中的所有独立关系，即该DAG的骨架。 以下工作是使用D分隔[26]，[32]确定因果关系的方向。</p>
 <h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1, Chen P, Qi Y, Hou D. CauseInfer: automated end-to-end performance diagnosis with hierarchical causality graph in cloud environment[J]. IEEE transactions on services computing, 2016, 12(2): 214-230.</p>
 
     </div>
