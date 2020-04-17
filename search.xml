@@ -131,11 +131,13 @@
 <p>我们首先为aggressive（没有先验知识）算法准备系统指标。对于没有任何依赖服务的服务（例如数据库服务），因果关系图仅使用本地系统指标来构建。</p>
 <p>但是对于具有依赖服务（例如Web服务）的因果关系图，不仅使用本地系统度量标准，而且还使用其依赖服务的TCP LATENCY度量标准来构建。</p>
 <p>为了诊断由共置co-located服务引起的性能问题，我们将其系统指标集成到此算法中。本文中训练数据的长度设置为200，因为200个数据点足以建立精确的因果图。</p>
-<p>然后，我们采用PC algorithm构建DAG。由于缺乏证据，统计错误或非因果关系，获得的DAG可能包含多个孤立的子图，违反直觉的因果关系和双向链接。例如，在图8（a）中，M5是隔离的，因果关系M 4→M 2是反直觉的，并且M 1和M 4之间的因果关系是双向的。</p>
+<p>然后，我们<u>采用PC algorithm构建DAG</u>。由于缺乏证据，统计错误或非因果关系，获得的DAG可能包含多个孤立的子图，违反直觉的因果关系和双向链接。例如，在图8（a）中，M5是隔离的，因果关系M 4→M 2是反直觉的，并且M 1和M 4之间的因果关系是双向的。</p>
 <p>为了从SLO指标推断出根本原因，我们进一步使用以下规则从DAG中选择一个最大子图。规则1：作为最终effect metric的本地服务的TCP LATENCY指标没有后代。</p>
 <p>规则2：最终指标可从图中的任何路径可达。</p>
 <p>规则3：对于双向链接，两个方向均被保留，这意味着两个指标标准可能在彼此之间引起影响。</p>
 <p><img src="/images/20200417fig8a.png" alt="20200417fig8a"></p>
+<p><em>aggressive</em> algorithm in Algorithm 1 伪代码（见paper）</p>
+<p><img src="/images/20200417CauseInferFig9.jpg" alt="20200417CauseInferFig9"></p>
 <h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1, Chen P, Qi Y, Hou D. CauseInfer: automated end-to-end performance diagnosis with hierarchical causality graph in cloud environment[J]. IEEE transactions on services computing, 2016, 12(2): 214-230.</p>
 ]]></content>
       <categories>
