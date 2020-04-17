@@ -66,7 +66,7 @@
   <entry>
     <title>CauseInfer论文(Part Ⅱ)</title>
     <url>/2020/04/14/20200414CauseInfer%E8%AE%BA%E6%96%872/</url>
-    <content><![CDATA[<h3 id="CauseInfer的系统概述与工作流"><a href="#CauseInfer的系统概述与工作流" class="headerlink" title="CauseInfer的系统概述与工作流"></a>CauseInfer的系统概述与工作流</h3><h4 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h4><p><strong>两层因果关系图</strong>：们将诊断问题公式化为根因推断问题。为了推断服务和系统指标之间的根本原因，我们将运行中的分布式系统映射到<u>两层分层的因果关系图 two layered hierarchical causality graph。</u> 因果关系图中的每个有向边代表直接的“因果关系”关系。“因果关系cause effect”的合理基础是 原因指标cause metric的变化会导致影响指标effect metric的变化。</p><a id="more"></a>
+    <content><![CDATA[<h3 id="CauseInfer的系统概述与工作流"><a href="#CauseInfer的系统概述与工作流" class="headerlink" title="CauseInfer的系统概述与工作流"></a>CauseInfer的系统概述与工作流</h3><h4 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h4><p><strong>两层因果关系图</strong>：将诊断问题公式化为根因推断问题。为了推断服务和系统指标之间的根本原因，我们将运行中的分布式系统映射到<u>两层分层的因果关系图 two layered hierarchical causality graph。</u> 因果关系图中的每个有向边代表直接的“因果关系”关系。“因果关系cause effect”的合理基础是 原因指标cause metric的变化会导致影响指标effect metric的变化。</p><a id="more"></a>
 <p><strong>较高的层</strong>是<u>由服务依赖关系组成的粗粒度因果关系图</u>，用于将故障原因定位到正确的服务。与NetMedic [15]不同，我们通过分析两个服务之间的通信延迟相关性（traffic lag correlation）来构造服务依赖关系图。</p>
 <p><strong>较低的层</strong>是<u>由系统指标组成的细粒度因果关系图</u>，用于定位到正确的指标。指标因果关系图是通过“因果关系cause effect”概念而不是传统的“相关correlation”概念构建的。</p>
 <p><br></p>
