@@ -111,6 +111,7 @@
 <p><strong>Service Dependency Graph</strong></p>
 <p><strong>流量关联方法</strong>是一种通用的轻量级方法，无需更改源代码或准备其他知识。基本思想是两个相关服务之间的流量延迟通常表现出“典型”峰值，反映了使用或提供这些服务之间的潜在延迟。 a，我们的方法仅关注使用<strong>TCP</strong>作为其底层传输协议的有限应用程序集，尽管可以很容易地对其进行扩展。 b， 我们的方法依赖于现代操作系统的新属性，例如网络统计工具和用于探测系统调用的内核探测器。 C，我们利用流量延迟来确定依赖方向，而不是确定依赖结构。</p>
 <p>我们使用<strong>两元组（ip，服务名称）</strong>而不是三元组（ip，端口，协议）来标识服务。在分布式系统中，ip表示唯一的主机，服务名称表示在主机中运行的唯一服务。 我们遵循Orion系统中服务依赖项的定义，即如果服务A需要服务B来满足其客户端A→B的某些请求。例如，Web服务需要从数据库服务维护的数据库中获取内容，因此 我们说Web服务取决于数据库服务。 在本文中，我们只关心在现代云应用程序中占主导地位的客户端-服务器应用程序。</p>
+<p>该方法开始于使用连接信息来构造服务依赖图的框架。 借助一些现成的网络监控工具（例如netstat），<u>我们获得了所有服务连接信息的列表</u>，包括协议，源IP，目标IP，端口和连接状态（例如，侦听或已建立）。 然后，我们从一堆由TCP协议标记的实时连接中筛选出源和目标信息。 图6展示了一个节点中选定的连接对样本。 每个连接的格式为 source ip : port → destination ip : port, which is called a <em>channel</em>称为通道。 该通道非常接近服务依赖关系，但却服务名称。</p>
 <h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1, Chen P, Qi Y, Hou D. CauseInfer: automated end-to-end performance diagnosis with hierarchical causality graph in cloud environment[J]. IEEE transactions on services computing, 2016, 12(2): 214-230.</p>
 ]]></content>
       <categories>
@@ -839,8 +840,8 @@
         <category>AIOps</category>
       </categories>
       <tags>
-        <tag>异常检测</tag>
         <tag>机器学习</tag>
+        <tag>异常检测</tag>
         <tag>AIOps</tag>
       </tags>
   </entry>
