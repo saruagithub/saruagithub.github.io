@@ -98,8 +98,7 @@
 <p> 但是对于那些预定义的根因指标（例如工作量workload和配置项configuration），我们将始终将其保留在指标集中。</p>
 <p><br></p>
 <h5 id="离线change-point-detection"><a href="#离线change-point-detection" class="headerlink" title="离线change point detection"></a>离线change point detection</h5><p>cause-effect定义：如果一个变量变化导致另一个变量变化，则这俩者有因果关系。</p>
-<p>首先识别系统指标里的changes突变。</p>
-<p>这可以被认为是离线分割问题。 但是挑战在于细分的数量，每个细分中的统计特征（即均值或方差）事先未知。 在常规方法中，始终采用CUSUM [8]，[21]通过检查时间序列均值的违反violation来检测变化点。 但是CUSUM需要至少一个先验知识，即（i）突变之前的充分值分布统计信息，（ii）突变后，由于这些知识未知，因此不服从。 因此，我们介绍了一种<strong>基于贝叶斯理论的新颖方法，即贝叶斯变化点检测</strong>（BCP）[22]。 变更点检测过程不仅提取变更，而且以二进制格式统一不同尺度的不同系统的指标，这意味着度量数据仅包含“ 0”（未更改）和“ 1”（更改）。</p>
+<p>首先识别系统指标里的changes突变。这可以被认为是离线分割问题。 但是挑战在于细分的数量，每个细分中的统计特征（即均值或方差）事先未知。  我们介绍了一种<strong>基于贝叶斯理论的新颖方法，即贝叶斯变化点检测</strong>（BCP）[22]。 变更点检测过程不仅提取变更，而且以二进制格式统一不同尺度的不同系统的指标，这意味着度量数据仅包含“ 0”（未更改）和“ 1”（更改）。</p>
 <p>BCP的基本思想**（paper的P5）：是找到一个参数的基本序列，该序列将时间序列划分为具有相等参数值的连续块（序列块），并定位突变点的位置，即每个块的开始。</p>
 <p>给定块和参数，不同块中的观测值是相互独立的。 应该给每个块的突变点和参数一个先验的概率分布 $\mu_{i,j}$ （是在位置i+1开始在j结束的块的均值）服从 $N\left(\mu_{0}, \sigma_{2}^{0} /(j-i)\right)$</p>
 <p>给定观测序列：$X=\left(x_{1}, x_{2}, \cdots, x_{n}\right)$ ，目标是找到划分 $\rho=\left(P_{1}, P_{2}, P_{3}, \cdots, P_{n-1}\right)$ ，如果$P_i = 1$ ，则表示位置i+1有一个变化change。$\theta_i$ 表示$x_i$所在的划分P的统计参数。</p>
@@ -110,7 +109,8 @@
 <p><br></p>
 <h5 id="随机图的构建-Causality-graph-building"><a href="#随机图的构建-Causality-graph-building" class="headerlink" title="随机图的构建 Causality graph building"></a>随机图的构建 Causality graph building</h5><p>$X \rightarrow Y$ X直接影响Y，表示为$X \in p a(Y)$ ，不允许两个变量相互影响。 因此，所有因果关系都可以通过有向无环图（DAG）进行编码。在DAG中，节点代表特定变量，边代表因果关系。 我们依靠观察和假设来形成因果关系理论。 </p>
 <p><strong>Service Dependency Graph</strong></p>
-<p>流量关联方法是一种通用的轻量级方法，无需更改源代码或准备其他知识。基本思想是两个相关服务之间的流量延迟通常表现出“典型”峰值，反映了使用或提供这些服务之间的潜在延迟。 a，我们的方法仅关注使用TCP作为其底层传输协议的有限应用程序集，尽管可以很容易地对其进行扩展。 b， 我们的方法依赖于现代操作系统的新属性，例如网络统计工具和用于探测系统调用的内核探测器。 C，我们利用流量延迟来确定依赖方向，而不是确定依赖结构。</p>
+<p><strong>流量关联方法</strong>是一种通用的轻量级方法，无需更改源代码或准备其他知识。基本思想是两个相关服务之间的流量延迟通常表现出“典型”峰值，反映了使用或提供这些服务之间的潜在延迟。 a，我们的方法仅关注使用<strong>TCP</strong>作为其底层传输协议的有限应用程序集，尽管可以很容易地对其进行扩展。 b， 我们的方法依赖于现代操作系统的新属性，例如网络统计工具和用于探测系统调用的内核探测器。 C，我们利用流量延迟来确定依赖方向，而不是确定依赖结构。</p>
+<p>我们使用<strong>两元组（ip，服务名称）</strong>而不是三元组（ip，端口，协议）来标识服务。在分布式系统中，ip表示唯一的主机，服务名称表示在主机中运行的唯一服务。 我们遵循Orion系统中服务依赖项的定义，即如果服务A需要服务B来满足其客户端A→B的某些请求。例如，Web服务需要从数据库服务维护的数据库中获取内容，因此 我们说Web服务取决于数据库服务。 在本文中，我们只关心在现代云应用程序中占主导地位的客户端-服务器应用程序。</p>
 <h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1, Chen P, Qi Y, Hou D. CauseInfer: automated end-to-end performance diagnosis with hierarchical causality graph in cloud environment[J]. IEEE transactions on services computing, 2016, 12(2): 214-230.</p>
 ]]></content>
       <categories>
