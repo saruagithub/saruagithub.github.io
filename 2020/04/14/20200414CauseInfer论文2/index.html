@@ -58,7 +58,8 @@
 <meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200415CauseInfer_pig1.jpg">
 <meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200415CauseInfer_fig4.jpg">
 <meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200417CauseInfer_fig7.png">
-<meta property="og:updated_time" content="2020-04-17T07:56:53.947Z">
+<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200417fig8a.png">
+<meta property="og:updated_time" content="2020-04-17T08:22:06.840Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200415CauseInfer_pig1.jpg">
 
@@ -244,7 +245,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-17 15:56:53" itemprop="dateModified" datetime="2020-04-17T15:56:53+08:00">2020-04-17</time>
+                <time title="修改时间：2020-04-17 16:22:06" itemprop="dateModified" datetime="2020-04-17T16:22:06+08:00">2020-04-17</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -350,7 +351,16 @@
 <p>度量$G^2$服从$\chi^{2}$ ，自由度是：$\left(N_{X}-1\right)\left(N_{Y}-1\right) \prod_{Z^{\prime} \in \mathbf{Z}} N_{Z^{\prime}}$</p>
 <p>$N_{X}, N_{Y} ,N_{Z^{\prime}}$ 各自代表变量 $X ,Y, Z’$ 的值。卡方测试我们可以决定是否接受独立性假设。$p &gt; \xi$ 接受独立性假设。</p>
 <p>给定 $Z$ 如果 $X$ 独立于 $Y$ ，则 $I(X, Y | \mathbf{Z})=1$</p>
-<p>PC算法从完全连接的无向图开始，然后促进 $G^2$ 以成对方式捕获所有变量中的所有独立关系，即该DAG的骨架。 以下工作是使用D分隔[26]，[32]确定因果关系的方向。</p>
+<p>PC算法从完全连接的无向图开始，然后促进 $G^2$ 以成对方式捕获所有变量中的所有独立关系，即该DAG的骨架。 以下工作是使用D-separation[26]，[32]确定因果关系的方向。</p>
+<p><strong>确定因果关系的方向</strong>：</p>
+<p>我们首先为aggressive（没有先验知识）算法准备系统指标。对于没有任何依赖服务的服务（例如数据库服务），因果关系图仅使用本地系统指标来构建。</p>
+<p>但是对于具有依赖服务（例如Web服务）的因果关系图，不仅使用本地系统度量标准，而且还使用其依赖服务的TCP LATENCY度量标准来构建。</p>
+<p>为了诊断由共置co-located服务引起的性能问题，我们将其系统指标集成到此算法中。本文中训练数据的长度设置为200，因为200个数据点足以建立精确的因果图。</p>
+<p>然后，我们采用PC algorithm构建DAG。由于缺乏证据，统计错误或非因果关系，获得的DAG可能包含多个孤立的子图，违反直觉的因果关系和双向链接。例如，在图8（a）中，M5是隔离的，因果关系M 4→M 2是反直觉的，并且M 1和M 4之间的因果关系是双向的。</p>
+<p>为了从SLO指标推断出根本原因，我们进一步使用以下规则从DAG中选择一个最大子图。规则1：作为最终effect metric的本地服务的TCP LATENCY指标没有后代。</p>
+<p>规则2：最终指标可从图中的任何路径可达。</p>
+<p>规则3：对于双向链接，两个方向均被保留，这意味着两个指标标准可能在彼此之间引起影响。</p>
+<p><img src="/images/20200417fig8a.png" alt="20200417fig8a"></p>
 <h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1, Chen P, Qi Y, Hou D. CauseInfer: automated end-to-end performance diagnosis with hierarchical causality graph in cloud environment[J]. IEEE transactions on services computing, 2016, 12(2): 214-230.</p>
 
     </div>
