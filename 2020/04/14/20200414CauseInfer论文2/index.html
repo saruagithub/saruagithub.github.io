@@ -60,7 +60,7 @@
 <meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200417CauseInfer_fig7.png">
 <meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200417fig8a.png">
 <meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200417CauseInferFig9.jpg">
-<meta property="og:updated_time" content="2020-04-17T08:32:35.233Z">
+<meta property="og:updated_time" content="2020-04-17T10:08:20.791Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200415CauseInfer_pig1.jpg">
 
@@ -246,7 +246,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-17 16:32:35" itemprop="dateModified" datetime="2020-04-17T16:32:35+08:00">2020-04-17</time>
+                <time title="修改时间：2020-04-17 18:08:20" itemprop="dateModified" datetime="2020-04-17T18:08:20+08:00">2020-04-17</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -309,21 +309,23 @@
 <p>值得注意的是，由于统计误差和系统噪声，结果可能包含多个度量。 因此，必须有根因排名过程来减少误报并选择最可能的根本原因。</p>
 <p><br></p>
 <p><br></p>
-<h3 id="系统设计"><a href="#系统设计" class="headerlink" title="系统设计"></a>系统设计</h3><h4 id="系统模块简介"><a href="#系统模块简介" class="headerlink" title="系统模块简介"></a>系统模块简介</h4><p>如图3所示，CauseInfer系统主要包含两部分，即<strong>离线因果图构建和在线原因推断</strong>。 </p>
+<h3 id="系统设计——系统模块简介"><a href="#系统设计——系统模块简介" class="headerlink" title="系统设计——系统模块简介"></a>系统设计——系统模块简介</h3><p>如图3所示，CauseInfer系统主要包含两部分，即<strong>离线因果图构建和在线原因推断</strong>。 </p>
 <p>在线部分包含两个模块，即数据收集模块和原因推断模块。 数据收集模块从特定节点中的多个数据源收集实时系统指标，并将<u>数据存储在时间序列数据库</u>中。 当检测到违反SLO时，将触发根因推断模块。 该模块负责根据因果图生成器生成的<u>因果图来精确定位和排序根因</u>。 最后，获得包含最可能原因的原因列表。</p>
 <p> 离线部分包含三个模块，即预处理模块，突变点检测模块和因果图构建模块。 预处理模块在发送到下一阶段之前会对数据进行一些修改。 突变点change point detection检测模块使用贝叶斯change point检测方法将每个预处理指标转换为二进制数据序列。 因果关系图模块利用二值化数据来构建两层分层的因果关系图。 在下文中，我们将详细描述这些模块。</p>
 <p><img src="/images/20200415CauseInfer_fig4.jpg" alt="20200415CauseInfer_fig4"></p>
 <p><br></p>
-<h4 id="系统模块详述"><a href="#系统模块详述" class="headerlink" title="系统模块详述"></a>系统模块详述</h4><h5 id="数据收集"><a href="#数据收集" class="headerlink" title="数据收集"></a>数据收集</h5><p><strong>时序数据收集</strong>：我们的目标是确定由根本原因（例如配置错误，过载，资源占用，软件错误等）引起的性能问题的根源。因此，<u>数据收集模块应收集足够多的运行时信息</u>，从应用程序、流程processes到操作系统的不同软件堆栈的多个数据源。当前CauseInfer仅支持数字数据，但不包括非数字数据，例如日志事件，非数字配置项等。</p>
+<h3 id="系统设计——详述"><a href="#系统设计——详述" class="headerlink" title="系统设计——详述"></a>系统设计——详述</h3><h4 id="数据收集"><a href="#数据收集" class="headerlink" title="数据收集"></a>数据收集</h4><p><strong>时序数据收集</strong>：我们的目标是确定由根本原因（例如配置错误，过载，资源占用，软件错误等）引起的性能问题的根源。因此，<u>数据收集模块应收集足够多的运行时信息</u>，从应用程序、流程processes到操作系统的不同软件堆栈的多个数据源。当前CauseInfer仅支持数字数据，但不包括非数字数据，例如日志事件，非数字配置项等。</p>
 <p><strong>SLO标准指标TCP时延</strong>：对于基于云或以云为中心的服务，最终用户体验是关键。一个特定应用程序的SLO指标（例如响应时间）可以直接显示最终用户的体验。SLO指标针对不同的应用程序而有所不同。因此，我们提出了一个<u>新的统一SLO度量标准，即TCP请求等待时间（TCP LATENCY）</u>。通过测量通过特定网络端口的最后一个入站数据包（即请求）和第一个出站数据包（即响应）之间的等待时间来获得TCP延迟。尽管此指标很简单，但在我们的系统中效果很好。</p>
 <p><strong>其他指标获取</strong>：对于与流程processes和操作系统相关的指标，我们使用操作系统随附的工具（例如，Linux OS中的/ proc文件系统）收集它们。 除了两个指标标准（即每个进程发送的数据包数量以及内核空间和用户空间的锁lock状态）外，大多数系统度量标准都可以通过这种方式获得。 为了获得前一个指标，我们通过探测与网络传输相关的kprobes [20]（例如netdev.transmit）来捕获信息。 同样，我们通过探测相应的Kprobes来捕获锁定状态。 这些Kprobes已合并到主流Linux操作系统中。</p>
 <p><br></p>
-<h5 id="数据预处理"><a href="#数据预处理" class="headerlink" title="数据预处理"></a>数据预处理</h5><p><strong>Data aggregation</strong>：看到一个应用程序生成多个具有相同名称的进程processes来提供服务的情况并不少见。 例如，Apache httpd在Linux操作系统中总是生成多个具有相同名称“ httpd”的进程来处理Web请求。 在这种情况下，我们将这些流程的绩效指标聚合在一起。</p>
+<h4 id="数据预处理"><a href="#数据预处理" class="headerlink" title="数据预处理"></a>数据预处理</h4><p><strong>Data aggregation</strong>：看到一个应用程序生成多个具有相同名称的进程processes来提供服务的情况并不少见。 例如，Apache httpd在Linux操作系统中总是生成多个具有相同名称“ httpd”的进程来处理Web请求。 在这种情况下，我们将这些流程的绩效指标聚合在一起。</p>
 <p><strong>Metric selection</strong>：图4，一些指标高度相关correlation，需要减少冗余指标。</p>
 <p><u>指标选择以简单的成对方式进行</u>：如果两个指标的Pearson相关系数的绝对值超过预设阈值（在本文中为0.8），则将其中一个消除。 例如，在图5中，CPU Int和CPU Irq的相关系数接近1。因此，我们将从CPU Int和CPU Irq中随机选择一个。</p>
 <p> 但是对于那些预定义的根因指标（例如工作量workload和配置项configuration），我们将始终将其保留在指标集中。</p>
 <p><br></p>
-<h5 id="离线change-point-detection"><a href="#离线change-point-detection" class="headerlink" title="离线change point detection"></a>离线change point detection</h5><p>cause-effect定义：如果一个变量变化导致另一个变量变化，则这俩者有因果关系。</p>
+<p><br></p>
+<p><br></p>
+<h4 id="构建算法"><a href="#构建算法" class="headerlink" title="构建算法"></a>构建算法</h4><h5 id="离线change-point-detection"><a href="#离线change-point-detection" class="headerlink" title="离线change point detection"></a>离线change point detection</h5><p>cause-effect定义：如果一个变量变化导致另一个变量变化，则这俩者有因果关系。</p>
 <p>首先识别系统指标里的changes突变。这可以被认为是离线分割问题。 但是挑战在于细分的数量，每个细分中的统计特征（即均值或方差）事先未知。  我们介绍了一种<strong>基于贝叶斯理论的新颖方法，即贝叶斯变化点检测</strong>（BCP）[22]。 变更点检测过程不仅提取变更，而且以二进制格式统一不同尺度的不同系统的指标，这意味着度量数据仅包含“ 0”（未更改）和“ 1”（更改）。</p>
 <p>BCP的基本思想**（paper的P5）：是找到一个参数的基本序列，该序列将时间序列划分为具有相等参数值的连续块（序列块），并定位突变点的位置，即每个块的开始。</p>
 <p>给定块和参数，不同块中的观测值是相互独立的。 应该给每个块的突变点和参数一个先验的概率分布 $\mu_{i,j}$ （是在位置i+1开始在j结束的块的均值）服从 $N\left(\mu_{0}, \sigma_{2}^{0} /(j-i)\right)$</p>
@@ -362,8 +364,22 @@
 <p>规则2：最终指标可从图中的任何路径可达。</p>
 <p>规则3：对于双向链接，两个方向均被保留，这意味着两个指标标准可能在彼此之间引起影响。</p>
 <p><img src="/images/20200417fig8a.png" alt="20200417fig8a"></p>
-<p><em>aggressive</em> algorithm in Algorithm 1 伪代码（见paper）</p>
+<p><em>aggressive</em> algorithm in Algorithm 1 伪代码（见paper）：</p>
+<p>step1，设置i=0，即$z=\{\}$ ，选择两个指标用 $G^2$ 方法测试他们的独立性。如SLO独立于在G2（Fig9）中的文件，即$I(S L O, F i l e)=1$ ，则将它们俩之间的边移出。</p>
+<p>step2：然后当i = 1和i=2时，测试独立性。在G6中，给定Mem，SLO条件独立与GC，即$I(S L O, G C | M e m)=1$ ，因此 $M e m \in S(S L O, G C)$ </p>
+<p>step3:当i=3，停止条件$\left|a d j\left(G^{u}, X\right)\right| \leq i, \forall X$ 满足。最终得到架构图如G7。</p>
+<p>step4：接下来，根据算法中提到的规则确定方向。首先，G8 as $\operatorname{Mem} \notin S(F i l e, G C)$ ，然后“Mem —— SLO” 被 “ Mem ——&gt; SLO”替代。</p>
+<p>最终的causality graph如G9。使用因果图G9，可以查明Hadoop-3382错误的根本原因。 CauseInfer首先使用服务依赖关系图将异常定位在名称节点上，然后在G9中沿路径“ SLO→Mem→File”找到根本原因“ File”。</p>
 <p><img src="/images/20200417CauseInferFig9.jpg" alt="20200417CauseInferFig9"></p>
+<p> 在本文中，我们将ξ设置为0.2以在开销和准确性之间进行权衡。</p>
+<p>保守算法：首先要初始化完全无向图Gu中的某些方向。 TCP LATENCY和其他度量标准之间的链接是直接的。 指向预设根本原因指标和其他指标之间的链接。 第二点是在子图选择过程中添加另一个规则，即规则4，因为先验知识得到了补充。</p>
+<p><br></p>
+<h5 id="在线根因推断"><a href="#在线根因推断" class="headerlink" title="在线根因推断"></a>在线根因推断</h5><p>当在前端检测到SLO违规时，将触发原因推断。 我们首先使用指标因果关系图推断本地服务的根本原因。 如果根本原因位于本地服务的从属服务的SLO度量标准上，则将推理过程传播到远程从属服务。 该过程将反复进行，直到未发现任何违反SLO的情况或未找到相关服务为止。 请注意，图中的推断方向与因果方向相反。</p>
+<p>为了实时检测SLO指标和其他系统指标的异常，我们采用流行的CUSUM [8]。$X(t)=\left\{x_{1}, x_{2}, \cdots, x_{t}\right\}$ 代表X的观测序列，如果在包括新的到达数据后统计属性发生变化，则会发生异常。$x_k$ 是否是突变基于对数似然比检验。</p>
+<p>CUSUM statistic score is updated ：</p>
+<script type="math/tex; mode=display">S(k+1)=\left(S(k)+\ln \frac{P_{1}\left(x_{k}\right)}{P_{0}\left(x_{k}\right)}\right)^{+}</script><script type="math/tex; mode=display">(a)^{+}=a \text { if } a>0 ; \text { else }(a)^{+}=0, S(0)=0</script><p>$P_i(x_k)$ 代表假设$H_i$下$x_k$的概率，相应的决策规则是：given a threshold h, 1 represt change</p>
+<script type="math/tex; mode=display">d_{k}(S(k))=\left\{\begin{array}{ll}0 & \text { if } S(k) \leq h \\ 1 & \text { if } S(k)>h\end{array}\right.</script><p>为了推断特定节点中的根本原因，我们使用深度优先搜索（DFS）方法遍历度量因果关系图。当遍历图中的度量时，我们使用CUSUM来检查它是否异常。如果异常，我们将继续遍历其后代。否则，我们遍历其兄弟姐妹。如果没有任何异常指标的后代或所有后代中都没有违规，则将该指标视为根本原因。</p>
+<p>图8（b）为例，当S LO异常时，我们从度量S LO开始推理过程。然后，我们调查指标M1。如果正常，则遍历其同级之一，即M2。如果M2异常，则是根本原因。 M2的另一个兄弟是M3。如果M3异常，我们将继续检查M2。由于M2异常，因此将M2作为根本原因。最终，尽管M 2和M 3均异常，但我们仅找到一个根本原因M 2。但是，在基于“相关”的方法中可能并非如此。由于存在多种因果路径，因此在某些情况下有可能获得一组潜在的根本原因。因此，有必要对最可能的原因进行排名和选择。在本文中，我们根据<u>其CUSUM得分</u>对根本原因进行排名。 CUSUM得分最高的根本原因将放在原因列表的顶部。</p>
 <h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1, Chen P, Qi Y, Hou D. CauseInfer: automated end-to-end performance diagnosis with hierarchical causality graph in cloud environment[J]. IEEE transactions on services computing, 2016, 12(2): 214-230.</p>
 
     </div>
@@ -451,7 +467,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#CauseInfer的系统概述与工作流"><span class="nav-number">1.</span> <span class="nav-text">CauseInfer的系统概述与工作流</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#概述"><span class="nav-number">1.1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CauseInfer的工作流workflow"><span class="nav-number">1.2.</span> <span class="nav-text">CauseInfer的工作流workflow</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#系统设计"><span class="nav-number">2.</span> <span class="nav-text">系统设计</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#系统模块简介"><span class="nav-number">2.1.</span> <span class="nav-text">系统模块简介</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#系统模块详述"><span class="nav-number">2.2.</span> <span class="nav-text">系统模块详述</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#数据收集"><span class="nav-number">2.2.1.</span> <span class="nav-text">数据收集</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#数据预处理"><span class="nav-number">2.2.2.</span> <span class="nav-text">数据预处理</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#离线change-point-detection"><span class="nav-number">2.2.3.</span> <span class="nav-text">离线change point detection</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#随机图的构建-Causality-graph-building"><span class="nav-number">2.2.4.</span> <span class="nav-text">随机图的构建 Causality graph building</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#Service-Dependency-Graph"><span class="nav-number">2.2.4.1.</span> <span class="nav-text">Service Dependency Graph</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Metric-Causality-Graph"><span class="nav-number">2.2.4.2.</span> <span class="nav-text">Metric Causality Graph</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reference"><span class="nav-number">3.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#CauseInfer的系统概述与工作流"><span class="nav-number">1.</span> <span class="nav-text">CauseInfer的系统概述与工作流</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#概述"><span class="nav-number">1.1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CauseInfer的工作流workflow"><span class="nav-number">1.2.</span> <span class="nav-text">CauseInfer的工作流workflow</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#系统设计——系统模块简介"><span class="nav-number">2.</span> <span class="nav-text">系统设计——系统模块简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#系统设计——详述"><span class="nav-number">3.</span> <span class="nav-text">系统设计——详述</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#数据收集"><span class="nav-number">3.1.</span> <span class="nav-text">数据收集</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据预处理"><span class="nav-number">3.2.</span> <span class="nav-text">数据预处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#构建算法"><span class="nav-number">3.3.</span> <span class="nav-text">构建算法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#离线change-point-detection"><span class="nav-number">3.3.1.</span> <span class="nav-text">离线change point detection</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#随机图的构建-Causality-graph-building"><span class="nav-number">3.3.2.</span> <span class="nav-text">随机图的构建 Causality graph building</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#Service-Dependency-Graph"><span class="nav-number">3.3.2.1.</span> <span class="nav-text">Service Dependency Graph</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Metric-Causality-Graph"><span class="nav-number">3.3.2.2.</span> <span class="nav-text">Metric Causality Graph</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#在线根因推断"><span class="nav-number">3.3.3.</span> <span class="nav-text">在线根因推断</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reference"><span class="nav-number">4.</span> <span class="nav-text">Reference</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
