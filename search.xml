@@ -21,7 +21,7 @@
 </ul>
 <h3 id="Sparse-Optimization"><a href="#Sparse-Optimization" class="headerlink" title="Sparse Optimization"></a>Sparse Optimization</h3><h4 id="sparse-Optimization"><a href="#sparse-Optimization" class="headerlink" title="sparse Optimization"></a>sparse Optimization</h4><p>考虑用稀疏优化来解决。</p>
 <p>定义稀疏结构 sparse structure：$x \in R^{p}$ 如果仅仅有少部分非0值，则称为sparse vector。</p>
-<p>定义0范式：$||x||_0=#\left\{i: x_{i} \neq 0\right\}$ 即是$x_i \neq 0$ 的个数 （如 x = (0,0,1), 则其0范数值为1）</p>
+<p>定义0范式：$||x||_0= \left\{i: x_{i} \neq 0\right\}$ 即是$x_i \neq 0$ 的个数 （如 x = (0,0,1), 则其0范数值为1）</p>
 <p>稀疏数据问题：$||x||_0 &lt;&lt; p$  </p>
 <p>个数限制优化 (Cardinality constrained Optimization)方法：</p>
 <script type="math/tex; mode=display">min \|Y-X \boldsymbol \beta\|^{2}</script><script type="math/tex; mode=display">s.t. \|\boldsymbol \beta\|_{0} \leqslant k \quad(k<< p)</script><p>意思：最小化误差，但有约束存在 $\beta$ 的0范数小于等于 k，只有k个系数不为0，即Y只跟少数的k个X变量有关，解释性就加上了。</p>
@@ -33,6 +33,7 @@
 <p><img src="/images/20200418convex_optimization.png" alt="20200418convex_optimization"></p>
 <p>具体来看怎么转换的凸优化呢？</p>
 <p><img src="/images/20200418convexification.png" alt="20200418convexification"></p>
+<p>（待更）</p>
 <h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，南京大学，陈彩华 《高级最优化》</p>
 ]]></content>
       <categories>
