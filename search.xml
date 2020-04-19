@@ -26,7 +26,7 @@
 <p>个数限制优化 (Cardinality constrained Optimization)方法：</p>
 <script type="math/tex; mode=display">min \|Y-X \boldsymbol \beta\|^{2}</script><script type="math/tex; mode=display">s.t. \|\boldsymbol \beta\|_{0} \leqslant k \quad(k<< p)</script><p>意思：最小化误差，但有约束存在 $\beta$ 的0范数小于等于 k，只有k个系数不为0，即Y只跟少数的k个X变量有关，解释性就加上了。</p>
 <h4 id="Integer-Programming"><a href="#Integer-Programming" class="headerlink" title="Integer Programming"></a>Integer Programming</h4><p>我们把上面这个优化改写成一个整数规划来看：</p>
-<script type="math/tex; mode=display">\min \|Y-x \beta\|^{2}</script><script type="math/tex; mode=display">s.t. \sum_{i=1}^p S_i \leq k</script><script type="math/tex; mode=display">S_i = 0 \quad or \quad 1</script><script type="math/tex; mode=display">\left|\beta_{i}\right| \leq M S_{i} , M - EnoughBig</script><p>类似一个设施选址问题的写法：两阶段，第一选不选：Si表示选不选，选了变量$X_i$，$S_i$就是1；coefficiency系数，$\beta_i$表示系数</p>
+<script type="math/tex; mode=display">\min \|Y-x \beta\|^{2}</script><script type="math/tex; mode=display">s.t. \sum_{i=1}^p S_i \leq k</script><script type="math/tex; mode=display">S_i = 0 \quad or \quad 1</script><script type="math/tex; mode=display">\left|\beta_{i}\right| \leq M S_{i} , M - EnoughBig</script><p>类似一个设施选址问题的写法：两阶段，第一选不选：Si表示选不选，选了变量$X_i$，$S_i$就是1；coefficiency系数，$\beta_i$表示系数。</p>
 <p>这样改写之后，就可以用部分求解器如CVX , Gurobi求解中等规模的问题。但是如果规模太大（ 即 p 非常大）就不好求解了。</p>
 <h4 id="凸近似"><a href="#凸近似" class="headerlink" title="凸近似"></a>凸近似</h4><p>那我们转换整数规划为凸优化来解：</p>
 <p><img src="/images/20200418convex_optimization.jpg" alt="20200418convex_optimization"></p>
@@ -38,15 +38,21 @@
 <script type="math/tex; mode=display">g(x) = \frac{|x|}{\tau}</script><p>二维情况（右图）：</p>
 <p>二维的情况也可以画图来分析：就是最下面中心那个点，加上面的十字线除开中间那个点（x其中一个为1），加上最上面为2的面：</p>
 <script type="math/tex; mode=display">f(x) = ||x||_0 = \left\{\begin{array}{ll}0, & \text { If } x=0 \\ 1, & \text { If } x_{1}=0, x_{2} \neq 0 \text { or } \\ & x_{1} \neq 0, x_{2}=0 \\ 2, & \text { If } x_{1} \neq 0, x_{2} \neq 0\end{array}\right.</script><p>这里的凸近似，将下面的四根虚线连起来（延展上去也连上面的四个红点），就是g(x)：</p>
-<script type="math/tex; mode=display">g(x) = \frac{1}{\tau}(\left|x_{1}\right|+\left|x_{2}\right|)</script><p>看看上面一维、二维的情况，都与绝对值有关，我们总结下zero norm0范式的凸近似是：</p>
+<script type="math/tex; mode=display">g(x) = \frac{1}{\tau}(\left|x_{1}\right|+\left|x_{2}\right|)</script><p>看看上面一维、二维的情况，都与绝对值有关，是不是还有点像L1正则化的样子，我们接着看。我们总结下zero norm0范式的凸近似是：</p>
 <script type="math/tex; mode=display">\|x\|_{0}:\tau (\|x\|_{1}) = \tau \sum_{i=1}^n |x_i|</script><p>即存在一个 $\tau$ ，使得$\tau (|x|_{1})$ 是$|x|_{0}$最好的凸近似。</p>
-<h3 id="Sparse-Linear-Regression"><a href="#Sparse-Linear-Regression" class="headerlink" title="Sparse Linear Regression"></a>Sparse Linear Regression</h3><p>回忆之前的LR模型：</p>
+<h3 id="Sparse-Linear-Regression"><a href="#Sparse-Linear-Regression" class="headerlink" title="Sparse Linear Regression"></a>Sparse Linear Regression</h3><h4 id="typical-sparse-model"><a href="#typical-sparse-model" class="headerlink" title="typical sparse model"></a>typical sparse model</h4><p>回忆之前的LR模型：</p>
 <script type="math/tex; mode=display">min \|Y-x \boldsymbol\beta\|^{2}</script><script type="math/tex; mode=display">s.t.:\|\boldsymbol\beta\|_{0} \leqslant k</script><p>这里的约束我们就可以用前面推导的一范数来近似了：</p>
 <script type="math/tex; mode=display">\|\boldsymbol\beta\|_{1} = \sum_{i=1}^p |\beta|_{i} \rightarrow \|\boldsymbol\beta\|_{0}</script><p>上面的模型可以改写为：</p>
 <script type="math/tex; mode=display">min \|Y-x \beta\|^{2}</script><script type="math/tex; mode=display">s.t. \tau\|\beta\|_{1} \leqslant k \quad (即\|\beta\|_{1} \leqslant \lambda)</script><p> 这里的$\lambda$ 自己取。这就产生了新的模型了。</p>
 <p>我们用图形说明看看，sparsity 是真的有的：</p>
-<p><img src="//images/20200419sparsity_model.jpg" alt="20200419sparsity_model"></p>
-<p>左下图：C越大椭圆越大。如果是$|\beta|_{1} \leqslant \lambda$则相交点在坐标轴上，往往是左下图红色点那里，而这个地方则很好的可见 $\beta$ 参数的非0个数  &lt; P=2了。但如果看右边图，采用 $|\beta|_{2}$ 则相交在中间，$\beta$参数的非0个数  =  P（2）了，那$\beta$ 全部都不为0。</p>
+<p><img src="/images/20200419sparsity_model.jpg" alt="20200419sparsity_model"></p>
+<p>左下图：C越大椭圆越大。如果是$|\beta|_{1} \leqslant \lambda$则相交点在坐标轴上，往往是左下图红色点那里，而这个地方则很好的可见 $\beta$ 参数的非0个数  &lt; P=2了。但如果看右边图，采用 $|\beta|_{2}$ 则相交在中间，$\beta$参数的非0个数  =  P（2）了，那$\beta$ 全部都不为0，没有起到稀疏作用。</p>
+<h4 id="Lagrange-version"><a href="#Lagrange-version" class="headerlink" title="Lagrange version"></a>Lagrange version</h4><p>我们再改写下上面的模型为拉格朗日版本，将约束放到上面相当于拉格朗日乘子：</p>
+<script type="math/tex; mode=display">min\|Y-x \beta\|^{2}+{\mu}_{1}\|\beta\|_{0} \rightarrow min \|Y-x \beta\|^{2}+{\mu}_{2}\|\beta\|_{1}</script><p>这里看就是既要看损失，又要看稀疏性，这两者之间有个tradeoff平衡选择。</p>
+<p>右侧这边这个模型，在统计中也叫做lasso模型，也就是L1正则化。</p>
+<p><br></p>
+<p><br></p>
+<p>总结一下，在线性回归中，我们遇到了一个高维的问题导致了参数的不稀疏，无法较好的解释。我们用稀疏优化来解决这个问题，我们把选择部分参数不为0（不为0的参数个数）这个zero norm用凸近似来做，将其转换为绝对值这个凸函数，进过改写为拉格朗日形式后，这个约束就成了L1正则化的形式。</p>
 <h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，南京大学，陈彩华 《高级最优化》</p>
 ]]></content>
       <categories>
