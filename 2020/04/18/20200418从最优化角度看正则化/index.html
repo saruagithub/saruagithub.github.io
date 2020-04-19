@@ -57,7 +57,7 @@
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200418convex_optimization.jpg">
 <meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200418convexification.jpg">
-<meta property="og:updated_time" content="2020-04-19T02:10:54.738Z">
+<meta property="og:updated_time" content="2020-04-19T02:18:59.161Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200418convex_optimization.jpg">
 
@@ -243,7 +243,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-19 10:10:54" itemprop="dateModified" datetime="2020-04-19T10:10:54+08:00">2020-04-19</time>
+                <time title="修改时间：2020-04-19 10:18:59" itemprop="dateModified" datetime="2020-04-19T10:18:59+08:00">2020-04-19</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -326,7 +326,9 @@
 <script type="math/tex; mode=display">f(x) = ||x||_0 = \left\{\begin{array}{ll}0, & \text { If } x=0 \\ 1, & \text { If } x_{1}=0, x_{2} \neq 0 \text { or } \\ & x_{1} \neq 0, x_{2}=0 \\ 2, & \text { If } x_{1} \neq 0, x_{2} \neq 0\end{array}\right.</script><p>这里的凸近似，将下面的四根虚线连起来（延展上去也连上面的四个红点），就是g(x)：</p>
 <script type="math/tex; mode=display">g(x) = \frac{1}{\tau}(\left|x_{1}\right|+\left|x_{2}\right|)</script><p>看看上面一维、二维的情况，都与绝对值有关，我们总结下zero norm0范式的凸近似是：</p>
 <script type="math/tex; mode=display">\|x\|_{0}:\tau (\|x\|_{1}) = \tau \sum_{i=1}^n |x_i|</script><p>即存在一个 $\tau$ ，使得$\tau (|x|_{1})$ 是$|x|_{0}$最好的凸近似。</p>
-<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，南京大学，陈彩华 《高级最优化》</p>
+<h3 id="Sparse-Linear-Regression"><a href="#Sparse-Linear-Regression" class="headerlink" title="Sparse Linear Regression"></a>Sparse Linear Regression</h3><p>回忆之前的LR模型：</p>
+<script type="math/tex; mode=display">min \|Y-x \boldsymbol\beta\|^{2}</script><script type="math/tex; mode=display">s.t.:\|\boldsymbol\beta\|_{0} \leqslant k</script><p>这里的约束我们就可以用前面推导的一范数来近似了：</p>
+<script type="math/tex; mode=display">\|\boldsymbol\beta\|_{1} = \sum_{i=1}^p |\beta|_{i} \rightarrow \|\boldsymbol\beta\|_{0}</script><h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，南京大学，陈彩华 《高级最优化》</p>
 
     </div>
 
@@ -408,7 +410,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Linear-Regression"><span class="nav-number">2.</span> <span class="nav-text">Linear Regression</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Sparse-Optimization"><span class="nav-number">3.</span> <span class="nav-text">Sparse Optimization</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#sparse-Optimization"><span class="nav-number">3.1.</span> <span class="nav-text">sparse Optimization</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Integer-Programming"><span class="nav-number">3.2.</span> <span class="nav-text">Integer Programming</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#凸近似"><span class="nav-number">3.3.</span> <span class="nav-text">凸近似</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reference"><span class="nav-number">4.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Linear-Regression"><span class="nav-number">2.</span> <span class="nav-text">Linear Regression</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Sparse-Optimization"><span class="nav-number">3.</span> <span class="nav-text">Sparse Optimization</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#sparse-Optimization"><span class="nav-number">3.1.</span> <span class="nav-text">sparse Optimization</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Integer-Programming"><span class="nav-number">3.2.</span> <span class="nav-text">Integer Programming</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#凸近似"><span class="nav-number">3.3.</span> <span class="nav-text">凸近似</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Sparse-Linear-Regression"><span class="nav-number">4.</span> <span class="nav-text">Sparse Linear Regression</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reference"><span class="nav-number">5.</span> <span class="nav-text">Reference</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

@@ -40,7 +40,9 @@
 <script type="math/tex; mode=display">f(x) = ||x||_0 = \left\{\begin{array}{ll}0, & \text { If } x=0 \\ 1, & \text { If } x_{1}=0, x_{2} \neq 0 \text { or } \\ & x_{1} \neq 0, x_{2}=0 \\ 2, & \text { If } x_{1} \neq 0, x_{2} \neq 0\end{array}\right.</script><p>这里的凸近似，将下面的四根虚线连起来（延展上去也连上面的四个红点），就是g(x)：</p>
 <script type="math/tex; mode=display">g(x) = \frac{1}{\tau}(\left|x_{1}\right|+\left|x_{2}\right|)</script><p>看看上面一维、二维的情况，都与绝对值有关，我们总结下zero norm0范式的凸近似是：</p>
 <script type="math/tex; mode=display">\|x\|_{0}:\tau (\|x\|_{1}) = \tau \sum_{i=1}^n |x_i|</script><p>即存在一个 $\tau$ ，使得$\tau (|x|_{1})$ 是$|x|_{0}$最好的凸近似。</p>
-<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，南京大学，陈彩华 《高级最优化》</p>
+<h3 id="Sparse-Linear-Regression"><a href="#Sparse-Linear-Regression" class="headerlink" title="Sparse Linear Regression"></a>Sparse Linear Regression</h3><p>回忆之前的LR模型：</p>
+<script type="math/tex; mode=display">min \|Y-x \boldsymbol\beta\|^{2}</script><script type="math/tex; mode=display">s.t.:\|\boldsymbol\beta\|_{0} \leqslant k</script><p>这里的约束我们就可以用前面推导的一范数来近似了：</p>
+<script type="math/tex; mode=display">\|\boldsymbol\beta\|_{1} = \sum_{i=1}^p |\beta|_{i} \rightarrow \|\boldsymbol\beta\|_{0}</script><h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，南京大学，陈彩华 《高级最优化》</p>
 ]]></content>
       <categories>
         <category>机器学习</category>
