@@ -54,6 +54,7 @@
 <p><br></p>
 <p>总结一下，在线性回归中，我们遇到了一个高维的问题导致了参数的不稀疏，无法较好的解释。我们用稀疏优化来解决这个问题，我们把选择部分参数不为0（不为0的参数个数）这个zero norm用凸近似来做，将其转换为绝对值这个凸函数，进过改写为拉格朗日形式后，这个约束就成了L1正则化的形式。</p>
 <h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，南京大学，陈彩华 《高级最优化》</p>
+<p>2，《最优化》陈宝林</p>
 ]]></content>
       <categories>
         <category>机器学习</category>
