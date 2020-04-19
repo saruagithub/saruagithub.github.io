@@ -15,7 +15,7 @@
 <p>常用方法用最小二乘法（即最小化平方损失函数）：</p>
 <script type="math/tex; mode=display">\min \sum_{i=1}^{n}\left(Y_{i}-\beta^{T} X_{i}\right)^{2}=\|Y-X \boldsymbol \beta\|^{2}</script><ul>
 <li>这样求解 $\beta$ 会得到很好的统计性质</li>
-<li>问题存在：处理高维数据的时候 $X \in R^{n \times p}$ ，这个问题的解有多个，要取哪个？如果求解的话可以这里可以去写写 $|Y-X \beta|^{2}$ 的最优性条件 KKT条件有：$X^TX \Beta = X^TY$ ，而这里的 $X^TX$ 是non singular，不可逆，求解有困难。</li>
+<li>问题存在：处理高维数据的时候 $X \in R^{n \times p}$ ，这个问题的解有多个，要取哪个？如果求解的话可以这里可以去写写 $|Y-X \boldsymbol \beta|^{2}$ 的最优性条件 KKT条件有：$X^TX \Beta = X^TY$ ，而这里的 $X^TX$ 是non singular，不可逆，求解有困难。</li>
 <li>可解释性也不太好，这个得到的 $\beta_i$ 一般都是不为0，那Y到底跟哪个X有关呢，怎么找重要的因素去解释呢？</li>
 <li>高维的时候可以考虑降维，如PCA，但也有问题，$x_1,…x_p$ 利用线性组合到一起，把某几个因素合为一个新变量，但新变量的解释也不好说。</li>
 </ul>
@@ -30,10 +30,17 @@
 <p>这样改写之后，就可以用部分求解器如CVX , Gurobi求解中等规模的问题。但是如果规模太大（ 即 p 非常大）就不好求解了。</p>
 <p><br></p>
 <p>那我们转换整数规划为凸优化来解：</p>
-<p><img src="/images/20200418convex_optimization.png" alt="20200418convex_optimization"></p>
+<p><img src="/images/20200418convex_optimization.jpg" alt="20200418convex_optimization"></p>
 <p>具体来看怎么转换的凸优化呢？</p>
-<p><img src="/images/20200418convexification.png" alt="20200418convexification"></p>
-<p>（待更）</p>
+<p><img src="/images/20200418convexification.jpg" alt="20200418convexification"></p>
+<p>一维情况（左图）：</p>
+<p>我们要去凸近似这个 f(x) 即zero-norm（0范数函数），当x=0时f(x)=0，当x在$-\tau \leqslant x \leqslant \tau$ （这里的$\tau$ 只是表示一个范围，可以取很大，这为了好看）时，f(x) = 1。</p>
+<p>函数图画出来是上面那一根黑线（除开x=0中间那个空点，这个不好处理），怎么去凸近似这个函数呢？我们用函数 g(x) 去近似，即红色那个线把三个点连起来，这是最简单的，也可以考虑用二次函数椭圆形来近似也可以：</p>
+<script type="math/tex; mode=display">g(x) = \frac{|x|}{\tau}</script><p>二维情况（右图）：</p>
+<p>二维的情况也可以画图来分析：就是最下面中心那个点，加上面的十字线除开中间那个点（x其中一个为1），加上最上面为2的面：</p>
+<script type="math/tex; mode=display">f(x) = ||x||_0 = \left\{\begin{array}{ll}0, & \text { If } x=0 \\ 1, & \text { If } x_{1}=0, x_{2} \neq 0 \text { or } \\ & x_{1} \neq 0, x_{2}=0 \\ 2, & \text { If } x_{1} \neq 0, x_{2} \neq 0\end{array}\right.</script><p>这里的凸近似，将下面的四根虚线连起来（延展上去也连上面的四个红点），就是g(x)：</p>
+<script type="math/tex; mode=display">g(x) = \frac{1}{\tau}(\left|x_{1}\right|+\left|x_{2}\right|)</script><p>看看上面一维、二维的情况，都与绝对值有关，我们总结下zero norm0范式的凸近似是：</p>
+<script type="math/tex; mode=display">\|x\|_{0}:\tau (\|x\|_{1}) = \tau \sum_{i=1}^n |x_i|</script><p>即存在一个 $\tau$ ，使得$\tau (|x|_{1})$ 是$|x|_{0}$最好的凸近似。</p>
 <h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，南京大学，陈彩华 《高级最优化》</p>
 ]]></content>
       <categories>
