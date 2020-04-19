@@ -45,6 +45,8 @@
 <script type="math/tex; mode=display">\|\boldsymbol\beta\|_{1} = \sum_{i=1}^p |\beta|_{i} \rightarrow \|\boldsymbol\beta\|_{0}</script><p>上面的模型可以改写为：</p>
 <script type="math/tex; mode=display">min \|Y-x \beta\|^{2}</script><script type="math/tex; mode=display">s.t. \tau\|\beta\|_{1} \leqslant k \quad (即\|\beta\|_{1} \leqslant \lambda)</script><p> 这里的$\lambda$ 自己取。这就产生了新的模型了。</p>
 <p>我们用图形说明看看，sparsity 是真的有的：</p>
+<p><img src="//images/20200419sparsity_model.jpg" alt="20200419sparsity_model"></p>
+<p>左下图：C越大椭圆越大。如果是$|\beta|_{1} \leqslant \lambda$则相交点在坐标轴上，往往是左下图红色点那里，而这个地方则很好的可见 $\beta$ 参数的非0个数  &lt; P=2了。但如果看右边图，采用 $|\beta|_{2}$ 则相交在中间，$\beta$参数的非0个数  =  P（2）了，那$\beta$ 全部都不为0。</p>
 <h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，南京大学，陈彩华 《高级最优化》</p>
 ]]></content>
       <categories>
@@ -365,8 +367,8 @@
         <category>数据挖掘</category>
       </categories>
       <tags>
-        <tag>配置</tag>
         <tag>大数据</tag>
+        <tag>配置</tag>
         <tag>hadoop</tag>
       </tags>
   </entry>
