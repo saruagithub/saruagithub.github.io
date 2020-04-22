@@ -736,11 +736,11 @@
 <p>内层的for循环比较次数总会是 i，因此最差时间代价是：$\sum_{i=1}^n i \approx n^2/2 = \Theta(n^2)$ ，平均也是类似插入排序$\Theta(n^2)$，它是稳定的排序。</p>
 <p>修改冒泡排序以跟踪其执行的交换次数。 如果数组已经按排序顺序排列，并且冒泡排序不进行交换，则算法可以在经过一遍后终止。在最佳情况下复杂度是 $\Theta(n)$ 。</p>
 <p>冒泡排序相对于大多数其他算法（甚至是快速排序，但不是插入排序）具有的唯一显着优势是，该算法内置了检测列表是否被有效排序的功能。</p>
-<h5 id="选择排序"><a href="#选择排序" class="headerlink" title="选择排序"></a>选择排序</h5><p>选择排序就是选择数组中第i小的记录，并把该记录放到数组的第i个位置上，只需一次交换。</p>
+<h5 id="选择排序"><a href="#选择排序" class="headerlink" title="选择排序"></a>选择排序</h5><p>选择排序就是选择数组中第i小的记录，并把该记录放到数组的第i个位置上，只需一次交换，不稳定排序。</p>
 <figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> E,<span class="keyword">typename</span> Comp&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">selsort</span><span class="params">(E A[], <span class="keyword">int</span> n)</span></span>&#123;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;n<span class="number">-1</span>; i++)&#123;</span><br><span class="line">    <span class="keyword">int</span> lowindex = i;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> j=n<span class="number">-1</span>; j&gt;i ; j--)</span><br><span class="line">      <span class="keyword">if</span>(Comp::prior(A[j], A[lowindex]))</span><br><span class="line">        lowindex = j;</span><br><span class="line">    swap(A,i,lowindex);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># python</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">select_sort</span><span class="params">(array)</span>:</span></span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,len(array)<span class="number">-1</span>):</span><br><span class="line">		lowindex = i</span><br><span class="line">		<span class="keyword">for</span> j <span class="keyword">in</span> range(len(array)<span class="number">-1</span>, i, <span class="number">-1</span>):</span><br><span class="line">			<span class="keyword">if</span> array[j] &lt; array[lowindex]:</span><br><span class="line">				lowindex = j</span><br><span class="line">			array[i], array[lowindex] = array[lowindex], array[i]</span><br></pre></td></tr></table></figure>
 <p>比较的次数是 $\Theta(n^2)$ ，但交换的次数比冒泡排序少很多，对于那些做交换花费时间多的问题是更好的。</p>
-<h3 id="改进的排序"><a href="#改进的排序" class="headerlink" title="改进的排序"></a>改进的排序</h3><h4 id="shellsort"><a href="#shellsort" class="headerlink" title="shellsort"></a>shellsort</h4><p>它在不相邻的记录之间进行比较与交换。shell排序利用了插入排序的最佳时间代价特性。他将序列分成多个子序列，然后分别对子序列进行排序，最后将子序列组合起来。由于实现了元素的跳跃式移动，使排序效率提高。如下图：图中的增量序列就是8，4，2，1。最后一轮将是一次“正常的”插入排序，因为此时序列整体基本上有序，故用插入排序的复杂度相对较小。</p>
+<h3 id="改进的排序"><a href="#改进的排序" class="headerlink" title="改进的排序"></a>改进的排序</h3><h4 id="shellsort"><a href="#shellsort" class="headerlink" title="shellsort"></a>shellsort</h4><p>它在不相邻的记录之间进行比较与交换。shell排序利用了插入排序的最佳时间代价特性。他将序列分成多个子序列，然后分别对子序列进行排序，最后将子序列组合起来。由于实现了元素的跳跃式移动（希尔排序会用较大的步长移动数据），使排序效率提高。如下图：图中的增量序列就是8，4，2，1。最后一轮将是一次“正常的”插入排序，因为此时序列整体基本上有序，故用插入排序的复杂度相对较小。</p>
 <p>shellsort增量选择3的时候，效果较好，平均运行时间复杂度是$\Theta(n^{1.5})$ 。 </p>
 <p>相同的元素可能在各自的插入排序中移动， 是不稳定排序。在中等大小规模的数据上表现良好。</p>
 <p><img src="/images/20200310shellsort.jpg" alt="20200310shellsort"></p>
@@ -755,7 +755,7 @@
 <p>两个指针，最初分别为两个已经排序序列的起始位置。比较两个指针所指向的元素，选择相对小的元素放入到合并空间，并移动指针到下一位置。重复直到某一指针达到序列尾，剩下的元素直接放入到合并的片段里。</p>
 <figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> E&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">mergesort</span><span class="params">(E A[],E temp[], <span class="keyword">int</span> left, <span class="keyword">int</span> right)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (left == right) &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> mid = left + (right-left)/<span class="number">2</span>;</span><br><span class="line">    mergesort&lt;E&gt;(A, temp, left, mid);</span><br><span class="line">    mergesort&lt;E&gt;(A, temp, mid+<span class="number">1</span>, right);</span><br><span class="line">    <span class="comment">//then merge, temp[] is the auxiliary array</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=left; i&lt;=right; i++) &#123;</span><br><span class="line">        temp[i] = A[i];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> i1 = left;</span><br><span class="line">    <span class="keyword">int</span> i2 = mid+<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> curr=left; curr&lt;=right; curr++) &#123;</span><br><span class="line">        <span class="keyword">if</span> (i1 == mid+<span class="number">1</span>) A[curr] = temp[i2++]; <span class="comment">//left all &lt; right</span></span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(i2 &gt; right) A[curr] = temp[i1++]; <span class="comment">//right all &lt; left</span></span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (temp[i1] &lt; temp[i2]) A[curr] = temp[i1++];<span class="comment">// smaller one is put into A</span></span><br><span class="line">        <span class="keyword">else</span> A[curr] = temp[i2++];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> num[<span class="number">16</span>] = &#123;<span class="number">59</span>,<span class="number">20</span>,<span class="number">17</span>,<span class="number">13</span>,<span class="number">28</span>,<span class="number">14</span>,<span class="number">23</span>,<span class="number">83</span>,<span class="number">36</span>,<span class="number">98</span>,<span class="number">11</span>,<span class="number">70</span>,<span class="number">65</span>,<span class="number">41</span>,<span class="number">42</span>,<span class="number">15</span>&#125;;</span><br><span class="line">    <span class="keyword">int</span> temp[<span class="number">16</span>] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">    mergesort&lt;<span class="keyword">int</span>&gt;(num, temp, <span class="number">0</span>, <span class="number">15</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> n:num) &#123;</span><br><span class="line">        <span class="built_in">cout</span>&lt;&lt;n&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>当被排序元素的数目是n时，递归的深度是$logn$ ，第一层递归是对长度为n的数组排序，下一层是对2个长度为n/2的子数组排序……，在所有$logn$ 层递归中，每一层都需要$\Theta(n)$ 时间代价，因此总时间代价都是$n log(n)$。由于需要temp数组做临时存储，空间复杂度是$\Theta(n)$.</p>
-<p>python版本代码可以参考<a href="https://www.geeksforgeeks.org/python-program-for-merge-sort/" target="_blank" rel="noopener">https://www.geeksforgeeks.org/python-program-for-merge-sort/</a></p>
+<p>python版本代码可以参考 <a href="https://www.geeksforgeeks.org/python-program-for-merge-sort/" target="_blank" rel="noopener">https://www.geeksforgeeks.org/python-program-for-merge-sort/</a></p>
 <h4 id="quicksort"><a href="#quicksort" class="headerlink" title="quicksort"></a>quicksort</h4><p>快速排序不需要额外的空间，典型应用是Unix系统调用库里的qsort函数。快速排序选定一个轴值，数组在小于轴值的放在左边，大于的放在右边。这被称为数组的一个划分 partition。快速排序最差情况是当轴值每次都不能把数组划分得很好，下一次处理子问题规模只比原来的问题规模减少1，时间代价是$\Theta(n^2)$ ，最佳和平均复杂度是$\Theta(n logn)$ 。2，由于递归调用，空间复杂度是$\Theta(logn)$</p>
 <p>快排为什么这么快？</p>
 <figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;queue&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">swap</span><span class="params">(<span class="keyword">int</span> A[], <span class="keyword">int</span> i, <span class="keyword">int</span> j)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> temp = A[i];</span><br><span class="line">    A[i] = A[j];</span><br><span class="line">    A[j] = temp;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">partition</span><span class="params">(<span class="keyword">int</span> A[],<span class="keyword">int</span> l, <span class="keyword">int</span> r, <span class="keyword">int</span>&amp; pivot)</span></span>&#123;</span><br><span class="line">    <span class="keyword">do</span>&#123;</span><br><span class="line">        <span class="keyword">while</span>(A[++l] &gt; pivot); <span class="comment">//move the index</span></span><br><span class="line">        <span class="keyword">while</span>((l&lt;r) &amp;&amp; (A[--r] &lt; pivot));</span><br><span class="line">        swap(A,l,r);</span><br><span class="line">    &#125;<span class="keyword">while</span>(l&lt;r);</span><br><span class="line">    <span class="keyword">return</span> l;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">myqsort</span><span class="params">(<span class="keyword">int</span> A[],<span class="keyword">int</span> i,<span class="keyword">int</span> j)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (i &gt;= j) <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">int</span> pivotIndex = (i+j)/<span class="number">2</span>; <span class="comment">//这里可以写一个findpivot函数，三者取中（三个随机值的中间）</span></span><br><span class="line">    swap(A,pivotIndex,j);</span><br><span class="line">    <span class="keyword">int</span> k = partition(A,i<span class="number">-1</span>,j,A[j]); <span class="comment">//k is the start of the left half</span></span><br><span class="line">    swap(A,k,j);<span class="comment">// 轴值就在k位置，就是最终排序好的数组中的位置</span></span><br><span class="line">    myqsort(A,i,k<span class="number">-1</span>);</span><br><span class="line">    myqsort(A,k+<span class="number">1</span>,j);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -780,12 +780,117 @@
 <p>对于n长的序列，假设基数是r，这个算法需要k轮，每一轮分配的时间是$\Theta(n+r)$ ，总时间代价是$\Theta(nk + rk)$， k是与关键码的长度有关。因此平均时间复杂度是$\theta(n)$，空间复杂度是用于计数的cnt数组和Bin辅助数组带来的 $\Theta(n + k)$ </p>
 <figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">//每一轮分配结束时，记录都被复制回原数组</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">radix</span><span class="params">(<span class="keyword">int</span>* A, <span class="keyword">int</span>* Bin,<span class="keyword">int</span> n,<span class="keyword">int</span> k,<span class="keyword">int</span> r,<span class="keyword">int</span> cnt[])</span></span>&#123;</span><br><span class="line">    <span class="comment">//n is the size of A</span></span><br><span class="line">    <span class="comment">//k is the digit of A[max], r is Cardinality 10 (make r from 1 to 10 to 100)</span></span><br><span class="line">    <span class="comment">//cnt[i] stores occurrences of records in bin[i]</span></span><br><span class="line">    <span class="keyword">int</span> j;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>,rtoi=<span class="number">1</span>; i&lt;k; i++,rtoi*=r) &#123;</span><br><span class="line">        <span class="keyword">for</span> (j=<span class="number">0</span>; j&lt;r; j++) cnt[j] = <span class="number">0</span>; <span class="comment">//init cnt,roti save the r^i</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment">//count the number of records for each bin on this pass</span></span><br><span class="line">        <span class="keyword">for</span> (j=<span class="number">0</span>; j&lt;n; j++) cnt[(A[j] / rtoi) % r]++;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//index of B: cnt[j] will be index for last slot of bin j</span></span><br><span class="line">        <span class="keyword">for</span> (j=<span class="number">1</span>; j&lt;r; j++) cnt[j] = cnt[j<span class="number">-1</span>] + cnt[j];</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//put records into bins, work from bottom of each bin</span></span><br><span class="line">        <span class="comment">//since bins fill from bottom, j counts downwards</span></span><br><span class="line">        <span class="keyword">for</span> (j=n<span class="number">-1</span>; j&gt;=<span class="number">0</span>; j--) &#123;</span><br><span class="line">            Bin[--cnt[ (A[j] / rtoi) % r] ] = A[j];</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//copy B back to A</span></span><br><span class="line">        <span class="keyword">for</span> (j=<span class="number">0</span>; j&lt;n; j++) &#123;</span><br><span class="line">            A[j] = Bin[j];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">     <span class="comment">//n is the size of A,k is the digit of A[max], r is Cardinality 10 (make r from 1 to 10 to 100)</span></span><br><span class="line">    <span class="keyword">int</span> n = <span class="number">12</span>;</span><br><span class="line">    <span class="keyword">int</span> k = <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">int</span> r = <span class="number">10</span>;</span><br><span class="line">    <span class="keyword">int</span> A[<span class="number">12</span>] = &#123;<span class="number">27</span>,<span class="number">91</span>,<span class="number">1</span>,<span class="number">97</span>,<span class="number">17</span>,<span class="number">23</span>,<span class="number">84</span>,<span class="number">28</span>,<span class="number">72</span>,<span class="number">5</span>,<span class="number">67</span>,<span class="number">25</span>&#125;;</span><br><span class="line">    <span class="keyword">int</span> B[<span class="number">12</span>] = &#123;<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>&#125;;</span><br><span class="line">    <span class="keyword">int</span> cnt[<span class="number">10</span>] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">    radix(A,B,n,k,r,cnt);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;n; i++) &#123;</span><br><span class="line">        <span class="built_in">cout</span>&lt;&lt;A[i]&lt;&lt;<span class="string">" "</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>在此记录一个degub情况：上面有个情况是cnt的计数数组，判断A数组里的数应该放到哪个合适的位置出了个bug，cnt被A[j] = 72的时候篡改了。这里编程规范得注意，好好初始化，因为没指定数组长度，程序执行过程中很有可能地址错乱！！！</p>
-<h3 id="其他内嵌算法"><a href="#其他内嵌算法" class="headerlink" title="其他内嵌算法"></a>其他内嵌算法</h3><h4 id="timsort"><a href="#timsort" class="headerlink" title="timsort"></a>timsort</h4><p>这是Python的内嵌排序算法。</p>
-<p><img src="/Users/wangxue/gitpro/20191105MyBlog/saruagithub/source/images/20200310Allsort.jpg" alt="20200310Allsort"></p>
+<h3 id="其他内嵌算法"><a href="#其他内嵌算法" class="headerlink" title="其他内嵌算法"></a>其他内嵌算法</h3><h4 id="timsort"><a href="#timsort" class="headerlink" title="timsort"></a>timsort</h4><p>这是Python的内嵌排序算法，是 list.sort 的默认实现。</p>
+<p>它结合了合并排序（merge sort）和插入排序（insertion sort）而得出的排序算法。</p>
+<p>思想：TimSort 算法为了减少对升序部分的回溯和对降序部分的性能倒退，将输入按其升序和降序特点进行了分区。该算法找到数据中已经排好序的块 - 分区，每一个分区叫一个run，然后按规则合并这些run，合并的结果保存到栈中。</p>
+<p>关于run：现实中的大多数据通常是有部分已经排好序的，以一个分区run作为排序单位更好。</p>
+<p><img src="https://img-my.csdn.net/uploads/201211/14/1352906485_1428.jpg" alt="img"></p>
+<p>每次拿一个 run 出来进行归并。每次归并会将两个 run 合并成一个 run。</p>
+<h5 id="run的最小长度"><a href="#run的最小长度" class="headerlink" title="run的最小长度"></a>run的最小长度</h5><p>run是已经排好序的一块分区，run长度不同，Timesort根据run的长度来选择排序的策略。</p>
+<p>例如如果run的长度小于某一个值，则会选择插入排序算法来排序。</p>
+<h5 id="合并run"><a href="#合并run" class="headerlink" title="合并run"></a>合并run</h5><p>合并run的原则是 run合并的技术要保证有最高的效率。当Timsort算法找到一个run时，会将该run在数组中的起始位置和run的长度放入栈中，然后根据先前放入栈中的run决定是否该合并run。Timsort不会合并在栈中不连续的run。</p>
+<p>Timsort会合并在栈中2个连续的run。X、Y、Z代表栈最上方的3个run的长度（图2），当同时不满足下面2个条件是，X、Y这两个run会被合并，直到同时满足下面2个条件，则合并结束：</p>
+<p>(1) X&gt;Y+Z</p>
+<p>(2) Y&gt;Z</p>
+<p>如果X&lt;Y+Z，那么X+Y合并为一个新的run，然后入栈。重复上述步骤，直到同时满足上述2个条件。当合并结束后，Timsort会继续找下一run，然后找到以后入栈，重复上述步骤，及每次run入栈都会检查是否需要合并2个run。</p>
+<p>简单的合并算法是用简单插入算法，依次从左到右或从右到左比较，然后合并2个run。</p>
+<p><img src="https://img-my.csdn.net/uploads/201211/15/1352943458_7422.jpg" alt="img"></p>
+<p>Timsort用<strong><em>\</em>二分插入算法（binary merge sort）。**</strong>先用二分查找算法/折半查找算法（binary search）找到插入的位置，然后在插入。</p>
+<p><img src="https://img-my.csdn.net/uploads/201211/15/1352943470_6939.jpg" alt="img"></p>
+<p>由于Timsort算法利用了现实中大多数数据中会有一些排好序的区，所以Timsort会比$O(nlogn)$快些。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th><strong>排序算法</strong></th>
+<th><strong>平均时间复杂度</strong></th>
+<th><strong>最坏时间复杂度</strong></th>
+<th><strong>最好时间复杂度</strong></th>
+<th><strong>空间复杂度</strong></th>
+<th><strong>稳定性</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>冒泡排序</strong></td>
+<td>O(n²)</td>
+<td>O(n²)</td>
+<td>O(n)</td>
+<td>O(1)</td>
+<td>稳定</td>
+</tr>
+<tr>
+<td><strong>直接选择排序</strong></td>
+<td>O(n²)</td>
+<td>O(n²)</td>
+<td>O(n²)</td>
+<td>O(1)</td>
+<td>不稳定</td>
+</tr>
+<tr>
+<td><strong>直接插入排序</strong></td>
+<td>O(n²)</td>
+<td>O(n²)</td>
+<td>O(n)</td>
+<td>O(1)</td>
+<td>稳定</td>
+</tr>
+<tr>
+<td><strong>快速排序</strong></td>
+<td>O(nlogn)</td>
+<td>O(n²)</td>
+<td>O(nlogn)</td>
+<td>O(nlogn)</td>
+<td>不稳定</td>
+</tr>
+<tr>
+<td><strong>堆排序</strong></td>
+<td>O(nlogn)</td>
+<td>O(nlogn)</td>
+<td>O(nlogn)</td>
+<td>O(1)</td>
+<td>不稳定</td>
+</tr>
+<tr>
+<td><strong>希尔排序</strong></td>
+<td>O(n^1.5)</td>
+<td>O(<em>n</em> log² <em>n</em>)</td>
+<td>O(n log²n)</td>
+<td>O(1)</td>
+<td>不稳定</td>
+</tr>
+<tr>
+<td><strong>归并排序</strong></td>
+<td>O(nlogn)</td>
+<td>O(nlogn)</td>
+<td>O(nlogn)</td>
+<td>O(n)</td>
+<td>稳定</td>
+</tr>
+<tr>
+<td><strong>计数排序</strong></td>
+<td>O(n+k)</td>
+<td>O(n+k)</td>
+<td>O(n+k)</td>
+<td>O(n+k)</td>
+<td>稳定</td>
+</tr>
+<tr>
+<td><strong>基数排序</strong></td>
+<td>O(N*M)</td>
+<td>O(N*M)</td>
+<td>O(N*M)</td>
+<td>O(M)</td>
+<td>稳定</td>
+</tr>
+</tbody>
+</table>
+</div>
 <h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，《数据结构与算法分析》 Clifford A. Shaffer 等</p>
 <p>2，<a href="[https://baike.baidu.com/item/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F](https://baike.baidu.com/item/希尔排序">百度百科</a>)</p>
 <p>3， <a href="https://www.jiqizhixin.com/articles/2018-11-20-3" target="_blank" rel="noopener">机器之心 Timsort</a></p>
-<p>4，<a href="https://www.geeksforgeeks.org/python-program-for-merge-sort/" target="_blank" rel="noopener">https://www.geeksforgeeks.org/python-program-for-merge-sort/</a></p>
+<p>4，<a href="https://www.geeksforgeeks.org/python-program-for-merge-sort/" target="_blank" rel="noopener">GeeksforGeeks-Python实现mergesort</a></p>
+<p>5，<a href="https://blog.csdn.net/yangzhongblog/article/details/8184707" target="_blank" rel="noopener">TimSort原理介绍</a></p>
 ]]></content>
       <categories>
         <category>算法</category>
