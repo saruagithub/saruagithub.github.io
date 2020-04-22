@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="WangXue" type="application/atom+xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://yoursite.com').hostname,
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"mac"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: true,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":5,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="背景大数据背景的几个特点：量大large scale，实时性动态产生数据，结构化&#x2F;半结构化数据，可信赖程度低（Noise，考虑模型如何更robust），高维度且稀疏的数据集。这里主要说高维稀疏数据带来的一些问题：$x=\left(x_{1}, x_{2}, \cdots, x_{p}\right)$,  特征是p维，数据样例有n个，即整个dataset是 n × p ，传统的统计方法适用于一些 n">
+<meta name="keywords" content="机器学习,优化">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从优化角度看L1正则化的稀疏性">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;04&#x2F;18&#x2F;20200418%E9%AB%98%E7%BA%A7%E6%9C%80%E4%BC%98%E5%8C%96-%E4%BB%8E%E4%BC%98%E5%8C%96%E8%A7%92%E5%BA%A6%E7%9C%8BL1%E6%AD%A3%E5%88%99%E5%8C%96%E7%9A%84%E7%A8%80%E7%96%8F%E6%80%A7&#x2F;index.html">
+<meta property="og:site_name" content="WangXue">
+<meta property="og:description" content="背景大数据背景的几个特点：量大large scale，实时性动态产生数据，结构化&#x2F;半结构化数据，可信赖程度低（Noise，考虑模型如何更robust），高维度且稀疏的数据集。这里主要说高维稀疏数据带来的一些问题：$x=\left(x_{1}, x_{2}, \cdots, x_{p}\right)$,  特征是p维，数据样例有n个，即整个dataset是 n × p ，传统的统计方法适用于一些 n">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200418convex_optimization.jpg">
+<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200418convexification.jpg">
+<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200419sparsity_model.jpg">
+<meta property="og:updated_time" content="2020-04-19T03:04:36.249Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200418convex_optimization.jpg">
+
+<link rel="canonical" href="http://yoursite.com/2020/04/18/20200418%E9%AB%98%E7%BA%A7%E6%9C%80%E4%BC%98%E5%8C%96-%E4%BB%8E%E4%BC%98%E5%8C%96%E8%A7%92%E5%BA%A6%E7%9C%8BL1%E6%AD%A3%E5%88%99%E5%8C%96%E7%9A%84%E7%A8%80%E7%96%8F%E6%80%A7/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>从优化角度看L1正则化的稀疏性 | WangXue</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">WangXue</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">1 笨笨的孩子慢慢学stay hungry stay foolish 2 武汉加油！</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/saruagithub" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/18/20200418%E9%AB%98%E7%BA%A7%E6%9C%80%E4%BC%98%E5%8C%96-%E4%BB%8E%E4%BC%98%E5%8C%96%E8%A7%92%E5%BA%A6%E7%9C%8BL1%E6%AD%A3%E5%88%99%E5%8C%96%E7%9A%84%E7%A8%80%E7%96%8F%E6%80%A7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="WangXue">
+      <meta itemprop="description" content="本科重庆大学CS，研究生南京大学MS，主要研究AIOps，机器学习等，语言Python&C++">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="WangXue">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          从优化角度看L1正则化的稀疏性
+        </h1>
+
+        <div class="post-meta">
+	  
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-04-18 22:02:03" itemprop="dateCreated datePublished" datetime="2020-04-18T22:02:03+08:00">2020-04-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-19 11:04:36" itemprop="dateModified" datetime="2020-04-19T11:04:36+08:00">2020-04-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/04/18/20200418%E9%AB%98%E7%BA%A7%E6%9C%80%E4%BC%98%E5%8C%96-%E4%BB%8E%E4%BC%98%E5%8C%96%E8%A7%92%E5%BA%A6%E7%9C%8BL1%E6%AD%A3%E5%88%99%E5%8C%96%E7%9A%84%E7%A8%80%E7%96%8F%E6%80%A7/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/04/18/20200418%E9%AB%98%E7%BA%A7%E6%9C%80%E4%BC%98%E5%8C%96-%E4%BB%8E%E4%BC%98%E5%8C%96%E8%A7%92%E5%BA%A6%E7%9C%8BL1%E6%AD%A3%E5%88%99%E5%8C%96%E7%9A%84%E7%A8%80%E7%96%8F%E6%80%A7/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>大数据背景的几个特点：量大large scale，实时性动态产生数据，结构化/半结构化数据，可信赖程度低（Noise，考虑模型如何更robust），高维度且稀疏的数据集。</p><p>这里主要说高维稀疏数据带来的一些问题：</p><p>$x=\left(x_{1}, x_{2}, \cdots, x_{p}\right)$,  特征是p维，数据样例有n个，即整个dataset是 n × p ，传统的统计方法适用于一些 n  &gt; p 的情况，但是当 n &lt;&lt; p的时候，数据量小，但想要求的参数又很多的时候就有困难了。</p><a id="more"></a>
+
+
+<h3 id="Linear-Regression"><a href="#Linear-Regression" class="headerlink" title="Linear Regression"></a>Linear Regression</h3><p>从最基本的模型开始来看如何解决这个问题。</p>
+<p>X 代表输入，Y代表输出，$\varepsilon$ 是误差项。</p>
+<script type="math/tex; mode=display">Y=f(X)+\varepsilon</script><p>监督学习，给出数据集 $\left(X_{1}, Y_{1}\right),\left(X_{2}, Y_{2}\right), \ldots,\left(X_{n}, Y_{n}\right)$，如何估计出 $f(X)$ 呢？</p>
+<p>也可以用一些非参数的方法：如用KNN….</p>
+<p>还可以考虑参数方法：施加一些参数进去，我们去估计参数 $\beta_i$</p>
+<script type="math/tex; mode=display">Y=\beta_{1} X^{1}+\beta_{2} X^{2}+\cdots+\beta_{k} X^{p}+\varepsilon=\beta^{T} X</script><p>(这里我们比如我们画图看后，根据领域知识等，假设 f(X) 是线性的等，就用LR模型来看。)</p>
+<p>常用方法用最小二乘法（即最小化平方损失函数）：</p>
+<script type="math/tex; mode=display">\min \sum_{i=1}^{n}\left(Y_{i}-\beta^{T} X_{i}\right)^{2}=\|Y-X \boldsymbol \beta\|^{2}</script><ul>
+<li>这样求解 $\beta$ 会得到很好的统计性质</li>
+<li>问题存在：处理高维数据的时候 $X \in R^{n \times p}$ ，这个问题的解有多个，要取哪个？如果求解的话可以这里可以去写写 $|Y-X \boldsymbol \beta|^{2}$ 的最优性条件 KKT条件有：$X^TX \boldsymbol\beta = X^TY$ ，而这里的 $X^TX$ 是non singular，不可逆，求解有困难。</li>
+<li>可解释性也不太好，这个得到的 $\beta_i$ 一般都是不为0，那Y到底跟哪个X有关呢，怎么找重要的因素去解释呢？</li>
+<li>高维的时候可以考虑降维，如PCA，但也有问题，$x_1,…x_p$ 利用线性组合到一起，把某几个因素合为一个新变量，但新变量的解释也不好说。</li>
+</ul>
+<h3 id="Sparse-Optimization"><a href="#Sparse-Optimization" class="headerlink" title="Sparse Optimization"></a>Sparse Optimization</h3><h4 id="sparse-Optimization"><a href="#sparse-Optimization" class="headerlink" title="sparse Optimization"></a>sparse Optimization</h4><p>考虑用稀疏优化来解决。</p>
+<p>定义稀疏结构 sparse structure：$x \in R^{p}$ 如果仅仅有少部分非0值，则称为sparse vector。</p>
+<p>定义0范式：$||x||_0= \left\{i: x_{i} \neq 0\right\}$ 即是$x_i \neq 0$ 的个数 （如 x = (0,0,1), 则其0范数值为1）</p>
+<p>稀疏数据问题：$||x||_0 &lt;&lt; p$  </p>
+<p>个数限制优化 (Cardinality constrained Optimization)方法：</p>
+<script type="math/tex; mode=display">min \|Y-X \boldsymbol \beta\|^{2}</script><script type="math/tex; mode=display">s.t. \|\boldsymbol \beta\|_{0} \leqslant k \quad(k<< p)</script><p>意思：最小化误差，但有约束存在 $\beta$ 的0范数小于等于 k，只有k个系数不为0，即Y只跟少数的k个X变量有关，解释性就加上了。</p>
+<h4 id="Integer-Programming"><a href="#Integer-Programming" class="headerlink" title="Integer Programming"></a>Integer Programming</h4><p>我们把上面这个优化改写成一个整数规划来看：</p>
+<script type="math/tex; mode=display">\min \|Y-x \beta\|^{2}</script><script type="math/tex; mode=display">s.t. \sum_{i=1}^p S_i \leq k</script><script type="math/tex; mode=display">S_i = 0 \quad or \quad 1</script><script type="math/tex; mode=display">\left|\beta_{i}\right| \leq M S_{i} , M - EnoughBig</script><p>类似一个设施选址问题的写法：两阶段，第一选不选：Si表示选不选，选了变量$X_i$，$S_i$就是1；coefficiency系数，$\beta_i$表示系数。</p>
+<p>这样改写之后，就可以用部分求解器如CVX , Gurobi求解中等规模的问题。但是如果规模太大（ 即 p 非常大）就不好求解了。</p>
+<h4 id="凸近似"><a href="#凸近似" class="headerlink" title="凸近似"></a>凸近似</h4><p>那我们转换整数规划为凸优化来解：</p>
+<p><img src="/images/20200418convex_optimization.jpg" alt="20200418convex_optimization"></p>
+<p>具体来看怎么转换的凸优化呢？</p>
+<p><img src="/images/20200418convexification.jpg" alt="20200418convexification"></p>
+<p>一维情况（左图）：</p>
+<p>我们要去凸近似这个 f(x) 即zero-norm（0范数函数），当x=0时f(x)=0，当x在$-\tau \leqslant x \leqslant \tau$ （这里的$\tau$ 只是表示一个范围，可以取很大，这为了好看）时，f(x) = 1。</p>
+<p>函数图画出来是上面那一根黑线（除开x=0中间那个空点，这个不好处理），怎么去凸近似这个函数呢？我们用函数 g(x) 去近似，即红色那个线把三个点连起来，这是最简单的，也可以考虑用二次函数椭圆形来近似也可以：</p>
+<script type="math/tex; mode=display">g(x) = \frac{|x|}{\tau}</script><p>二维情况（右图）：</p>
+<p>二维的情况也可以画图来分析：就是最下面中心那个点，加上面的十字线除开中间那个点（x其中一个为1），加上最上面为2的面：</p>
+<script type="math/tex; mode=display">f(x) = ||x||_0 = \left\{\begin{array}{ll}0, & \text { If } x=0 \\ 1, & \text { If } x_{1}=0, x_{2} \neq 0 \text { or } \\ & x_{1} \neq 0, x_{2}=0 \\ 2, & \text { If } x_{1} \neq 0, x_{2} \neq 0\end{array}\right.</script><p>这里的凸近似，将下面的四根虚线连起来（延展上去也连上面的四个红点），就是g(x)：</p>
+<script type="math/tex; mode=display">g(x) = \frac{1}{\tau}(\left|x_{1}\right|+\left|x_{2}\right|)</script><p>看看上面一维、二维的情况，都与绝对值有关，是不是还有点像L1正则化的样子，我们接着看。我们总结下zero norm0范式的凸近似是：</p>
+<script type="math/tex; mode=display">\|x\|_{0}:\tau (\|x\|_{1}) = \tau \sum_{i=1}^n |x_i|</script><p>即存在一个 $\tau$ ，使得$\tau (|x|_{1})$ 是$|x|_{0}$最好的凸近似。</p>
+<h3 id="Sparse-Linear-Regression"><a href="#Sparse-Linear-Regression" class="headerlink" title="Sparse Linear Regression"></a>Sparse Linear Regression</h3><h4 id="typical-sparse-model"><a href="#typical-sparse-model" class="headerlink" title="typical sparse model"></a>typical sparse model</h4><p>回忆之前的LR模型：</p>
+<script type="math/tex; mode=display">min \|Y-x \boldsymbol\beta\|^{2}</script><script type="math/tex; mode=display">s.t.:\|\boldsymbol\beta\|_{0} \leqslant k</script><p>这里的约束我们就可以用前面推导的一范数来近似了：</p>
+<script type="math/tex; mode=display">\|\boldsymbol\beta\|_{1} = \sum_{i=1}^p |\beta|_{i} \rightarrow \|\boldsymbol\beta\|_{0}</script><p>上面的模型可以改写为：</p>
+<script type="math/tex; mode=display">min \|Y-x \beta\|^{2}</script><script type="math/tex; mode=display">s.t. \tau\|\beta\|_{1} \leqslant k \quad (即\|\beta\|_{1} \leqslant \lambda)</script><p> 这里的$\lambda$ 自己取。这就产生了新的模型了。</p>
+<p>我们用图形说明看看，sparsity 是真的有的：</p>
+<p><img src="/images/20200419sparsity_model.jpg" alt="20200419sparsity_model"></p>
+<p>左下图：C越大椭圆越大。如果是$|\beta|_{1} \leqslant \lambda$则相交点在坐标轴上，往往是左下图红色点那里，而这个地方则很好的可见 $\beta$ 参数的非0个数  &lt; P=2了。但如果看右边图，采用 $|\beta|_{2}$ 则相交在中间，$\beta$参数的非0个数  =  P（2）了，那$\beta$ 全部都不为0，没有起到稀疏作用。</p>
+<h4 id="Lagrange-version"><a href="#Lagrange-version" class="headerlink" title="Lagrange version"></a>Lagrange version</h4><p>我们再改写下上面的模型为拉格朗日版本，将约束放到上面相当于拉格朗日乘子：</p>
+<script type="math/tex; mode=display">min\|Y-x \beta\|^{2}+{\mu}_{1}\|\beta\|_{0} \rightarrow min \|Y-x \beta\|^{2}+{\mu}_{2}\|\beta\|_{1}</script><p>这里看就是既要看损失，又要看稀疏性，这两者之间有个tradeoff平衡选择。</p>
+<p>右侧这边这个模型，在统计中也叫做lasso模型，也就是L1正则化。</p>
+<p><br></p>
+<p><br></p>
+<p>总结一下，在线性回归中，我们遇到了一个高维的问题导致了参数的不稀疏，无法较好的解释。我们用稀疏优化来解决这个问题，我们把选择部分参数不为0（不为0的参数个数）这个zero norm用凸近似来做，将其转换为绝对值这个凸函数，进过改写为拉格朗日形式后，这个约束就成了L1正则化的形式。</p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，南京大学，陈彩华 《高级最优化》</p>
+<p>2，《最优化》陈宝林</p>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div></div>
+  <button disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.jpg" alt="WangXue 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.jpg" alt="WangXue 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag"># 机器学习</a>
+              <a href="/tags/%E4%BC%98%E5%8C%96/" rel="tag"># 优化</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/04/15/20200415%E7%BB%84%E5%90%88%E4%BC%98%E5%8C%96%E9%97%AE%E9%A2%98%E7%9A%84%E5%90%AF%E5%8F%91%E5%BC%8F%E7%AE%97%E6%B3%95/" rel="prev" title="组合优化问题的启发式算法">
+      <i class="fa fa-chevron-left"></i> 组合优化问题的启发式算法
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/04/21/20200421HadoopBook%E5%AD%A6%E4%B9%A0/" rel="next" title="HadoopBook学习">
+      HadoopBook学习 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="comments"></div>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Linear-Regression"><span class="nav-number">2.</span> <span class="nav-text">Linear Regression</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Sparse-Optimization"><span class="nav-number">3.</span> <span class="nav-text">Sparse Optimization</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#sparse-Optimization"><span class="nav-number">3.1.</span> <span class="nav-text">sparse Optimization</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Integer-Programming"><span class="nav-number">3.2.</span> <span class="nav-text">Integer Programming</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#凸近似"><span class="nav-number">3.3.</span> <span class="nav-text">凸近似</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Sparse-Linear-Regression"><span class="nav-number">4.</span> <span class="nav-text">Sparse Linear Regression</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#typical-sparse-model"><span class="nav-number">4.1.</span> <span class="nav-text">typical sparse model</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Lagrange-version"><span class="nav-number">4.2.</span> <span class="nav-text">Lagrange version</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reference"><span class="nav-number">5.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="WangXue"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">WangXue</p>
+  <div class="site-description" itemprop="description">本科重庆大学CS，研究生南京大学MS，主要研究AIOps，机器学习等，语言Python&C++</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">68</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">54</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/saruagithub" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;saruagithub" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/13452916191@163.com" title="E-Mail → 13452916191@163.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">WangXue</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.0.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.5.0
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.getAttribute('pjax') !== null) {
+      element.setAttribute('pjax', '');
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+
+<script>
+NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(item => {
+    return GUEST.includes(item);
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: '0TVJlt2cIYmtVMl43kgpM5x9-gzGzoHsz',
+    appKey: 'nBjNpIkIeApmj8vOtnjsjUTT',
+    placeholder: "Just go go",
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: '' || 'zh-cn',
+    path: location.pathname,
+    recordIP: false,
+    serverURLs: ''
+  });
+}, window.Valine);
+</script>
+
+    </div>
+</body>
+</html>
