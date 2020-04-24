@@ -423,9 +423,9 @@
         <category>数据挖掘</category>
       </categories>
       <tags>
+        <tag>大数据</tag>
         <tag>hadoop</tag>
         <tag>配置</tag>
-        <tag>大数据</tag>
       </tags>
   </entry>
   <entry>
@@ -464,8 +464,8 @@
         <category>数据挖掘</category>
       </categories>
       <tags>
-        <tag>hadoop</tag>
         <tag>大数据</tag>
+        <tag>hadoop</tag>
       </tags>
   </entry>
   <entry>
@@ -771,7 +771,7 @@
 <p>它结合了合并排序（merge sort）和插入排序（insertion sort）而得出的排序算法。</p>
 <p>思想：TimSort 算法为了减少对升序部分的回溯和对降序部分的性能倒退，将输入按其升序和降序特点进行了分区。该算法找到数据中已经排好序的块 - 分区，每一个分区叫一个run，然后按规则合并这些run，合并的结果保存到栈中。</p>
 <p>关于run：现实中的大多数据通常是有部分已经排好序的，以一个分区run作为排序单位更好。</p>
-<p><img src="https://img-my.csdn.net/uploads/201211/14/1352906485_1428.jpg" alt="img"></p>
+<p><img src="/images/20200423sort_run.jpg" alt="20200423sort_run"></p>
 <p>每次拿一个 run 出来进行归并。每次归并会将两个 run 合并成一个 run。</p>
 <h5 id="run的最小长度"><a href="#run的最小长度" class="headerlink" title="run的最小长度"></a>run的最小长度</h5><p>run是已经排好序的一块分区，run长度不同，Timesort根据run的长度来选择排序的策略。</p>
 <p>例如如果run的长度小于某一个值，则会选择插入排序算法来排序。</p>
@@ -781,9 +781,9 @@
 <p>(2) Y&gt;Z</p>
 <p>如果X&lt;Y+Z，那么X+Y合并为一个新的run，然后入栈。重复上述步骤，直到同时满足上述2个条件。当合并结束后，Timsort会继续找下一run，然后找到以后入栈，重复上述步骤，及每次run入栈都会检查是否需要合并2个run。</p>
 <p>简单的合并算法是用简单插入算法，依次从左到右或从右到左比较，然后合并2个run。</p>
-<p><img src="https://img-my.csdn.net/uploads/201211/15/1352943458_7422.jpg" alt="img"></p>
+<p><img src="/images/20200423sort_run_merge.jpg" alt="20200423sort_run_merge"></p>
 <p>Timsort用<strong><em>\</em>二分插入算法（binary merge sort）。**</strong>先用二分查找算法/折半查找算法（binary search）找到插入的位置，然后在插入。</p>
-<p><img src="https://img-my.csdn.net/uploads/201211/15/1352943470_6939.jpg" alt="img"></p>
+<p><img src="/images/20200423sort_run_merge2.jpg" alt="20200423sort_run_merge2"></p>
 <p>由于Timsort算法利用了现实中大多数数据中会有一些排好序的区，所以Timsort会比$O(nlogn)$快些。</p>
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><div class="table-container">
 <table>
