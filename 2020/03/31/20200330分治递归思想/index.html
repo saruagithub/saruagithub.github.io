@@ -47,15 +47,15 @@
   };
 </script>
 
-  <meta name="description" content="分治递归思想为了解决一个给定的问题，算法一次或多次递归的调用自身以解决若干子问题，这些就是典型的分治法的思想。我们将原问题分解为几个规模较小但类似于原问题的子问题，从而递归的调用自身，最后合并这些子问题的解来建立原问题的解。关键：1，分解原问题为相同结构的子问题。2，解决这些子问题。3，合并子问题的解。">
+  <meta name="description" content="分治递归思想为了解决一个给定的问题，算法一次或多次递归的调用自身以解决若干子问题，上层函数调用子函数需要等子函数运行完，这些就是典型的分治法的思想。我们将原问题分解为几个规模较小但类似于原问题的子问题，从而递归的调用自身，最后合并这些子问题的解来建立原问题的解。关键：1，递：分解原问题为相同结构的子问题。2，解决这些子问题。3，归：合并子问题的解。">
 <meta name="keywords" content="算法,递归,分治">
 <meta property="og:type" content="article">
 <meta property="og:title" content="分治递归思想">
 <meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;03&#x2F;31&#x2F;20200330%E5%88%86%E6%B2%BB%E9%80%92%E5%BD%92%E6%80%9D%E6%83%B3&#x2F;index.html">
 <meta property="og:site_name" content="WangXue">
-<meta property="og:description" content="分治递归思想为了解决一个给定的问题，算法一次或多次递归的调用自身以解决若干子问题，这些就是典型的分治法的思想。我们将原问题分解为几个规模较小但类似于原问题的子问题，从而递归的调用自身，最后合并这些子问题的解来建立原问题的解。关键：1，分解原问题为相同结构的子问题。2，解决这些子问题。3，合并子问题的解。">
+<meta property="og:description" content="分治递归思想为了解决一个给定的问题，算法一次或多次递归的调用自身以解决若干子问题，上层函数调用子函数需要等子函数运行完，这些就是典型的分治法的思想。我们将原问题分解为几个规模较小但类似于原问题的子问题，从而递归的调用自身，最后合并这些子问题的解来建立原问题的解。关键：1，递：分解原问题为相同结构的子问题。2，解决这些子问题。3，归：合并子问题的解。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-04-13T14:49:58.256Z">
+<meta property="og:updated_time" content="2020-04-27T13:26:51.357Z">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="http://yoursite.com/2020/03/31/20200330%E5%88%86%E6%B2%BB%E9%80%92%E5%BD%92%E6%80%9D%E6%83%B3/">
@@ -240,7 +240,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-13 22:49:58" itemprop="dateModified" datetime="2020-04-13T22:49:58+08:00">2020-04-13</time>
+                <time title="修改时间：2020-04-27 21:26:51" itemprop="dateModified" datetime="2020-04-27T21:26:51+08:00">2020-04-27</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -286,8 +286,9 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h3 id="分治递归思想"><a href="#分治递归思想" class="headerlink" title="分治递归思想"></a>分治递归思想</h3><p>为了解决一个给定的问题，算法一次或多次递归的调用自身以解决若干子问题，这些就是典型的分治法的思想。我们将原问题分解为几个规模较小但类似于原问题的子问题，从而递归的调用自身，最后合并这些子问题的解来建立原问题的解。</p><p>关键：1，分解原问题为相同结构的子问题。2，解决这些子问题。3，合并子问题的解。</p><a id="more"></a>
+        <h3 id="分治递归思想"><a href="#分治递归思想" class="headerlink" title="分治递归思想"></a>分治递归思想</h3><p>为了解决一个给定的问题，算法一次或多次递归的调用自身以解决若干子问题，上层函数调用子函数需要等子函数运行完，这些就是典型的分治法的思想。我们将原问题分解为几个规模较小但类似于原问题的子问题，从而递归的调用自身，最后合并这些子问题的解来建立原问题的解。</p><p>关键：1，递：分解原问题为相同结构的子问题。2，解决这些子问题。3，归：合并子问题的解。</p><a id="more"></a>
 
+<p>注意：调用太深了就可能会堆栈溢出，需要考虑堆栈的深度。</p>
 <h3 id="经典案例"><a href="#经典案例" class="headerlink" title="经典案例"></a>经典案例</h3><h4 id="递归求和"><a href="#递归求和" class="headerlink" title="递归求和"></a>递归求和</h4><p>如果计算1 + 2 + … n ，可以用递归的方法来写。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">AddFrom1ToN_Recursive</span><span class="params">(<span class="keyword">int</span> n)</span></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> n &lt;= <span class="number">0</span>?: <span class="number">0</span>:n + AddFrom1ToN_Recursive(n<span class="number">-1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>但这里递归比循环的时间复杂度更高，函数递归调用自身都要在内存栈中分配空间保存参数（如n到哪了），返回地址（函数的地址），临时变量（上一次计算得到的AddFrom1ToN_Recursive值）等等，因此空间和时间消耗较多。</p>
@@ -300,6 +301,7 @@
 <p>还有很多二叉树类的问题都涉及到递归方法。</p>
 <h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1, 《算法导论》机械工业出版社 第三版（黑皮的，Thoms H Cormen…）</p>
 <p>2，leecode网站</p>
+<p>3，<a href="https://www.bilibili.com/video/BV1954y1Q7u8/" target="_blank" rel="noopener">https://www.bilibili.com/video/BV1954y1Q7u8/</a></p>
 
     </div>
 

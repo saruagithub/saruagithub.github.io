@@ -56,7 +56,7 @@
 <meta property="og:description" content="高级最优化先修条件：线性代数，最优化&#x2F;运筹，基础的概率论，MATLAB使用（如何建模与使用）优化分类1，确定性优化：Linear Optimization线性规划，Second order cone programming 二阶椎优化，Semidefinite programming （SDP半定优化）">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200421Piece_wiseLinearRegression.jpg">
-<meta property="og:updated_time" content="2020-04-22T01:37:31.825Z">
+<meta property="og:updated_time" content="2020-05-06T03:04:46.206Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200421Piece_wiseLinearRegression.jpg">
 
@@ -242,7 +242,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-22 09:37:31" itemprop="dateModified" datetime="2020-04-22T09:37:31+08:00">2020-04-22</time>
+                <time title="修改时间：2020-05-06 11:04:46" itemprop="dateModified" datetime="2020-05-06T11:04:46+08:00">2020-05-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -311,7 +311,93 @@
 <p>我们改写上面的模型：</p>
 <script type="math/tex; mode=display">min z</script><script type="math/tex; mode=display">s.t. Ax \geq b</script><script type="math/tex; mode=display">\boldsymbol{d}_{k}^{\prime} \boldsymbol{x}+c_{k} \leq z</script><h4 id="绝对值问题"><a href="#绝对值问题" class="headerlink" title="绝对值问题"></a>绝对值问题</h4><p>绝对数的模型，也可以转换为线性规划求解。</p>
 <script type="math/tex; mode=display">min \sum_{j} c_{j}\left|x_{j}\right| ,(c_j \geq 0)</script><script type="math/tex; mode=display">\text { s.t. } \quad A x \geq b</script><p>我们这样看，令<script type="math/tex">z_{j}=\left|x_{j}\right| = max\{x_j,-x_j\}</script>，就可以写为如下形式了：</p>
-<script type="math/tex; mode=display">\min \sum_{j} c_{j} z_{j}</script><script type="math/tex; mode=display">s.t. Ax \geq b</script><script type="math/tex; mode=display">x_j \leq z_j</script><script type="math/tex; mode=display">-x_j \leq z_j</script><h3 id="建议参考书籍"><a href="#建议参考书籍" class="headerlink" title="建议参考书籍"></a>建议参考书籍</h3><p>–<a href="http://www.stanford.edu/~boyd/cvxbook/" target="_blank" rel="noopener">Convex Optimization</a>, </p>
+<script type="math/tex; mode=display">\min \sum_{j} c_{j} z_{j}</script><script type="math/tex; mode=display">s.t. Ax \geq b</script><script type="math/tex; mode=display">x_j \leq z_j</script><script type="math/tex; mode=display">-x_j \leq z_j</script><p>但并非所有非凸问题可以转回为凸问题，并非所有凸问题都可以转为线性规划问题。</p>
+<h3 id="组合拍卖—机制设计"><a href="#组合拍卖—机制设计" class="headerlink" title="组合拍卖—机制设计"></a>组合拍卖—机制设计</h3><h4 id="Market-for-Word-Cup-Winner问题"><a href="#Market-for-Word-Cup-Winner问题" class="headerlink" title="Market for Word Cup Winner问题"></a>Market for Word Cup Winner问题</h4><p>information market：某个地方集中所有的信息aggregate，来做决策设计机制，稳赚不赔。</p>
+<p>世界杯中可以赌球，假设有五个国家有可能在比赛中胜，每个人都可以生成赌球的订单order（就是赌谁赢），选择中只有赌赢了一个就可以赢 $1。引入一个market maker，他做决策接受或拒绝order，怎么做可以不亏钱。</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>Order</th>
+<th>Price: pi_i</th>
+<th>Quantity limit: q_i</th>
+<th>Filed :x_i</th>
+<th>Argentina：a</th>
+<th>Brazil</th>
+<th>Italy</th>
+<th>Germany</th>
+<th>France</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>0.75</td>
+<td>10</td>
+<td>5</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>2</td>
+<td>0.35</td>
+<td>5</td>
+<td>5</td>
+<td></td>
+<td></td>
+<td></td>
+<td>1</td>
+<td></td>
+</tr>
+<tr>
+<td>3</td>
+<td>0.4</td>
+<td>10</td>
+<td>5</td>
+<td>1</td>
+<td></td>
+<td>1</td>
+<td></td>
+<td>1</td>
+</tr>
+<tr>
+<td>4</td>
+<td>0.95</td>
+<td>10</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td></td>
+</tr>
+<tr>
+<td>5</td>
+<td>0.75</td>
+<td>5</td>
+<td>5</td>
+<td></td>
+<td>1</td>
+<td></td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>（表里：右侧的1表示赌这个国家赢。price是售价，赌得越厉害比如order 2售价相对低一点。Filed表示market maker做的事，你订单虽然买了Quantity这么多，但maker只限制接受Filed这么多的订单。）</p>
+<h4 id="抽象模型"><a href="#抽象模型" class="headerlink" title="抽象模型"></a>抽象模型</h4><p>给定m状态（即只有一个国家赢，互斥的）。</p>
+<p>order是一系列赌的决策（$a_{i1},a_{i2},…a_{im}$）（表里order 1就是（1，1，1，0，0））。</p>
+<p>price limit是参与者愿意对某order所支付的价格 $\pi_i$。</p>
+<p>quantity limit是参与者最多可以买多少份。$q_i$</p>
+<h4 id="建模Linear-Programming"><a href="#建模Linear-Programming" class="headerlink" title="建模Linear Programming"></a>建模Linear Programming</h4><p>Filed：对order i只接受 $x_i$ ，总收入 $\sum_i \pi_i x_i$ ，对于market maker而言，如果jth个team赢了则成本是 $\sum_i a_{ij}x_i$ ，因为1美元 被赢走了嘛，整个最坏情况就是 $\max _{j=1, \ldots, m}\left\{\sum_{i} a_{i j} x_{i}\right\}$ （即某一个国家赢了导致的最大损失）</p>
+<p>写出线性规划模型为：</p>
+<script type="math/tex; mode=display">\max \sum_{i} \pi_{i} x_{i}-\max _{j}\left\{\sum_i a_{i j} x_{i}\right\}</script><script type="math/tex; mode=display">\text { s.t. } \quad 0 \leq x_{i} \leq q_{i} \forall i=1, \dots, n</script><p>第一个公式的 -max 其实等于 $+\min \left\{-\sum_{i} a_{i j} x_{i}\right\}$</p>
+<p>也可以改写成：</p>
+<script type="math/tex; mode=display">\max \sum_{i} \pi_{i} x_{i}-w</script><script type="math/tex; mode=display">\text { s.t. } \quad \sum_{i} a_{i j} x_{i} \leq w \quad \forall j \in S</script><script type="math/tex; mode=display">0 \leq x_{i} \leq q_{i} \quad \forall i \in N</script><p>($\sum_{i} a_{i j} x_{i} \leq w $对偶变量dual solution：影子价格，代表了资源的价格 )</p>
+<h3 id="建议参考书籍"><a href="#建议参考书籍" class="headerlink" title="建议参考书籍"></a>建议参考书籍</h3><p>–<a href="http://www.stanford.edu/~boyd/cvxbook/" target="_blank" rel="noopener">Convex Optimization</a>, </p>
 <p>•S. Boyd and L. Vandenberghe.</p>
 <p>–Lecture on modern convex optimization</p>
 <p>•A. Bental and A. Nemirovskii</p>
@@ -406,7 +492,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#高级最优化"><span class="nav-number">1.</span> <span class="nav-text">高级最优化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#优化分类"><span class="nav-number">1.1.</span> <span class="nav-text">优化分类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#五步法建模"><span class="nav-number">1.2.</span> <span class="nav-text">五步法建模</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#优化模型"><span class="nav-number">2.</span> <span class="nav-text">优化模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#线性规划"><span class="nav-number">2.1.</span> <span class="nav-text">线性规划</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分片线性"><span class="nav-number">2.2.</span> <span class="nav-text">分片线性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#绝对值问题"><span class="nav-number">2.3.</span> <span class="nav-text">绝对值问题</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#建议参考书籍"><span class="nav-number">3.</span> <span class="nav-text">建议参考书籍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reference"><span class="nav-number">4.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#高级最优化"><span class="nav-number">1.</span> <span class="nav-text">高级最优化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#优化分类"><span class="nav-number">1.1.</span> <span class="nav-text">优化分类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#五步法建模"><span class="nav-number">1.2.</span> <span class="nav-text">五步法建模</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#优化模型"><span class="nav-number">2.</span> <span class="nav-text">优化模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#线性规划"><span class="nav-number">2.1.</span> <span class="nav-text">线性规划</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分片线性"><span class="nav-number">2.2.</span> <span class="nav-text">分片线性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#绝对值问题"><span class="nav-number">2.3.</span> <span class="nav-text">绝对值问题</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#组合拍卖—机制设计"><span class="nav-number">3.</span> <span class="nav-text">组合拍卖—机制设计</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Market-for-Word-Cup-Winner问题"><span class="nav-number">3.1.</span> <span class="nav-text">Market for Word Cup Winner问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#抽象模型"><span class="nav-number">3.2.</span> <span class="nav-text">抽象模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#建模Linear-Programming"><span class="nav-number">3.3.</span> <span class="nav-text">建模Linear Programming</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#建议参考书籍"><span class="nav-number">4.</span> <span class="nav-text">建议参考书籍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reference"><span class="nav-number">5.</span> <span class="nav-text">Reference</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
