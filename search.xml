@@ -230,14 +230,18 @@
 <p><img src="/images/20200519StripPacking.jpg" alt="20200519StripPacking"></p>
 <p>3，方法</p>
 <p>贪心算法：每次赋值给一个决策变量，逐步构建出一个解。每一步都选择成本最低的决策。</p>
-<p>TSP : nearest-neighbor heuristic 最近邻居启发式算法。</p>
+<p><strong>TSP1</strong> : nearest-neighbor heuristic 最近邻居启发式算法。</p>
 <p><img src="/images/20200519TSP.jpg" alt="20200519TSP"></p>
+<p>如图，我们选择离当前点最近的路径。</p>
+<p><strong>TSP2</strong>：cheapest-insertion heuristic 最小代价插入</p>
+<p><img src="/images/20200519TSP2.jpg" alt="20200519TSP2"></p>
 <h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，书籍文章参考</p>
 <p>M. Gendreau and J.-Y. Potvin, Eds., Handbook of Metaheuristics, third edition, 2019.</p>
 <p>E.K. Burke and G. Kendall, Eds., Search Methodologies — Introductory Tutorials in Optimization and Decision Support Techniques. Springer, 2014.</p>
 <p>E.G. Talbi, Metaheuristics: from design to implementation, Wiley Series on Parallel and Distributed Computing, 2009</p>
 <p>C. Blum and A. Roli, “Metaheuristics in Combinatorial Optimization : Overview and Conceptual Comparison,” ACM Comput. Surv., 35(3), 268–308, 2003.</p>
 <p>2，罗志兴，课程</p>
+<p>3，<a href="https://blog.csdn.net/onezeros/article/details/5600094" target="_blank" rel="noopener">TSP路径构造算法</a></p>
 ]]></content>
       <categories>
         <category>机器学习</category>
@@ -526,9 +530,9 @@
         <category>数据挖掘</category>
       </categories>
       <tags>
-        <tag>大数据</tag>
         <tag>hadoop</tag>
         <tag>配置</tag>
+        <tag>大数据</tag>
       </tags>
   </entry>
   <entry>
@@ -567,8 +571,8 @@
         <category>数据挖掘</category>
       </categories>
       <tags>
-        <tag>大数据</tag>
         <tag>hadoop</tag>
+        <tag>大数据</tag>
       </tags>
   </entry>
   <entry>
@@ -1205,8 +1209,8 @@
         <category>AIOps</category>
       </categories>
       <tags>
-        <tag>机器学习</tag>
         <tag>异常检测</tag>
+        <tag>机器学习</tag>
         <tag>AIOps</tag>
       </tags>
   </entry>
