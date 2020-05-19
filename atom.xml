@@ -520,9 +520,9 @@
       <category term="AIOps" scheme="http://yoursite.com/categories/AIOps/"/>
     
     
-      <category term="异常检测" scheme="http://yoursite.com/tags/%E5%BC%82%E5%B8%B8%E6%A3%80%E6%B5%8B/"/>
-    
       <category term="机器学习" scheme="http://yoursite.com/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
+    
+      <category term="异常检测" scheme="http://yoursite.com/tags/%E5%BC%82%E5%B8%B8%E6%A3%80%E6%B5%8B/"/>
     
       <category term="AIOps" scheme="http://yoursite.com/tags/AIOps/"/>
     
