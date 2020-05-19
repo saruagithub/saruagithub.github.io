@@ -206,6 +206,8 @@ MCMC之后，我们取z的L个样本通过蒙特卡洛积分来计算重构概�
 
 
 
+[实验部分Part2](https://saruagithub.github.io/2020/03/14/20200314paper-Unsupervised-Anomaly-Detection-via-Variational-AutoEncoder-for-Seasonal-KPIs-in-Web-Applications(Part2)/)
+
 ### Reference
 
 1，Xu H, Chen W, Zhao N, et al. Unsupervised anomaly detection via variational auto-encoder for seasonal kpis in web applications[C]//Proceedings of the 2018 World Wide Web Conference. 2018: 187-196.
