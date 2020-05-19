@@ -111,7 +111,7 @@
 <p>写出线性规划模型为：</p>
 <script type="math/tex; mode=display">\max \sum_{i} \pi_{i} x_{i}-\max _{j}\left\{\sum_i a_{i j} x_{i}\right\}</script><script type="math/tex; mode=display">\text { s.t. } \quad 0 \leq x_{i} \leq q_{i} \forall i=1, \dots, n</script><p>第一个公式的 -max 其实等于 $+\min \left\{-\sum_{i} a_{i j} x_{i}\right\}$</p>
 <p>也可以改写成：</p>
-<script type="math/tex; mode=display">\max \sum_{i} \pi_{i} x_{i}-w</script><script type="math/tex; mode=display">\text { s.t. } \quad \sum_{i} a_{i j} x_{i} \leq w \quad \forall j \in S</script><script type="math/tex; mode=display">0 \leq x_{i} \leq q_{i} \quad \forall i \in N</script><p>($\sum_{i} a_{i j} x_{i} \leq w $对偶变量dual solution：影子价格，代表了资源的价格 )</p>
+<script type="math/tex; mode=display">\max \sum_{i} \pi_{i} x_{i}-w</script><script type="math/tex; mode=display">\text { s.t. } \quad \sum_{i} a_{i j} x_{i} \leq w \quad \forall j \in S</script><script type="math/tex; mode=display">0 \leq x_{i} \leq q_{i} \quad \forall i \in N</script><p>($\sum_{i} a_{i j} x_{i} \leq w $，对偶变量dual solution：影子价格，代表了资源的价格 )</p>
 <h3 id="建议参考书籍"><a href="#建议参考书籍" class="headerlink" title="建议参考书籍"></a>建议参考书籍</h3><p>–<a href="http://www.stanford.edu/~boyd/cvxbook/" target="_blank" rel="noopener">Convex Optimization</a>, </p>
 <p>•S. Boyd and L. Vandenberghe.</p>
 <p>–Lecture on modern convex optimization</p>
@@ -202,7 +202,7 @@
   <entry>
     <title>组合优化问题的启发式算法</title>
     <url>/2020/04/15/20200415%E7%BB%84%E5%90%88%E4%BC%98%E5%8C%96%E9%97%AE%E9%A2%98%E7%9A%84%E5%90%AF%E5%8F%91%E5%BC%8F%E7%AE%97%E6%B3%95/</url>
-    <content><![CDATA[<h3 id="组合优化问题"><a href="#组合优化问题" class="headerlink" title="组合优化问题"></a>组合优化问题</h3><h4 id="问题引入"><a href="#问题引入" class="headerlink" title="问题引入"></a>问题引入</h4><p>车辆路径规划问题，n位客户，在不同地点，有需求。在中央仓库有m辆车辆的均质车队。这是一个NP难问题，这类问题中，启发式和元启发式是实践中最常用的VRP解决方案。</p><p>启发式算法：模拟退火，遗传算法，蚁群优化算法等。</p><h4 id="NP难问题的一些解决方法"><a href="#NP难问题的一些解决方法" class="headerlink" title="NP难问题的一些解决方法"></a>NP难问题的一些解决方法</h4><p>1，精确方法（枚举，约束编程，分支定界，分支与剪切）是非多项式的，通常可以处理一定规模的问题实例（如旅行商问题TSP的80000节点）。</p><a id="more"></a>
+    <content><![CDATA[<h3 id="组合优化问题"><a href="#组合优化问题" class="headerlink" title="组合优化问题"></a>组合优化问题</h3><h4 id="问题引入"><a href="#问题引入" class="headerlink" title="问题引入"></a>问题引入</h4><p>车辆路径规划问题，n位客户，在不同地点，有需求。在中央仓库有m辆车辆的均质车队。这是一个NP难问题，这类问题中，启发式和元启发式是实践中最常用的VRP解决方案。</p><p><strong>启发式算法：模拟退火，遗传算法，蚁群优化算法等</strong>。</p><h4 id="NP难问题的一些解决方法"><a href="#NP难问题的一些解决方法" class="headerlink" title="NP难问题的一些解决方法"></a>NP难问题的一些解决方法</h4><p>1，精确方法（枚举，约束编程，分支定界，分支与剪切）是非多项式的，通常可以处理一定规模的问题实例（如旅行商问题TSP的80000节点）。</p><a id="more"></a>
 
 
 <p>大量的问题实例可以有效地解决（例如，区间图的顶点着色问题）</p>
@@ -210,7 +210,7 @@
 <p>3，近似算法</p>
 <p>4，随机算法</p>
 <p>5，启发式方法和元启发式方法可以视为最后的选择。但他们生成的解决方案没有任何性能保证。</p>
-<h3 id="局部搜索启发式"><a href="#局部搜索启发式" class="headerlink" title="局部搜索启发式"></a>局部搜索启发式</h3><h4 id="局部搜索"><a href="#局部搜索" class="headerlink" title="局部搜索"></a>局部搜索</h4><p>局部搜索启发式迭代地优化解。 它枚举了导致新解（称为邻居neighbor）的可能更改（move）的列表，并在改进的情况下应用这些更改（接受更好的解）。</p>
+<h3 id="局部搜索启发式"><a href="#局部搜索启发式" class="headerlink" title="局部搜索启发式"></a>局部搜索启发式</h3><h4 id="局部搜索"><a href="#局部搜索" class="headerlink" title="局部搜索"></a>局部搜索</h4><p>local search局部搜索启发式迭代地优化解。 它枚举了导致新解（称为邻居neighbor）的可能更改（move）的列表，并在改进的情况下应用这些更改（接受更好的解）。</p>
 <p><img src="/images/20200415local_search1.jpg" alt="20200415local_search1"></p>
 <p>仅应用这些邻域会导致问题的局部最优，这可能与最佳解决方案（全局最优）大不相同。需要设计了几种策略来摆脱这些局部最优值，并继续在其他地区进行搜索。</p>
 <h4 id="解决局部最优"><a href="#解决局部最优" class="headerlink" title="解决局部最优"></a>解决局部最优</h4><p>1，允许坏解的运动 deteriorating moves（模拟退火）</p>
@@ -221,6 +221,23 @@
 <p>6，重复一个建设性的过程来创建新解，并根据先前解中的成功（信息素）来促进良好的建设决策（如蚁群优化/强化学习）。</p>
 <h4 id="metaheuristic定义"><a href="#metaheuristic定义" class="headerlink" title="metaheuristic定义"></a>metaheuristic定义</h4><p>元启发法被正式定义为一种迭代生成过程，该过程通过组合智能的不同概念来探索和利用搜索空间来引导从属启发法，并使用学习策略来构造信息，以便有效地找到接近最优的解决方案</p>
 <p>一些特点：目标是有效地探索搜索空间以找到高质量的解，允许逃出局部最优，方法的抽象级别描述，元启发法通常是不确定的，最近的元启发法会从他们过去的搜索经验中“学习”以指导搜索。</p>
+<h3 id="理论分析"><a href="#理论分析" class="headerlink" title="理论分析"></a>理论分析</h3><h4 id="三种启发式"><a href="#三种启发式" class="headerlink" title="三种启发式"></a>三种启发式</h4><h5 id="Constructive-heuristic"><a href="#Constructive-heuristic" class="headerlink" title="Constructive heuristic"></a>Constructive heuristic</h5><p>1，Constructive heuristic 构造性启发式：将解决方案构造为一系列决策选择，而后无需修改这些选择，一般针对问题量身设计。如今，经常用作更复杂的解决方案方法的子组件，以生成初始解决方案或作为解决方案过程的一部分。</p>
+<p>2，适用场景：</p>
+<p>local search 难的问题。比如，针对不等面积设施布局问题的有偏随机密钥遗传算法，EJOR，2015年。</p>
+<p><img src="/images/20200519BiasedRandom-keyGeneticAlgorithm.jpg" alt="20200519BiasedRandom-keyGeneticAlgorithm"></p>
+<p>用作解决方案解码器 decoder。如，An Exact Approach to the Strip-Packing Problem, INFORMS J. Comput., vol. 15, no. March 2015, pp. 310–319, 2003.</p>
+<p>metaheuristic元启发式的组成部分（GRASP，蚁群优化，破坏再重建方法）。</p>
+<p><img src="/images/20200519StripPacking.jpg" alt="20200519StripPacking"></p>
+<p>3，方法</p>
+<p>贪心算法：每次赋值给一个决策变量，逐步构建出一个解。每一步都选择成本最低的决策。</p>
+<p>TSP : nearest-neighbor heuristic 最近邻居启发式算法。</p>
+<p><img src="/images/20200519TSP.jpg" alt="20200519TSP"></p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，书籍文章参考</p>
+<p>M. Gendreau and J.-Y. Potvin, Eds., Handbook of Metaheuristics, third edition, 2019.</p>
+<p>E.K. Burke and G. Kendall, Eds., Search Methodologies — Introductory Tutorials in Optimization and Decision Support Techniques. Springer, 2014.</p>
+<p>E.G. Talbi, Metaheuristics: from design to implementation, Wiley Series on Parallel and Distributed Computing, 2009</p>
+<p>C. Blum and A. Roli, “Metaheuristics in Combinatorial Optimization : Overview and Conceptual Comparison,” ACM Comput. Surv., 35(3), 268–308, 2003.</p>
+<p>2，罗志兴，课程</p>
 ]]></content>
       <categories>
         <category>机器学习</category>
@@ -509,9 +526,9 @@
         <category>数据挖掘</category>
       </categories>
       <tags>
+        <tag>大数据</tag>
         <tag>hadoop</tag>
         <tag>配置</tag>
-        <tag>大数据</tag>
       </tags>
   </entry>
   <entry>
@@ -550,8 +567,8 @@
         <category>数据挖掘</category>
       </categories>
       <tags>
-        <tag>hadoop</tag>
         <tag>大数据</tag>
+        <tag>hadoop</tag>
       </tags>
   </entry>
   <entry>
