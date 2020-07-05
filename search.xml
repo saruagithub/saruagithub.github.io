@@ -1,6 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>20200305aiops_competition复赛</title>
+    <url>/2020/07/05/20200705aiops-competition/</url>
+    <content><![CDATA[<h3 id="aiops比赛消费kafka数据"><a href="#aiops比赛消费kafka数据" class="headerlink" title="aiops比赛消费kafka数据"></a>aiops比赛消费kafka数据</h3><p>1，在自己电脑上用终端远程登录服务器： ssh user@ip</p><p>2，输入docker image 查看镜像情况：</p><p>3，启动docker</p><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">docker run -it aiops_0705 /bin/bash</span><br></pre></td></tr></table></figure><p>4，Python执行consumer.py ，consumer.py的kafka的数据怎么取的：对于平台指标和业务指标，解析后的data的主要内容为从指标类型到数据列表的字典；对于调用链数据，则只有一条调用链数据。对data的访问就是对python中dict的访问。</p><a id="more"></a>
+
+
+
+
+<p>如下：打印的数据就是kafka的实时数据了，可以实时获取到：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 前面class部分，PlatformIndex(item)，BusinessIndex(item)， Trace(data)见Reference的github</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">	<span class="string">'''Consume data and react'''</span></span><br><span class="line">	<span class="comment"># Check authorities</span></span><br><span class="line">	<span class="keyword">assert</span> AVAILABLE_TOPICS &lt;= CONSUMER.topics(), <span class="string">'Please contact admin'</span></span><br><span class="line"></span><br><span class="line">	submit([[<span class="string">'docker_003'</span>, <span class="string">'container_cpu_used'</span>]])</span><br><span class="line">	i = <span class="number">0</span></span><br><span class="line">	<span class="keyword">for</span> message <span class="keyword">in</span> CONSUMER:</span><br><span class="line">		i += <span class="number">1</span></span><br><span class="line">		data = json.loads(message.value.decode(<span class="string">'utf8'</span>))</span><br><span class="line">		<span class="keyword">if</span> message.topic == <span class="string">'platform-index'</span>:</span><br><span class="line">			<span class="comment"># data['body'].keys() is supposed to be</span></span><br><span class="line">			<span class="comment"># ['os_linux', 'db_oracle_11g', 'mw_redis', 'mw_activemq',</span></span><br><span class="line">			<span class="comment">#  'dcos_container', 'dcos_docker']</span></span><br><span class="line">			data = &#123;</span><br><span class="line">				<span class="string">'timestamp'</span>: data[<span class="string">'timestamp'</span>],</span><br><span class="line">				<span class="string">'body'</span>: &#123;</span><br><span class="line">					stack: [PlatformIndex(item) <span class="keyword">for</span> item <span class="keyword">in</span> data[<span class="string">'body'</span>][stack]]</span><br><span class="line">					<span class="keyword">for</span> stack <span class="keyword">in</span> data[<span class="string">'body'</span>]</span><br><span class="line">				&#125;,</span><br><span class="line">			&#125;</span><br><span class="line">			timestamp = data[<span class="string">'timestamp'</span>]</span><br><span class="line">			<span class="keyword">for</span> stack <span class="keyword">in</span> data[<span class="string">'body'</span>]:</span><br><span class="line">				print(i, message.topic, timestamp, stack)</span><br><span class="line">				<span class="keyword">for</span> item <span class="keyword">in</span> data[<span class="string">'body'</span>][stack]:</span><br><span class="line">					<span class="comment"># like class</span></span><br><span class="line">					<span class="keyword">print</span> (item.name)</span><br><span class="line"></span><br><span class="line">		<span class="keyword">elif</span> message.topic == <span class="string">'business-index'</span>:</span><br><span class="line">			<span class="comment"># data['body'].keys() is supposed to be ['esb', ]</span></span><br><span class="line">			data = &#123;</span><br><span class="line">				<span class="string">'startTime'</span>: data[<span class="string">'startTime'</span>],</span><br><span class="line">				<span class="string">'body'</span>: &#123;</span><br><span class="line">					key: [BusinessIndex(item) <span class="keyword">for</span> item <span class="keyword">in</span> data[<span class="string">'body'</span>][key]]</span><br><span class="line">					<span class="keyword">for</span> key <span class="keyword">in</span> data[<span class="string">'body'</span>]</span><br><span class="line">				&#125;,</span><br><span class="line">			&#125;</span><br><span class="line">			timestamp = data[<span class="string">'startTime'</span>]</span><br><span class="line">			<span class="keyword">for</span> key <span class="keyword">in</span> data[<span class="string">'body'</span>]:</span><br><span class="line">				<span class="keyword">print</span> (i, message.topic, timestamp, key)</span><br><span class="line">				<span class="comment"># data['body'][key] is a class</span></span><br><span class="line">				<span class="keyword">for</span> item <span class="keyword">in</span> data[<span class="string">'body'</span>][key]:</span><br><span class="line">					<span class="keyword">print</span> (item.service_name)</span><br><span class="line">		<span class="keyword">else</span>:  <span class="comment"># message.topic == 'trace'</span></span><br><span class="line">			data = &#123;</span><br><span class="line">				<span class="string">'startTime'</span>: data[<span class="string">'startTime'</span>],</span><br><span class="line">				<span class="string">'body'</span>: Trace(data),</span><br><span class="line">			&#125;</span><br><span class="line">			timestamp = data[<span class="string">'startTime'</span>]</span><br><span class="line">			<span class="comment"># one data</span></span><br><span class="line">			print(i, message.topic, timestamp, data[<span class="string">'body'</span>].pid)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">	main()</span><br></pre></td></tr></table></figure>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，<a href="https://github.com/NetManAIOps/aiops2020-judge/tree/master/final" target="_blank" rel="noopener">https://github.com/NetManAIOps/aiops2020-judge/tree/master/final</a></p>
+<p>2，<a href="https://www.cnblogs.com/sujing/p/10960832.html" target="_blank" rel="noopener">kafka原理</a></p>
+<p>3，<a href="https://www.runoob.com/docker/docker-dockerfile.html" target="_blank" rel="noopener">dockerfile的使用</a></p>
+]]></content>
+      <categories>
+        <category>AIOps</category>
+      </categories>
+      <tags>
+        <tag>AIOps</tag>
+        <tag>论文</tag>
+        <tag>AnomalyDetection</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>高级最优化1——线性规划</title>
     <url>/2020/04/21/20200421%E9%AB%98%E7%BA%A7%E6%9C%80%E4%BC%98%E5%8C%961%E2%80%94%E2%80%94%E7%BA%BF%E6%80%A7%E8%A7%84%E5%88%92/</url>
     <content><![CDATA[<h3 id="高级最优化"><a href="#高级最优化" class="headerlink" title="高级最优化"></a>高级最优化</h3><p>先修条件：线性代数，最优化/运筹，基础的概率论，MATLAB使用（如何建模与使用）</p><h4 id="优化分类"><a href="#优化分类" class="headerlink" title="优化分类"></a>优化分类</h4><p>1，确定性优化：</p><p>Linear Optimization线性规划，Second order cone programming 二阶椎优化，Semidefinite programming （SDP半定优化）</p><a id="more"></a>
@@ -229,8 +252,8 @@
 <p>metaheuristic元启发式的组成部分（GRASP，蚁群优化，破坏再重建方法）。</p>
 <p><img src="/images/20200519StripPacking.jpg" alt="20200519StripPacking"></p>
 <p>3，方法</p>
-<p>贪心算法：每次赋值给一个决策变量，逐步构建出一个解。每一步都选择成本最低的决策。</p>
-<p><strong>TSP1</strong> : nearest-neighbor heuristic 最近邻居启发式算法。</p>
+<p>贪心算法：每次赋值给一个决策变量，逐步构建出一个解。每一步都选择成本最低的决策。三种贪心策略（TSP1，TSP2，）</p>
+<p><strong>TSP1</strong> : nearest-neighbor heuristic 最近邻居启发式算法。时间复杂度 $O(n^2)$</p>
 <p><img src="/images/20200519TSP.jpg" alt="20200519TSP"></p>
 <p>如图，我们选择离当前点最近的路径。</p>
 <p><strong>TSP2</strong>：cheapest-insertion heuristic 最小代价插入</p>
@@ -530,9 +553,9 @@
         <category>数据挖掘</category>
       </categories>
       <tags>
+        <tag>大数据</tag>
         <tag>hadoop</tag>
         <tag>配置</tag>
-        <tag>大数据</tag>
       </tags>
   </entry>
   <entry>
@@ -571,8 +594,8 @@
         <category>数据挖掘</category>
       </categories>
       <tags>
-        <tag>hadoop</tag>
         <tag>大数据</tag>
+        <tag>hadoop</tag>
       </tags>
   </entry>
   <entry>
@@ -1209,8 +1232,8 @@
         <category>AIOps</category>
       </categories>
       <tags>
-        <tag>异常检测</tag>
         <tag>机器学习</tag>
+        <tag>异常检测</tag>
         <tag>AIOps</tag>
       </tags>
   </entry>
