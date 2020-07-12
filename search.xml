@@ -1,6 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>20200709守护进程学习</title>
+    <url>/2020/07/09/20200709%E5%AE%88%E6%8A%A4%E8%BF%9B%E7%A8%8B%E5%AD%A6%E4%B9%A0/</url>
+    <content><![CDATA[<h3 id="守护进程"><a href="#守护进程" class="headerlink" title="守护进程"></a>守护进程</h3><p>守护进程是在后台运行不受终端控制的进程（如输入、输出等），一般的网络服务都是以守护进程的方式运行。守护进程脱离终端的主要原因有两点：</p><p>（1）用来启动守护进程的终端在启动守护进程之后，需要执行其他任务。</p><p>（2）（如其他用户登录该终端后，以前的守护进程的错误信息不应出现）由终端上的一些键所产生的信号（如中断信号），不应对以前从该终端上启动的任何守护进程造成影响。要注意守护进程与后台运行程序（即加＆启动的程序）的区别。</p><a id="more"></a>
+
+
+<h4 id="创建守护进程的过程"><a href="#创建守护进程的过程" class="headerlink" title="创建守护进程的过程"></a>创建守护进程的过程</h4><h5 id="第一次调用fork创建子进程，父进程退出。"><a href="#第一次调用fork创建子进程，父进程退出。" class="headerlink" title="第一次调用fork创建子进程，父进程退出。"></a>第一次调用fork创建子进程，父进程退出。</h5><p>父进程终止，让子进程在后台继续执行。父进程退出后，子进程其实就是变成了孤儿进程，孤儿进程一般是由1号进程收养，也就是我们所谓的init进程，也就是说原来的子进程变成了init的子进程。</p>
+<p>第一次调用fork函数时，<a href="https://baike.baidu.com/item/子进程" target="_blank" rel="noopener">子进程</a>全盘拷贝父进程的会话期(session，是一个或多个进程组的集合)、进程组、控制终端等，虽然父进程退出了，但原先的会话期、进程组、控制终端等并没有改变，因此，那还不是真正意义上使两者独立开来。</p>
+<p>（之后所有的工作都在子进程中完成，而用户在shell终端里则可以执行其他的命令，从而使得程序以僵尸进程形式运行，在形式上做到了与控制终端的脱离。）</p>
+<h5 id="子进程调用setsid创建新会话（important）"><a href="#子进程调用setsid创建新会话（important）" class="headerlink" title="子进程调用setsid创建新会话（important）"></a>子进程调用setsid创建新会话（important）</h5><p>会话期：会话期(session)是一个或多个进程组的集合。</p>
+<p>进程组：每个进程属于一个进程组；每个进程主都有一个进程组号，该号等于该进程组组长的PID号；一个进程只能为它自己或子进程设置进程组ID号。</p>
+<p>子进程调用调用系统函数setsid() 可以建立一个新的会话。如果，调用setsid的进程不是一个进程组的组长，此函数创建一个新的会话期。</p>
+<p>(1 )此进程变成该对话期的首进程</p>
+<p>(2) 此进程变成一个新进程组的组长进程。</p>
+<p>(3) 此进程没有控制终端，如果在调用setsid前，该进程有控制终端，那么与该终端的联系被解除。 如果该进程是一个进程组的组长，此函数返回错误。</p>
+<p>(4) 为了保证这一点，我们先调用fork()然后exit()，此时只有子进程在运行</p>
+<p>作用：进程脱离原会话的控制，摆脱了原进程组的控制，摆脱了原控制终端的控制。</p>
+<h5 id="忽略SIGHUP信号"><a href="#忽略SIGHUP信号" class="headerlink" title="忽略SIGHUP信号"></a>忽略SIGHUP信号</h5><p>会话组长进程终止会向其他进程发该信号，造成其他进程终止。</p>
+<h5 id="第二次调用fork创建实际服务子进程"><a href="#第二次调用fork创建实际服务子进程" class="headerlink" title="第二次调用fork创建实际服务子进程"></a>第二次调用fork创建实际服务子进程</h5><p>第二次调用fork再创建子进程。子进程终止，子子进程继续执行，由于子子进程不再是会话组长，从而禁止进程重新打开控制终端。并作为父进程观测子进程状态。</p>
+<h5 id="改变工作目录"><a href="#改变工作目录" class="headerlink" title="改变工作目录"></a>改变工作目录</h5><p>改变当前工作目录为根目录。一般将工作目录改变到根目录，这样进程的启动目录也可以被卸掉。在fork子进程的时候，子进程也继承了父进程的工作目录。通常是让‘/’目录作为守护进程的当前目录，可以避免很多麻烦。</p>
+<p>关闭打开的文件描述符，打开一个空设备，并复制到标准输出和标准错误上。 避免调用的一些库函数依然向屏幕输出信息。</p>
+<h5 id="重设文件创建掩码"><a href="#重设文件创建掩码" class="headerlink" title="重设文件创建掩码"></a>重设文件创建掩码</h5><p>重设文件创建掩码清除从父进程那里继承来的文件创建掩码，设为0。文件创建掩码是指屏蔽掉文件创建时的对应位。由于使用fork函数新建的子进程继承了父进程的文件创建掩码，这就给该子进程使用文件带来了诸多的麻烦。因此，把文件创建掩码设置为0，可以大大增强该守护进程的灵活性。设置文件创建掩码的函数是umask，通常的使用方法为umask(0)。</p>
+<p>用openlog函数建立与syslogd的连接。</p>
+<h5 id="关闭文件描述符"><a href="#关闭文件描述符" class="headerlink" title="关闭文件描述符"></a>关闭文件描述符</h5><p>守护进程没有控制终端，因此当某些情况发生时，不管是一般的报告性信息，还是需由管理员处理的紧急信息，都需要以某种方式输出。Syslog 函数就是输出这些信息的标准方法，它把信息发送给 syslogd 守护进程。</p>
+<h4 id="按照服务类型分类"><a href="#按照服务类型分类" class="headerlink" title="按照服务类型分类"></a>按照服务类型分类</h4><ol>
+<li>系统守护进程：syslogd、login、crond、at等。守护进程程序的名称通常以字母“d”结尾：例如，<a href="https://link.zhihu.com/?target=https%3A//zh.wikipedia.org/wiki/Syslog">syslogd</a> 就是指管理系统日志的守护进程。</li>
+<li>网络守护进程：sendmail、httpd、xinetd、等。</li>
+<li>独立启动的守护进程：httpd、named、xinetd等。</li>
+<li>被动守护进程（由xinetd启动）：telnet、finger、ktalk等。</li>
+</ol>
+<p>Linux系统有自己的守护进程管理工具 Systemd 。它是操作系统的一部分，直接与内核交互，性能出色，功能极其强大。我们完全可以将程序交给 Systemd ，让系统统一管理，成为真正意义上的系统服务。</p>
+<h4 id="守护进程与后台运行程序（即加＆启动的程序）的区别。"><a href="#守护进程与后台运行程序（即加＆启动的程序）的区别。" class="headerlink" title="守护进程与后台运行程序（即加＆启动的程序）的区别。"></a>守护进程与后台运行程序（即加＆启动的程序）的区别。</h4><p>最大的区别有几点：</p>
+<p>(a)守护进程已经完全脱离终端控制台了，而后台程序并未完全脱离终端，在终端未关闭前还是会往终端输出结果</p>
+<p>(b)守护进程在关闭终端控制台时不会受影响，而后台程序会随用户退出而停止，需要在以nohup command &amp; 格式运行才能避免影响</p>
+<p>(c)守护进程的会话组和当前目录，文件描述符都是独立的。后台运行只是终端进行了一次fork，让程序在后台执行，这些都没改变。</p>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，<a href="https://www.zhihu.com/question/38609004" target="_blank" rel="noopener">https://www.zhihu.com/question/38609004</a></p>
+<p>2，<a href="https://zhuanlan.zhihu.com/p/56840430" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/56840430</a></p>
+<p>3，<a href="https://baike.baidu.com/item/守护进程/966835?fr=aladdin" target="_blank" rel="noopener">https://baike.baidu.com/item/%E5%AE%88%E6%8A%A4%E8%BF%9B%E7%A8%8B/966835?fr=aladdin</a></p>
+<p>4，<a href="http://www.ruanyifeng.com/blog/2016/02/linux-daemon.html" target="_blank" rel="noopener">http://www.ruanyifeng.com/blog/2016/02/linux-daemon.html</a></p>
+<p>5，<a href="https://www.cnblogs.com/tianzhiliang/archive/2011/02/12/1952221.html" target="_blank" rel="noopener">通用守护进程实现</a></p>
+<p>6，[Linux进程组、会话、守护进程](</p>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>后端</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>20200305aiops_competition复赛</title>
     <url>/2020/07/05/20200705aiops-competition/</url>
     <content><![CDATA[<h3 id="aiops比赛消费kafka数据"><a href="#aiops比赛消费kafka数据" class="headerlink" title="aiops比赛消费kafka数据"></a>aiops比赛消费kafka数据</h3><p>1，在自己电脑上用终端远程登录服务器： ssh user@ip</p><p>2，输入docker image 查看镜像情况：</p><p>3，启动docker</p><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">docker run -it aiops_0705 /bin/bash</span><br></pre></td></tr></table></figure><p>4，Python执行consumer.py ，consumer.py的kafka的数据怎么取的：对于平台指标和业务指标，解析后的data的主要内容为从指标类型到数据列表的字典；对于调用链数据，则只有一条调用链数据。对data的访问就是对python中dict的访问。</p><a id="more"></a>
@@ -1232,8 +1282,8 @@
         <category>AIOps</category>
       </categories>
       <tags>
-        <tag>机器学习</tag>
         <tag>异常检测</tag>
+        <tag>机器学习</tag>
         <tag>AIOps</tag>
       </tags>
   </entry>
