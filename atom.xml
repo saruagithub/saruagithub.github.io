@@ -255,9 +255,9 @@
     
       <category term="大数据" scheme="http://yoursite.com/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/"/>
     
-      <category term="hadoop" scheme="http://yoursite.com/tags/hadoop/"/>
-    
       <category term="配置" scheme="http://yoursite.com/tags/%E9%85%8D%E7%BD%AE/"/>
+    
+      <category term="hadoop" scheme="http://yoursite.com/tags/hadoop/"/>
     
   </entry>
   
