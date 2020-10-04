@@ -3,13 +3,17 @@
   <entry>
     <title>kmp字符串匹配</title>
     <url>/2020/10/04/20201004kmp%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8C%B9%E9%85%8D/</url>
-    <content><![CDATA[<h3 id="字符串匹配"><a href="#字符串匹配" class="headerlink" title="字符串匹配"></a>字符串匹配</h3><p>找出模式串里后缀和前缀相同的地方。比如test = “aabaabaac” , pattern = “aabaac”， 进行匹配的时候在pattern的最后的字符c处无法匹配，则看pattern的后缀aa和前面test的下标0处的aa相同，可以再针对下标2处的b进行继续匹配。</p><p>next数组存的就是当test和pattern匹配不上的时候应该从新从pattern的哪开始重新匹配，图中是next数组计算的过程。next数组的具体过程见图：</p><a id="more"></a>
+    <content><![CDATA[<h3 id="KMP字符串匹配"><a href="#KMP字符串匹配" class="headerlink" title="KMP字符串匹配"></a>KMP字符串匹配</h3><p>找出模式串里后缀和前缀相同的地方。比如test = “aabaabaac” , pattern = “aabaac”， 进行匹配的时候在pattern的最后的字符c处无法匹配，则看pattern的后缀aa和前面test的下标0处的aa相同，可以再针对下标2处的b进行继续匹配。</p><p>next数组存的就是当test和pattern匹配不上的时候应该从新从pattern的哪开始重新匹配，图中是next数组计算的过程。next数组的具体过程见图（备注：图红色的字应该是指针不后移）：</p><a id="more"></a>
 
 <p><img src="/images/20201004_str_KMP.jpg" alt="20201004_str_KMP"></p>
 <p>下图是在俩字符串进行匹配过程中，next数组的使用方法：</p>
 <p><img src="/images/20201004str_KMP1.jpg" alt="20201004str_KMP1"></p>
-<p>算法：</p>
+<p>算法，返回的ans是匹配上了在text的起始位置：</p>
 <figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">kmp_strStr</span><span class="params">(<span class="built_in">string</span> &amp;test, <span class="built_in">string</span> &amp;pattern)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> next[<span class="number">1000</span>] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>,j = <span class="number">0</span>; i &lt;pattern.<span class="built_in">size</span>();) &#123;</span><br><span class="line">        <span class="keyword">if</span> (pattern[i] == pattern[j]) &#123;</span><br><span class="line">            next[i] = j + <span class="number">1</span>;</span><br><span class="line">            i++;</span><br><span class="line">            j++;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">//go back</span></span><br><span class="line">            <span class="keyword">if</span> (j == <span class="number">0</span>) &#123;</span><br><span class="line">                next[i] = <span class="number">0</span>;</span><br><span class="line">                i++;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                j = next[j<span class="number">-1</span>];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//the location of match</span></span><br><span class="line">    <span class="keyword">int</span> ans = <span class="number">-1</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>, j = <span class="number">0</span>; i &lt; test.<span class="built_in">size</span>(); ) &#123;</span><br><span class="line">        <span class="keyword">if</span> (test[i] == pattern[j])&#123;</span><br><span class="line">            i++;</span><br><span class="line">            j++;</span><br><span class="line">            <span class="comment">// pattern reachs the end, all matched</span></span><br><span class="line">            <span class="keyword">if</span> (j == pattern.<span class="built_in">size</span>()) &#123;</span><br><span class="line">                ans = i - j;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (j == <span class="number">0</span>)&#123;</span><br><span class="line">                i++;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="comment">//j go back</span></span><br><span class="line">                j = next[j - <span class="number">1</span>];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">test_kmp_strStr</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="built_in">string</span> test, pattern;</span><br><span class="line">    <span class="built_in">cin</span> &gt;&gt; test &gt;&gt; pattern;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; kmp_strStr(test,pattern) &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Sunday算法"><a href="#Sunday算法" class="headerlink" title="Sunday算法"></a>Sunday算法</h3><p>如果pattern和text没有匹配上，看test对应pattern的下一个字符，这个字符应该会参与到下一轮的字符比较中，因此可以根据这个字符对pattern进行移动匹配。见图：</p>
+<p><img src="/images/20201004Sunday_algorithm.jpg" alt="20201004Sunday_algorithm"></p>
+<p>算法参考实现，注意每一轮匹配之后pattern的指针需要重置为0：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// sunday: string match algorithm</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sunday_strStr</span><span class="params">(<span class="built_in">string</span> &amp;<span class="built_in">text</span>, <span class="built_in">string</span> &amp;pattern)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 对应的字符最后一次出现在pattern中的位置</span></span><br><span class="line">    <span class="keyword">int</span> num[<span class="number">128</span>];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">128</span>; i++) &#123;</span><br><span class="line">        <span class="comment">// init the length, the char never show in pattern</span></span><br><span class="line">        num[i] = pattern.<span class="built_in">size</span>() + <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; pattern.<span class="built_in">size</span>(); i++)&#123;</span><br><span class="line">        num[pattern[i]] = pattern.<span class="built_in">size</span>() - i;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> ans = <span class="number">-1</span>;</span><br><span class="line">    <span class="comment">//i起始位置 + pattern的长度 &lt;= 文本长度，就一直匹配；一轮匹配之后pattern的指针重置为0</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>, j = <span class="number">0</span>; i + pattern.<span class="built_in">size</span>() &lt;= <span class="built_in">text</span>.<span class="built_in">size</span>(); j = <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">while</span> (j &lt; pattern.<span class="built_in">size</span>() &amp;&amp; pattern[j] == <span class="built_in">text</span>[i+j]) &#123;</span><br><span class="line">            j++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// match success</span></span><br><span class="line">        <span class="keyword">if</span> (j == pattern.<span class="built_in">size</span>()) &#123;</span><br><span class="line">            <span class="comment">//i do not move</span></span><br><span class="line">            ans = i;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// match failed, then i = i + num[?]</span></span><br><span class="line">        i += num[<span class="built_in">text</span>[i + pattern.<span class="built_in">size</span>()]];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>算法</category>
@@ -52,8 +56,8 @@
         <category>算法</category>
       </categories>
       <tags>
-        <tag>后端</tag>
         <tag>推荐系统</tag>
+        <tag>后端</tag>
       </tags>
   </entry>
   <entry>
@@ -102,8 +106,8 @@
         <category>Linux</category>
       </categories>
       <tags>
-        <tag>Linux</tag>
         <tag>后端</tag>
+        <tag>Linux</tag>
       </tags>
   </entry>
   <entry>
@@ -659,9 +663,9 @@
         <category>数据挖掘</category>
       </categories>
       <tags>
+        <tag>大数据</tag>
         <tag>hadoop</tag>
         <tag>配置</tag>
-        <tag>大数据</tag>
       </tags>
   </entry>
   <entry>
@@ -700,8 +704,8 @@
         <category>数据挖掘</category>
       </categories>
       <tags>
-        <tag>hadoop</tag>
         <tag>大数据</tag>
+        <tag>hadoop</tag>
       </tags>
   </entry>
   <entry>
