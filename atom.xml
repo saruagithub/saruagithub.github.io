@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-10-06T15:29:12.298Z</updated>
+  <updated>2020-10-04T13:50:13.913Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,28 +15,6 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
-  
-  <entry>
-    <title>test</title>
-    <link href="http://yoursite.com/2020/10/06/test/"/>
-    <id>http://yoursite.com/2020/10/06/test/</id>
-    <published>2020-10-06T15:28:56.000Z</published>
-    <updated>2020-10-06T15:29:12.298Z</updated>
-    
-    <content type="html"><![CDATA[<script src="https://embed.cacher.io/d10430d50f34a348faff17c009291ff6780aa141.js?a=653901d06fc77c23ac880b5305e038a2"></script>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;script src=&quot;https://embed.cacher.io/d10430d50f34a348faff17c009291ff6780aa141.js?a=653901d06fc77c23ac880b5305e038a2&quot;&gt;&lt;/script&gt;
-      
-    
-    </summary>
-    
-    
-    
-  </entry>
   
   <entry>
     <title>kmp字符串匹配</title>
@@ -103,9 +81,9 @@
       <category term="算法" scheme="http://yoursite.com/categories/%E7%AE%97%E6%B3%95/"/>
     
     
-      <category term="推荐系统" scheme="http://yoursite.com/tags/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/"/>
-    
       <category term="后端" scheme="http://yoursite.com/tags/%E5%90%8E%E7%AB%AF/"/>
+    
+      <category term="推荐系统" scheme="http://yoursite.com/tags/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/"/>
     
   </entry>
   
@@ -128,9 +106,9 @@
       <category term="Linux" scheme="http://yoursite.com/categories/Linux/"/>
     
     
-      <category term="后端" scheme="http://yoursite.com/tags/%E5%90%8E%E7%AB%AF/"/>
-    
       <category term="Linux" scheme="http://yoursite.com/tags/Linux/"/>
+    
+      <category term="后端" scheme="http://yoursite.com/tags/%E5%90%8E%E7%AB%AF/"/>
     
   </entry>
   
@@ -539,6 +517,33 @@
       <category term="论文" scheme="http://yoursite.com/tags/%E8%AE%BA%E6%96%87/"/>
     
       <category term="AnomalyDetection" scheme="http://yoursite.com/tags/AnomalyDetection/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Computers&amp;Operations Research部分论文简读</title>
+    <link href="http://yoursite.com/2020/03/10/20200310Computers&amp;Operations%20Research%E9%83%A8%E5%88%86%E8%AE%BA%E6%96%87%E7%AE%80%E8%AF%BB/"/>
+    <id>http://yoursite.com/2020/03/10/20200310Computers&amp;Operations%20Research%E9%83%A8%E5%88%86%E8%AE%BA%E6%96%87%E7%AE%80%E8%AF%BB/</id>
+    <published>2020-03-10T01:58:02.000Z</published>
+    <updated>2020-03-18T12:33:20.050Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="Exact-and-heuristic-approaches-to-detect-failures-in-failed-k-out-of-n-systems"><a href="#Exact-and-heuristic-approaches-to-detect-failures-in-failed-k-out-of-n-systems" class="headerlink" title="Exact and heuristic approaches to detect failures in failed k-out-of-n systems"></a>Exact and heuristic approaches to detect failures in failed k-out-of-n systems</h2><h3 id="ABS-amp-Intro"><a href="#ABS-amp-Intro" class="headerlink" title="ABS&amp;Intro"></a>ABS&amp;Intro</h3><h4 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h4><p>本文考虑n个系统中k个故障了（表决系统），相应的测试每个组件是有成本的。另外，我们具有某些组件是故障的原因的先验概率信息。目标是以最小的预期成本去识别导致故障的那部分组件。</p><a id="more"></a><h4 id="本文工作"><a href="#本文工作" class="headerlink" title="本文工作"></a>本文工作</h4><p>提出了精确与近似的策略，在故障表决系统（k-out-of-n）中检测组件状态。我们提出两种整数规划编程公式，两种基于Markov决策过程（MDP）的新颖方法以及两种启发式算法。展示了精确式算法的限制以及启发式算法在随机产生的测试例子的有效性。尽管CPU时间更长，整数规划更灵活地整合更多约束 restriction，例如必要时进行测试优先级关系。数值结果表明，针对所提出的MDP模型进行动态编程是最有效的精确方法，在一小时内最多可解决12个组件。 针对小到中级测试实例，启发式算法的性能是对比精确式算法给的，并针对高级测试实例给出下限。</p><h4 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h4><p>系统越来越复杂，组件、感应器，子系统越来越多。为了系统更加可靠，系统中总会有冗余存在。当组件故障时，整个系统也可能fail，需要尽快恢复。两个主要问题：(1) 是否系统工作和失败（序列测试问题） (2) 故障原因（failure detection故障检测问题）。在这两种问题中，可行的解决方法可以被描述为二分决策树，目标是最小化期望成本。</p><p>difference区别：故障检测问题中测试结果的概率随着测试执行而变化。但在序列测试问题中则是不变的。另一个区别是，在故障检测问题中，输出是导致故障的一组组件，而在序列测试问题中，输出是系统正在运行或发生故障的信息以及该状态的证明。</p><h4 id="研究综述"><a href="#研究综述" class="headerlink" title="研究综述"></a>研究综述</h4><p>序列测试问题和故障检测问题：Chang 研究在序列测试的上下文中以最小的成本诊断电子晶体，并提供多项式时间的精确式算法。B K 提出了表决系统以在核反应堆子系统中提供冗余，以实现可靠的运行。W提出当测试不完美并且测试有优先限制时的启发式算法。Ba分析某些维护策略的长期平均成本。Gar蚁群优化算法用于计算机网络中的故障定位。</p><p>故障检测问题的灵异研究领域：离散搜索问题，旨在找到隐藏在N个盒子中的一个item，并且其预期成本最小。检查盒子会很昂贵，并且已知该item在盒子内的概率是先验的。K对搜索问题提出最优贪心算法，当仅可能出现假阳性结果时。W&amp;D考虑一个变体，当存在简单的优先级约束并且路径依赖关系由组活动定义时。</p><h4 id="贡献"><a href="#贡献" class="headerlink" title="贡献"></a>贡献</h4><p>1，我们引入和研究了k-out-of-n系统的故障检测问题，将文献中研究的n-out-of-n系统归纳了下来。</p><p>2，我们提供了四种精确的两种启发式方法来解决该问题，并提供了两种下限lower bound方案，用于在较大的情况下进行基准测试。</p><p>3，首次提出整数规划建模和马尔可夫决策过程来解决此类问题。</p><p>4，我们进行数值实验以评估不同方法的有效性。</p><p>（暂时了解背景和introduction，未读完）</p><h2 id="A-survey-of-models-and-algorithms-for-emergency-response-logistics-in-electric-distribution-systems-Part-I-Reliability-planning-with-fault-considerations"><a href="#A-survey-of-models-and-algorithms-for-emergency-response-logistics-in-electric-distribution-systems-Part-I-Reliability-planning-with-fault-considerations" class="headerlink" title="A survey of models and algorithms for emergency response logistics in electric distribution systems. Part I: Reliability planning with fault considerations"></a>A survey of models and algorithms for emergency response logistics in electric distribution systems. Part I: Reliability planning with fault considerations</h2><h3 id="ABS-amp-Intro-1"><a href="#ABS-amp-Intro-1" class="headerlink" title="ABS&amp;Intro"></a>ABS&amp;Intro</h3><p>配电系统的应急响应设计一系列在可靠性和应急计划级别的决策问题。这些操作包括故障诊断，故障定位，故障隔离，恢复和修复。本文回顾了针对与配电运行相关的故障考虑的可靠性规划问题的优化模型和解决方法。本文对确定配电变电站单故障容量，重新分配超负荷，配置配电系统，将地理区域划分为服务区域以及定位物料仓库和仓库的研究进行了调查。</p><p>规划应急响应的操作涉及许多决策问题，可以使用运筹学方法论来解决。 故障情况可能会导致配电系统服务中断的“极端”状态，从而降低服务质量并给电力公司造成经济损失。eg 2008年1月在中国中东部和南部地区的暴风雪使几个省的电线和电线杆倒塌，影响了中国近三分之二的土地，估计造成了100亿美元的直接经济损失。但应急分配响应研究少。</p><p>由于网络拓扑结构，操作能力和应用的操作设备等特性的差异，规划人员面临的问题非常复杂，并且因地而异。 在过去的二十年中，文献中已经出现了越来越多的运筹学应用程序用于应急分配响应。配电系统中涉及的大量组件，配电网络的复杂性以及公用事业运营这些网络的能力不断提高，所有这些都促使人们在配电公用事业的各个层面上使用优化技术。</p><h2 id="Application-of-Optimized-Machine-Learning-Techniques-for-Prediction-of-Occupational-Accidents"><a href="#Application-of-Optimized-Machine-Learning-Techniques-for-Prediction-of-Occupational-Accidents" class="headerlink" title="Application of Optimized Machine Learning Techniques for Prediction of Occupational Accidents"></a>Application of Optimized Machine Learning Techniques for Prediction of Occupational Accidents</h2><h3 id="ABS-amp-Intro-2"><a href="#ABS-amp-Intro-2" class="headerlink" title="ABS&amp;Intro"></a>ABS&amp;Intro</h3><p>机器学习在职业安全领域中预测事故的探索几乎是新的。但基于ML方法的算法在参数合理调整优化之前并不能得到最佳性能。更进一步，此外，仅选择高效的优化分类器可能无法满足总体决策目的，因为它无法解释事故发生背后的因素之间的相互关系。因此，除了预测之外，还需要从事故数据中提取决策规则。</p><p>考虑到上述问题，在这项研究中，使用职业事故数据occupational accident data，已优化的机器学习算法来已经被应用于预测事故后果，例如伤害，差错和财产损失。使用了两种流行的机器学习算法，即支持向量机（SVM）和人工神经网络（ANN），其参数通过两种强大的优化算法进行了优化，<strong>即遗传算法（GA）和粒子群优化（PSO）</strong>，以实现更高的准确性和鲁棒性。基于PSO的SVM具有最高的准确性和鲁棒性，优于其他算法。此外，<strong>通过将决策树C5.0算法与基于PSO的SVM模型相结合来提取规则</strong>。最后，提取了一组九个有用的规则，以识别造成伤害，near miss差错和财产损失案件的根本原因。提出了一个钢铁厂的案例研究case study，以揭示该方法的潜力和有效性。</p><p>简介：全球每年约有230万工人死于职业事故和疾病，其中包括约36万致命事故[1]。事故的根本原因是不安全的情况或不安全的行为，或两者兼有。造成事故的因素有很多。文献中有许多理论可以解释事故的因果关系。 Khanzode等 [5]解释了他们在事故背后的各种研究理论，例如事故倾向性理论[6]，多米诺骨牌理论[7]，伤害流行病学[8]，系统理论[9]，社会技术系统理论[10]和宏观人机工程学理论[11]。由于一系列事件或因果关系的存在，导致发生伤害事件。如果知道原因，则可以预测结果（即事故）。另外，预测模型将量化各种因果因素对事故发生的贡献。</p><p>ML用于预测模型很广泛。然而，ML技术用于职业事件分析还是有限的 limited biasis。至今，关于职业分析的研究展示了基于机器学习技术的预测能力[14]和解释能力[15]。这些方法基于事件报告中的历史数据或与员工进行的访谈，可确保它们在预测功能和影响事件结果的预测变量的重要性方面优于常规统计数据。</p><p>本文：</p><p>本研究的主要目标是使用机器学习技术（即SVM和ANN）开发预测模型，以预测职业事故的后果。 为了获得更好的精度，在分类器上采用了优化技术，即GA和PSO。 此外，基于PSO-SVM、结合决策树（C5.0）的分类器对伤害injury的发生提取规则。 次要目标包括使用卡方特征选择技术识别可归因于事件结果的相关变量。 分析结果显示了SVM分类器在预测以及规则提取目的方面的效用。</p><h3 id="文献综述"><a href="#文献综述" class="headerlink" title="文献综述"></a>文献综述</h3><p>在职业事件预测中，许多机器学习算法如SVM，ANN，Extreme Learning machine（极限学习机）与决策树等。在DT在事故分析中的应用中，通常使用C4.5，C5.0分类和回归树（CART）分析，卡方自动交互检测器（CHAID）等算法来预测职业事故。使用DT的主要目的是预测和解释数据中的定性和定量模式，从而对隐藏信息探索。 由于对属性分布或属性独立性假设的放宽，DTs已成功应用于医学[17]，社会科学[18]，业务管理[19]，建筑工程与管理[20]，过程等不同领域 工业[13]。</p><p>除了DTs，神经网络，贝叶斯分类器，自适应神经模糊推理系统（ANFIS），贝叶斯网络，支持向量机，extreme learning machine (ELM) 被用于不同的领域。eg：He等。试图通过使用ANN的后向算法（BA-ANN）和指数评估方法（EEM）的分类技术解决煤与瓦斯突发问题[24]。使用BAANN，针对响应变量（即煤和瓦斯突发）计算因子的权重。Yi等人他们收集了550份与工作，环境和个人有关的数据，并由ANN进行了分析，以预测建筑工地工人的感知劳累（RPE）等级。</p><p>以上机器学习方法都要调整参数。为了调整分类算法的参数，发现优化方法比其他技术（如手动调整或网格搜索）最有用。从其他领域的研究可以看出，为了提高SVM模型的准确性，可以考虑优化惩罚因子（c）和内核参数 r [27]。有许多优化技术用于这个目的像遗传算法（GA），粒子群优化（PSO），梯度下降法等[28]。其中，GA和PSO被认为是最优化分类器参数（例如SVM）以实现更高准确度的方法[29]。使用基于GA算法的反向传播神经网络（BPNN）的初始参数，网络拓扑，权重和阈值[30]。 </p><p>分类器不仅取决于参数，还取决于数据类型。数值属性比类别属性或纯文本属性有更多信息。事故领域中的大多数文献都使用数值数据或类别数据来分析事故场景。 对纯文本数据的分析仍未得到充分利用，因为从纯文本中提取模式是一项艰巨的任务。 叙事文本是预测事故的关键资源之一。 它提供了分析中有价值的附加信息以及其他类型的数据。如布朗所做的一个值得注意的贡献是使用与潜在狄利克雷分配（LDA）和随机森林[35]等其他技术相关的文本挖掘来分析铁路事故数据，以探索事故背后的主要因素。在道路事故分析中，Pereira等人进行了一项研究。使用交通事件报告的主题建模来实时提取信息以预测事件持续时间[40]。</p><p>从事故数据集中提取规则及其解释通常被认为是一种有效的方法。通常可以使用决策树（DT）或关联规则挖掘（ARM）方法获得规则。在一些职业事故研究中，DT已比ARM更多地用于规则提取和解释。当目标函数是离散值，属性值对可描述目标函数或对数据集进行噪声训练时，发现DT很有用。还尝试过带有SVM的DT算法，以将SVM决策的黑匣子变成透明且可理解的规则，这些规则可用作任何决策任务的第二意见。</p><h3 id="本文研究关键"><a href="#本文研究关键" class="headerlink" title="本文研究关键"></a>本文研究关键</h3><p>1，将文本数据与非文本数据用于事件预测</p><p>2，分类器的参数优化，以获得更好的预测准确率</p><p>3，少有基于SVM的规则提取用于事件发生的研究</p><h2 id="Application-of-SVM-and-ANN-for-intrusion-detection"><a href="#Application-of-SVM-and-ANN-for-intrusion-detection" class="headerlink" title="Application of SVM and ANN for intrusion detection"></a>Application of SVM and ANN for intrusion detection</h2><h3 id="ABS-amp-Intro-3"><a href="#ABS-amp-Intro-3" class="headerlink" title="ABS &amp; Intro"></a>ABS &amp; Intro</h3><p>两种数据挖掘技术，ANNs 人工神经网络和支持向量机。两种编码方式，，基于简单频率的方案和tf×idf方案，来检测潜在的系统入侵。我们的结果展示采用TF-IDF方案的SVM性能最佳，而基于简单频率方案的ANN表现最差。实验中使用的数据是麻省理工学院林肯实验室的DARPA 1998入侵检测评估计划的BSM审核数据。</p><p>简介：电子商务和最近的在线消费者热潮迫使对共享网络上的系统的基本计算机安全设计进行更改。 现在设计的系统具有更高的灵活性和更少的屏障安全性。 此外，随着计算机在金融上越来越普及给大众，它们也越来越以消费者为导向。 用户友好性和公共可访问性的结合，尽管对普通人有利，但不可避免地使交换的信息容易受到犯罪分子的攻击。 存储在内部数据仓库中的消费者信息，员工数据或知识产权受到外部攻击者和不满员工的威胁，他们可能会滥用访问权限谋取私利。由于软件应用程序中隐藏的弱点和错误bug，安全策略或防火墙很难阻止此类攻击。 此外，黑客不断发明新的攻击并通过Internet进行传播。</p><p> 入侵检测系统可以检测，识别并响应未经授权的或异常的活动，具有缓解或防止此类攻击的潜力。 因此，security breech是Internet社区日益关注的一个领域[2]。</p><p>大多数研究人员（请参见表1）使用简短的系统调用序列来表征程序行为。少部分使用系统调用的频率分布。与基于序列的编码技术相比，基于频率的编码技术所需的开销更少，基于序列的编码技术需要为每个程序构建一个文件（例如，必须为sendmail或lpr 1构建一个文件），并在每个时间帧检查攻击 。 基于频率的编码技术仅为每个进程而不是每个程序（一个进程可能包含多个程序）建立一个配置文件，并在该过程结束时检查攻击实例。 </p><p>在这项研究中，我们探索了应用人工神经网络（ANN）和支持向量机（SVM）预测基于基于频率的编码技术的攻击的可行性。使用ANN和SVM进行攻击检测的目的是从有限的训练数据中发展泛化能力。</p><h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，Yavuz T, Kundakcioglu O E, Ünlüyurt T. Exact and heuristic approaches to detect failures in failed k-out-of-n systems[J]. Computers &amp; Operations Research, 2019, 112: 104752.</p><p>2，A survey of models and algorithms for emergency response logistics in electric distribution systems. Part I: Reliability planning with fault considerations</p><p>3，Application of Optimized Machine Learning Techniques for Prediction of Occupational Accidents</p><p>4，Application of SVM and ANN for intrusion detection （Wun-Hwa Chen, Sheng-Hsun Hsu∗, Hwang-Pin Shen）</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;Exact-and-heuristic-approaches-to-detect-failures-in-failed-k-out-of-n-systems&quot;&gt;&lt;a href=&quot;#Exact-and-heuristic-approaches-to-detect-failures-in-failed-k-out-of-n-systems&quot; class=&quot;headerlink&quot; title=&quot;Exact and heuristic approaches to detect failures in failed k-out-of-n systems&quot;&gt;&lt;/a&gt;Exact and heuristic approaches to detect failures in failed k-out-of-n systems&lt;/h2&gt;&lt;h3 id=&quot;ABS-amp-Intro&quot;&gt;&lt;a href=&quot;#ABS-amp-Intro&quot; class=&quot;headerlink&quot; title=&quot;ABS&amp;amp;Intro&quot;&gt;&lt;/a&gt;ABS&amp;amp;Intro&lt;/h3&gt;&lt;h4 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h4&gt;&lt;p&gt;本文考虑n个系统中k个故障了（表决系统），相应的测试每个组件是有成本的。另外，我们具有某些组件是故障的原因的先验概率信息。目标是以最小的预期成本去识别导致故障的那部分组件。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="AIOps" scheme="http://yoursite.com/categories/AIOps/"/>
+    
+    
+      <category term="AIOps" scheme="http://yoursite.com/tags/AIOps/"/>
+    
+      <category term="故障检测" scheme="http://yoursite.com/tags/%E6%95%85%E9%9A%9C%E6%A3%80%E6%B5%8B/"/>
+    
+      <category term="Operation Research" scheme="http://yoursite.com/tags/Operation-Research/"/>
     
   </entry>
   
