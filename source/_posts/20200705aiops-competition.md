@@ -94,6 +94,6 @@ if __name__ == '__main__':
 
 1，https://github.com/NetManAIOps/aiops2020-judge/tree/master/final
 
-2，[kafka原理](https://www.cnblogs.com/sujing/p/10960832.html)
+2，[kafka原理](https://zhuanlan.zhihu.com/p/68052232)
 
 3，[dockerfile的使用](https://www.runoob.com/docker/docker-dockerfile.html)
