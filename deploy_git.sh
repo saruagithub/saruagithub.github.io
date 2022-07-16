@@ -1,3 +1,3 @@
 git add .
-git commit -m "string kmp match"
+git commit -m "$1"
 git push origin source
