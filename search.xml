@@ -1,6 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>编译、链接和生成的目标文件</title>
+    <url>/2022/09/25/20220925%E7%BC%96%E8%AF%91%E3%80%81%E9%93%BE%E6%8E%A5%E5%92%8C%E7%94%9F%E6%88%90%E7%9A%84%E7%9B%AE%E6%A0%87%E6%96%87%E4%BB%B6/</url>
+    <content><![CDATA[<h3 id="编译、链接和生成的目标文件"><a href="#编译、链接和生成的目标文件" class="headerlink" title="编译、链接和生成的目标文件"></a>编译、链接和生成的目标文件</h3><h4 id="基础编译链接知识"><a href="#基础编译链接知识" class="headerlink" title="基础编译链接知识"></a>基础编译链接知识</h4><p>gcc编译C程序经过预处理，编译，汇编，链接。</p><p>GNU编译器套装（英语：GNU Compiler Collection，缩写为GCC），指一套编程语言编译器。</p><h5 id="预编译"><a href="#预编译" class="headerlink" title="预编译"></a>预编译</h5><p><img src="/images/20220925compile_link.png" alt="image-20220925194018558"></p><p>预处理就是展开所有的头文件、替换程序中的宏、解析条件编译并添加到文件中。</p><p>c语言中条件编译相关的预编译指令，包括  #define、#undef、#ifdef、#ifndef、#if、#elif、#else、#endif、defined。</p><a id="more"></a>
+
+
+
+
+<p>删除所有的注释。添加行号和文件名标识，保留所有的 #pragma 编译器指令。</p>
+<p><code>gcc -E test.c -o test.i</code> preprocessing 显示的预处理之后的源代码。</p>
+<h5 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h5><p>编译：编译是将经过预编译处理的代码编译成汇编代码。对预处理后的.i文件进行词法分析，语法分析，语义分析及优化等等。</p>
+<p>这里就是编译原理会涉及的东西，扫描，词法（有限状态机）语法（语法树 yacc）语义分析（对语法树的表达式标识类型），中间语言生成（IR 三地址码等），源码优化（优化寻址等），代码生成和目标代码优化等等。</p>
+<p><code>gcc -S test.i -o test.s</code> 可直接对生成的test.i文件编译，生成汇编代码</p>
+<p><code>/usr/lib/gcc/x86_64-linux-gnu/5.4.0/cc1 test.c</code> 现在版本的gcc将预编译和编译俩步骤合并到了一起，cc1这个程序。</p>
+<h5 id="汇编"><a href="#汇编" class="headerlink" title="汇编"></a>汇编</h5><p>将汇编代码转变为机器可以执行的指令，就根据汇编指令和机器指令的对照表去一一翻译即可。</p>
+<p><code>gcc -c test.s -o test.o</code> 汇编Assembly，gas汇编器负责将其编译为目标文件，.o文件是机器代码 （即 目标文件）</p>
+<p><code>as -c test.s -o test.o</code> 直接调用汇编器来做也可以。</p>
+<h5 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h5><p><code>gcc test.o -o test</code>  将程序的目标文件与所需的所有附加的目标文件连接起来，最终生成可执行文件。附加的目标文件包括静态连接库和动态连接库。</p>
+<p>ld其实会将许许多多的文件链接起来，包括一些glibc里的库文件的 .o 文件等等。</p>
+<p>链接工作无非是把一些指令对其他符号地址的引用加以修正，解决了各个模块间符号引用的问题。主要过程有地址和空间的分配，符号决议（symbol resolution）和重定位等。</p>
+<h4 id="其他概念"><a href="#其他概念" class="headerlink" title="其他概念"></a>其他概念</h4><ol>
+<li>重定位relocation：重新计算每个子程序或跳转的目标地址，每次代码修改之后，汇编器会重新计算一些符号和跳转目标的地址，然后把所有引用到这个符号的指令修正到正确的地址。这种重新计算各个目标地址的过程是重定位。</li>
+<li>静态链接的基本过程：链接器在链接的时候，会根据你所引用的符号foo，自动去相应的func.c 模块查找foo的地址，然后将main.c模块中所有引用到foo的指令重新修正，让他们的目标地址为真正的foo函数的地址。</li>
+</ol>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ol>
+<li>《程序员的自我修养》</li>
+<li></li>
+</ol>
+]]></content>
+      <categories>
+        <category>底层原理</category>
+      </categories>
+      <tags>
+        <tag>编译链接</tag>
+        <tag>底层原理</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>mmap代码段JIT buffer重定位</title>
     <url>/2022/06/13/20220713mmap%E4%BB%A3%E7%A0%81%E6%AE%B5JIT%20buffer%E9%87%8D%E5%AE%9A%E4%BD%8D/</url>
     <content><![CDATA[<h3 id="JIT-buffer重定位"><a href="#JIT-buffer重定位" class="headerlink" title="JIT buffer重定位"></a>JIT buffer重定位</h3><h4 id="问题背景"><a href="#问题背景" class="headerlink" title="问题背景"></a>问题背景</h4><h5 id="PHP8-JIT"><a href="#PHP8-JIT" class="headerlink" title="PHP8 JIT"></a>PHP8 JIT</h5><p>Just-In-Time compilation is a hybrid model of interpreter and Ahead-of-Time compilation, that some or all of the code is compiled, often at run-time, without requiring the developer to manually compile it. </p><a id="more"></a>
@@ -35,11 +72,15 @@
 <li>用中间变量保存一些计算步骤，让代码更易读</li>
 <li>提PR的时候写好注释，所有关键地方都写上，方便maintainer阅读</li>
 </ol>
+<h3 id="优化思路"><a href="#优化思路" class="headerlink" title="优化思路"></a>优化思路</h3><p>性能优化四个方向：CPU/内存&amp;网卡&amp;磁盘&amp;应用</p>
+<p>优化代码段的布局，将常常调用的代码都放到4GB以内（for X64）。</p>
 <h4 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h4><ol>
 <li><a href="https://v8.dev/blog/short-builtin-calls" target="_blank" rel="noopener">Short builtin calls</a></li>
 <li><p><a href="https://www.intel.com/content/dam/www/public/us/en/documents/manuals/64-ia-32-architectures-optimization-manual.pdf" target="_blank" rel="noopener">Intel Optimization Manual</a></p>
 </li>
 <li><p><a href="https://www.php.net/manual/en/opcache.configuration.php#ini.opcache.jit-buffer-size" target="_blank" rel="noopener">PHP: Runtime Configuration - Manual</a></p>
+</li>
+<li><p><a href="https://bbs.huaweicloud.com/blogs/201857" target="_blank" rel="noopener">基于硬件特性的性能调优</a></p>
 </li>
 </ol>
 ]]></content>
@@ -704,8 +745,8 @@
       </categories>
       <tags>
         <tag>配置</tag>
-        <tag>大数据</tag>
         <tag>hadoop</tag>
+        <tag>大数据</tag>
       </tags>
   </entry>
   <entry>
@@ -744,8 +785,8 @@
         <category>数据挖掘</category>
       </categories>
       <tags>
-        <tag>大数据</tag>
         <tag>hadoop</tag>
+        <tag>大数据</tag>
       </tags>
   </entry>
   <entry>
