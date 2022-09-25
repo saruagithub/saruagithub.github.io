@@ -21,7 +21,7 @@
 <p>ld其实会将许许多多的文件链接起来，包括一些glibc里的库文件的 .o 文件等等。</p>
 <p>链接工作无非是把一些指令对其他符号地址的引用加以修正，解决了各个模块间符号引用的问题。主要过程有地址和空间的分配，符号决议（symbol resolution）和重定位等。</p>
 <h4 id="其他概念"><a href="#其他概念" class="headerlink" title="其他概念"></a>其他概念</h4><ol>
-<li>重定位relocation：重新计算每个子程序或跳转的目标地址，每次代码修改之后，汇编器会重新计算一些符号和跳转目标的地址，然后把所有引用到这个符号的指令修正到正确的地址。这种重新计算各个目标地址的过程是重定位。</li>
+<li>重定位relocation：重新计算每个子程序或跳转的目标地址，然后把所有引用到这个符号的指令修正到正确的地址。这种重新计算各个目标地址的过程是重定位。</li>
 <li>静态链接的基本过程：链接器在链接的时候，会根据你所引用的符号foo，自动去相应的func.c 模块查找foo的地址，然后将main.c模块中所有引用到foo的指令重新修正，让他们的目标地址为真正的foo函数的地址。</li>
 </ol>
 <h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><ol>
@@ -745,8 +745,8 @@
       </categories>
       <tags>
         <tag>配置</tag>
-        <tag>hadoop</tag>
         <tag>大数据</tag>
+        <tag>hadoop</tag>
       </tags>
   </entry>
   <entry>
@@ -785,8 +785,8 @@
         <category>数据挖掘</category>
       </categories>
       <tags>
-        <tag>hadoop</tag>
         <tag>大数据</tag>
+        <tag>hadoop</tag>
       </tags>
   </entry>
   <entry>
