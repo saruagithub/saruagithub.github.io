@@ -170,9 +170,19 @@ https://github.com/php/php-src/commit/17aa81a5e22d4b8d1ffd7c89cb641939b4f6b7db
 
 
 
+### 优化思路
+
+性能优化四个方向：CPU/内存&网卡&磁盘&应用
+
+优化代码段的布局，将常常调用的代码都放到4GB以内（for X64）。
+
+
+
 #### Reference
 
 1. [Short builtin calls](https://v8.dev/blog/short-builtin-calls)
 2. [Intel Optimization Manual](https://www.intel.com/content/dam/www/public/us/en/documents/manuals/64-ia-32-architectures-optimization-manual.pdf)
 
 3. [PHP: Runtime Configuration - Manual](https://www.php.net/manual/en/opcache.configuration.php#ini.opcache.jit-buffer-size)
+
+4. [基于硬件特性的性能调优](https://bbs.huaweicloud.com/blogs/201857)
