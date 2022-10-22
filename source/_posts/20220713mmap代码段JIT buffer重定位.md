@@ -6,10 +6,13 @@ tags:
 - PHP-SRC
 - 性能优化
 - 内存布局
+- JIT
 categories:
 - 性能优化
 
 ---
+
+
 
 ### JIT buffer重定位
 
@@ -186,3 +189,4 @@ https://github.com/php/php-src/commit/17aa81a5e22d4b8d1ffd7c89cb641939b4f6b7db
 3. [PHP: Runtime Configuration - Manual](https://www.php.net/manual/en/opcache.configuration.php#ini.opcache.jit-buffer-size)
 
 4. [基于硬件特性的性能调优](https://bbs.huaweicloud.com/blogs/201857)
+
