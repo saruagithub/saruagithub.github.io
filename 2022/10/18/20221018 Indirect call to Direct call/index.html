@@ -47,22 +47,20 @@
   };
 </script>
 
-  <meta name="description" content="概述从最开始的神经元开始，1943年MP单个神经元诞生。$y = f\left(\sum_{i=1}^{n} w_{i} x_{i}-\theta\right)$1958年，感知机perception提出。感知机能很好的实现逻辑与、或、非运算。与、或、非本来也是线性可分问题。若两类模式是线性可分的，即存在一个线性超平面将它们分开。">
-<meta name="keywords" content="深度学习,神经网络">
+  <meta name="description" content="Background优化原理参考JS的V8里头的优化说明： With the x86-64 instruction set, this means we can’t use direct calls: they take a 32-bit signed immediate that’s used as an offset to the address of the call, and the ta">
+<meta name="keywords" content="PHP-SRC,性能优化,JIT">
 <meta property="og:type" content="article">
-<meta property="og:title" content="DNN概述">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;12&#x2F;24&#x2F;20200223DNN%E6%A6%82%E8%BF%B0&#x2F;index.html">
+<meta property="og:title" content="20221018 Indirect call to Direct call">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2022&#x2F;10&#x2F;18&#x2F;20221018%20Indirect%20call%20to%20Direct%20call&#x2F;index.html">
 <meta property="og:site_name" content="WangXue">
-<meta property="og:description" content="概述从最开始的神经元开始，1943年MP单个神经元诞生。$y = f\left(\sum_{i=1}^{n} w_{i} x_{i}-\theta\right)$1958年，感知机perception提出。感知机能很好的实现逻辑与、或、非运算。与、或、非本来也是线性可分问题。若两类模式是线性可分的，即存在一个线性超平面将它们分开。">
+<meta property="og:description" content="Background优化原理参考JS的V8里头的优化说明： With the x86-64 instruction set, this means we can’t use direct calls: they take a 32-bit signed immediate that’s used as an offset to the address of the call, and the ta">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200223MP_nerual.jpg">
-<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200223DNN.jpg">
-<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200223DNN_BP.jpg">
-<meta property="og:updated_time" content="2022-07-13T14:17:15.738Z">
+<meta property="og:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20221018indirect.png">
+<meta property="og:updated_time" content="2023-01-29T12:44:28.321Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20200223MP_nerual.jpg">
+<meta name="twitter:image" content="http:&#x2F;&#x2F;yoursite.com&#x2F;images&#x2F;20221018indirect.png">
 
-<link rel="canonical" href="http://yoursite.com/2019/12/24/20200223DNN%E6%A6%82%E8%BF%B0/">
+<link rel="canonical" href="http://yoursite.com/2022/10/18/20221018%20Indirect%20call%20to%20Direct%20call/">
 
 
 <script id="page-configurations">
@@ -76,7 +74,7 @@
   };
 </script>
 
-  <title>DNN概述 | WangXue</title>
+  <title>20221018 Indirect call to Direct call | WangXue</title>
   
 
 
@@ -213,7 +211,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/24/20200223DNN%E6%A6%82%E8%BF%B0/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/10/18/20221018%20Indirect%20call%20to%20Direct%20call/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -226,7 +224,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          DNN概述
+          20221018 Indirect call to Direct call
         </h1>
 
         <div class="post-meta">
@@ -237,14 +235,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2019-12-24 10:18:37" itemprop="dateCreated datePublished" datetime="2019-12-24T10:18:37+08:00">2019-12-24</time>
+              <time title="创建时间：2022-10-18 22:51:17" itemprop="dateCreated datePublished" datetime="2022-10-18T22:51:17+08:00">2022-10-18</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-07-13 22:17:15" itemprop="dateModified" datetime="2022-07-13T22:17:15+08:00">2022-07-13</time>
+                <time title="修改时间：2023-01-29 20:44:28" itemprop="dateModified" datetime="2023-01-29T20:44:28+08:00">2023-01-29</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -252,8 +250,8 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index">
-                    <span itemprop="name">深度学习</span>
+                  <a href="/categories/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" itemprop="url" rel="index">
+                    <span itemprop="name">性能优化</span>
                   </a>
                 </span>
             </span>
@@ -274,8 +272,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2019/12/24/20200223DNN%E6%A6%82%E8%BF%B0/#comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2019/12/24/20200223DNN%E6%A6%82%E8%BF%B0/" itemprop="commentCount"></span>
+    <a title="valine" href="/2022/10/18/20221018%20Indirect%20call%20to%20Direct%20call/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2022/10/18/20221018%20Indirect%20call%20to%20Direct%20call/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -290,21 +288,48 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>从最开始的神经元开始，1943年MP单个神经元诞生。$y = f\left(\sum_{i=1}^{n} w_{i} x_{i}-\theta\right)$</p><p><img src="/images/20200223MP_nerual.jpg" alt="20200223MP_nerual"></p><p>1958年，感知机perception提出。感知机能很好的实现逻辑与、或、非运算。与、或、非本来也是线性可分问题。若两类模式是线性可分的，即存在一个线性超平面将它们分开。</p><a id="more"></a>
+        <h2 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h2><h3 id="优化原理"><a href="#优化原理" class="headerlink" title="优化原理"></a>优化原理</h3><p>参考JS的V8里头的优化说明：</p><blockquote>
+<p>With the <a href="https://en.wikipedia.org/wiki/X86-64" target="_blank" rel="noopener">x86-64</a> instruction set, this means we can’t use direct calls: they take a 32-bit signed immediate that’s used as an offset to the address of the call, and the target may be more than 2 GiB away. Instead, we need to rely on indirect calls through a register or memory operand. Such calls rely more heavily on prediction since it’s not immediately apparent from the call instruction itself what the target of the call is.</p>
+<p>It should reduce strain on the indirect branch predictor as the target is known after the instruction is decoded, but it also doesn’t require the target to be loaded into a register from a constant or memory.</p>
+</blockquote><a id="more"></a>
 
-
-<p>若要解决非线性可分问题，要使用多层功能神经元（1982-1986年，1995提出SVM）。两层感知机可以解决异或问题了。一个神经网络足够多的两层网络 + 适当的激活函数能够逼近任意连续的函数。</p>
-<p>2012年，DNN，CNN由于计算能力的提高再次兴起。</p>
-<p><img src="/images/20200223DNN.jpg" alt="20200223DNN"></p>
-<h3 id="反向传播"><a href="#反向传播" class="headerlink" title="反向传播"></a>反向传播</h3><p>正向传播就是将输入与权重相乘，逐层向前，直到最后输出。然后计算输出层的误差，反向传播则是将误差逆向传播至隐层神经元。根据隐层神经元的误差对权值和阈值进行更新。</p>
-<p><img src="/images/20200223DNN_BP.jpg" alt="20200223DNN_BP"></p>
-<p>$z$ 是样本真实值，$y = f (e), e= wx + b$ 是DNN预测值，激活函数 $f$ 采用 sigmoid，采用均方误差 $\frac{1}{2}(y-z)^2$。</p>
-<p>机器学习书上推导是根据链式求导：</p>
-<script type="math/tex; mode=display">\delta_{6}=(y-z) \frac{d f_6(e)}{d e}=(y-z) f_6(e)(1-f_6(e))</script><script type="math/tex; mode=display">\delta_{4}=\mathrm{w}_{46} \delta_{6} \frac{\mathrm{df}_{4}(\mathrm{e})}{d e}, \delta_{5}=\mathrm{W}_{56} \mathrm{\delta}_{6} \frac{\mathrm{df_4}(\mathrm{e})}{d e}</script><script type="math/tex; mode=display">\delta_{1}=\left(\mathrm{w}_{14} \mathrm{\delta}_{4}+\mathrm{w}_{15} \mathrm{\delta}_{5}\right) \frac{\mathrm{df}_{1}(\mathrm{e})}{d e}, \quad \delta_{2}=\left(\mathrm{w}_{24} \delta_{4}+\mathrm{w}_{25} \delta_{5}\right) \frac{\mathrm{d} f_{2}(\mathrm{e})}{d e}, \delta_{3}=\left(\mathrm{W}_{34} \mathrm{\delta}_{4}+\mathrm{W}_{35} \mathrm{\delta}_{5}\right) \frac{\mathrm{d} \mathrm{f}_3(\mathrm{e})}{d e}</script><p>同理……</p>
-<h3 id="一些问题"><a href="#一些问题" class="headerlink" title="一些问题"></a>一些问题</h3><p>1，目前网络层次越深能够抽象出来的特征越多，但随着神经网络层数的加深，计算量越大，优化函数越来越容易陷入局部最优解。</p>
-<p>2，随着网络层数增加，“梯度消失”现象更加严重。</p>
-<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p>1，智能技术基础，罗晓鹏</p>
-<p>2，机器学习，周志华</p>
+<p>并且前文我们在看JIT Buffer relocation的性能分析（<a href="https://saruagithub.github.io/2022/06/13/20220713mmap%E4%BB%A3%E7%A0%81%E6%AE%B5JIT%20buffer%E9%87%8D%E5%AE%9A%E4%BD%8D/" target="_blank" rel="noopener">https://saruagithub.github.io/2022/06/13/20220713mmap代码段JIT buffer重定位/</a>）的时候就已经发现了减少indirect call是可以大大提高预测准确率的，因此我们进一步来分析当前JIT里头的indirect call</p>
+<h3 id="问题调研"><a href="#问题调研" class="headerlink" title="问题调研"></a>问题调研</h3><p>get indirect and direct branch statistics before and after JIT buffer relocation patch to see whether indirect branch still exists</p>
+<p>我们看JITted code生成的模板里的indirect call还有多少，ext/opcache/jit/zend_jit_x86.dasc 原始实现</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> IS_32BIT(addr) (((uintptr_t)(addr)) &lt;= 0x7fffffff)</span></span><br><span class="line"></span><br><span class="line">|.macro EXT_CALL, func, tmp_reg</span><br><span class="line">|	.<span class="keyword">if</span> X64</span><br><span class="line">||		<span class="keyword">if</span> (IS_32BIT(dasm_end) &amp;&amp; IS_32BIT(func)) &#123;</span><br><span class="line">|			call qword &amp;func <span class="comment">/* direct call */</span></span><br><span class="line">||		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">|			LOAD_ADDR tmp_reg, func</span><br><span class="line">|			call tmp_reg <span class="comment">/* indirect call */</span></span><br><span class="line">||		&#125;</span><br><span class="line">|	.<span class="keyword">else</span></span><br><span class="line">|		call dword &amp;func</span><br><span class="line">|	.endif</span><br><span class="line">|.endmacro</span><br></pre></td></tr></table></figure>
+<p>这个模板文件里如果从当前位置call func，跳转距离在IS_32BIT的话，就是direct call 。否则就生成indirect call，通过寄存器来访问地址。这样就得需要分支预测器BPU进行预测了。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># this JITTed stub func call func by indirect call</span></span><br><span class="line">JIT$<span class="variable">$leave_function</span>: ; (unknown)</span><br><span class="line">    555596c00170:       mov 0x28(%r14), %edi</span><br><span class="line">    555596c00174:       <span class="built_in">test</span> <span class="variable">$0x20000</span>, %edi</span><br><span class="line">        jnz .L1</span><br><span class="line">    555596c0017c:       mov <span class="variable">$zend_jit_leave_nested_func_helper</span>, %rax</span><br><span class="line">    555596c00186:       call *%rax   </span><br><span class="line">    555596c00188:       jmp (%r15)</span><br><span class="line">.L1:</span><br><span class="line">    555596c0018b:       mov <span class="variable">$zend_jit_leave_top_func_helper</span>, %rax</span><br><span class="line">    555596c00195:       call *%rax</span><br><span class="line">    555596c00197:       jmp (%r15)</span><br></pre></td></tr></table></figure>
+<p>所以我们尝试去掉用寄存器访问地址。</p>
+<h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// easy implement</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> IS_SIGNED_32BIT(val) ((((intptr_t)(val)) &lt;= 0x7fffffff) &amp;&amp; \</span></span><br><span class="line"> (((<span class="keyword">intptr_t</span>)(val)) &gt;= (<span class="number">-2147483647</span> - <span class="number">1</span>)))</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MAY_USE_32BIT_ADDR(addr) \</span></span><br><span class="line">	(IS_SIGNED_32BIT((<span class="keyword">char</span>*)(addr) - (<span class="keyword">char</span>*)dasm_buf) &amp;&amp; \</span><br><span class="line">	IS_SIGNED_32BIT((<span class="keyword">char</span>*)(addr) - (<span class="keyword">char</span>*)dasm_end))</span><br></pre></td></tr></table></figure>
+<p><a href="https://github.com/php/php-src/pull/9579" target="_blank" rel="noopener">Indirect call reduction for Jit code by wxue1 · Pull Request #9579 · php/php-src</a></p>
+<p>这里需要注意特殊的情况，距离是前后2GB以及一些特殊case。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> IS_NEAR(end_addr, func) ((((uintptr_t)(end_addr)^(uintptr_t)(func)) &gt;&gt; 31) == 0)</span></span><br><span class="line"><span class="comment">// 这里有个corner case</span></span><br><span class="line"><span class="comment">// XOR之后，得到FFFF0000；如果把FFFF0000看作64位无符号数，变成了00000000-FFFF0000，</span></span><br><span class="line"><span class="comment">// 这样即便右移31位，还剩个0000 0000 1， 不对</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">--- I change the EXT_CALL code and use direct call ---</span><br><span class="line"></span><br><span class="line">JIT$<span class="variable">$leave_function</span>: ; (unknown)</span><br><span class="line">    555596e00150:       mov 0x28(%r14), %edi</span><br><span class="line">    555596e00154:       <span class="built_in">test</span> <span class="variable">$0x20000</span>, %edi</span><br><span class="line">        jnz .L1</span><br><span class="line">    555596e0015c:       call 0x5555f54d46a1</span><br><span class="line">    555596e00161:       jmp (%r15)</span><br><span class="line">.L1:</span><br><span class="line">    555596e00164:       call 0x5555f54d47e3</span><br><span class="line">    555596e00169:       jmp (%r15)</span><br></pre></td></tr></table></figure>
+<p>对runtime生成的JITTed code去验证字节码：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">	 0x0000555596e00610 &lt;+0&gt;:     66 c7 02 13 7f  mov    WORD PTR [rdx],0x7f13</span><br><span class="line">   0x0000555596e00615 &lt;+5&gt;:     4c 89 f7        mov    rdi,r14</span><br><span class="line">   0x0000555596e00618 &lt;+8&gt;:     4c 89 fe        mov    rsi,r15</span><br><span class="line">   0x0000555596e0061b &lt;+11&gt;:    e8 93 dc 6c 5e  call   0x5555f54ce2b3  <span class="comment">#opcode is e3 now</span></span><br><span class="line"><span class="comment"># gdb command: x/64bx func_address</span></span><br></pre></td></tr></table></figure>
+<p>我们去看intel的SDM手册，可以看到第二行 E8这个操作码可以call  rel32 （rel指的是relocation， 是an offset to the address of the call），这是相对近调用，相对于下一指令的位移</p>
+<p><img src="/images/20221018indirect.png" alt="IndirectCall"></p>
+<h3 id="Emon性能分析"><a href="#Emon性能分析" class="headerlink" title="Emon性能分析"></a>Emon性能分析</h3><p>我们再对优化后的workload压测跑分，收集emon数据进行分析，看看具体的优化效果如何。</p>
+<p>这里的数据我是从JIT buffer relocation，到64bit packing 到 direct call 每个优化一步步收集起来的。我们直接看最后的direct call的分析。数据是wordpress，SPR D0 56core上跑的</p>
+<ol>
+<li>TPS 整体提高了1%</li>
+<li>code cache miss整体变好了，但其实是因为分支预测更好了，加载指令更快也更准确了。</li>
+<li>最根本的优化是对Branch prediction的，表现类似于relocation优化。总的分支执行更快了，误预测的更少</li>
+<li>具体去分析branch类型和误预测的类型，也可以看出来整体的Direct call更多，Indirect call更少</li>
+<li>从误预测的情况来看，indirect call预测失败也下降了很多，几乎75%</li>
+<li>并且indirect call的预测已经比较准了，误预测率占2.2%，很少了。反而看起来现在是条件分支的差一些 8.7%算比较高的误预测率了。</li>
+<li>可以估计下一次indirect call会多消耗多少cycle数</li>
+</ol>
+<script type="math/tex; mode=display">
+indirect\_call\_cycle = reduced\_cycle / reduced\_indirect\_call</script><p>in excel, =(P9/P76) 就是计算的这个，可以看到大概每transaction，一次indirect call func大概会消耗44.9 cycles。这个计算在relocation patch那里的emon数据和direct call的数据是基本一致的。</p>
+<h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><h3 id="通用优化思路"><a href="#通用优化思路" class="headerlink" title="通用优化思路"></a>通用优化思路</h3><p>indirect call转为direct call是非常常见的优化。</p>
+<h3 id="遗留问题"><a href="#遗留问题" class="headerlink" title="遗留问题"></a>遗留问题</h3><ol>
+<li>dynasm 生成字节码的原理</li>
+<li>还有其他地方的indirect call么</li>
+<li>条件分支的预测优化？？</li>
+</ol>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p><a href="https://v8.dev/blog/short-builtin-calls" target="_blank" rel="noopener">Short builtin calls</a></p>
+<p><a href="https://gist.github.com/rianhunter/0be8dc116b120ad5fdd4" target="_blank" rel="noopener">Indirect vs Direct Function Call Overhead in C/C++</a></p>
 
     </div>
 
@@ -334,8 +359,9 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" rel="tag"># 深度学习</a>
-              <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" rel="tag"># 神经网络</a>
+              <a href="/tags/PHP-SRC/" rel="tag"># PHP-SRC</a>
+              <a href="/tags/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" rel="tag"># 性能优化</a>
+              <a href="/tags/JIT/" rel="tag"># JIT</a>
           </div>
 
         
@@ -344,12 +370,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2019/12/23/20181015StochasticGradientDescent/" rel="prev" title="Stochastic Gradient Descent">
-      <i class="fa fa-chevron-left"></i> Stochastic Gradient Descent
+    <a href="/2022/09/25/20220925%E7%BC%96%E8%AF%91%E3%80%81%E9%93%BE%E6%8E%A5%E5%92%8C%E7%94%9F%E6%88%90%E7%9A%84%E7%9B%AE%E6%A0%87%E6%96%87%E4%BB%B6/" rel="prev" title="编译、链接和生成的目标文件">
+      <i class="fa fa-chevron-left"></i> 编译、链接和生成的目标文件
     </a></div>
       <div class="post-nav-item">
-    <a href="/2019/12/25/20200225%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9CCNN/" rel="next" title="卷积神经网络CNN">
-      卷积神经网络CNN <i class="fa fa-chevron-right"></i>
+    <a href="/2022/10/22/20220823%20Stop%20JIT%20hot%20spot%20counting/" rel="next" title="Stop JIT Hot Spot Counting">
+      Stop JIT Hot Spot Counting <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -389,7 +415,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#反向传播"><span class="nav-number">2.</span> <span class="nav-text">反向传播</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一些问题"><span class="nav-number">3.</span> <span class="nav-text">一些问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reference"><span class="nav-number">4.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Background"><span class="nav-number">1.</span> <span class="nav-text">Background</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#优化原理"><span class="nav-number">1.1.</span> <span class="nav-text">优化原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题调研"><span class="nav-number">1.2.</span> <span class="nav-text">问题调研</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码实现"><span class="nav-number">1.3.</span> <span class="nav-text">代码实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Emon性能分析"><span class="nav-number">1.4.</span> <span class="nav-text">Emon性能分析</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Summary"><span class="nav-number">2.</span> <span class="nav-text">Summary</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#通用优化思路"><span class="nav-number">2.1.</span> <span class="nav-text">通用优化思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#遗留问题"><span class="nav-number">2.2.</span> <span class="nav-text">遗留问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reference"><span class="nav-number">2.3.</span> <span class="nav-text">Reference</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

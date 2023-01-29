@@ -43,6 +43,61 @@
       </tags>
   </entry>
   <entry>
+    <title>20221018 Indirect call to Direct call</title>
+    <url>/2022/10/18/20221018%20Indirect%20call%20to%20Direct%20call/</url>
+    <content><![CDATA[<h2 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h2><h3 id="优化原理"><a href="#优化原理" class="headerlink" title="优化原理"></a>优化原理</h3><p>参考JS的V8里头的优化说明：</p><blockquote>
+<p>With the <a href="https://en.wikipedia.org/wiki/X86-64" target="_blank" rel="noopener">x86-64</a> instruction set, this means we can’t use direct calls: they take a 32-bit signed immediate that’s used as an offset to the address of the call, and the target may be more than 2 GiB away. Instead, we need to rely on indirect calls through a register or memory operand. Such calls rely more heavily on prediction since it’s not immediately apparent from the call instruction itself what the target of the call is.</p>
+<p>It should reduce strain on the indirect branch predictor as the target is known after the instruction is decoded, but it also doesn’t require the target to be loaded into a register from a constant or memory.</p>
+</blockquote><a id="more"></a>
+
+<p>并且前文我们在看JIT Buffer relocation的性能分析（<a href="https://saruagithub.github.io/2022/06/13/20220713mmap%E4%BB%A3%E7%A0%81%E6%AE%B5JIT%20buffer%E9%87%8D%E5%AE%9A%E4%BD%8D/" target="_blank" rel="noopener">https://saruagithub.github.io/2022/06/13/20220713mmap代码段JIT buffer重定位/</a>）的时候就已经发现了减少indirect call是可以大大提高预测准确率的，因此我们进一步来分析当前JIT里头的indirect call</p>
+<h3 id="问题调研"><a href="#问题调研" class="headerlink" title="问题调研"></a>问题调研</h3><p>get indirect and direct branch statistics before and after JIT buffer relocation patch to see whether indirect branch still exists</p>
+<p>我们看JITted code生成的模板里的indirect call还有多少，ext/opcache/jit/zend_jit_x86.dasc 原始实现</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> IS_32BIT(addr) (((uintptr_t)(addr)) &lt;= 0x7fffffff)</span></span><br><span class="line"></span><br><span class="line">|.macro EXT_CALL, func, tmp_reg</span><br><span class="line">|	.<span class="keyword">if</span> X64</span><br><span class="line">||		<span class="keyword">if</span> (IS_32BIT(dasm_end) &amp;&amp; IS_32BIT(func)) &#123;</span><br><span class="line">|			call qword &amp;func <span class="comment">/* direct call */</span></span><br><span class="line">||		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">|			LOAD_ADDR tmp_reg, func</span><br><span class="line">|			call tmp_reg <span class="comment">/* indirect call */</span></span><br><span class="line">||		&#125;</span><br><span class="line">|	.<span class="keyword">else</span></span><br><span class="line">|		call dword &amp;func</span><br><span class="line">|	.endif</span><br><span class="line">|.endmacro</span><br></pre></td></tr></table></figure>
+<p>这个模板文件里如果从当前位置call func，跳转距离在IS_32BIT的话，就是direct call 。否则就生成indirect call，通过寄存器来访问地址。这样就得需要分支预测器BPU进行预测了。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># this JITTed stub func call func by indirect call</span></span><br><span class="line">JIT$<span class="variable">$leave_function</span>: ; (unknown)</span><br><span class="line">    555596c00170:       mov 0x28(%r14), %edi</span><br><span class="line">    555596c00174:       <span class="built_in">test</span> <span class="variable">$0x20000</span>, %edi</span><br><span class="line">        jnz .L1</span><br><span class="line">    555596c0017c:       mov <span class="variable">$zend_jit_leave_nested_func_helper</span>, %rax</span><br><span class="line">    555596c00186:       call *%rax   </span><br><span class="line">    555596c00188:       jmp (%r15)</span><br><span class="line">.L1:</span><br><span class="line">    555596c0018b:       mov <span class="variable">$zend_jit_leave_top_func_helper</span>, %rax</span><br><span class="line">    555596c00195:       call *%rax</span><br><span class="line">    555596c00197:       jmp (%r15)</span><br></pre></td></tr></table></figure>
+<p>所以我们尝试去掉用寄存器访问地址。</p>
+<h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// easy implement</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> IS_SIGNED_32BIT(val) ((((intptr_t)(val)) &lt;= 0x7fffffff) &amp;&amp; \</span></span><br><span class="line"> (((<span class="keyword">intptr_t</span>)(val)) &gt;= (<span class="number">-2147483647</span> - <span class="number">1</span>)))</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MAY_USE_32BIT_ADDR(addr) \</span></span><br><span class="line">	(IS_SIGNED_32BIT((<span class="keyword">char</span>*)(addr) - (<span class="keyword">char</span>*)dasm_buf) &amp;&amp; \</span><br><span class="line">	IS_SIGNED_32BIT((<span class="keyword">char</span>*)(addr) - (<span class="keyword">char</span>*)dasm_end))</span><br></pre></td></tr></table></figure>
+<p><a href="https://github.com/php/php-src/pull/9579" target="_blank" rel="noopener">Indirect call reduction for Jit code by wxue1 · Pull Request #9579 · php/php-src</a></p>
+<p>这里需要注意特殊的情况，距离是前后2GB以及一些特殊case。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> IS_NEAR(end_addr, func) ((((uintptr_t)(end_addr)^(uintptr_t)(func)) &gt;&gt; 31) == 0)</span></span><br><span class="line"><span class="comment">// 这里有个corner case</span></span><br><span class="line"><span class="comment">// XOR之后，得到FFFF0000；如果把FFFF0000看作64位无符号数，变成了00000000-FFFF0000，</span></span><br><span class="line"><span class="comment">// 这样即便右移31位，还剩个0000 0000 1， 不对</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">--- I change the EXT_CALL code and use direct call ---</span><br><span class="line"></span><br><span class="line">JIT$<span class="variable">$leave_function</span>: ; (unknown)</span><br><span class="line">    555596e00150:       mov 0x28(%r14), %edi</span><br><span class="line">    555596e00154:       <span class="built_in">test</span> <span class="variable">$0x20000</span>, %edi</span><br><span class="line">        jnz .L1</span><br><span class="line">    555596e0015c:       call 0x5555f54d46a1</span><br><span class="line">    555596e00161:       jmp (%r15)</span><br><span class="line">.L1:</span><br><span class="line">    555596e00164:       call 0x5555f54d47e3</span><br><span class="line">    555596e00169:       jmp (%r15)</span><br></pre></td></tr></table></figure>
+<p>对runtime生成的JITTed code去验证字节码：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">	 0x0000555596e00610 &lt;+0&gt;:     66 c7 02 13 7f  mov    WORD PTR [rdx],0x7f13</span><br><span class="line">   0x0000555596e00615 &lt;+5&gt;:     4c 89 f7        mov    rdi,r14</span><br><span class="line">   0x0000555596e00618 &lt;+8&gt;:     4c 89 fe        mov    rsi,r15</span><br><span class="line">   0x0000555596e0061b &lt;+11&gt;:    e8 93 dc 6c 5e  call   0x5555f54ce2b3  <span class="comment">#opcode is e3 now</span></span><br><span class="line"><span class="comment"># gdb command: x/64bx func_address</span></span><br></pre></td></tr></table></figure>
+<p>我们去看intel的SDM手册，可以看到第二行 E8这个操作码可以call  rel32 （rel指的是relocation， 是an offset to the address of the call），这是相对近调用，相对于下一指令的位移</p>
+<p><img src="/images/20221018indirect.png" alt="IndirectCall"></p>
+<h3 id="Emon性能分析"><a href="#Emon性能分析" class="headerlink" title="Emon性能分析"></a>Emon性能分析</h3><p>我们再对优化后的workload压测跑分，收集emon数据进行分析，看看具体的优化效果如何。</p>
+<p>这里的数据我是从JIT buffer relocation，到64bit packing 到 direct call 每个优化一步步收集起来的。我们直接看最后的direct call的分析。数据是wordpress，SPR D0 56core上跑的</p>
+<ol>
+<li>TPS 整体提高了1%</li>
+<li>code cache miss整体变好了，但其实是因为分支预测更好了，加载指令更快也更准确了。</li>
+<li>最根本的优化是对Branch prediction的，表现类似于relocation优化。总的分支执行更快了，误预测的更少</li>
+<li>具体去分析branch类型和误预测的类型，也可以看出来整体的Direct call更多，Indirect call更少</li>
+<li>从误预测的情况来看，indirect call预测失败也下降了很多，几乎75%</li>
+<li>并且indirect call的预测已经比较准了，误预测率占2.2%，很少了。反而看起来现在是条件分支的差一些 8.7%算比较高的误预测率了。</li>
+<li>可以估计下一次indirect call会多消耗多少cycle数</li>
+</ol>
+<script type="math/tex; mode=display">
+indirect\_call\_cycle = reduced\_cycle / reduced\_indirect\_call</script><p>in excel, =(P9/P76) 就是计算的这个，可以看到大概每transaction，一次indirect call func大概会消耗44.9 cycles。这个计算在relocation patch那里的emon数据和direct call的数据是基本一致的。</p>
+<h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><h3 id="通用优化思路"><a href="#通用优化思路" class="headerlink" title="通用优化思路"></a>通用优化思路</h3><p>indirect call转为direct call是非常常见的优化。</p>
+<h3 id="遗留问题"><a href="#遗留问题" class="headerlink" title="遗留问题"></a>遗留问题</h3><ol>
+<li>dynasm 生成字节码的原理</li>
+<li>还有其他地方的indirect call么</li>
+<li>条件分支的预测优化？？</li>
+</ol>
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p><a href="https://v8.dev/blog/short-builtin-calls" target="_blank" rel="noopener">Short builtin calls</a></p>
+<p><a href="https://gist.github.com/rianhunter/0be8dc116b120ad5fdd4" target="_blank" rel="noopener">Indirect vs Direct Function Call Overhead in C/C++</a></p>
+]]></content>
+      <categories>
+        <category>性能优化</category>
+      </categories>
+      <tags>
+        <tag>PHP-SRC</tag>
+        <tag>性能优化</tag>
+        <tag>JIT</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>编译、链接和生成的目标文件</title>
     <url>/2022/09/25/20220925%E7%BC%96%E8%AF%91%E3%80%81%E9%93%BE%E6%8E%A5%E5%92%8C%E7%94%9F%E6%88%90%E7%9A%84%E7%9B%AE%E6%A0%87%E6%96%87%E4%BB%B6/</url>
     <content><![CDATA[<h3 id="编译、链接和生成的目标文件"><a href="#编译、链接和生成的目标文件" class="headerlink" title="编译、链接和生成的目标文件"></a>编译、链接和生成的目标文件</h3><h4 id="基础编译链接知识"><a href="#基础编译链接知识" class="headerlink" title="基础编译链接知识"></a>基础编译链接知识</h4><p>gcc编译C程序经过预处理，编译，汇编，链接。</p><p>GNU编译器套装（英语：GNU Compiler Collection，缩写为GCC），指一套编程语言编译器。</p><h5 id="预编译"><a href="#预编译" class="headerlink" title="预编译"></a>预编译</h5><p><img src="/images/20220925compile_link.png" alt="image-20220925194018558"></p><p>预处理就是展开所有的头文件、替换程序中的宏、解析条件编译并添加到文件中。</p><p>c语言中条件编译相关的预编译指令，包括  #define、#undef、#ifdef、#ifndef、#if、#elif、#else、#endif、defined。</p><a id="more"></a>
@@ -132,8 +187,8 @@
       <tags>
         <tag>PHP-SRC</tag>
         <tag>性能优化</tag>
-        <tag>内存布局</tag>
         <tag>JIT</tag>
+        <tag>内存布局</tag>
       </tags>
   </entry>
   <entry>
