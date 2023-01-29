@@ -187,8 +187,8 @@ indirect\_call\_cycle = reduced\_cycle / reduced\_indirect\_call</script><p>in e
       <tags>
         <tag>PHP-SRC</tag>
         <tag>性能优化</tag>
-        <tag>JIT</tag>
         <tag>内存布局</tag>
+        <tag>JIT</tag>
       </tags>
   </entry>
   <entry>
